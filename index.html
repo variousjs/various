@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> Humpback </title>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
+<script>
+window.config = {
+  routers: [
+    {
+      label: 'home',
+      path: '/',
+      component: 'switch',
+    },
+    {
+      label: 'next',
+      path: '/next',
+      component: 'next',
+    },
+  ],
+}
+
+window.requirejs.config({
+	paths: {
+    humpback: './dist/index',
+    next: './dist/next',
+    react: 'https://unpkg.com/react@16.12.0/umd/react.production.min',
+    'react-dom': 'https://unpkg.com/react-dom@16.12.0/umd/react-dom.production.min',
+    'react-router-dom': 'https://unpkg.com/react-router-dom@5.1.2/umd/react-router-dom.min',
+    'nycticorax': 'https://unpkg.com/nycticorax@1.0.1/lib/index',
+    'switch': 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle',
+  },
+})
+
+require(['humpback'], (humpback) => humpback())
+</script>
+</body>
+</html>
