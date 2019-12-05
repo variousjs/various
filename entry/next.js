@@ -25,6 +25,7 @@ class X extends Component {
   }
 
   render() {
+    throw new Error('?')
     const { user } = this.props.store
     const { a } = this.props
     return (

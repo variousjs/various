@@ -37,6 +37,10 @@ export default function (name, storeActions, componentActions) {
       }
     }
 
+    componentDidCatch(e) {
+      console.log(e)
+    }
+
     render() {
       const { component: C } = this.state
       const store = {}
