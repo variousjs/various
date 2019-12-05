@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title> Humpback </title>
+<link rel="stylesheet" href="https://unpkg.com/antd@3.26.0/dist/antd.min.css" />
 </head>
 <body>
 <div id="root"></div>
@@ -10,13 +11,22 @@
 <script src="humpback.js"></script>
 <script>
 const config = {
-  routers: [
+  routes: [
     {
       label: 'home',
       path: '/',
       components: {
         switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
       },
+      children: [
+        {
+          label: '666',
+          path: '/home/ty',
+          components: {
+            switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+          },
+        }
+      ],
     },
     {
       label: 'next',

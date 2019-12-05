@@ -28,6 +28,9 @@ module.exports = {
       name: 'nycticorax',
       amd: 'nycticorax',
     },
+    {
+      name: 'antd',
+      amd: 'antd',
+    },
   ],
-  sourceMap: false,
 }

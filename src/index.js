@@ -1,52 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { render } from 'react-dom'
-import { HashRouter as Router, Link, Route } from 'react-router-dom'
-import { createStore, subscribe } from 'nycticorax'
-import createComponent from './create-component'
+import { HashRouter as Router } from 'react-router-dom'
+import { createStore } from 'nycticorax'
+import Container from './container'
 
 export default (config) => {
-  const { store, actions: storeActions, routers } = config
-  const componentActions = {}
+  const { store, ...rest } = config
 
   createStore({ ...store })
 
-  class Menu extends Component {
-    render() {
-      return routers.map(({ path, label }) => (
-        <Link to={path} key={path}>{label}</Link>
-      ))
-    }
-  }
-
-  class Container extends Component {
-    render() {
-      return routers.map(({ path, components }) => {
-        const [name] = Object.keys(components)
-
-        return (
-          <Route
-            key={path}
-            exact
-            path={path}
-            component={createComponent(name, storeActions, componentActions)}
-          />
-        )
-      })
-    }
-  }
-
-  class X extends Component {
-    render() {
-      return (
-        <>
-          <Router>
-            <Menu />
-            <Container />
-          </Router>
-        </>
-      )
-    }
-  }
-
-  render(<X />, document.querySelector('#root'))
+  render((
+    <Router>
+      <Container {...rest} />
+    </Router>
+  ), document.querySelector('#root'))
 }
