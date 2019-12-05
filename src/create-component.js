@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { connect } from 'nycticorax'
+import { connect, getStore } from 'nycticorax'
 import { IGNORE_STATIC_METHODS } from './config'
 
 export default function (name, storeActions, componentActions) {
+  const storeKeys = Object.keys(getStore())
   class R extends Component {
     state = {
-      component: undefined
+      component: undefined,
+      store: {},
     }
 
     componentDidMount() {
@@ -37,7 +39,7 @@ export default function (name, storeActions, componentActions) {
 
     render() {
       const { component: C } = this.state
-      const { store } = this.props
+      const store = {}
 
       if (!C) {
         return (
@@ -45,11 +47,15 @@ export default function (name, storeActions, componentActions) {
         )
       }
 
+      storeKeys.forEach((key) => {
+        store[key] = this.props[key]
+      })
+
       return (
         <C store={store} dispatch={this.dispatch} />
       )
     }
   }
 
-  return connect('store')(R)
+  return connect(...storeKeys)(R)
 }

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { HashRouter as Router, Link, Route } from 'react-router-dom'
-import { createStore } from 'nycticorax'
+import { createStore, subscribe } from 'nycticorax'
 import createComponent from './create-component'
 
 export default (config) => {
   const { store, actions: storeActions, routers } = config
   const componentActions = {}
 
-  createStore({ store })
+  createStore({ ...store })
 
   class Menu extends Component {
     render() {

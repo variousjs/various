@@ -34,13 +34,13 @@ const config = {
   actions: {
     async updateUserName({ dispatch, getStore }, value) {
       await new Promise((r) => setTimeout(r, 1000))
-      const { store } = getStore()
-      store.user.name = value
-      dispatch({ store })
+      const { user } = getStore()
+      user.name = value
+      dispatch({ user })
     },
     getUserName({ getStore }) {
-      const { store } = getStore()
-      return store.user.name
+      const { user } = getStore()
+      return user.name
     },
   },
 }
