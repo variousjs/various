@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> Humpback </title>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
+<script src="humpback.js"></script>
+<script>
+const config = {
+  routers: [
+    {
+      label: 'home',
+      path: '/',
+      components: {
+        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+      },
+    },
+    {
+      label: 'next',
+      path: '/next',
+      components: {
+        next: './components/next.js',
+      },
+    },
+  ],
+  store: {
+    user: {
+      name: 'humpback',
+    },
+  },
+  actions: {
+    async updateUserName({ dispatch, getStore }, value) {
+      await new Promise((r) => setTimeout(r, 1000))
+      const { store } = getStore()
+      store.user.name = value
+      dispatch({ store })
+    },
+    getUserName({ getStore }) {
+      const { store } = getStore()
+      return store.user.name
+    },
+  },
+}
+window.humpback(config)
+</script>
+</body>
+</html>
