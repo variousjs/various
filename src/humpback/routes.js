@@ -3,8 +3,8 @@ import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import createComponent from './create-component'
 
-function Routes({ routes, actions }) {
-  const componentActions = {}
+function Routes({ routes, methods }) {
+  const componentMethods = {}
 
   return routes.map(({ path, components }) => {
     const [name] = Object.keys(components)
@@ -14,7 +14,7 @@ function Routes({ routes, actions }) {
         key={path}
         exact
         path={path}
-        component={createComponent(name, actions, componentActions)}
+        component={createComponent(name, methods, componentMethods)}
       />
     )
   })
@@ -22,12 +22,12 @@ function Routes({ routes, actions }) {
 
 Routes.propTypes = {
   routes: PropTypes.array,
-  actions: PropTypes.object,
+  methods: PropTypes.object,
 }
 
 Routes.defaultProps = {
   routes: [],
-  actions: {},
+  methods: {},
 }
 
 export default Routes

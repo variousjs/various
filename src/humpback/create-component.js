@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect, getStore } from 'nycticorax'
-import { IGNORE_STATIC_METHODS } from './config'
+import { IGNORE_STATIC_METHODS } from '../config'
 
-export default function (name, storeActions, componentActions) {
+export default function (name, storeMethods, componentMethods) {
   const storeKeys = Object.keys(getStore())
+
   class R extends Component {
     state = {
       component: undefined,
@@ -23,16 +24,16 @@ export default function (name, storeActions, componentActions) {
             }
           })
 
-        componentActions[name] = actions
+        componentMethods[name] = actions
         this.setState({ component: C })
       })
     }
 
     dispatch = (name, func, ...values) => {
-      if (name === 'global' && storeActions[func]) {
-        return this.props.dispatch(storeActions[func], ...values)
+      if (name === 'global' && storeMethods[func]) {
+        return this.props.dispatch(storeMethods[func], ...values)
       }
-      const actions = componentActions[name]
+      const actions = componentMethods[name]
       if (actions) {
         return actions[func](...values)
       }

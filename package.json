@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "humpback",
+  "version": "0.1.0",
+  "description": "Humpback",
+  "main": "lib/humpback.js",
+  "scripts": {
+    "index": "NODE_ENV=index falco -c -m src/index.js -o entry/dist",
+    "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o entry/dist",
+    "next": "NODE_ENV=next falco -c -m components/next.js -o entry/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fratercula/humpback.git"
+  },
+  "keywords": [
+    "requirejs",
+    "amd",
+    "react"
+  ],
+  "author": "LoeiFy <LoeiFy@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fratercula/humpback/issues"
+  },
+  "homepage": "https://github.com/fratercula/humpback#readme"
+}

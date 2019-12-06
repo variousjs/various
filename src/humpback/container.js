@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Menu from './menu'
 import Routes from './routes'
 
-function Container({ actions, routes }) {
+function Container({ methods, routes }) {
   return (
     <Layout>
       <Layout.Sider>
@@ -20,7 +20,7 @@ function Container({ actions, routes }) {
             background: '#fff',
           }}
         >
-          <Routes routes={routes} actions={actions} />
+          <Routes routes={routes} methods={methods} />
         </Layout.Content>
       </Layout>
     </Layout>
@@ -28,13 +28,13 @@ function Container({ actions, routes }) {
 }
 
 Container.propTypes = {
-  actions: PropTypes.object,
+  methods: PropTypes.object,
   routes: PropTypes.array,
 }
 
 Container.defaultProps = {
   routes: [],
-  actions: {},
+  methods: {},
 }
 
 export default Container
