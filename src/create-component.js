@@ -8,6 +8,7 @@ export default function (name, storeActions, componentActions) {
     state = {
       component: undefined,
       store: {},
+      error: undefined,
     }
 
     componentDidMount() {
@@ -38,16 +39,22 @@ export default function (name, storeActions, componentActions) {
     }
 
     componentDidCatch(e) {
-      console.log(e)
+      this.setState({ error: e.message || 'Error' })
     }
 
     render() {
-      const { component: C } = this.state
+      const { component: C, error } = this.state
       const store = {}
 
       if (!C) {
         return (
           <div>loading</div>
+        )
+      }
+
+      if (error) {
+        return (
+          <div>{error}</div>
         )
       }
 

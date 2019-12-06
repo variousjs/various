@@ -3,13 +3,12 @@ import { Menu, Icon } from 'antd'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-function MenuItems({ collapsed, routes }) {
+function MenuItems({ routes }) {
   return (
     <Menu
       defaultSelectedKeys={window.location.hash.split('#/')[1] || 'default'}
       mode="inline"
       theme="dark"
-      inlineCollapsed={collapsed}
     >
       {
         routes
@@ -38,11 +37,11 @@ function MenuItems({ collapsed, routes }) {
 }
 
 MenuItems.propTypes = {
-  collapsed: PropTypes.bool,
+  routes: PropTypes.array,
 }
 
 MenuItems.defaultProps = {
-  collapsed: false,
+  routes: [],
 }
 
 export default MenuItems
