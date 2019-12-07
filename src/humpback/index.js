@@ -8,14 +8,14 @@ export default (config) => {
   const {
     store = {},
     routes = [],
-    actions = {},
+    methods = {},
   } = config
 
   createStore({ ...store })
 
   render((
     <Router>
-      <Container routes={routes} actions={actions} />
+      <Container routes={routes} methods={methods} />
     </Router>
   ), document.querySelector('#root'))
 }

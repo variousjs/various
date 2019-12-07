@@ -28,13 +28,8 @@ function Container({ methods, routes }) {
 }
 
 Container.propTypes = {
-  methods: PropTypes.object,
-  routes: PropTypes.array,
-}
-
-Container.defaultProps = {
-  routes: [],
-  methods: {},
+  methods: PropTypes.object.isRequired,
+  routes: PropTypes.array.isRequired,
 }
 
 export default Container

@@ -37,11 +37,7 @@ function MenuItems({ routes }) {
 }
 
 MenuItems.propTypes = {
-  routes: PropTypes.array,
-}
-
-MenuItems.defaultProps = {
-  routes: [],
+  routes: PropTypes.array.isRequired,
 }
 
 export default MenuItems

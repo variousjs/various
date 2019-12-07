@@ -26,6 +26,8 @@ export default function (name, storeMethods, componentMethods) {
 
         componentMethods[name] = actions
         this.setState({ component: C })
+      }, (e) => {
+        this.setState({ error: e.message || 'Error' })
       })
     }
 
@@ -47,15 +49,15 @@ export default function (name, storeMethods, componentMethods) {
       const { component: C, error } = this.state
       const store = {}
 
-      if (!C) {
-        return (
-          <div>loading</div>
-        )
-      }
-
       if (error) {
         return (
           <div>{error}</div>
+        )
+      }
+
+      if (!C) {
+        return (
+          <div>loading</div>
         )
       }
 

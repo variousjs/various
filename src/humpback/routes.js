@@ -21,13 +21,8 @@ function Routes({ routes, methods }) {
 }
 
 Routes.propTypes = {
-  routes: PropTypes.array,
-  methods: PropTypes.object,
-}
-
-Routes.defaultProps = {
-  routes: [],
-  methods: {},
+  routes: PropTypes.array.isRequired,
+  methods: PropTypes.object.isRequired,
 }
 
 export default Routes
