@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect, getStore } from 'nycticorax'
+import { connect, getStore } from './state'
 import { IGNORE_STATIC_METHODS } from '../config'
 
 export default function (name, storeMethods, componentMethods) {

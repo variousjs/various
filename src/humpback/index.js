@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { HashRouter as Router } from 'react-router-dom'
-import { createStore } from 'nycticorax'
+import { createStore } from './state'
 import Container from './container'
 
 export default (config) => {
