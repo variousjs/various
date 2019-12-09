@@ -7,7 +7,8 @@
   "scripts": {
     "index": "NODE_ENV=index falco -c -m src/index.js -o entry/dist",
     "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o entry/dist",
-    "next": "NODE_ENV=next falco -c -m demo-components/next.js -o entry/dist"
+    "next": "NODE_ENV=next falco -c -m demo/next.js -o entry/dist",
+    "config": "NODE_ENV=config falco -c -m demo/index.js -o entry/dist"
   },
   "repository": {
     "type": "git",
