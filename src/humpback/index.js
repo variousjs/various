@@ -6,10 +6,12 @@ import Routes from './routes'
 
 export default (config) => {
   const {
+    packages,
     state = {},
     routes = [],
     methods = {},
     container: C = (<Fragment />),
+    ...rest
   } = config
   const stateKeys = Object.keys(state)
   const RoutesWidthConfig = () => (<Routes routes={routes} methods={methods} />)
@@ -39,12 +41,16 @@ export default (config) => {
       })
 
       return (
-        <C Routes={RoutesWidthConfig} routes={routes} state={stateData} />
+        <C
+          Routes={RoutesWidthConfig}
+          config={{ ...rest, routes }}
+          state={stateData}
+        />
       )
     }
   }
 
-  const Container = connect(...Object.keys(state))(R)
+  const Container = connect(...stateKeys)(R)
 
   render((
     <Router>

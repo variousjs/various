@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="root"></div>
+<script src="https://unpkg.com/@babel/polyfill@7.7.0/dist/polyfill.min.js"></script>
 <script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
 <script src="./dist/index.js"></script>
 <script>
@@ -16,28 +17,39 @@ const config = {
     moment: 'https://unpkg.com/moment@2.24.0/moment.js',
     antd: 'https://unpkg.com/antd@3.26.0/dist/antd-with-locales.min.js',
   },
-  routes: [
+  menu: [
     {
       label: 'home',
       icon: 'dashboard',
       path: '/',
-      components: {
-        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-      },
       children: [
         {
           label: '666',
           path: '/home/ty',
-          components: {
-            switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-          },
-        }
+        },
       ],
     },
     {
       label: 'next',
       path: '/next',
       icon: 'user',
+    },
+  ],
+  routes: [
+    {
+      path: '/',
+      components: {
+        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+      },
+    },
+    {
+      path: '/home/ty',
+      components: {
+        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+      },
+    },
+    {
+      path: '/next',
       components: {
         next: './dist/next.js',
       },

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Layout, Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 
-function Container({ state, Routes, routes }) {
+function Container({ state, Routes, config }) {
   return (
     <Layout>
       <Layout.Sider>
@@ -13,7 +13,7 @@ function Container({ state, Routes, routes }) {
           theme="dark"
         >
           {
-            routes
+            config.menu
               .filter(({ label }) => label)
               .map((item) => {
                 const {
