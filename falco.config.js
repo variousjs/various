@@ -38,4 +38,8 @@ module.exports = {
       amd: 'antd',
     },
   ],
+  targets: {
+    esmodules: true,
+  },
+  // report: true,
 }

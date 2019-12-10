@@ -4,7 +4,7 @@ import state from './state'
 import routes from './routes'
 import container from './container'
 
-export default {
+window.humpbackConfig = {
   packages,
   state,
   methods,

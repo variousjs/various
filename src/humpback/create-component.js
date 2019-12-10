@@ -3,12 +3,11 @@ import { connect, getStore } from './state'
 import { IGNORE_STATIC_METHODS } from '../config'
 
 export default function (name, storeMethods, componentMethods) {
-  const storeKeys = Object.keys(getStore())
+  const stateKeys = Object.keys(getStore())
 
   class R extends Component {
     state = {
       component: undefined,
-      store: {},
       error: undefined,
     }
 
@@ -47,7 +46,7 @@ export default function (name, storeMethods, componentMethods) {
 
     render() {
       const { component: C, error } = this.state
-      const store = {}
+      const state = {}
 
       if (error) {
         return (
@@ -61,15 +60,15 @@ export default function (name, storeMethods, componentMethods) {
         )
       }
 
-      storeKeys.forEach((key) => {
-        store[key] = this.props[key]
+      stateKeys.forEach((key) => {
+        state[key] = this.props[key]
       })
 
       return (
-        <C store={store} dispatch={this.dispatch} />
+        <C state={state} dispatch={this.dispatch} />
       )
     }
   }
 
-  return connect(...storeKeys)(R)
+  return connect(...stateKeys)(R)
 }

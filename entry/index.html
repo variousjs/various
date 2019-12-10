@@ -9,56 +9,9 @@
 <div id="root"></div>
 <script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
 <script src="./dist/index.js"></script>
+<script src="./dist/config.js"></script>
 <script>
-const config = {
-  packages: {
-  },
-  routes: [
-    {
-      label: 'home',
-      icon: 'dashboard',
-      path: '/',
-      components: {
-        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-      },
-      children: [
-        {
-          label: '666',
-          path: '/home/ty',
-          components: {
-            switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-          },
-        }
-      ],
-    },
-    {
-      label: 'next',
-      path: '/next',
-      icon: 'user',
-      components: {
-        next: './dist/next.js',
-      },
-    },
-  ],
-  state: {
-    user: {
-      name: 'humpback',
-    },
-  },
-  methods: {
-    async updateUserName({ dispatch, getStore }, value) {
-      await new Promise((r) => setTimeout(r, 1000))
-      const { user } = getStore()
-      user.name = value
-      dispatch({ user })
-    },
-    getUserName({ getStore }) {
-      const { user } = getStore()
-      return user.name
-    },
-  },
-}
-window.humpback(config)
+// window.humpback(window.humpbackConfig)
 </script>
 </body>
 </html>

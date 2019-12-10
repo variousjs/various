@@ -13,7 +13,7 @@ export default (config) => {
   } = config
   const stateKeys = Object.keys(state)
 
-  createStore({ ...store })
+  createStore({ ...state })
 
   class R extends Component {
     state = {
@@ -31,15 +31,19 @@ export default (config) => {
         return (<h1>{error}</h1>)
       }
 
-      const state = {}
+      const stateData = {}
+
+      stateKeys.forEach((key) => {
+        stateData[key] = this.props[key]
+      })
 
       return (
-        <C Routes={Routes} />
+        <C Routes={Routes} state={stateData} />
       )
     }
   }
 
-  const Container = connect(...Object.keys(store))(R)
+  const Container = connect(...Object.keys(state))(R)
 
   render((
     <Router>
