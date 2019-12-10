@@ -12,6 +12,7 @@ export default (config) => {
     container: C = (<Fragment />),
   } = config
   const stateKeys = Object.keys(state)
+  const RoutesWidthConfig = () => (<Routes routes={routes} methods={methods} />)
 
   createStore({ ...state })
 
@@ -38,7 +39,7 @@ export default (config) => {
       })
 
       return (
-        <C Routes={Routes} state={stateData} />
+        <C Routes={RoutesWidthConfig} routes={routes} state={stateData} />
       )
     }
   }

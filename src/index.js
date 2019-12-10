@@ -25,5 +25,7 @@ window.humpback = (config) => {
 
   window.requirejs.config({ paths })
 
-  window.require(['humpback'], (humpback) => humpback(config))
+  window.require(['humpback', 'base'], (humpback, base) => {
+    humpback({ ...config, ...base })
+  })
 }

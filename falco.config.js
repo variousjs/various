@@ -3,7 +3,7 @@ const output = {
   filename: `${NODE_ENV}.js`,
 }
 
-if (NODE_ENV !== 'index' && NODE_ENV !== 'config') {
+if (NODE_ENV !== 'index') {
   output.library = NODE_ENV
   output.libraryTarget = 'amd'
   output.libraryExport = 'default'

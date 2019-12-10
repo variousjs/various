@@ -8,7 +8,8 @@
     "index": "NODE_ENV=index falco -c -m src/index.js -o entry/dist",
     "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o entry/dist",
     "next": "NODE_ENV=next falco -c -m demo/components/next.js -o entry/dist",
-    "config": "NODE_ENV=config falco -c -m demo/index.js -o entry/dist"
+    "base": "NODE_ENV=base falco -c -m demo/index.js -o entry/dist",
+    "start": "npm run index && npm run humpback && npm run next && npm run base"
   },
   "repository": {
     "type": "git",

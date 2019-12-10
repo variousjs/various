@@ -9,9 +9,42 @@
 <div id="root"></div>
 <script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
 <script src="./dist/index.js"></script>
-<script src="./dist/config.js"></script>
 <script>
-// window.humpback(window.humpbackConfig)
+const config = {
+  packages: {
+    base: './dist/base.js',
+    moment: 'https://unpkg.com/moment@2.24.0/moment.js',
+    antd: 'https://unpkg.com/antd@3.26.0/dist/antd-with-locales.min.js',
+  },
+  routes: [
+    {
+      label: 'home',
+      icon: 'dashboard',
+      path: '/',
+      components: {
+        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+      },
+      children: [
+        {
+          label: '666',
+          path: '/home/ty',
+          components: {
+            switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+          },
+        }
+      ],
+    },
+    {
+      label: 'next',
+      path: '/next',
+      icon: 'user',
+      components: {
+        next: './dist/next.js',
+      },
+    },
+  ],
+}
+window.humpback(config)
 </script>
 </body>
 </html>

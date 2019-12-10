@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Layout, Menu, Icon } from 'antd'
-import routesConfig from './routes'
 import { Link } from 'react-router-dom'
 
-function Container({ state, Routes }) {
+function Container({ state, Routes, routes }) {
   return (
     <Layout>
       <Layout.Sider>
@@ -14,7 +13,7 @@ function Container({ state, Routes }) {
           theme="dark"
         >
           {
-            routesConfig
+            routes
               .filter(({ label }) => label)
               .map((item) => {
                 const {
@@ -58,6 +57,7 @@ function Container({ state, Routes }) {
 Container.propTypes = {
   state: PropTypes.object.isRequired,
   Routes: PropTypes.element.isRequired,
+  routes: PropTypes.array.isRequired,
 }
 
 export default Container
