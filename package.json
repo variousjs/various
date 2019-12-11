@@ -5,11 +5,11 @@
   "description": "Humpback",
   "main": "lib/humpback.js",
   "scripts": {
-    "a": "NODE_ENV=a falco -c -m demo/components/a.js -o entry/dist",
-    "b": "NODE_ENV=b falco -c -m demo/components/b.js -o entry/dist",
-    "index": "NODE_ENV=index falco -c -m src/index.js -o entry/dist",
-    "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o entry/dist",
-    "base": "NODE_ENV=base falco -c -m demo/index.js -o entry/dist",
+    "a": "NODE_ENV=a falco -c -m demo/components/a.js -o docs/dist",
+    "b": "NODE_ENV=b falco -c -m demo/components/b.js -o docs/dist",
+    "index": "NODE_ENV=index falco -c -m src/index.js -o docs/dist",
+    "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o docs/dist",
+    "base": "NODE_ENV=base falco -c -m demo/index.js -o docs/dist",
     "start": "npm run index && npm run humpback && npm run base",
     "build": "npm run a && npm run b"
   },

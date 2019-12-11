@@ -32,7 +32,9 @@ class X extends Component {
 
   componentDidMount() {
     this.unsubscribe = this.props.subscribe((components) => {
-      console.log(components)
+      if (components.includes('b')) {
+        message.info('组件 B 加载完成')
+      }
     })
   }
 
