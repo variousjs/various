@@ -51,7 +51,7 @@ export default function ({
         componentMethods[name] = actions
         this.setState({ component: C })
       }, (e) => {
-        this.setState({ error: e.message || 'Component Error' })
+        this.setState({ error: e.message || 'Component Load Error' })
       })
     }
 
@@ -76,7 +76,7 @@ export default function ({
     }
 
     componentDidCatch(e) {
-      this.setState({ error: e.message || 'Error' })
+      this.setState({ error: e.message || 'Component Error' })
     }
 
     render() {
