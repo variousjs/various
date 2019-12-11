@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Menu, Icon, Badge } from 'antd'
 import { Link } from 'react-router-dom'
+import './global.less'
 
 function Container({ state, Routes, config }) {
   return (
-    <Layout>
+    <Layout style={{ height: '100vh' }}>
       <Layout.Sider>
+        <h1 style={{ color: '#fff', textAlign: 'center', paddingTop: 20 }}>Humpback</h1>
         <Menu
           defaultSelectedKeys={window.location.hash.split('#/')[1] || 'default'}
           mode="inline"
@@ -20,7 +22,6 @@ function Container({ state, Routes, config }) {
                   label,
                   path,
                   icon,
-                  // children = [],
                 } = item;
 
                 return (
@@ -38,7 +39,12 @@ function Container({ state, Routes, config }) {
       </Layout.Sider>
       <Layout>
         <Layout.Header style={{ background: '#fff', padding: 0 }}>
-          <div>{state.user.name}</div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div>{state.user.name}</div>
+            <div style={{ margin: '0 20px' }}>
+              <Badge count={state.number} showZero />
+            </div>
+          </div>
         </Layout.Header>
         <Layout.Content
           style={{

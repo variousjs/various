@@ -9,4 +9,11 @@ export default {
     const { user } = getStore()
     return user.name
   },
+  getNumber({ getStore }) {
+    const { number } = getStore()
+    return number
+  },
+  setNumber({ dispatch }, value) {
+    dispatch({ number: value })
+  },
 }

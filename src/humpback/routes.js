@@ -52,6 +52,10 @@ export default class extends Component {
               >
                 {
                   v.map((name, k) => {
+                    if (!name) {
+                      return null
+                    }
+
                     const config = {
                       name,
                       storeMethods: methods,

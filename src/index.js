@@ -21,7 +21,7 @@ window.humpback = (config) => {
     paths[name] = paths[name].slice(0, -3)
   })
 
-  window.requirejs.config({ paths })
+  window.requirejs.config({ paths, waitSeconds: 30 })
 
   window.require(['humpback', 'base'], (humpback, base) => {
     humpback({ ...config, ...base })

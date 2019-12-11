@@ -16,8 +16,8 @@ const config = {
     base: './dist/base.js',
     moment: 'https://unpkg.com/moment@2.24.0/moment.js',
     antd: 'https://unpkg.com/antd@3.26.0/dist/antd-with-locales.min.js',
-    switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-    next: './dist/next.js',
+    a: './dist/a.js',
+    b: './dist/b.js',
   },
   menu: [
     {
@@ -36,11 +36,7 @@ const config = {
       path: '/',
       components: [
         [
-          ['switch'],
-        ],
-        [
-          ['switch', 'next'],
-          ['switch'],
+          ['switch', 'a'],
         ],
       ],
     },
@@ -48,7 +44,8 @@ const config = {
       path: '/next',
       components: [
         [
-          ['next'],
+          ['a'],
+          ['b'],
         ],
       ],
     },
