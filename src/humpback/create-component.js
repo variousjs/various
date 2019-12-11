@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { connect, getStore } from './store'
-import { IGNORE_STATIC_METHODS } from './config'
+import { connect, getStore, dispatch } from './store'
+import { IGNORE_STATIC_METHODS, LOADED_COMPONENTS } from './config'
 
 export default function ({
   name,
@@ -8,8 +8,11 @@ export default function ({
   componentMethods,
   Loading,
   Error,
+  router,
 }) {
   const storeKeys = Object.keys(getStore())
+
+  let SUBSCRIBE = () => null
 
   class R extends Component {
     state = {
@@ -17,9 +20,23 @@ export default function ({
       error: undefined,
     }
 
+    static getDerivedStateFromProps(props) {
+      const loadedComponents = props[LOADED_COMPONENTS]
+
+      if (loadedComponents) {
+        SUBSCRIBE(loadedComponents)
+      }
+    }
+
     componentDidMount() {
       window.require([name], (C) => {
+        const loadedComponents = getStore()[LOADED_COMPONENTS]
         const actions = {}
+
+        if (!loadedComponents.find((n) => n === name)) {
+          loadedComponents.push(name)
+          dispatch({ [LOADED_COMPONENTS]: loadedComponents })
+        }
 
         Object
           .getOwnPropertyNames(C)
@@ -46,6 +63,16 @@ export default function ({
       }
     }
 
+    subscribe = (func) => {
+      if(!(typeof func).includes('function')) {
+        throw new Error('`subscribe` not a function')
+      }
+      SUBSCRIBE = func
+      return () => {
+        SUBSCRIBE = () => null
+      }
+    }
+
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Error' })
     }
@@ -67,11 +94,18 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
-        store[key] = this.props[key]
+        if (key !== LOADED_COMPONENTS) {
+          store[key] = this.props[key]
+        }
       })
 
       return (
-        <C store={store} dispatch={this.dispatch} />
+        <C
+          store={store}
+          subscribe={this.subscribe}
+          dispatch={this.dispatch}
+          {...router}
+        />
       )
     }
   }

@@ -39,7 +39,7 @@ export default class extends Component {
     }
 
     return routes.map(({ path, components }) => {
-      const component = () => components.map((h, i) => (
+      const component = (router) => components.map((h, i) => (
         <div
           className={`row-components components-${h.map(t => t.join('-')).join('-')}`} key={i}
         >
@@ -62,6 +62,7 @@ export default class extends Component {
                       componentMethods: this.componentMethods,
                       Loading,
                       Error,
+                      router,
                     }
                     const C = createComponent(config)
                     return (

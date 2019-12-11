@@ -8,6 +8,8 @@ export const IGNORE_STATIC_METHODS = [
   'defaultProps',
 ]
 
+export const LOADED_COMPONENTS = 'LOADED_COMPONENTS'
+
 export const Loading = () => (
   <h3>Loading</h3>
 )

@@ -30,6 +30,16 @@ class X extends Component {
     this.props.dispatch('global', 'updateUserName', Math.random())
   }
 
+  componentDidMount() {
+    this.unsubscribe = this.props.subscribe((components) => {
+      console.log(components)
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
   render() {
     const { user } = this.props.store
     const { a } = this.props

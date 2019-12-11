@@ -3,7 +3,12 @@ import { render } from 'react-dom'
 import { HashRouter as Router } from 'react-router-dom'
 import { createStore, connect } from './store'
 import Routes from './routes'
-import { Loading, Error, Container } from './config'
+import {
+  Loading,
+  Error,
+  Container,
+  LOADED_COMPONENTS,
+} from './config'
 
 export default (config) => {
   const {
@@ -26,7 +31,7 @@ export default (config) => {
     />
   )
 
-  createStore({ ...store })
+  createStore({ ...store, [LOADED_COMPONENTS]: [] })
 
   class R extends Component {
     state = {
