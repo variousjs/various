@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect, getStore } from './state'
+import { connect, getStore } from './store'
 import { IGNORE_STATIC_METHODS } from './config'
 
 export default function ({
@@ -9,7 +9,7 @@ export default function ({
   Loading,
   Error,
 }) {
-  const stateKeys = Object.keys(getStore())
+  const storeKeys = Object.keys(getStore())
 
   class R extends Component {
     state = {
@@ -52,7 +52,7 @@ export default function ({
 
     render() {
       const { component: C, error } = this.state
-      const state = {}
+      const store = {}
 
       if (error) {
         return (
@@ -66,15 +66,15 @@ export default function ({
         )
       }
 
-      stateKeys.forEach((key) => {
-        state[key] = this.props[key]
+      storeKeys.forEach((key) => {
+        store[key] = this.props[key]
       })
 
       return (
-        <C state={state} dispatch={this.dispatch} />
+        <C store={store} dispatch={this.dispatch} />
       )
     }
   }
 
-  return connect(...stateKeys)(R)
+  return connect(...storeKeys)(R)
 }

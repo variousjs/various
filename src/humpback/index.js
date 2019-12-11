@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { HashRouter as Router } from 'react-router-dom'
-import { createStore, connect } from './state'
+import { createStore, connect } from './store'
 import Routes from './routes'
 import { Loading, Error, Container } from './config'
 
 export default (config) => {
   const {
     packages,
-    state = {},
+    store = {},
     routes = [],
     methods = {},
     loading: L = Loading,
@@ -16,7 +16,7 @@ export default (config) => {
     container: C = Container,
     ...rest
   } = config
-  const stateKeys = Object.keys(state)
+  const storeKeys = Object.keys(store)
   const RoutesWidthConfig = () => (
     <Routes
       routes={routes}
@@ -26,7 +26,7 @@ export default (config) => {
     />
   )
 
-  createStore({ ...state })
+  createStore({ ...store })
 
   class R extends Component {
     state = {
@@ -44,23 +44,23 @@ export default (config) => {
         return (<E error={error} />)
       }
 
-      const stateData = {}
+      const storeData = {}
 
-      stateKeys.forEach((key) => {
-        stateData[key] = this.props[key]
+      storeKeys.forEach((key) => {
+        storeData[key] = this.props[key]
       })
 
       return (
         <C
           Routes={RoutesWidthConfig}
           config={{ ...rest, routes }}
-          state={stateData}
+          store={storeData}
         />
       )
     }
   }
 
-  const X = connect(...stateKeys)(R)
+  const X = connect(...storeKeys)(R)
 
   render((
     <Router>

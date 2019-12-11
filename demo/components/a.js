@@ -31,7 +31,7 @@ class X extends Component {
   }
 
   render() {
-    const { user } = this.props.state
+    const { user } = this.props.store
     const { a } = this.props
 
     return (

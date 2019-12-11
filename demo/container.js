@@ -4,7 +4,7 @@ import { Layout, Menu, Icon, Badge } from 'antd'
 import { Link } from 'react-router-dom'
 import './global.less'
 
-function Container({ state, Routes, config }) {
+function Container({ store, Routes, config }) {
   return (
     <Layout style={{ height: '100vh' }}>
       <Layout.Sider>
@@ -40,9 +40,9 @@ function Container({ state, Routes, config }) {
       <Layout>
         <Layout.Header style={{ background: '#fff', padding: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <div>{state.user.name}</div>
+            <div>{store.user.name}</div>
             <div style={{ margin: '0 20px' }}>
-              <Badge count={state.number} showZero />
+              <Badge count={store.number} showZero />
             </div>
           </div>
         </Layout.Header>
@@ -61,7 +61,7 @@ function Container({ state, Routes, config }) {
 }
 
 Container.propTypes = {
-  state: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
   Routes: PropTypes.element.isRequired,
   routes: PropTypes.array.isRequired,
 }

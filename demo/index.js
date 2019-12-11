@@ -1,11 +1,11 @@
 import methods from './methods'
-import state from './state'
+import store from './store'
 import container from './container'
 import loading from './loading'
 import error from './error'
 
 export default {
-  state,
+  store,
   methods,
   container,
   loading,
