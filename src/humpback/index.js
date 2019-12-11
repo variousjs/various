@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { HashRouter as Router } from 'react-router-dom'
 import { createStore, connect } from './state'
@@ -10,7 +10,15 @@ export default (config) => {
     state = {},
     routes = [],
     methods = {},
-    container: C = (<Fragment />),
+    loading = () => (
+      <div>loading</div>
+    ),
+    error = ({ message }) => (
+      <div>{message}</div>
+    ),
+    container: C = () => (
+      <h1 style={{ textAlign: 'center', paddingTop: '20%' }}>Empty</h1>
+    ),
     ...rest
   } = config
   const stateKeys = Object.keys(state)
@@ -31,7 +39,7 @@ export default (config) => {
       const { error } = this.state
 
       if (error) {
-        return (<h1>{error}</h1>)
+        return (<h3>{error}</h3>)
       }
 
       const stateData = {}

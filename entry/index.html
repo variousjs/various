@@ -16,18 +16,19 @@ const config = {
     base: './dist/base.js',
     moment: 'https://unpkg.com/moment@2.24.0/moment.js',
     antd: 'https://unpkg.com/antd@3.26.0/dist/antd-with-locales.min.js',
+    switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+    next: './dist/next.js',
   },
   menu: [
     {
       label: 'home',
       icon: 'dashboard',
       path: '/',
-      children: [
-        {
-          label: '666',
-          path: '/home/ty',
-        },
-      ],
+    },
+    {
+      label: '666',
+      path: '/ty',
+      icon: 'delete',
     },
     {
       label: 'next',
@@ -38,15 +39,17 @@ const config = {
   routes: [
     {
       path: '/',
-      components: {
-        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-      },
+      components: [
+        'switch',
+      ],
     },
     {
-      path: '/home/ty',
-      components: {
-        switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-      },
+      path: '/ty',
+      components: [
+        {
+          switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+        }
+      ],
     },
     {
       path: '/next',
