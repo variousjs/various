@@ -26,11 +26,6 @@ const config = {
       path: '/',
     },
     {
-      label: '666',
-      path: '/ty',
-      icon: 'delete',
-    },
-    {
       label: 'next',
       path: '/next',
       icon: 'user',
@@ -40,22 +35,22 @@ const config = {
     {
       path: '/',
       components: [
-        'switch',
-      ],
-    },
-    {
-      path: '/ty',
-      components: [
-        {
-          switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-        }
+        [
+          ['switch'],
+        ],
+        [
+          ['switch', 'next'],
+          ['switch'],
+        ],
       ],
     },
     {
       path: '/next',
-      components: {
-        next: './dist/next.js',
-      },
+      components: [
+        [
+          ['next'],
+        ],
+      ],
     },
   ],
 }

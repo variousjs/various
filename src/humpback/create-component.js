@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import { connect, getStore } from './state'
-import { IGNORE_STATIC_METHODS } from '../config'
+import { IGNORE_STATIC_METHODS } from './config'
 
-export default function (name, storeMethods, componentMethods) {
+export default function ({
+  name,
+  storeMethods,
+  componentMethods,
+  Loading,
+  Error,
+}) {
   const stateKeys = Object.keys(getStore())
 
   class R extends Component {
@@ -26,7 +32,7 @@ export default function (name, storeMethods, componentMethods) {
         componentMethods[name] = actions
         this.setState({ component: C })
       }, (e) => {
-        this.setState({ error: e.message || 'Error' })
+        this.setState({ error: e.message || 'Component Error' })
       })
     }
 
@@ -50,13 +56,13 @@ export default function (name, storeMethods, componentMethods) {
 
       if (error) {
         return (
-          <div>{error}</div>
+          <Error error={error} />
         )
       }
 
       if (!C) {
         return (
-          <div>loading</div>
+          <Loading />
         )
       }
 

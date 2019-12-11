@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { HashRouter as Router } from 'react-router-dom'
 import { createStore, connect } from './state'
 import Routes from './routes'
+import { Loading, Error, Container } from './config'
 
 export default (config) => {
   const {
@@ -10,19 +11,20 @@ export default (config) => {
     state = {},
     routes = [],
     methods = {},
-    loading = () => (
-      <div>loading</div>
-    ),
-    error = ({ message }) => (
-      <div>{message}</div>
-    ),
-    container: C = () => (
-      <h1 style={{ textAlign: 'center', paddingTop: '20%' }}>Empty</h1>
-    ),
+    loading: L = Loading,
+    error: E = Error,
+    container: C = Container,
     ...rest
   } = config
   const stateKeys = Object.keys(state)
-  const RoutesWidthConfig = () => (<Routes routes={routes} methods={methods} />)
+  const RoutesWidthConfig = () => (
+    <Routes
+      routes={routes}
+      methods={methods}
+      Loading={L}
+      Error={E}
+    />
+  )
 
   createStore({ ...state })
 
@@ -32,14 +34,14 @@ export default (config) => {
     }
 
     componentDidCatch(e) {
-      this.setState({ error: e.message || 'Error' })
+      this.setState({ error: e.message || 'Container Error' })
     }
 
     render() {
       const { error } = this.state
 
       if (error) {
-        return (<h3>{error}</h3>)
+        return (<E error={error} />)
       }
 
       const stateData = {}
@@ -58,11 +60,11 @@ export default (config) => {
     }
   }
 
-  const Container = connect(...stateKeys)(R)
+  const X = connect(...stateKeys)(R)
 
   render((
     <Router>
-      <Container />
+      <X />
     </Router>
   ), document.querySelector('#root'))
 }

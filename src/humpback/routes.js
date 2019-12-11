@@ -1,28 +1,82 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import createComponent from './create-component'
 
-function Routes({ routes, methods }) {
-  const componentMethods = {}
+export default class extends Component {
+  static propTypes = {
+    routes: PropTypes.array.isRequired,
+    methods: PropTypes.object.isRequired,
+    Loading: PropTypes.element.isRequired,
+    Error: PropTypes.element.isRequired,
+  }
 
-  return routes.map(({ path, components }) => {
-    const [name] = Object.keys(components)
+  componentMethods = {}
 
-    return (
-      <Route
-        key={path}
-        exact
-        path={path}
-        component={createComponent(name, methods, componentMethods)}
-      />
-    )
-  })
+  state = {
+    error: undefined,
+  }
+
+  componentDidCatch(e) {
+    this.setState({ error: e.message || 'Routes Error' })
+  }
+
+  render() {
+    const { error } = this.state
+    const {
+      Loading,
+      Error,
+      routes,
+      methods,
+    } = this.props
+
+    if (error) {
+      return (<Error error={error} />)
+    }
+
+    return routes.map(({ path, components }) => {
+      const component = () => components.map((h, i) => (
+        <div
+          className={`row-components components-${h.map(t => t.join('-')).join('-')}`} key={i}
+        >
+          {
+            h.map((v, j) => (
+              <div
+                className={`column-components components-${v.join('-')}`}
+                key={j}
+                style={{ display: 'inline-block', verticalAlign: 'top' }}
+              >
+                {
+                  v.map((name, k) => {
+                    const config = {
+                      name,
+                      storeMethods: methods,
+                      componentMethods: this.componentMethods,
+                      Loading,
+                      Error,
+                    }
+                    const C = createComponent(config)
+                    return (
+                      <div key={k} className={`component-${name}`}>
+                        <C />
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            ))
+          }
+        </div>
+      ))
+
+      return (
+        <Route
+          key={path}
+          exact
+          path={path}
+          component={component}
+        />
+      )
+    })
+  }
 }
-
-Routes.propTypes = {
-  routes: PropTypes.array.isRequired,
-  methods: PropTypes.object.isRequired,
-}
-
-export default Routes
