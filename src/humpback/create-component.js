@@ -12,7 +12,8 @@ export default function ({
 }) {
   const storeKeys = Object.keys(getStore())
 
-  let SUBSCRIBE = () => null
+  let subscribe = () => null
+  let subscribeCalled
 
   class R extends Component {
     state = {
@@ -23,8 +24,9 @@ export default function ({
     static getDerivedStateFromProps(props) {
       const loadedComponents = props[LOADED_COMPONENTS]
 
-      if (loadedComponents) {
-        SUBSCRIBE(loadedComponents)
+      if (loadedComponents && loadedComponents.join() !== subscribeCalled) {
+        subscribeCalled = loadedComponents.join()
+        subscribe(loadedComponents)
       }
     }
 
@@ -67,9 +69,9 @@ export default function ({
       if(!(typeof func).includes('function')) {
         throw new Error('`subscribe` not a function')
       }
-      SUBSCRIBE = func
+      subscribe = func
       return () => {
-        SUBSCRIBE = () => null
+        subscribe = () => null
       }
     }
 
