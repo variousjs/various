@@ -18,9 +18,9 @@ class X extends Component {
   }
 
   onClick = () => {
-    console.log(this.props.dispatch('next', 'getA'))
-    console.log(this.props.dispatch('global', 'getUserName'))
-    this.props.dispatch('next', 'updateA', 6666)
+    // console.log(this.props.dispatch('next', 'getA'))
+    // console.log(this.props.dispatch('global', 'getUserName'))
+    // this.props.dispatch('next', 'updateA', 6666)
     this.props.dispatch('global', 'updateUserName', 'kcabpmuh')
   }
 
@@ -31,6 +31,7 @@ class X extends Component {
       <div>
         <p>{user.name}</p>
         <p>a: {a}</p>
+        <input />
         <button onClick={this.onClick}>click</button>
       </div>
     )

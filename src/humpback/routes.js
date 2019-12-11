@@ -21,6 +21,10 @@ export default class extends Component {
     this.setState({ error: e.message || 'Routes Error' })
   }
 
+  shouldComponentUpdate(props, { error }) {
+    return error
+  }
+
   render() {
     const { error } = this.state
     const {
