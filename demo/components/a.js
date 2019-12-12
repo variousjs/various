@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, message } from 'antd'
+import { Button, message, ConfigProvider, DatePicker, locales } from 'antd'
 import Nycticorax from 'nycticorax'
 
 const {
@@ -58,6 +58,9 @@ class X extends Component {
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
           <Button onClick={this.onSetB}>更新 B 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值(异步)</Button>
+          <ConfigProvider locale={locales.zh_CN}>
+            <DatePicker />
+          </ConfigProvider>
         </div>
       </div>
     )
