@@ -26,8 +26,9 @@ class X extends Component {
     }
   }
 
-  onSetA = () => {
-    this.props.dispatch('a', 'updateValue', Math.random().toFixed(2))
+  onSetA = async () => {
+    await this.props.dispatch('a', 'updateValue', Math.random().toFixed(2))
+    this.onGetA()
   }
 
   onSetG = () => {

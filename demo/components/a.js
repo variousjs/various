@@ -14,8 +14,9 @@ createStore({ a: '9' })
 class X extends Component {
   static getValue = () => getStore().a
 
-  static updateValue = (value) => {
-    dispatch({ a: value })
+  static updateValue = async (value) => {
+    await new Promise((r) => setTimeout(r, 1000))
+    dispatch({ a: value }, true)
   }
 
   state = {

@@ -21,16 +21,14 @@ export default function ({
     // async componentDidMount() {
     //   if (name === 'b') {
     //     await new Promise((r) => setTimeout(r, 10000))
-    //   }
+    // }
     componentDidMount() {
       window.require([name], (C) => {
         const loadedComponents = getStore()[LOADED_COMPONENTS]
         const actions = {}
 
-        if (!loadedComponents.find((n) => n === name)) {
-          loadedComponents.push(name)
-          dispatch({ [LOADED_COMPONENTS]: loadedComponents })
-        }
+        loadedComponents.push(name)
+        dispatch({ [LOADED_COMPONENTS]: loadedComponents }, true)
 
         Object
           .getOwnPropertyNames(C)

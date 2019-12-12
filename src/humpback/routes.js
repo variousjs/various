@@ -29,7 +29,7 @@ class RouteWrap extends Component {
 
   componentDidMount() {
     const { history } = this.props
-    this.unsubscribe = history.listen(() => dispatch({ [LOADED_COMPONENTS]: [] }))
+    this.unsubscribe = history.listen(() => dispatch({ [LOADED_COMPONENTS]: [] }, true))
   }
 
   componentWillUnmount() {
