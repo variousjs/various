@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { dispatch } from './store'
 import createComponent from './create-component'
+import { LOADED_COMPONENTS } from './config'
 
-export default class extends Component {
+class RouteWrap extends Component {
   static propTypes = {
     routes: PropTypes.array.isRequired,
     methods: PropTypes.object.isRequired,
@@ -25,6 +27,15 @@ export default class extends Component {
     return error
   }
 
+  componentDidMount() {
+    const { history } = this.props
+    this.unsubscribe = history.listen(() => dispatch({ [LOADED_COMPONENTS]: [] }))
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
   render() {
     const { error } = this.state
     const {
@@ -39,44 +50,48 @@ export default class extends Component {
     }
 
     return routes.map(({ path, components }) => {
-      const component = (router) => components.map((h, i) => (
-        <div
-          className={`row-components components-${h.map(t => t.join('-')).join('-')}`} key={i}
-        >
-          {
-            h.map((v, j) => (
-              <div
-                className={`column-components components-${v.join('-')}`}
-                key={j}
-                style={{ display: 'inline-block', verticalAlign: 'top' }}
-              >
-                {
-                  v.map((name, k) => {
-                    if (!name) {
-                      return null
-                    }
+      const component = (router) => components.map((h, i) => {
+        const route = router.match.path.split(/\/|:|-/g).join('_')
 
-                    const config = {
-                      name,
-                      storeMethods: methods,
-                      componentMethods: this.componentMethods,
-                      Loading,
-                      Error,
-                      router,
-                    }
-                    const C = createComponent(config)
-                    return (
-                      <div key={k} className={`component-${name}`}>
-                        <C />
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            ))
-          }
-        </div>
-      ))
+        return (
+          <div
+            className={`row-components row-components-${i} route-${route}`}
+            key={i}
+          >
+            {
+              h.map((v, j) => (
+                <div
+                  className={`column-components column-components-${j} route-${route}`}
+                  key={j}
+                >
+                  {
+                    v.map((name, k) => {
+                      if (!name) {
+                        return null
+                      }
+
+                      const config = {
+                        name,
+                        storeMethods: methods,
+                        componentMethods: this.componentMethods,
+                        Loading,
+                        Error,
+                        router,
+                      }
+                      const C = createComponent(config)
+                      return (
+                        <div key={k} className={`component-${name}`}>
+                          <C />
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              ))
+            }
+          </div>
+        )
+      })
 
       return (
         <Route
@@ -89,3 +104,5 @@ export default class extends Component {
     })
   }
 }
+
+export default withRouter(RouteWrap)

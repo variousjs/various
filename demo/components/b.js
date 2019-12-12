@@ -19,7 +19,11 @@ class X extends Component {
   }
 
   onGetA = () => {
-    message.info(this.props.dispatch('a', 'getValue'))
+    try {
+      message.info(this.props.dispatch('a', 'getValue'))
+    } catch (e) {
+      message.error(e)
+    }
   }
 
   onSetA = () => {

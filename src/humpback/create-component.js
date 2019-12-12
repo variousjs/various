@@ -12,24 +12,16 @@ export default function ({
 }) {
   const storeKeys = Object.keys(getStore())
 
-  let subscribe = () => null
-  let subscribeCalled
-
   class R extends Component {
     state = {
       component: undefined,
       error: undefined,
     }
 
-    static getDerivedStateFromProps(props) {
-      const loadedComponents = props[LOADED_COMPONENTS]
-
-      if (loadedComponents && loadedComponents.join() !== subscribeCalled) {
-        subscribeCalled = loadedComponents.join()
-        subscribe(loadedComponents)
-      }
-    }
-
+    // async componentDidMount() {
+    //   if (name === 'b') {
+    //     await new Promise((r) => setTimeout(r, 10000))
+    //   }
     componentDidMount() {
       window.require([name], (C) => {
         const loadedComponents = getStore()[LOADED_COMPONENTS]
@@ -59,19 +51,15 @@ export default function ({
       if (name === 'global' && storeMethods[func]) {
         return this.props.dispatch(storeMethods[func], ...values)
       }
+
+      if (!this.props[LOADED_COMPONENTS].includes(name)) {
+        throw `Component \`${name}\` no exists`
+      }
+
       const actions = componentMethods[name]
+
       if (actions) {
         return actions[func](...values)
-      }
-    }
-
-    subscribe = (func) => {
-      if(!(typeof func).includes('function')) {
-        throw new Error('`subscribe` not a function')
-      }
-      subscribe = func
-      return () => {
-        subscribe = () => null
       }
     }
 
@@ -96,15 +84,12 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
-        if (key !== LOADED_COMPONENTS) {
-          store[key] = this.props[key]
-        }
+        store[key] = this.props[key]
       })
 
       return (
         <C
           store={store}
-          subscribe={this.subscribe}
           dispatch={this.dispatch}
           {...router}
         />

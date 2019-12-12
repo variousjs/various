@@ -18,6 +18,17 @@ class X extends Component {
     dispatch({ a: value })
   }
 
+  state = {
+    componentB: false,
+  }
+
+  static getDerivedStateFromProps(props) {
+    if (props.store.LOADED_COMPONENTS.includes('b')) {
+      return { componentB: true }
+    }
+    return null
+  }
+
   onGetB = () => {
     message.info(this.props.dispatch('b', 'getValue'))
   }
@@ -26,25 +37,15 @@ class X extends Component {
     this.props.dispatch('b', 'updateValue', Math.random().toFixed(2))
   }
 
-  onSetG = () => {
-    this.props.dispatch('global', 'updateUserName', Math.random())
-  }
-
-  componentDidMount() {
-    this.unsubscribe = this.props.subscribe((components) => {
-      if (components.includes('b')) {
-        message.info('组件 B 加载完成')
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
+  onSetG = async () => {
+    await this.props.dispatch('global', 'updateUserName', Math.random())
+    message.success('更新完成')
   }
 
   render() {
     const { user } = this.props.store
     const { a } = this.props
+    const { componentB } = this.state
 
     return (
       <div>
@@ -52,6 +53,7 @@ class X extends Component {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <p>全局值：{user.name}</p>
           <p>组件值: {a}</p>
+          <p>B 组件加载完成：{componentB ? 'yes' : 'no'}</p>
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
           <Button onClick={this.onSetB}>更新 B 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值(异步)</Button>
