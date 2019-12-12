@@ -10,7 +10,7 @@ const DEFAULT_PACKAGES = {
 
 const { src } = document.currentScript
 
-window.humpback = (config, func = () => null) => {
+window.humpback = (config) => {
   const { packages } = config
   const paths = { ...DEFAULT_PACKAGES, ...packages }
 
@@ -28,6 +28,5 @@ window.humpback = (config, func = () => null) => {
 
   window.requirejs(['humpback', 'base'], (humpback, base) => {
     humpback({ ...config, ...base })
-    func(window.requirejs)
   })
 }
