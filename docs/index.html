@@ -18,7 +18,7 @@
 <script>
 var config = {
   packages: {
-    base: './dist/base.js',
+    global: './dist/global.js',
     moment: 'https://unpkg.com/moment@2.24.0/moment.js',
     antd: 'https://unpkg.com/antd@3.26.0/dist/antd-with-locales.min.js',
     moment_zhCN: './zh-cn.js',
@@ -70,11 +70,13 @@ var config = {
   ],
 }
 
-window.requirejs(['moment', 'moment_zhCN'], function (moment) {
+const humpback = new window.Humpback(config)
+
+humpback.require(['moment', 'moment_zhCN'], function (moment) {
   moment.locale('zh-cn')
 })
 
-window.humpback(config)
+humpback.start()
 </script>
 </body>
 </html>

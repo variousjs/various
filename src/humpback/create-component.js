@@ -46,12 +46,15 @@ export default function ({
     }
 
     dispatch = (name, func, ...values) => {
-      if (name === 'global' && storeMethods[func]) {
+      if (name === 'global') {
+        if (!storeMethods[func]) {
+          throw `Method \`${func}\` not exists`
+        }
         return this.props.dispatch(storeMethods[func], ...values)
       }
 
       if (!this.props[LOADED_COMPONENTS].includes(name)) {
-        throw `Component \`${name}\` no exists`
+        throw `Component \`${name}\` not ready`
       }
 
       const actions = componentMethods[name]

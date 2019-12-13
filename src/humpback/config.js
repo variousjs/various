@@ -19,5 +19,5 @@ export const Error = ({ error }) => (
 )
 
 export const Container = () => (
-  <h3>Empty</h3>
+  <h3>Nothing</h3>
 )

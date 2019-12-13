@@ -1,32 +1,35 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
+import { DEFAULT_PACKAGES, SCRIPT_SRC } from './config'
 
-const DEFAULT_PACKAGES = {
-  react: 'https://unpkg.com/react@16.12.0/umd/react.production.min.js',
-  'react-dom': 'https://unpkg.com/react-dom@16.12.0/umd/react-dom.production.min.js',
-  'react-router-dom': 'https://unpkg.com/react-router-dom@5.1.2/umd/react-router-dom.min.js',
-  'nycticorax': 'https://unpkg.com/nycticorax@1.1.0/lib/index.js',
-}
+window.Humpback = class {
+  constructor(config = {}) {
+    const { packages } = config
+    const paths = { ...DEFAULT_PACKAGES, ...packages }
 
-const { src } = document.currentScript
+    paths.humpback = SCRIPT_SRC
+      .split('/')
+      .slice(0, -1)
+      .concat(['humpback.js'])
+      .join('/')
 
-window.humpback = (config) => {
-  const { packages } = config
-  const paths = { ...DEFAULT_PACKAGES, ...packages }
+    Object.keys(paths).forEach((name) => {
+      paths[name] = paths[name].slice(0, -3)
+    })
 
-  paths.humpback = src
-    .split('/')
-    .slice(0, -1)
-    .concat(['humpback.js'])
-    .join('/')
+    window.requirejs.config({ paths, waitSeconds: 30 })
 
-  Object.keys(paths).forEach((name) => {
-    paths[name] = paths[name].slice(0, -3)
-  })
+    this.paths = paths
+  }
 
-  window.requirejs.config({ paths, waitSeconds: 30 })
+  start() {
+    const requires = this.paths.global ? ['humpback', 'global'] : ['humpback']
+    window.requirejs(requires, (initiator, global = {}) => {
+      initiator({ ...config, ...global })
+    })
+  }
 
-  window.requirejs(['humpback', 'base'], (humpback, base) => {
-    humpback({ ...config, ...base })
-  })
+  require(...args) {
+    return window.requirejs(...args)
+  }
 }
