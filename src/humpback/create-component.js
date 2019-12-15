@@ -24,6 +24,11 @@ export default function ({
     // }
     componentDidMount() {
       window.require([name], (C) => {
+        if (!C) {
+          this.setState({ error: 'Component Name Error' })
+          return
+        }
+
         const loadedComponents = getStore()[LOADED_COMPONENTS]
         const actions = {}
 
