@@ -1,17 +1,22 @@
 {
-  "private": true,
-  "name": "humpback",
+  "name": "@fratercula/humpback",
   "version": "0.1.0",
-  "description": "Humpback",
-  "main": "lib/humpback.js",
+  "description": "RequireJS(AMD) + React",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "a": "NODE_ENV=a falco -c -m demo/components/a.js -o docs/dist",
     "b": "NODE_ENV=b falco -c -m demo/components/b.js -o docs/dist",
     "index": "NODE_ENV=index falco -c -m src/index.js -o docs/dist",
     "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o docs/dist",
     "global": "NODE_ENV=global falco -c -m demo/index.js -o docs/dist",
-    "start": "npm run index && npm run humpback && npm run global",
-    "build": "npm run a && npm run b"
+    "start": "npm run index && npm run humpback && npm run global && npm run a && npm run b",
+    "build": "NODE_ENV=index falco -c -m src/index.js -o lib && NODE_ENV=humpback falco -c -m src/humpback/index.js -o lib && rm -rf lib/index.html"
   },
   "repository": {
     "type": "git",
