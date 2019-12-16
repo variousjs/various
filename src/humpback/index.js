@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { HashRouter as Router } from 'react-router-dom'
-import { createStore, connect } from './store'
+import { createStore, connect, dispatch } from './store'
 import Routes from './routes'
 import {
   Loading,
@@ -42,6 +42,13 @@ export default (config) => {
       this.setState({ error: e.message || 'Container Error' })
     }
 
+    dispatch = (func, ...values) => {
+      if (!methods[func]) {
+        throw `Method \`${func}\` not exists`
+      }
+      return dispatch(methods[func], ...values)
+    }
+
     render() {
       const { error } = this.state
 
@@ -57,6 +64,7 @@ export default (config) => {
 
       return (
         <C
+          dispatch={this.dispatch}
           Routes={RoutesWidthConfig}
           config={{ ...rest, routes }}
           store={storeData}

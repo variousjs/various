@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout, Menu, Icon, Badge } from 'antd'
+import { Layout, Menu, Icon, Badge, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import './global.less'
 
-function Container({ store, Routes, config }) {
+function Container({ store, Routes, config, dispatch }) {
   return (
     <Layout style={{ height: '100vh' }}>
       <Layout.Sider>
@@ -41,6 +41,7 @@ function Container({ store, Routes, config }) {
         <Layout.Header style={{ background: '#fff', padding: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div>{store.user.name}</div>
+            <Button onClick={() => dispatch('setNumber', Math.random().toFixed(2))}>click</Button>
             <div style={{ margin: '0 20px' }}>
               <Badge count={store.number} showZero />
             </div>
