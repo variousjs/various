@@ -33,49 +33,42 @@ export default function ({
 
         Object
           .getOwnPropertyNames(C)
-          .forEach((name) => {
-            if (!IGNORE_STATIC_METHODS.includes(name)) {
-              actions[name] = C[name]
+          .forEach((method) => {
+            if (!IGNORE_STATIC_METHODS.includes(method)) {
+              actions[method] = C[method]
             }
           })
 
-        componentMethods[name] = actions
+        componentMethods[name] = actions // eslint-disable-line no-param-reassign
         this.setState({ component: C })
       }, (e) => {
         this.setState({ error: e.message || 'Component Load Error' })
       })
     }
 
-    componentDidMount() {
-      throw '???'
-      throw new Error('????')
+    componentDidCatch(e) {
+      this.setState({ error: e.message || 'Component Error' })
     }
 
-    dispatch = (name, func, ...values) => {
-      if (name === 'global') {
+    dispatch = (component, func, ...values) => {
+      if (component === 'global') {
         if (!storeMethods[func]) {
           throw `Method \`${func}\` not exists`
         }
         return this.props.dispatch(storeMethods[func], ...values)
       }
 
-      if (!this.props[LOADED_COMPONENTS].includes(name)) {
-        // throw `Component \`${name}\` not ready`
-        throw new Error(`Component \`${name}\` not ready`)
+      if (!this.props[LOADED_COMPONENTS].includes(component)) {
+        throw `Component \`${component}\` not ready`
       }
 
-      const actions = componentMethods[name]
+      const actions = componentMethods[component]
 
       if (!actions[func]) {
         throw `Method \`${func}\` not exists`
       }
 
       return actions[func](...values)
-    }
-
-    componentDidCatch(e) {
-      console.log(e)
-      this.setState({ error: e.message || 'Component Error' })
     }
 
     render() {

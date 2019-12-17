@@ -15,7 +15,7 @@ export const Loading = () => (
   <h3>Loading</h3>
 )
 
-export const Error = ({ error }) => (
+export const Error = ({ error }) => ( // eslint-disable-line react/prop-types
   <h3>{error}</h3>
 )
 
