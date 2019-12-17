@@ -21,13 +21,15 @@ export default (config) => {
     container: C = Container,
     ...rest
   } = config
-  const storeKeys = Object.keys(store)
+  const storeKeys = Object.keys(store).concat([LOADED_COMPONENTS])
+  const componentMethods = {}
   const RoutesWidthConfig = () => (
     <Routes
       routes={routes}
       methods={methods}
       Loading={L}
       Error={E}
+      componentMethods={componentMethods}
     />
   )
 
@@ -42,11 +44,25 @@ export default (config) => {
       this.setState({ error: e.message || 'Container Error' })
     }
 
-    dispatch = (func, ...values) => {
-      if (!methods[func]) {
+    dispatch = (name, func, ...values) => {
+      if (name === 'global') {
+        if (!methods[func]) {
+          throw `Method \`${func}\` not exists`
+        }
+        return dispatch(methods[func], ...values)
+      }
+
+      if (!this.props[LOADED_COMPONENTS].includes(name)) {
+        throw `Component \`${name}\` not ready`
+      }
+
+      const actions = componentMethods[name]
+
+      if (!actions[func]) {
         throw `Method \`${func}\` not exists`
       }
-      return dispatch(methods[func], ...values)
+
+      return actions[func](...values)
     }
 
     render() {

@@ -1,6 +1,6 @@
 {
   "name": "@fratercula/humpback",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RequireJS(AMD) + React",
   "main": "lib/index.js",
   "files": [

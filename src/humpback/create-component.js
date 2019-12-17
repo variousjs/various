@@ -18,10 +18,6 @@ export default function ({
       error: undefined,
     }
 
-    // async componentDidMount() {
-    //   if (name === 'b') {
-    //     await new Promise((r) => setTimeout(r, 10000))
-    // }
     componentDidMount() {
       window.require([name], (C) => {
         if (!C) {
@@ -64,9 +60,11 @@ export default function ({
 
       const actions = componentMethods[name]
 
-      if (actions) {
-        return actions[func](...values)
+      if (!actions[func]) {
+        throw `Method \`${func}\` not exists`
       }
+
+      return actions[func](...values)
     }
 
     componentDidCatch(e) {

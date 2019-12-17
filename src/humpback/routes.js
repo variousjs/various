@@ -11,9 +11,8 @@ class RouteWrap extends Component {
     methods: PropTypes.object.isRequired,
     Loading: PropTypes.element.isRequired,
     Error: PropTypes.element.isRequired,
+    componentMethods: PropTypes.object.isRequired,
   }
-
-  componentMethods = {}
 
   state = {
     error: undefined,
@@ -43,6 +42,7 @@ class RouteWrap extends Component {
       Error,
       routes,
       methods,
+      componentMethods,
     } = this.props
 
     if (error) {
@@ -73,7 +73,7 @@ class RouteWrap extends Component {
                       const config = {
                         name,
                         storeMethods: methods,
-                        componentMethods: this.componentMethods,
+                        componentMethods,
                         Loading,
                         Error,
                         router,

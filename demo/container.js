@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout, Menu, Icon, Badge, Button } from 'antd'
+import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
 import { Link } from 'react-router-dom'
 import './global.less'
 
@@ -40,8 +40,14 @@ function Container({ store, Routes, config, dispatch }) {
       <Layout>
         <Layout.Header style={{ background: '#fff', padding: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <input />
             <div>{store.user.name}</div>
-            <Button onClick={() => dispatch('setNumber', Math.random().toFixed(2))}>click</Button>
+            <div style={{ margin: '0 20px' }}>
+              当前已经加载完成的组件:
+              <Tag>{store.LOADED_COMPONENTS}</Tag>
+            </div>
+            <Button onClick={() => dispatch('global', 'setNumber', Math.random().toFixed(2))}>global</Button>
+            <Button onClick={() => dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>
             <div style={{ margin: '0 20px' }}>
               <Badge count={store.number} showZero />
             </div>

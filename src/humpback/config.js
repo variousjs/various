@@ -6,6 +6,7 @@ export const IGNORE_STATIC_METHODS = [
   'length',
   'propTypes',
   'defaultProps',
+  'getDerivedStateFromProps',
 ]
 
 export const LOADED_COMPONENTS = 'LOADED_COMPONENTS'
