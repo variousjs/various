@@ -53,7 +53,8 @@ export default (config) => {
       }
 
       if (!this.props[LOADED_COMPONENTS].includes(name)) {
-        throw `Component \`${name}\` not ready`
+        // throw `Component \`${name}\` not ready`
+        throw new Error(`Component \`${name}\` not ready`)
       }
 
       const actions = componentMethods[name]

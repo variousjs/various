@@ -23,7 +23,7 @@ class RouteWrap extends Component {
   }
 
   shouldComponentUpdate(props, { error }) {
-    return error
+    return !!error
   }
 
   componentDidMount() {

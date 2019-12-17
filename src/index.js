@@ -19,17 +19,19 @@ window.Humpback = class {
 
     window.requirejs.config({ paths, waitSeconds: 30 })
 
+    this.config = config
     this.paths = paths
   }
 
   start() {
     const requires = this.paths.global ? ['humpback', 'global'] : ['humpback']
     window.requirejs(requires, (initiator, global = {}) => {
-      initiator({ ...config, ...global })
+      initiator({ ...this.config, ...global })
     })
   }
 
   require(...args) {
-    return window.requirejs(...args)
+    window.requirejs(...args)
+    return this
   }
 }

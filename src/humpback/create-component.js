@@ -46,6 +46,11 @@ export default function ({
       })
     }
 
+    componentDidMount() {
+      throw '???'
+      throw new Error('????')
+    }
+
     dispatch = (name, func, ...values) => {
       if (name === 'global') {
         if (!storeMethods[func]) {
@@ -55,7 +60,8 @@ export default function ({
       }
 
       if (!this.props[LOADED_COMPONENTS].includes(name)) {
-        throw `Component \`${name}\` not ready`
+        // throw `Component \`${name}\` not ready`
+        throw new Error(`Component \`${name}\` not ready`)
       }
 
       const actions = componentMethods[name]
@@ -68,6 +74,7 @@ export default function ({
     }
 
     componentDidCatch(e) {
+      console.log(e)
       this.setState({ error: e.message || 'Component Error' })
     }
 

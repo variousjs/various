@@ -22,6 +22,7 @@ class X extends Component {
     try {
       message.info(this.props.dispatch('a', 'getValue'))
     } catch (e) {
+      console.log(e)
       message.error(e)
     }
   }
