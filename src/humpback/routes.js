@@ -7,6 +7,7 @@ import { LOADED_COMPONENTS } from './config'
 
 class RouteWrap extends Component {
   static propTypes = {
+    history: PropTypes.func.isRequired,
     routes: PropTypes.array.isRequired,
     methods: PropTypes.object.isRequired,
     Loading: PropTypes.element.isRequired,
@@ -18,17 +19,17 @@ class RouteWrap extends Component {
     error: undefined,
   }
 
-  componentDidCatch(e) {
-    this.setState({ error: e.message || 'Routes Error' })
+  componentDidMount() {
+    const { history } = this.props
+    this.unsubscribe = history.listen(() => dispatch({ [LOADED_COMPONENTS]: [] }, true))
   }
 
   shouldComponentUpdate(props, { error }) {
     return !!error
   }
 
-  componentDidMount() {
-    const { history } = this.props
-    this.unsubscribe = history.listen(() => dispatch({ [LOADED_COMPONENTS]: [] }, true))
+  componentDidCatch(e) {
+    this.setState({ error: e.message || 'Routes Error' })
   }
 
   componentWillUnmount() {

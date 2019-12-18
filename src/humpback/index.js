@@ -52,6 +52,7 @@ export default (config) => {
         return dispatch(methods[func], ...values)
       }
 
+      // eslint-disable-next-line react/destructuring-assignment
       if (!this.props[LOADED_COMPONENTS].includes(name)) {
         // throw `Component \`${name}\` not ready`
         throw new Error(`Component \`${name}\` not ready`)
@@ -76,6 +77,7 @@ export default (config) => {
       const storeData = {}
 
       storeKeys.forEach((key) => {
+        // eslint-disable-next-line react/destructuring-assignment
         storeData[key] = this.props[key]
       })
 

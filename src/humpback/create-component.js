@@ -55,9 +55,11 @@ export default function ({
         if (!storeMethods[func]) {
           throw `Method \`${func}\` not exists`
         }
+        // eslint-disable-next-line react/destructuring-assignment, react/prop-types
         return this.props.dispatch(storeMethods[func], ...values)
       }
 
+      // eslint-disable-next-line react/destructuring-assignment
       if (!this.props[LOADED_COMPONENTS].includes(component)) {
         throw `Component \`${component}\` not ready`
       }
@@ -88,6 +90,7 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
+        // eslint-disable-next-line react/destructuring-assignment
         store[key] = this.props[key]
       })
 
@@ -95,7 +98,7 @@ export default function ({
         <C
           store={store}
           dispatch={this.dispatch}
-          {...router}
+          {...router} // eslint-disable-line react/jsx-props-no-spreading
         />
       )
     }
