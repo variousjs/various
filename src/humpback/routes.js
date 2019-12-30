@@ -21,7 +21,10 @@ class RouteWrap extends Component {
 
   componentDidMount() {
     const { history } = this.props
-    this.unsubscribe = history.listen(() => dispatch({ [LOADED_COMPONENTS]: [] }, true))
+    this.unsubscribe = history.listen(() => {
+      this.props.componentMethods = {}
+      dispatch({ [LOADED_COMPONENTS]: [] }, true)
+    })
   }
 
   shouldComponentUpdate(props, { error }) {

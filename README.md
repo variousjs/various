@@ -1,2 +1,3 @@
 # humpback
-Humpback
+
+RequireJS(AMD) + React

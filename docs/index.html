@@ -16,7 +16,6 @@
 <script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
 <script src="./dist/index.js"></script>
 <script>
-window.onerror = (e) => console.log('wind', e)
 var config = {
   packages: {
     global: './dist/global.js',
@@ -75,9 +74,8 @@ const humpback = new window.Humpback(config)
 
 humpback.require(['moment', 'moment_zhCN'], function (moment) {
   moment.locale('zh-cn')
+  humpback.start()
 })
-
-humpback.start()
 </script>
 
 </body>

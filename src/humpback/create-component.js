@@ -29,7 +29,6 @@ export default function ({
         const actions = {}
 
         loadedComponents.push(name)
-        dispatch({ [LOADED_COMPONENTS]: loadedComponents }, true)
 
         Object
           .getOwnPropertyNames(C)
@@ -40,7 +39,10 @@ export default function ({
           })
 
         componentMethods[name] = actions // eslint-disable-line no-param-reassign
-        this.setState({ component: C })
+
+        this.setState({ component: C }, () => {
+          dispatch({ [LOADED_COMPONENTS]: loadedComponents }, true)
+        })
       }, (e) => {
         this.setState({ error: e.message || 'Component Load Error' })
       })

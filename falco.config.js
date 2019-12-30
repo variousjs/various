@@ -41,6 +41,5 @@ module.exports = {
   targets: {
     esmodules: true,
   },
-  vscodeEslint: true,
   // report: true,
 }
