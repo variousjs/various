@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { Route, withRouter } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { dispatch } from './store'
 import createComponent from './create-component'
-import { LOADED_COMPONENTS } from './config'
 
-class RouteWrap extends Component {
+export default class extends Component {
   static propTypes = {
-    history: PropTypes.func.isRequired,
     routes: PropTypes.array.isRequired,
     methods: PropTypes.object.isRequired,
     Loading: PropTypes.element.isRequired,
@@ -19,24 +16,12 @@ class RouteWrap extends Component {
     error: undefined,
   }
 
-  componentDidMount() {
-    const { history } = this.props
-    this.unsubscribe = history.listen(() => {
-      this.props.componentMethods = {}
-      dispatch({ [LOADED_COMPONENTS]: [] }, true)
-    })
-  }
-
   shouldComponentUpdate(props, { error }) {
     return !!error
   }
 
   componentDidCatch(e) {
     this.setState({ error: e.message || 'Routes Error' })
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
   }
 
   render() {
@@ -108,5 +93,3 @@ class RouteWrap extends Component {
     })
   }
 }
-
-export default withRouter(RouteWrap)

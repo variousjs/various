@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { render } from 'react-dom'
-import { HashRouter as Router } from 'react-router-dom'
+import { HashRouter as Router, withRouter } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
 import Routes from './routes'
 import {
@@ -36,8 +37,24 @@ export default (config) => {
   createStore({ ...store, [LOADED_COMPONENTS]: [] })
 
   class R extends Component {
+    static propTypes = {
+      history: PropTypes.func.isRequired,
+    }
+
     state = {
       error: undefined,
+    }
+
+    componentDidMount() {
+      const { history } = this.props
+      this.unsubscribe = history.listen(() => {
+        Object.keys(componentMethods).forEach((key) => delete componentMethods[key])
+        dispatch({ [LOADED_COMPONENTS]: [] }, true)
+      })
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe()
     }
 
     componentDidCatch(e) {
@@ -92,7 +109,7 @@ export default (config) => {
     }
   }
 
-  const X = connect(...storeKeys)(R)
+  const X = connect(...storeKeys)(withRouter(R))
 
   render((
     <Router>
