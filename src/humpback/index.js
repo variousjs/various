@@ -1,9 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { render } from 'react-dom'
 import { HashRouter as Router, withRouter } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
 import Routes from './routes'
+import createComponent from './create-component'
 import {
   Loading,
   Error,
@@ -33,6 +35,28 @@ export default (config) => {
       componentMethods={componentMethods}
     />
   )
+  // const Creator = withRouter(({ name, ...router }) => {
+  //   const R = createComponent({
+  //     name,
+  //     storeMethods: methods,
+  //     componentMethods,
+  //     Loading: L,
+  //     Error: E,
+  //     router,
+  //   })
+  //   return <R />
+  // })
+  const componentCreator = (name) => withRouter((router) => {
+    const R = createComponent({
+      name,
+      storeMethods: methods,
+      componentMethods,
+      Loading: L,
+      Error: E,
+      router,
+    })
+    return <R />
+  })
 
   createStore({ ...store, [LOADED_COMPONENTS]: [] })
 
@@ -102,6 +126,7 @@ export default (config) => {
         <C
           dispatch={this.dispatch}
           Routes={RoutesWidthConfig}
+          componentCreator={componentCreator}
           config={{ ...rest, routes }}
           store={storeData}
         />

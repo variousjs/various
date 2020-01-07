@@ -1,10 +1,44 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
 import './global.less'
 
-function Container({ store, Routes, config, dispatch }) {
+  class R extends Component {
+    shouldComponentUpdate() {
+      return false
+    }
+
+    render() {
+      const { config, componentCreator } = this.props
+
+  return config.routes
+    .map((item) => ({
+      path: item.path,
+      components: item.components.join().split(',')
+    }))
+  .map(({ path, components }) => {
+              const component = () => components.map((name) => {
+                const C = componentCreator(name)
+                return (
+                <div className="yyyy">
+                  <C />
+                </div>
+              )})
+
+              return (
+                <Route
+                  key={path}
+                  exact
+                  path={path}
+                  component={component}
+                />
+              )
+            })
+    }
+  }
+
+function Container({ store, Routes, config, dispatch, componentCreator }) {
   return (
     <Layout style={{ height: '100vh' }}>
       <Layout.Sider>
@@ -60,7 +94,10 @@ function Container({ store, Routes, config, dispatch }) {
             background: '#fff',
           }}
         >
-          <Routes />
+          {
+          // <Routes />
+          <R config={config} componentCreator={componentCreator} />
+          }
         </Layout.Content>
       </Layout>
     </Layout>
