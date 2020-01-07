@@ -35,17 +35,6 @@ export default (config) => {
       componentMethods={componentMethods}
     />
   )
-  // const Creator = withRouter(({ name, ...router }) => {
-  //   const R = createComponent({
-  //     name,
-  //     storeMethods: methods,
-  //     componentMethods,
-  //     Loading: L,
-  //     Error: E,
-  //     router,
-  //   })
-  //   return <R />
-  // })
   const componentCreator = (name) => withRouter((router) => {
     const R = createComponent({
       name,
@@ -57,6 +46,16 @@ export default (config) => {
     })
     return <R />
   })
+
+  class RouteWrap extends Component {
+    shouldComponentUpdate() {
+      return false
+    }
+
+    render() {
+      return this.props.components
+    }
+  }
 
   createStore({ ...store, [LOADED_COMPONENTS]: [] })
 
@@ -129,6 +128,7 @@ export default (config) => {
           componentCreator={componentCreator}
           config={{ ...rest, routes }}
           store={storeData}
+          RouteWrap={RouteWrap}
         />
       )
     }

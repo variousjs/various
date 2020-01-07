@@ -10,6 +10,8 @@ import './global.less'
     }
 
     render() {
+      return this.props.components
+
       const { config, componentCreator } = this.props
 
   return config.routes
@@ -38,7 +40,31 @@ import './global.less'
     }
   }
 
-function Container({ store, Routes, config, dispatch, componentCreator }) {
+function Container({ store, Routes, config, dispatch, componentCreator, RouteWrap }) {
+  const rs = config.routes
+  .map((item) => ({
+    path: item.path,
+    components: item.components.join().split(',')
+  }))
+.map(({ path, components }) => {
+            const component = () => components.map((name) => {
+              const C = componentCreator(name)
+              return (
+              <div className="yyyy">
+                <C />
+              </div>
+            )})
+
+            return (
+              <Route
+                key={path}
+                exact
+                path={path}
+                component={component}
+              />
+            )
+          })
+
   return (
     <Layout style={{ height: '100vh' }}>
       <Layout.Sider>
@@ -96,7 +122,9 @@ function Container({ store, Routes, config, dispatch, componentCreator }) {
         >
           {
           // <Routes />
-          <R config={config} componentCreator={componentCreator} />
+          // <R config={config} componentCreator={componentCreator} />
+          // <R components={rs} />
+          <RouteWrap components={rs} />
           }
         </Layout.Content>
       </Layout>
