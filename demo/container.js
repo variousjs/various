@@ -4,43 +4,7 @@ import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
 import { Link, Route } from 'react-router-dom'
 import './global.less'
 
-  class R extends Component {
-    shouldComponentUpdate() {
-      return false
-    }
-
-    render() {
-      return this.props.components
-
-      const { config, componentCreator } = this.props
-
-  return config.routes
-    .map((item) => ({
-      path: item.path,
-      components: item.components.join().split(',')
-    }))
-  .map(({ path, components }) => {
-              const component = () => components.map((name) => {
-                const C = componentCreator(name)
-                return (
-                <div className="yyyy">
-                  <C />
-                </div>
-              )})
-
-              return (
-                <Route
-                  key={path}
-                  exact
-                  path={path}
-                  component={component}
-                />
-              )
-            })
-    }
-  }
-
-function Container({ store, Routes, config, dispatch, componentCreator, RouteWrap }) {
+function Container({ store, Routes, config, dispatch, componentCreator }) {
   const rs = config.routes
   .map((item) => ({
     path: item.path,
@@ -120,12 +84,7 @@ function Container({ store, Routes, config, dispatch, componentCreator, RouteWra
             background: '#fff',
           }}
         >
-          {
-          // <Routes />
-          // <R config={config} componentCreator={componentCreator} />
-          // <R components={rs} />
-          <RouteWrap components={rs} />
-          }
+          <Routes config={rs} />
         </Layout.Content>
       </Layout>
     </Layout>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { render } from 'react-dom'
 import { HashRouter as Router, withRouter } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
-import Routes from './routes'
+import RoutesWrapper from './routes'
 import createComponent from './create-component'
 import {
   Loading,
@@ -26,15 +26,6 @@ export default (config) => {
   } = config
   const storeKeys = Object.keys(store).concat([LOADED_COMPONENTS])
   const componentMethods = {}
-  const RoutesWidthConfig = () => (
-    <Routes
-      routes={routes}
-      methods={methods}
-      Loading={L}
-      Error={E}
-      componentMethods={componentMethods}
-    />
-  )
   const componentCreator = (name) => withRouter((router) => {
     const R = createComponent({
       name,
@@ -47,17 +38,32 @@ export default (config) => {
     return <R />
   })
 
-  class RouteWrap extends Component {
+  class Routes extends Component {
+    static propTypes = {
+      // eslint-disable-next-line react/require-default-props
+      config: PropTypes.array,
+    }
+
     shouldComponentUpdate() {
       return false
     }
 
     render() {
-      return this.props.components
+      const { config: cs } = this.props
+      if (cs) {
+        return cs
+      }
+      return (
+        <RoutesWrapper
+          routes={routes}
+          methods={methods}
+          Loading={L}
+          Error={E}
+          componentMethods={componentMethods}
+        />
+      )
     }
   }
-
-  createStore({ ...store, [LOADED_COMPONENTS]: [] })
 
   class R extends Component {
     static propTypes = {
@@ -94,8 +100,7 @@ export default (config) => {
 
       // eslint-disable-next-line react/destructuring-assignment
       if (!this.props[LOADED_COMPONENTS].includes(name)) {
-        // throw `Component \`${name}\` not ready`
-        throw new Error(`Component \`${name}\` not ready`)
+        throw `Component \`${name}\` not ready`
       }
 
       const actions = componentMethods[name]
@@ -124,15 +129,16 @@ export default (config) => {
       return (
         <C
           dispatch={this.dispatch}
-          Routes={RoutesWidthConfig}
+          Routes={Routes}
           componentCreator={componentCreator}
           config={{ ...rest, routes }}
           store={storeData}
-          RouteWrap={RouteWrap}
         />
       )
     }
   }
+
+  createStore({ ...store, [LOADED_COMPONENTS]: [] })
 
   const X = connect(...storeKeys)(withRouter(R))
 
