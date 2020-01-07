@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect, getStore, dispatch } from './store'
-import { IGNORE_STATIC_METHODS, LOADED_COMPONENTS } from './config'
+import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
 
 export default function ({
   name,
@@ -25,7 +25,7 @@ export default function ({
           return
         }
 
-        const loadedComponents = getStore()[LOADED_COMPONENTS]
+        const loadedComponents = getStore()[MOUNTED_COMPONENTS]
         const actions = {}
 
         loadedComponents.push(name)
@@ -41,7 +41,7 @@ export default function ({
         componentMethods[name] = actions // eslint-disable-line no-param-reassign
 
         this.setState({ component: C }, () => {
-          dispatch({ [LOADED_COMPONENTS]: loadedComponents }, true)
+          dispatch({ [MOUNTED_COMPONENTS]: loadedComponents }, true)
         })
       }, (e) => {
         this.setState({ error: e.message || 'Component Load Error' })
@@ -57,12 +57,11 @@ export default function ({
         if (!storeMethods[func]) {
           throw `Method \`${func}\` not exists`
         }
-        // eslint-disable-next-line react/destructuring-assignment, react/prop-types
+        // eslint-disable-next-line react/prop-types
         return this.props.dispatch(storeMethods[func], ...values)
       }
 
-      // eslint-disable-next-line react/destructuring-assignment
-      if (!this.props[LOADED_COMPONENTS].includes(component)) {
+      if (!this.props[MOUNTED_COMPONENTS].includes(component)) {
         throw `Component \`${component}\` not ready`
       }
 
@@ -92,12 +91,14 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
-        // eslint-disable-next-line react/destructuring-assignment
-        store[key] = this.props[key]
+        if (key !== MOUNTED_COMPONENTS) {
+          store[key] = this.props[key]
+        }
       })
 
       return (
         <C
+          MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
           {...router} // eslint-disable-line react/jsx-props-no-spreading

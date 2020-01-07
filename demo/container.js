@@ -4,7 +4,7 @@ import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
 import { Link, Route } from 'react-router-dom'
 import './global.less'
 
-function Container({ store, Routes, config, dispatch, componentCreator }) {
+function Container({ store, Routes, config, dispatch, componentCreator, MOUNTED_COMPONENTS }) {
   const rs = config.routes
   .map((item) => ({
     path: item.path,
@@ -68,7 +68,7 @@ function Container({ store, Routes, config, dispatch, componentCreator }) {
             <div>{store.user.name}</div>
             <div style={{ margin: '0 20px' }}>
               当前已经加载完成的组件:
-              <Tag>{store.LOADED_COMPONENTS}</Tag>
+              <Tag>{MOUNTED_COMPONENTS}</Tag>
             </div>
             <Button onClick={() => dispatch('global', 'setNumber', Math.random().toFixed(2))}>global</Button>
             <Button onClick={() => dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>

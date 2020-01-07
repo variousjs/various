@@ -24,7 +24,7 @@ class X extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    if (props.store.LOADED_COMPONENTS.includes('b')) {
+    if (props.MOUNTED_COMPONENTS.includes('b')) {
       return { componentB: true }
     }
     return null

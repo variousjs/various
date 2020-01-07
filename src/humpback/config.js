@@ -9,7 +9,7 @@ export const IGNORE_STATIC_METHODS = [
   'getDerivedStateFromProps',
 ]
 
-export const LOADED_COMPONENTS = 'LOADED_COMPONENTS'
+export const MOUNTED_COMPONENTS = 'MOUNTED_COMPONENTS'
 
 export const Loading = () => (
   <h3>Loading</h3>

@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { render } from 'react-dom'
@@ -10,7 +9,7 @@ import {
   Loading,
   Error,
   Container,
-  LOADED_COMPONENTS,
+  MOUNTED_COMPONENTS,
 } from './config'
 
 export default (config) => {
@@ -24,7 +23,7 @@ export default (config) => {
     container: C = Container,
     ...rest
   } = config
-  const storeKeys = Object.keys(store).concat([LOADED_COMPONENTS])
+  const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentMethods = {}
   const componentCreator = (name) => withRouter((router) => {
     const R = createComponent({
@@ -78,7 +77,7 @@ export default (config) => {
       const { history } = this.props
       this.unsubscribe = history.listen(() => {
         Object.keys(componentMethods).forEach((key) => delete componentMethods[key])
-        dispatch({ [LOADED_COMPONENTS]: [] }, true)
+        dispatch({ [MOUNTED_COMPONENTS]: [] }, true)
       })
     }
 
@@ -98,8 +97,7 @@ export default (config) => {
         return dispatch(methods[func], ...values)
       }
 
-      // eslint-disable-next-line react/destructuring-assignment
-      if (!this.props[LOADED_COMPONENTS].includes(name)) {
+      if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
         throw `Component \`${name}\` not ready`
       }
 
@@ -122,8 +120,9 @@ export default (config) => {
       const storeData = {}
 
       storeKeys.forEach((key) => {
-        // eslint-disable-next-line react/destructuring-assignment
-        storeData[key] = this.props[key]
+        if (key !== MOUNTED_COMPONENTS) {
+          storeData[key] = this.props[key]
+        }
       })
 
       return (
@@ -133,12 +132,13 @@ export default (config) => {
           componentCreator={componentCreator}
           config={{ ...rest, routes }}
           store={storeData}
+          MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
         />
       )
     }
   }
 
-  createStore({ ...store, [LOADED_COMPONENTS]: [] })
+  createStore({ ...store, [MOUNTED_COMPONENTS]: [] })
 
   const X = connect(...storeKeys)(withRouter(R))
 
