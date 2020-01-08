@@ -123,6 +123,8 @@ export default function ({
       }
 
       if (!this.props[MOUNTED_COMPONENTS].includes(name) && C) {
+        // eslint-disable-next-line no-param-reassign
+        delete componentMethods[name]
         return null
       }
 
