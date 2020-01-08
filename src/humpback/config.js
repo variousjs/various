@@ -17,8 +17,11 @@ export const Loading = () => (
   <h3>Loading</h3>
 )
 
-export const Error = ({ error }) => ( // eslint-disable-line react/prop-types
-  <h3>{error}</h3>
+export const Error = ({ error, reload }) => ( // eslint-disable-line react/prop-types
+  <>
+    <h3>{error}</h3>
+    <button onClick={reload}>reload</button>
+  </>
 )
 
 export const Container = () => (

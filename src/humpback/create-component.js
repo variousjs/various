@@ -68,7 +68,9 @@ export default function ({
         const mountedComponents = getStore()[MOUNTED_COMPONENTS]
         const actions = {}
 
-        mountedComponents.push(name)
+        if (!mountedComponents.includes(name)) {
+          mountedComponents.push(name)
+        }
 
         Object
           .getOwnPropertyNames(C)
@@ -85,6 +87,14 @@ export default function ({
         })
       }, (e) => {
         this.setState({ error: e.message || 'Component Load Error' })
+      })
+    }
+
+    onReload = () => {
+      window.requirejs.undef(name)
+      window.requirejs.config({ paths: { [name]: this.props[COMPONENT_PACKAGES][name] } })
+      this.setState({ component: undefined, error: undefined }, () => {
+        this.mountComponent()
       })
     }
 
@@ -126,7 +136,7 @@ export default function ({
 
       if (error) {
         return (
-          <Error error={error} />
+          <Error error={error} reload={this.onReload} />
         )
       }
 
