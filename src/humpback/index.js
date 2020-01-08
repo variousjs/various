@@ -5,6 +5,7 @@ import { HashRouter as Router, withRouter } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
 import RoutesWrapper from './routes'
 import createComponent from './create-component'
+import defaultMethods from './methods'
 import {
   Loading,
   Error,
@@ -25,10 +26,11 @@ export default (config) => {
   } = config
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentMethods = {}
+  const storeMethods = { ...methods, ...defaultMethods }
   const componentCreator = (name) => withRouter((router) => {
     const R = createComponent({
       name,
-      storeMethods: methods,
+      storeMethods,
       componentMethods,
       Loading: L,
       Error: E,
@@ -55,7 +57,7 @@ export default (config) => {
       return (
         <RoutesWrapper
           routes={routes}
-          methods={methods}
+          storeMethods={storeMethods}
           Loading={L}
           Error={E}
           componentMethods={componentMethods}
@@ -91,10 +93,10 @@ export default (config) => {
 
     dispatch = (name, func, ...values) => {
       if (name === 'global') {
-        if (!methods[func]) {
+        if (!storeMethods[func]) {
           throw `Method \`${func}\` not exists`
         }
-        return dispatch(methods[func], ...values)
+        return dispatch(storeMethods[func], ...values)
       }
 
       if (!this.props[MOUNTED_COMPONENTS].includes(name)) {

@@ -36,6 +36,10 @@ class X extends Component {
     this.props.dispatch('global', 'setNumber', Math.random().toFixed(2))
   }
 
+  onGetStatus = () => {
+    message.info(this.props.dispatch('global', 'getMountedComponents'))
+  }
+
   render() {
     const { number } = this.props.store
     const { b, match } = this.props
@@ -50,6 +54,7 @@ class X extends Component {
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值</Button>
+          <Button onClick={this.onGetStatus}>获取当前加载组件</Button>
         </div>
       </div>
     )

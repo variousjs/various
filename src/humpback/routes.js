@@ -6,7 +6,7 @@ import createComponent from './create-component'
 export default class extends Component {
   static propTypes = {
     routes: PropTypes.array.isRequired,
-    methods: PropTypes.object.isRequired,
+    storeMethods: PropTypes.object.isRequired,
     Loading: PropTypes.element.isRequired,
     Error: PropTypes.element.isRequired,
     componentMethods: PropTypes.object.isRequired,
@@ -30,7 +30,7 @@ export default class extends Component {
       Loading,
       Error,
       routes,
-      methods,
+      storeMethods,
       componentMethods,
     } = this.props
 
@@ -61,7 +61,7 @@ export default class extends Component {
 
                       const config = {
                         name,
-                        storeMethods: methods,
+                        storeMethods,
                         componentMethods,
                         Loading,
                         Error,

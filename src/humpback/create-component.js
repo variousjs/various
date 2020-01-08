@@ -25,10 +25,10 @@ export default function ({
           return
         }
 
-        const loadedComponents = getStore()[MOUNTED_COMPONENTS]
+        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
         const actions = {}
 
-        loadedComponents.push(name)
+        mountedComponents.push(name)
 
         Object
           .getOwnPropertyNames(C)
@@ -41,7 +41,7 @@ export default function ({
         componentMethods[name] = actions // eslint-disable-line no-param-reassign
 
         this.setState({ component: C }, () => {
-          dispatch({ [MOUNTED_COMPONENTS]: loadedComponents }, true)
+          dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
       }, (e) => {
         this.setState({ error: e.message || 'Component Load Error' })
