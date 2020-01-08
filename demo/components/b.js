@@ -40,6 +40,10 @@ class X extends Component {
     message.info(this.props.dispatch('global', 'getMountedComponents'))
   }
 
+  onRemoveA = () => {
+    this.props.dispatch('global', 'unMountComponent', 'a')
+  }
+
   render() {
     const { number } = this.props.store
     const { b, match } = this.props
@@ -55,6 +59,7 @@ class X extends Component {
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值</Button>
           <Button onClick={this.onGetStatus}>获取当前加载组件</Button>
+          <Button onClick={this.onRemoveA}>卸载 A 组件</Button>
         </div>
       </div>
     )

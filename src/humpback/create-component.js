@@ -78,6 +78,10 @@ export default function ({
       const { component: C, error } = this.state
       const store = {}
 
+      if (!this.props[MOUNTED_COMPONENTS].includes(name) && C) {
+        return null
+      }
+
       if (error) {
         return (
           <Error error={error} />
