@@ -44,6 +44,10 @@ class X extends Component {
     this.props.dispatch('global', 'unMountComponent', 'a')
   }
 
+  onGetSwitch = () => {
+    this.props.dispatch('global', 'mountComponent', 'switch', 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js')
+  }
+
   render() {
     const { number } = this.props.store
     const { b, match } = this.props
@@ -60,6 +64,7 @@ class X extends Component {
           <Button onClick={this.onSetG}>更新全局值</Button>
           <Button onClick={this.onGetStatus}>获取当前加载组件</Button>
           <Button onClick={this.onRemoveA}>卸载 A 组件</Button>
+          <Button onClick={this.onGetSwitch}>加载 Switch 组件</Button>
         </div>
       </div>
     )

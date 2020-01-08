@@ -1,4 +1,4 @@
-import { MOUNTED_COMPONENTS } from './config'
+import { MOUNTED_COMPONENTS, COMPONENT_PACKAGES } from './config'
 
 export default {
   getMountedComponents({ getStore }) {
@@ -9,5 +9,11 @@ export default {
     let mountedComponents = getStore()[MOUNTED_COMPONENTS]
     mountedComponents = mountedComponents.filter((item) => item !== name)
     dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+  },
+
+  mountComponent({ getStore, dispatch }, name, path) {
+    const packages = getStore()[COMPONENT_PACKAGES]
+    packages[name] = `${name}!${path.slice(0, -3)}`
+    dispatch({ [COMPONENT_PACKAGES]: packages }, true)
   },
 }

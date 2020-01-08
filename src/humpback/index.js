@@ -11,6 +11,7 @@ import {
   Error,
   Container,
   MOUNTED_COMPONENTS,
+  COMPONENT_PACKAGES,
 } from './config'
 
 export default (config) => {
@@ -122,7 +123,7 @@ export default (config) => {
       const storeData = {}
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS) {
+        if (key !== MOUNTED_COMPONENTS && key !== COMPONENT_PACKAGES) {
           storeData[key] = this.props[key]
         }
       })
@@ -140,7 +141,11 @@ export default (config) => {
     }
   }
 
-  createStore({ ...store, [MOUNTED_COMPONENTS]: [] })
+  createStore({
+    ...store,
+    [MOUNTED_COMPONENTS]: [],
+    [COMPONENT_PACKAGES]: packages,
+  })
 
   const X = connect(...storeKeys)(withRouter(R))
 

@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
-import { connect, getStore, dispatch } from './store'
-import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
+import {
+  connect,
+  getStore,
+  dispatch,
+  subscribe,
+} from './store'
+import {
+  IGNORE_STATIC_METHODS,
+  MOUNTED_COMPONENTS,
+  COMPONENT_PACKAGES,
+} from './config'
 
 export default function ({
   name,
@@ -16,10 +25,45 @@ export default function ({
     state = {
       component: undefined,
       error: undefined,
+      unset: !this.props[COMPONENT_PACKAGES][name],
     }
 
     componentDidMount() {
-      window.require([name], (C) => {
+      this.unsubscribe = subscribe((keys) => {
+        if (!keys.includes(COMPONENT_PACKAGES) || !this.state.unset) {
+          return
+        }
+
+        const packages = getStore()[COMPONENT_PACKAGES]
+        const current = Object.values(packages).find((item) => item.includes('!'))
+
+        if (current) {
+          this.unsubscribe()
+
+          const [n, p] = current.split('!')
+          window.requirejs.config({ paths: { [n]: p } })
+
+          this.setState({ unset: false }, () => {
+            this.mountComponent()
+          })
+        }
+      })
+
+      if (!this.state.unset) {
+        this.mountComponent()
+      }
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe()
+    }
+
+    componentDidCatch(e) {
+      this.setState({ error: e.message || 'Component Error' })
+    }
+
+    mountComponent = () => {
+      window.requirejs([name], (C) => {
         if (!C) {
           this.setState({ error: 'Component Name Error' })
           return
@@ -48,10 +92,6 @@ export default function ({
       })
     }
 
-    componentDidCatch(e) {
-      this.setState({ error: e.message || 'Component Error' })
-    }
-
     dispatch = (component, func, ...values) => {
       if (component === 'global') {
         if (!storeMethods[func]) {
@@ -75,8 +115,12 @@ export default function ({
     }
 
     render() {
-      const { component: C, error } = this.state
+      const { component: C, error, unset } = this.state
       const store = {}
+
+      if (unset) {
+        return null
+      }
 
       if (!this.props[MOUNTED_COMPONENTS].includes(name) && C) {
         return null
@@ -95,7 +139,7 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS) {
+        if (key !== MOUNTED_COMPONENTS && key !== COMPONENT_PACKAGES) {
           store[key] = this.props[key]
         }
       })
