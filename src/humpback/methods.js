@@ -13,7 +13,8 @@ export default {
 
   mountComponent({ getStore, dispatch }, name, path) {
     const packages = getStore()[COMPONENT_PACKAGES]
-    packages[name] = `${name}!${path.slice(0, -3)}`
+    packages[name] = path.slice(0, -3)
+    window.requirejs.config({ paths: { [name]: packages[name] } })
     dispatch({ [COMPONENT_PACKAGES]: packages }, true)
   },
 }

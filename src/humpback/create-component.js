@@ -35,13 +35,9 @@ export default function ({
         }
 
         const packages = getStore()[COMPONENT_PACKAGES]
-        const current = Object.values(packages).find((item) => item.includes('!'))
 
-        if (current) {
+        if (packages[name]) {
           this.unsubscribe()
-
-          const [n, p] = current.split('!')
-          window.requirejs.config({ paths: { [n]: p } })
 
           this.setState({ unset: false }, () => {
             this.mountComponent()
