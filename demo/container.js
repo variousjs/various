@@ -4,8 +4,8 @@ import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
 import { Link, Route } from 'react-router-dom'
 import './global.less'
 
-function Container({ store, Routes, config, dispatch, componentCreator, MOUNTED_COMPONENTS }) {
-  const rs = config.routes
+function Container({ store, Routes, CONFIG, dispatch, componentCreator, MOUNTED_COMPONENTS }) {
+  const rs = CONFIG.routes
   .map((item) => ({
     path: item.path,
     components: item.components.join().split(',')
@@ -39,7 +39,7 @@ function Container({ store, Routes, config, dispatch, componentCreator, MOUNTED_
           theme="dark"
         >
           {
-            config.menu
+            CONFIG.menu
               .filter(({ label }) => label)
               .map((item) => {
                 const {

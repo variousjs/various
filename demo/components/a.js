@@ -44,6 +44,7 @@ class X extends Component {
   }
 
   render() {
+    console.log(this.props)
     const { user } = this.props.store
     const { a } = this.props
     const { componentB } = this.state

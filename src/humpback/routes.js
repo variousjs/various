@@ -10,6 +10,7 @@ export default class extends Component {
     Loading: PropTypes.element.isRequired,
     Error: PropTypes.element.isRequired,
     componentMethods: PropTypes.object.isRequired,
+    config: PropTypes.object.isRequired,
   }
 
   state = {
@@ -66,6 +67,10 @@ export default class extends Component {
                         Loading,
                         Error,
                         router,
+                        config: {
+                          ...this.props.config,
+                          ...this.props.routes,
+                        },
                       }
                       const C = createComponent(config)
                       return (

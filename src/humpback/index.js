@@ -36,6 +36,7 @@ export default (config) => {
       Loading: L,
       Error: E,
       router,
+      config: { ...rest, routes },
     })
     return <R />
   })
@@ -57,6 +58,7 @@ export default (config) => {
       }
       return (
         <RoutesWrapper
+          config={rest}
           routes={routes}
           storeMethods={storeMethods}
           Loading={L}
@@ -133,9 +135,9 @@ export default (config) => {
           dispatch={this.dispatch}
           Routes={Routes}
           componentCreator={componentCreator}
-          config={{ ...rest, routes }}
           store={storeData}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
+          CONFIG={{ ...rest, routes, packages: this.props[COMPONENT_PACKAGES] }}
         />
       )
     }

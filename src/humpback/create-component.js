@@ -12,6 +12,7 @@ import {
 } from './config'
 
 export default function ({
+  config,
   name,
   storeMethods,
   componentMethods,
@@ -92,7 +93,11 @@ export default function ({
 
     onReload = () => {
       window.requirejs.undef(name)
-      window.requirejs.config({ paths: { [name]: this.props[COMPONENT_PACKAGES][name] } })
+      window.requirejs.config({
+        paths: {
+          [name]: this.props[COMPONENT_PACKAGES][name].slice(0, -3),
+        },
+      })
       this.setState({ component: undefined, error: undefined }, () => {
         this.mountComponent()
       })
@@ -154,6 +159,7 @@ export default function ({
 
       return (
         <C
+          CONFIG={{ ...config, packages: this.props[COMPONENT_PACKAGES] }}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
