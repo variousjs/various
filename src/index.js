@@ -1,5 +1,3 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
 import { DEFAULT_PACKAGES, SCRIPT_SRC } from './config'
 
 window.Humpback = class {
@@ -27,6 +25,8 @@ window.Humpback = class {
     const requires = this.paths.global ? ['humpback', 'global'] : ['humpback']
     window.requirejs(requires, (initiator, global = {}) => {
       initiator({ ...this.config, ...global })
+    }, (e) => {
+      document.write(e.message || 'Initialization error')
     })
   }
 

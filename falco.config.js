@@ -1,13 +1,16 @@
 const { NODE_ENV } = process.env
-const output = {
-  filename: `${NODE_ENV}.js`,
-}
+const output = { filename: `${NODE_ENV}.js` }
+
+let targets = ['defaults']
 
 if (NODE_ENV !== 'index') {
   output.library = NODE_ENV
   output.libraryTarget = 'amd'
   output.libraryExport = 'default'
+
+  targets = { esmodules: true }
 }
+
 
 module.exports = {
   output,
@@ -38,8 +41,6 @@ module.exports = {
       amd: 'antd',
     },
   ],
-  targets: {
-    esmodules: true,
-  },
+  targets,
   // report: true,
 }
