@@ -5,7 +5,7 @@ import { HashRouter as Router, withRouter } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
 import RoutesWrapper from './routes'
 import createComponent from './create-component'
-import defaultMethods from './methods'
+import defaultDispatcher from './dispatcher'
 import {
   Loading,
   Error,
@@ -19,20 +19,20 @@ export default (config) => {
     packages,
     store = {},
     routes = [],
-    methods = {},
+    dispatcher = {},
     loading: L = Loading,
     error: E = Error,
     container: C = Container,
     ...rest
   } = config
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
-  const componentMethods = {}
-  const storeMethods = { ...methods, ...defaultMethods }
+  const componentDispatcher = {}
+  const storeDispatcher = { ...dispatcher, ...defaultDispatcher }
   const componentCreator = (name) => withRouter((router) => {
     const R = createComponent({
       name,
-      storeMethods,
-      componentMethods,
+      storeDispatcher,
+      componentDispatcher,
       Loading: L,
       Error: E,
       router,
@@ -60,10 +60,10 @@ export default (config) => {
         <RoutesWrapper
           config={rest}
           routes={routes}
-          storeMethods={storeMethods}
+          storeDispatcher={storeDispatcher}
           Loading={L}
           Error={E}
-          componentMethods={componentMethods}
+          componentDispatcher={componentDispatcher}
         />
       )
     }
@@ -81,7 +81,7 @@ export default (config) => {
     componentDidMount() {
       const { history } = this.props
       this.unsubscribe = history.listen(() => {
-        Object.keys(componentMethods).forEach((key) => delete componentMethods[key])
+        Object.keys(componentDispatcher).forEach((key) => delete componentDispatcher[key])
         dispatch({ [MOUNTED_COMPONENTS]: [] }, true)
       })
     }
@@ -96,20 +96,20 @@ export default (config) => {
 
     dispatch = (name, func, ...values) => {
       if (name === 'global') {
-        if (!storeMethods[func]) {
-          throw `Method \`${func}\` not exists`
+        if (!storeDispatcher[func]) {
+          throw `Dispatcher \`${func}\` not exists`
         }
-        return dispatch(storeMethods[func], ...values)
+        return dispatch(storeDispatcher[func], ...values)
       }
 
       if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
         throw `Component \`${name}\` not ready`
       }
 
-      const actions = componentMethods[name]
+      const actions = componentDispatcher[name]
 
       if (!actions[func]) {
-        throw `Method \`${func}\` not exists`
+        throw `Dispatcher \`${func}\` not exists`
       }
 
       return actions[func](...values)

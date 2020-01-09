@@ -84,6 +84,7 @@ function Container({ store, Routes, CONFIG, dispatch, componentCreator, MOUNTED_
             background: '#fff',
           }}
         >
+          <Routes />
           <Routes config={rs} />
         </Layout.Content>
       </Layout>

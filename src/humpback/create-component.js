@@ -14,8 +14,8 @@ import {
 export default function ({
   config,
   name,
-  storeMethods,
-  componentMethods,
+  storeDispatcher,
+  componentDispatcher,
   Loading,
   Error,
   router,
@@ -81,7 +81,7 @@ export default function ({
             }
           })
 
-        componentMethods[name] = actions // eslint-disable-line no-param-reassign
+        componentDispatcher[name] = actions // eslint-disable-line no-param-reassign
 
         this.setState({ component: C }, () => {
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
@@ -105,21 +105,21 @@ export default function ({
 
     dispatch = (component, func, ...values) => {
       if (component === 'global') {
-        if (!storeMethods[func]) {
-          throw `Method \`${func}\` not exists`
+        if (!storeDispatcher[func]) {
+          throw `Dispatcher \`${func}\` not exists`
         }
         // eslint-disable-next-line react/prop-types
-        return this.props.dispatch(storeMethods[func], ...values)
+        return this.props.dispatch(storeDispatcher[func], ...values)
       }
 
       if (!this.props[MOUNTED_COMPONENTS].includes(component)) {
         throw `Component \`${component}\` not ready`
       }
 
-      const actions = componentMethods[component]
+      const actions = componentDispatcher[component]
 
       if (!actions[func]) {
-        throw `Method \`${func}\` not exists`
+        throw `Dispatcher \`${func}\` not exists`
       }
 
       return actions[func](...values)
@@ -135,7 +135,6 @@ export default function ({
 
       if (!this.props[MOUNTED_COMPONENTS].includes(name) && C) {
         // eslint-disable-next-line no-param-reassign
-        delete componentMethods[name]
         return null
       }
 

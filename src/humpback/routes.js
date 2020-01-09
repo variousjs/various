@@ -6,10 +6,10 @@ import createComponent from './create-component'
 export default class extends Component {
   static propTypes = {
     routes: PropTypes.array.isRequired,
-    storeMethods: PropTypes.object.isRequired,
+    storeDispatcher: PropTypes.object.isRequired,
     Loading: PropTypes.element.isRequired,
     Error: PropTypes.element.isRequired,
-    componentMethods: PropTypes.object.isRequired,
+    componentDispatcher: PropTypes.object.isRequired,
     config: PropTypes.object.isRequired,
   }
 
@@ -31,8 +31,8 @@ export default class extends Component {
       Loading,
       Error,
       routes,
-      storeMethods,
-      componentMethods,
+      storeDispatcher,
+      componentDispatcher,
     } = this.props
 
     if (error) {
@@ -62,8 +62,8 @@ export default class extends Component {
 
                       const config = {
                         name,
-                        storeMethods,
-                        componentMethods,
+                        storeDispatcher,
+                        componentDispatcher,
                         Loading,
                         Error,
                         router,
