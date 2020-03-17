@@ -158,6 +158,7 @@ export default function ({
 
       return (
         <C
+          NAME={name}
           CONFIG={{ ...config, packages: this.props[COMPONENT_PACKAGES] }}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}

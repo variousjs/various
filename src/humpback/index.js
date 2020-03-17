@@ -57,34 +57,6 @@ export default (config) => {
     )
   }
 
-  // class Routes extends Component {
-  //   static propTypes = {
-  //     // eslint-disable-next-line react/require-default-props
-  //     config: PropTypes.array,
-  //   }
-
-  //   shouldComponentUpdate() {
-  //     return false
-  //   }
-
-  //   render() {
-  //     const { config: cs } = this.props
-  //     if (cs) {
-  //       return cs
-  //     }
-  //     return (
-  //       <RoutesWrapper
-  //         config={rest}
-  //         routes={routes}
-  //         storeDispatcher={storeDispatcher}
-  //         Loading={L}
-  //         Error={E}
-  //         componentDispatcher={componentDispatcher}
-  //       />
-  //     )
-  //   }
-  // }
-
   class R extends Component {
     static propTypes = {
       history: PropTypes.func.isRequired,
