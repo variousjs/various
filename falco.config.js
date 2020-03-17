@@ -11,7 +11,6 @@ if (NODE_ENV !== 'index') {
   targets = { esmodules: true }
 }
 
-
 module.exports = {
   output,
   externals: [

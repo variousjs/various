@@ -51,12 +51,12 @@ export default function ({
       }
     }
 
-    componentWillUnmount() {
-      this.unsubscribe()
-    }
-
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Component Error' })
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe()
     }
 
     mountComponent = () => {
