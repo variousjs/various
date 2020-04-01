@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
 import { Link, Route } from 'react-router-dom'
@@ -14,7 +14,7 @@ function Container({ store, Routes, CONFIG, dispatch, componentCreator, MOUNTED_
             const component = () => components.map((name) => {
               const C = componentCreator(name)
               return (
-              <div className="yyyy">
+              <div style={{ display: 'inline-block', width: 300 }}>
                 <C />
               </div>
             )})
@@ -84,8 +84,7 @@ function Container({ store, Routes, CONFIG, dispatch, componentCreator, MOUNTED_
             background: '#fff',
           }}
         >
-          <Routes />
-          <Routes config={rs} />
+          <Routes components={rs} />
         </Layout.Content>
       </Layout>
     </Layout>

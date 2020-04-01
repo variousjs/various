@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { render } from 'react-dom'
 import { HashRouter as Router, withRouter } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
-import RoutesWrapper from './routes'
+import getRoutes from './routes'
 import createComponent from './create-component'
 import defaultDispatcher from './dispatcher'
 import {
@@ -40,22 +40,7 @@ export default (config) => {
     })
     return <R />
   })
-  // eslint-disable-next-line react/prop-types
-  const Routes = ({ config: c }) => {
-    if (c) {
-      return c
-    }
-    return (
-      <RoutesWrapper
-        config={rest}
-        routes={routes}
-        storeDispatcher={storeDispatcher}
-        Loading={L}
-        Error={E}
-        componentDispatcher={componentDispatcher}
-      />
-    )
-  }
+  const Routes = getRoutes(E)
 
   class R extends Component {
     static propTypes = {
