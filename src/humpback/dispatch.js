@@ -1,8 +1,10 @@
 import { MOUNTED_COMPONENTS } from './config'
 import { dispatch } from './store'
-import { names } from './dispatcher'
+import defaultDispatch from './dispatcher'
 
 export default function (storeDispatcher, componentDispatcher) {
+  const names = Object.keys(defaultDispatch)
+
   return function dispatcher(typeORname, funcORvalue, ...values) {
     const currentDispatch = this.props.dispatch || dispatch
 

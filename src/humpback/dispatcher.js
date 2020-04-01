@@ -19,6 +19,4 @@ const dispatcher = {
   },
 }
 
-export const names = Object.keys(dispatcher)
-
 export default dispatcher
