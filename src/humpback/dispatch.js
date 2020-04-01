@@ -1,20 +1,26 @@
-export default function (typeORname, funcORvalue, ...values) {
-  if (name === 'global') {
-    if (!storeDispatcher[funcOrValue]) {
-      throw `Dispatcher \`${funcOrValue}\` not exists`
+import { MOUNTED_COMPONENTS } from './config'
+import { dispatch } from './store'
+
+export default function (storeDispatcher, componentDispatcher) {
+  return function dispatcher(typeORname, funcORvalue, ...values) {
+    if (typeORname === 'global') {
+      if (!storeDispatcher[funcORvalue]) {
+        throw `Dispatcher \`${funcORvalue}\` not exists`
+      }
+      const currentDispatch = this.props.dispatch || dispatch
+      return currentDispatch(storeDispatcher[funcORvalue], ...values)
     }
-    return dispatch(storeDispatcher[funcOrValue], ...values)
+
+    if (!this.props[MOUNTED_COMPONENTS].includes(typeORname)) {
+      throw `Component \`${typeORname}\` not ready`
+    }
+
+    const actions = componentDispatcher[typeORname]
+
+    if (!actions[funcORvalue]) {
+      throw `Dispatcher \`${funcORvalue}\` not exists`
+    }
+
+    return actions[funcORvalue](...values)
   }
-
-  if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
-    throw `Component \`${name}\` not ready`
-  }
-
-  const actions = componentDispatcher[name]
-
-  if (!actions[funcOrValue]) {
-    throw `Dispatcher \`${funcOrValue}\` not exists`
-  }
-
-  return actions[funcOrValue](...values)
 }

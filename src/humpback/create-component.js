@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import getDispatch from './dispatch'
 import {
   connect,
   getStore,
@@ -21,6 +22,7 @@ export default function ({
   router,
 }) {
   const storeKeys = Object.keys(getStore())
+  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
 
   class R extends Component {
     state = {
@@ -28,6 +30,8 @@ export default function ({
       error: undefined,
       unset: !this.props[COMPONENT_PACKAGES][name],
     }
+
+    dispatch = currentDispatch.bind(this)
 
     componentDidMount() {
       this.unsubscribe = subscribe((keys) => {
@@ -101,28 +105,6 @@ export default function ({
       this.setState({ component: undefined, error: undefined }, () => {
         this.mountComponent()
       })
-    }
-
-    dispatch = (component, func, ...values) => {
-      if (component === 'global') {
-        if (!storeDispatcher[func]) {
-          throw `Dispatcher \`${func}\` not exists`
-        }
-        // eslint-disable-next-line react/prop-types
-        return this.props.dispatch(storeDispatcher[func], ...values)
-      }
-
-      if (!this.props[MOUNTED_COMPONENTS].includes(component)) {
-        throw `Component \`${component}\` not ready`
-      }
-
-      const actions = componentDispatcher[component]
-
-      if (!actions[func]) {
-        throw `Dispatcher \`${func}\` not exists`
-      }
-
-      return actions[func](...values)
     }
 
     render() {

@@ -6,6 +6,7 @@ import { createStore, connect, dispatch } from './store'
 import getRoutes from './routes'
 import createComponent from './create-component'
 import defaultDispatcher from './dispatcher'
+import getDispatch from './dispatch'
 import {
   Loading,
   Error,
@@ -41,6 +42,7 @@ export default (config) => {
     return <R />
   })
   const Routes = getRoutes(E)
+  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
 
   class R extends Component {
     static propTypes = {
@@ -50,6 +52,8 @@ export default (config) => {
     state = {
       error: undefined,
     }
+
+    dispatch = currentDispatch.bind(this)
 
     componentDidMount() {
       const { history } = this.props
@@ -65,27 +69,6 @@ export default (config) => {
 
     componentWillUnmount() {
       this.unsubscribe()
-    }
-
-    dispatch = (name, funcOrValue, ...values) => {
-      if (name === 'global') {
-        if (!storeDispatcher[funcOrValue]) {
-          throw `Dispatcher \`${funcOrValue}\` not exists`
-        }
-        return dispatch(storeDispatcher[funcOrValue], ...values)
-      }
-
-      if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
-        throw `Component \`${name}\` not ready`
-      }
-
-      const actions = componentDispatcher[name]
-
-      if (!actions[funcOrValue]) {
-        throw `Dispatcher \`${funcOrValue}\` not exists`
-      }
-
-      return actions[funcOrValue](...values)
     }
 
     render() {
