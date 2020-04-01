@@ -67,12 +67,12 @@ export default (config) => {
       this.unsubscribe()
     }
 
-    dispatch = (name, func, ...values) => {
+    dispatch = (name, funcOrValue, ...values) => {
       if (name === 'global') {
-        if (!storeDispatcher[func]) {
-          throw `Dispatcher \`${func}\` not exists`
+        if (!storeDispatcher[funcOrValue]) {
+          throw `Dispatcher \`${funcOrValue}\` not exists`
         }
-        return dispatch(storeDispatcher[func], ...values)
+        return dispatch(storeDispatcher[funcOrValue], ...values)
       }
 
       if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
@@ -81,11 +81,11 @@ export default (config) => {
 
       const actions = componentDispatcher[name]
 
-      if (!actions[func]) {
-        throw `Dispatcher \`${func}\` not exists`
+      if (!actions[funcOrValue]) {
+        throw `Dispatcher \`${funcOrValue}\` not exists`
       }
 
-      return actions[func](...values)
+      return actions[funcOrValue](...values)
     }
 
     render() {
