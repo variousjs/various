@@ -1,13 +1,19 @@
 import { MOUNTED_COMPONENTS } from './config'
 import { dispatch } from './store'
+import { names } from './dispatcher'
 
 export default function (storeDispatcher, componentDispatcher) {
   return function dispatcher(typeORname, funcORvalue, ...values) {
+    const currentDispatch = this.props.dispatch || dispatch
+
+    if (names.includes(typeORname)) {
+      return currentDispatch(storeDispatcher[typeORname], funcORvalue)
+    }
+
     if (typeORname === 'global') {
       if (!storeDispatcher[funcORvalue]) {
         throw `Dispatcher \`${funcORvalue}\` not exists`
       }
-      const currentDispatch = this.props.dispatch || dispatch
       return currentDispatch(storeDispatcher[funcORvalue], ...values)
     }
 

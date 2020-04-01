@@ -37,15 +37,18 @@ class X extends Component {
   }
 
   onGetStatus = () => {
-    message.info(this.props.dispatch('global', 'getMountedComponents'))
+    message.info(this.props.dispatch('GET_MOUNTED_COMPONENTS'))
   }
 
   onRemoveA = () => {
-    this.props.dispatch('global', 'unMountComponent', 'a')
+    this.props.dispatch('UN_MOUNT_COMPONENT', { name: 'a' })
   }
 
   onGetSwitch = () => {
-    this.props.dispatch('global', 'mountComponent', 'switch', 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js')
+    this.props.dispatch('MOUNT_COMPONENT', {
+      name: 'switch',
+      url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+    })
   }
 
   render() {
