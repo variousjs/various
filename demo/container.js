@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout, Menu, Icon, Badge, Button, Tag } from 'antd'
+import { Layout, Menu, Icon, Badge, Button, Tag, Input } from 'antd'
 import { Link, Route } from 'react-router-dom'
 import './global.less'
 
@@ -64,7 +64,7 @@ function Container({ store, Routes, CONFIG, dispatch, componentCreator, MOUNTED_
       <Layout>
         <Layout.Header style={{ background: '#fff', padding: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <input />
+            <Input style={{ width: 100 }} />
             <div>{store.user.name}</div>
             <div style={{ margin: '0 20px' }}>
               当前已经加载完成的组件:

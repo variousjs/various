@@ -3,24 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <title> Humpback </title>
-<link rel="stylesheet" href="https://unpkg.com/antd@3.26.0/dist/antd.min.css" />
-<style>
-.column-components {
-  display: inline-block;
-  vertical-align: top;
-}
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd.min.css" />
 </head>
 <body>
 <div id="root"></div>
-<script src="https://s2.pstatp.com/cdn/expire-1-M/require.js/2.3.6/require.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs/require.js"></script>
 <script src="./dist/index.js"></script>
 <script>
 var config = {
   packages: {
     global: './dist/global.js',
-    moment: 'https://unpkg.com/moment@2.24.0/moment.js',
-    antd: 'https://unpkg.com/antd@3.26.0/dist/antd-with-locales.min.js',
+    moment: 'https://cdn.jsdelivr.net/npm/moment/min/moment.min.js',
+    antd: 'https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd-with-locales.min.js',
     moment_zhCN: './zh-cn.js',
     a: './dist/a.js',
     b: './dist/b.js',

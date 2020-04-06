@@ -19,7 +19,6 @@ export default (config) => {
   const {
     packages,
     store = {},
-    routes = [],
     dispatcher = {},
     loading: L = Loading,
     error: E = Error,
@@ -37,7 +36,7 @@ export default (config) => {
       Loading: L,
       Error: E,
       router,
-      config: { ...rest, routes },
+      config: rest,
     })
     return <R />
   })
@@ -93,7 +92,7 @@ export default (config) => {
           componentCreator={componentCreator}
           store={storeData}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
-          CONFIG={{ ...rest, routes, packages: this.props[COMPONENT_PACKAGES] }}
+          CONFIG={{ ...rest, packages: this.props[COMPONENT_PACKAGES] }}
         />
       )
     }
