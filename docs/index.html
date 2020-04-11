@@ -18,6 +18,8 @@ var config = {
     moment_zhCN: './zh-cn.js',
     a: './dist/a.js',
     b: './dist/b.js',
+    c: './dist/c.js',
+    d: './dist/d.js',
     w: 'https://www.baidu.com/s.js'
   },
   menu: [
@@ -36,8 +38,18 @@ var config = {
       path: '/ttt',
       icon: 'user',
     },
+    {
+      label: 'posts',
+      path: '/posts',
+      icon: 'book',
+    },
   ],
   routes: [
+    {
+      path: ['/posts', '/posts/:id'],
+      type: 'post',
+      components: ['c', 'd']
+    },
     {
       path: '/',
       components: [

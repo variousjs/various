@@ -12,6 +12,8 @@
   "scripts": {
     "a": "NODE_ENV=a falco -c -m demo/components/a.js -o docs/dist",
     "b": "NODE_ENV=b falco -c -m demo/components/b.js -o docs/dist",
+    "c": "NODE_ENV=c falco -c -m demo/components/c.js -o docs/dist",
+    "d": "NODE_ENV=d falco -c -m demo/components/d.js -o docs/dist",
     "index": "NODE_ENV=index falco -c -m src/index.js -o docs/dist",
     "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o docs/dist",
     "global": "NODE_ENV=global falco -c -m demo/index.js -o docs/dist",

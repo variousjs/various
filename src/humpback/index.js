@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { render } from 'react-dom'
-import { HashRouter as Router, withRouter } from 'react-router-dom'
+import { HashRouter as Router, withRouter, Switch } from 'react-router-dom'
 import { createStore, connect, dispatch } from './store'
 import getRoutes from './routes'
 import createComponent from './create-component'
@@ -108,7 +108,9 @@ export default (config) => {
 
   render((
     <Router>
-      <X />
+      <Switch>
+        <X />
+      </Switch>
     </Router>
   ), document.querySelector('#root'))
 }
