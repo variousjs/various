@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export default (Error) => class extends Component {
   static propTypes = {
-    components: PropTypes.any.isRequired,
+    children: PropTypes.element.isRequired,
   }
 
   state = {
@@ -20,12 +20,12 @@ export default (Error) => class extends Component {
 
   render() {
     const { error } = this.state
-    const { components } = this.props
+    const { children } = this.props
 
     if (error) {
       return (<Error error={error} />)
     }
 
-    return components
+    return children
   }
 }

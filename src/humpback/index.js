@@ -89,6 +89,13 @@ export default (config) => {
         <C
           dispatch={this.dispatch}
           Routes={Routes}
+          // Routes={(props) => (
+          //   <Router>
+          //     <Switch>
+          //       <Routes {...props} />
+          //     </Switch>
+          //   </Router>
+          // )}
           componentCreator={componentCreator}
           store={storeData}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
@@ -106,6 +113,7 @@ export default (config) => {
 
   const X = connect(...storeKeys)(withRouter(R))
 
+  // render((<X />), document.querySelector('#root'))
   render((
     <Router>
       <Switch>
