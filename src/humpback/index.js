@@ -12,7 +12,6 @@ import {
   Error,
   Container,
   MOUNTED_COMPONENTS,
-  COMPONENT_PACKAGES,
 } from './config'
 
 export default (config) => {
@@ -80,7 +79,7 @@ export default (config) => {
       const storeData = {}
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS && key !== COMPONENT_PACKAGES) {
+        if (key !== MOUNTED_COMPONENTS) {
           storeData[key] = this.props[key]
         }
       })
@@ -92,7 +91,7 @@ export default (config) => {
           componentCreator={componentCreator}
           store={storeData}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
-          CONFIG={{ ...rest, packages: this.props[COMPONENT_PACKAGES] }}
+          CONFIG={rest}
         />
       )
     }
@@ -101,7 +100,6 @@ export default (config) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS]: [],
-    [COMPONENT_PACKAGES]: packages,
   })
 
   const X = connect(...storeKeys)(withRouter(R))

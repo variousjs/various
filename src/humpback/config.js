@@ -11,8 +11,6 @@ export const IGNORE_STATIC_METHODS = [
 
 export const MOUNTED_COMPONENTS = 'MOUNTED_COMPONENTS'
 
-export const COMPONENT_PACKAGES = 'COMPONENT_PACKAGES'
-
 export const Loading = () => (
   <h3>Loading</h3>
 )

@@ -1,16 +1,7 @@
 import React, { Component } from 'react'
 import getDispatch from './dispatch'
-import {
-  connect,
-  getStore,
-  dispatch,
-  subscribe,
-} from './store'
-import {
-  IGNORE_STATIC_METHODS,
-  MOUNTED_COMPONENTS,
-  COMPONENT_PACKAGES,
-} from './config'
+import { connect, getStore, dispatch } from './store'
+import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
 
 export default function ({
   config,
@@ -28,39 +19,16 @@ export default function ({
     state = {
       component: undefined,
       error: undefined,
-      unset: !this.props[COMPONENT_PACKAGES][name],
     }
 
     dispatch = currentDispatch.bind(this)
 
     componentDidMount() {
-      this.unsubscribe = subscribe((keys) => {
-        if (!keys.includes(COMPONENT_PACKAGES) || !this.state.unset) {
-          return
-        }
-
-        const packages = getStore()[COMPONENT_PACKAGES]
-
-        if (packages[name]) {
-          this.unsubscribe()
-
-          this.setState({ unset: false }, () => {
-            this.mountComponent()
-          })
-        }
-      })
-
-      if (!this.state.unset) {
-        this.mountComponent()
-      }
+      this.mountComponent()
     }
 
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Component Error' })
-    }
-
-    componentWillUnmount() {
-      this.unsubscribe()
     }
 
     mountComponent = () => {
@@ -96,15 +64,16 @@ export default function ({
     }
 
     onReload = () => {
-      window.requirejs.undef(name)
-      window.requirejs.config({
-        paths: {
-          [name]: this.props[COMPONENT_PACKAGES][name].slice(0, -3),
-        },
-      })
-      this.setState({ component: undefined, error: undefined }, () => {
-        this.mountComponent()
-      })
+      console.log('todo')
+      // window.requirejs.undef(name)
+      // window.requirejs.config({
+      //   paths: {
+      //     [name]: this.props[COMPONENT_PACKAGES][name].slice(0, -3),
+      //   },
+      // })
+      // this.setState({ component: undefined, error: undefined }, () => {
+      //   this.mountComponent()
+      // })
     }
 
     render() {
@@ -133,7 +102,7 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS && key !== COMPONENT_PACKAGES) {
+        if (key !== MOUNTED_COMPONENTS) {
           store[key] = this.props[key]
         }
       })
@@ -141,7 +110,7 @@ export default function ({
       return (
         <C
           NAME={name}
-          CONFIG={{ ...config, packages: this.props[COMPONENT_PACKAGES] }}
+          CONFIG={config}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
