@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { render } from 'react-dom'
-import { HashRouter as Router, withRouter, Switch } from 'react-router-dom'
-import { createStore, connect, dispatch } from './store'
+import { HashRouter as Router, Switch } from 'react-router-dom'
+import { createStore, connect } from './store'
 import getRoutes from './routes'
 import createComponent from './create-component'
 import defaultDispatcher from './dispatcher'
@@ -57,30 +56,14 @@ export default (config) => {
   }
 
   class R extends Component {
-    static propTypes = {
-      history: PropTypes.func.isRequired,
-    }
-
     state = {
       error: undefined,
     }
 
     dispatch = currentDispatch.bind(this)
 
-    componentDidMount() {
-      const { history } = this.props
-      this.unsubscribe = history.listen(() => {
-        Object.keys(componentDispatcher).forEach((key) => delete componentDispatcher[key])
-        dispatch({ [MOUNTED_COMPONENTS]: [] }, true)
-      })
-    }
-
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Container Error' })
-    }
-
-    componentWillUnmount() {
-      this.unsubscribe()
     }
 
     render() {
@@ -111,7 +94,7 @@ export default (config) => {
     }
   }
 
-  const X = connect(...storeKeys)(withRouter(R))
+  const X = connect(...storeKeys)(R)
 
   render((
     <Router>

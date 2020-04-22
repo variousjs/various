@@ -38,6 +38,15 @@ export default function ({
       this.setState({ error: e.message || 'Component Error' })
     }
 
+    componentWillUnmount() {
+      let mountedComponents = getStore()[MOUNTED_COMPONENTS]
+      mountedComponents = mountedComponents.filter((item) => item !== name)
+      dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+
+      // eslint-disable-next-line no-param-reassign
+      delete componentDispatcher[name]
+    }
+
     mountComponent = () => {
       window.requirejs([name], (C) => {
         if (!C) {
