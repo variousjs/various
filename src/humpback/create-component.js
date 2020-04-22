@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import getDispatch from './dispatch'
 import { connect, getStore, dispatch } from './store'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
@@ -10,7 +11,6 @@ export default function ({
   componentDispatcher,
   Loading,
   Error,
-  router,
 }) {
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
@@ -77,17 +77,8 @@ export default function ({
     }
 
     render() {
-      const { component: C, error, unset } = this.state
+      const { component: C, error } = this.state
       const store = {}
-
-      if (unset) {
-        return null
-      }
-
-      if (!this.props[MOUNTED_COMPONENTS].includes(name) && C) {
-        // eslint-disable-next-line no-param-reassign
-        return null
-      }
 
       if (error) {
         return (
@@ -107,18 +98,18 @@ export default function ({
         }
       })
 
+      console.log(storeKeys, store)
+
       return (
         <C
-          NAME={name}
           CONFIG={config}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
-          {...router} // eslint-disable-line react/jsx-props-no-spreading
         />
       )
     }
   }
 
-  return connect(...storeKeys)(R)
+  return connect(...storeKeys)(withRouter(R))
 }

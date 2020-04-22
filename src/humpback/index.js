@@ -16,7 +16,8 @@ import {
 
 export default (config) => {
   const {
-    packages,
+    dependencies,
+    components,
     store = {},
     dispatcher = {},
     loading: L = Loading,
@@ -27,20 +28,33 @@ export default (config) => {
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentDispatcher = {}
   const storeDispatcher = { ...dispatcher, ...defaultDispatcher }
-  const componentCreator = (name) => withRouter((router) => {
+  // const componentCreator = (name) => withRouter((router) => {
+  //   const R = createComponent({
+  //     name,
+  //     storeDispatcher,
+  //     componentDispatcher,
+  //     Loading: L,
+  //     Error: E,
+  //     router,
+  //     config: rest,
+  //   })
+  //   return <R />
+  // })
+  const COMPONENTS = {}
+  const Routes = getRoutes(E)
+  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
+
+  Object.keys(components).forEach((name) => {
     const R = createComponent({
       name,
       storeDispatcher,
       componentDispatcher,
       Loading: L,
       Error: E,
-      router,
       config: rest,
     })
-    return <R />
+    COMPONENTS[name] = () => (<R />)
   })
-  const Routes = getRoutes(E)
-  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
 
   class R extends Component {
     static propTypes = {
@@ -88,9 +102,9 @@ export default (config) => {
         <C
           dispatch={this.dispatch}
           Routes={Routes}
-          componentCreator={componentCreator}
           store={storeData}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
+          COMPONENTS={COMPONENTS}
           CONFIG={rest}
         />
       )

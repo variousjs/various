@@ -45,6 +45,7 @@ class X extends Component {
   }
 
   render() {
+    console.log(this.props)
     const { user } = this.props.store
     const { a } = this.props
     const { componentB, value } = this.state
@@ -53,7 +54,7 @@ class X extends Component {
       <div>
         <p style={{ fontSize: 100 }}>A</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <p>全局值：{user.name}</p>
+          <p>全局值：{user?.name}</p>
           <p>B 组件值: {a}</p>
           <p>当前组件值: {value}</p>
           <p>B 组件加载完成：{componentB ? 'yes' : 'no'}</p>
