@@ -5,7 +5,7 @@ import './global.less'
 
 export default class extends Component {
   render() {
-    const { Routes, CONFIG, COMPONENTS } = this.props
+    const { Routes, CONFIG, componentCreator } = this.props
     const routes = CONFIG.routes.map((item) => ({
       ...item,
       path: item.path,
@@ -18,7 +18,7 @@ export default class extends Component {
           {
             routes.map(({ path, components }) => {
               const component = () => components.map((name) => {
-                const C = COMPONENTS[name]
+                const C = componentCreator(name)
                 return (
                   <div style={{ display: 'inline-block', width: 300 }}>
                     <C />

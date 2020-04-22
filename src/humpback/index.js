@@ -49,6 +49,13 @@ export default (config) => {
     COMPONENTS[name] = () => (<R />)
   })
 
+  const componentCreator = (name) => {
+    if (COMPONENTS[name]) {
+      return COMPONENTS[name]
+    }
+    return () => (<E error="Component undefined" />)
+  }
+
   class R extends Component {
     static propTypes = {
       history: PropTypes.func.isRequired,
@@ -96,8 +103,8 @@ export default (config) => {
           dispatch={this.dispatch}
           Routes={Routes}
           store={storeData}
+          componentCreator={componentCreator}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
-          COMPONENTS={COMPONENTS}
           CONFIG={rest}
         />
       )
