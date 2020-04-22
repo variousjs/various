@@ -9,7 +9,9 @@ export default function ({ error, reload }) {
         description={error}
         type="error"
       />
-      <Button onClick={reload}>刷新</Button>
+      {
+        reload && <Button onClick={reload}>刷新</Button>
+      }
     </>
   )
 }

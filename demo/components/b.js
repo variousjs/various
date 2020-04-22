@@ -40,22 +40,9 @@ class X extends Component {
     message.info(this.props.dispatch('GET_MOUNTED_COMPONENTS'))
   }
 
-  onRemoveA = () => {
-    this.props.dispatch('UN_MOUNT_COMPONENT', { name: 'a' })
-  }
-
-  onGetSwitch = () => {
-    this.props.dispatch('MOUNT_COMPONENT', {
-      name: 'switch',
-      url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-    })
-  }
-
   render() {
     const { number } = this.props.store
     const { b, match } = this.props
-
-    console.log(this.props)
 
     return (
       <div>
@@ -68,8 +55,6 @@ class X extends Component {
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值</Button>
           <Button onClick={this.onGetStatus}>获取当前加载组件</Button>
-          <Button onClick={this.onRemoveA}>卸载 A 组件</Button>
-          <Button onClick={this.onGetSwitch}>加载 Switch 组件</Button>
         </div>
       </div>
     )
