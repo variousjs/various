@@ -2,8 +2,8 @@ import { DEFAULT_PACKAGES, SCRIPT_SRC } from './config'
 
 window.Humpback = class {
   constructor(config = {}) {
-    const { packages } = config
-    const paths = { ...DEFAULT_PACKAGES, ...packages }
+    const { dependencies, components } = config
+    const paths = { ...DEFAULT_PACKAGES, ...dependencies, ...components }
 
     paths.humpback = SCRIPT_SRC
       .split('/')

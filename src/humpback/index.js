@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { render } from 'react-dom'
-import { HashRouter as Router, withRouter, Switch } from 'react-router-dom'
-import { createStore, connect, dispatch } from './store'
+import { HashRouter as Router, Switch } from 'react-router-dom'
+import { createStore, connect } from './store'
 import getRoutes from './routes'
 import createComponent from './create-component'
 import defaultDispatcher from './dispatcher'
@@ -12,12 +11,12 @@ import {
   Error,
   Container,
   MOUNTED_COMPONENTS,
-  COMPONENT_PACKAGES,
 } from './config'
 
 export default (config) => {
   const {
-    packages,
+    dependencies,
+    components,
     store = {},
     dispatcher = {},
     loading: L = Loading,
@@ -28,46 +27,43 @@ export default (config) => {
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentDispatcher = {}
   const storeDispatcher = { ...dispatcher, ...defaultDispatcher }
-  const componentCreator = (name) => withRouter((router) => {
+  const COMPONENTS = {}
+  const Routes = getRoutes(E)
+  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
+
+  createStore({
+    ...store,
+    [MOUNTED_COMPONENTS]: [],
+  })
+
+  Object.keys(components).forEach((name) => {
     const R = createComponent({
       name,
       storeDispatcher,
       componentDispatcher,
       Loading: L,
       Error: E,
-      router,
-      config: rest,
+      config: { ...rest, components },
     })
-    return <R />
+    COMPONENTS[name] = () => (<R />)
   })
-  const Routes = getRoutes(E)
-  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
+
+  const componentCreator = (name) => {
+    if (COMPONENTS[name]) {
+      return COMPONENTS[name]
+    }
+    return () => (<E error="Component undefined" />)
+  }
 
   class R extends Component {
-    static propTypes = {
-      history: PropTypes.func.isRequired,
-    }
-
     state = {
       error: undefined,
     }
 
     dispatch = currentDispatch.bind(this)
 
-    componentDidMount() {
-      const { history } = this.props
-      this.unsubscribe = history.listen(() => {
-        Object.keys(componentDispatcher).forEach((key) => delete componentDispatcher[key])
-        dispatch({ [MOUNTED_COMPONENTS]: [] }, true)
-      })
-    }
-
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Container Error' })
-    }
-
-    componentWillUnmount() {
-      this.unsubscribe()
     }
 
     render() {
@@ -80,7 +76,7 @@ export default (config) => {
       const storeData = {}
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS && key !== COMPONENT_PACKAGES) {
+        if (key !== MOUNTED_COMPONENTS) {
           storeData[key] = this.props[key]
         }
       })
@@ -89,22 +85,16 @@ export default (config) => {
         <C
           dispatch={this.dispatch}
           Routes={Routes}
-          componentCreator={componentCreator}
           store={storeData}
+          componentCreator={componentCreator}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
-          CONFIG={{ ...rest, packages: this.props[COMPONENT_PACKAGES] }}
+          CONFIG={rest}
         />
       )
     }
   }
 
-  createStore({
-    ...store,
-    [MOUNTED_COMPONENTS]: [],
-    [COMPONENT_PACKAGES]: packages,
-  })
-
-  const X = connect(...storeKeys)(withRouter(R))
+  const X = connect(...storeKeys)(R)
 
   render((
     <Router>

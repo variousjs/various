@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import getDispatch from './dispatch'
-import {
-  connect,
-  getStore,
-  dispatch,
-  subscribe,
-} from './store'
-import {
-  IGNORE_STATIC_METHODS,
-  MOUNTED_COMPONENTS,
-  COMPONENT_PACKAGES,
-} from './config'
+import { connect, getStore, dispatch } from './store'
+import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
 
 export default function ({
   config,
@@ -19,40 +12,26 @@ export default function ({
   componentDispatcher,
   Loading,
   Error,
-  router,
 }) {
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
 
   class R extends Component {
+    static propTypes = {
+      history: PropTypes.func.isRequired,
+      match: PropTypes.object.isRequired,
+      location: PropTypes.object.isRequired,
+    }
+
     state = {
       component: undefined,
       error: undefined,
-      unset: !this.props[COMPONENT_PACKAGES][name],
     }
 
     dispatch = currentDispatch.bind(this)
 
     componentDidMount() {
-      this.unsubscribe = subscribe((keys) => {
-        if (!keys.includes(COMPONENT_PACKAGES) || !this.state.unset) {
-          return
-        }
-
-        const packages = getStore()[COMPONENT_PACKAGES]
-
-        if (packages[name]) {
-          this.unsubscribe()
-
-          this.setState({ unset: false }, () => {
-            this.mountComponent()
-          })
-        }
-      })
-
-      if (!this.state.unset) {
-        this.mountComponent()
-      }
+      this.mountComponent()
     }
 
     componentDidCatch(e) {
@@ -60,7 +39,12 @@ export default function ({
     }
 
     componentWillUnmount() {
-      this.unsubscribe()
+      let mountedComponents = getStore()[MOUNTED_COMPONENTS]
+      mountedComponents = mountedComponents.filter((item) => item !== name)
+      dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+
+      // eslint-disable-next-line no-param-reassign
+      delete componentDispatcher[name]
     }
 
     mountComponent = () => {
@@ -99,7 +83,7 @@ export default function ({
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
-          [name]: this.props[COMPONENT_PACKAGES][name].slice(0, -3),
+          [name]: config.components[name].slice(0, -3),
         },
       })
       this.setState({ component: undefined, error: undefined }, () => {
@@ -108,17 +92,9 @@ export default function ({
     }
 
     render() {
-      const { component: C, error, unset } = this.state
+      const { history, location, match } = this.props
+      const { component: C, error } = this.state
       const store = {}
-
-      if (unset) {
-        return null
-      }
-
-      if (!this.props[MOUNTED_COMPONENTS].includes(name) && C) {
-        // eslint-disable-next-line no-param-reassign
-        return null
-      }
 
       if (error) {
         return (
@@ -133,23 +109,24 @@ export default function ({
       }
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS && key !== COMPONENT_PACKAGES) {
+        if (key !== MOUNTED_COMPONENTS) {
           store[key] = this.props[key]
         }
       })
 
       return (
         <C
-          NAME={name}
-          CONFIG={{ ...config, packages: this.props[COMPONENT_PACKAGES] }}
+          CONFIG={config}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
-          {...router} // eslint-disable-line react/jsx-props-no-spreading
+          history={history}
+          location={location}
+          match={match}
         />
       )
     }
   }
 
-  return connect(...storeKeys)(R)
+  return connect(...storeKeys)(withRouter(R))
 }
