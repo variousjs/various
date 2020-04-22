@@ -43,7 +43,7 @@ export default (config) => {
       componentDispatcher,
       Loading: L,
       Error: E,
-      config: rest,
+      config: { ...rest, components },
     })
     COMPONENTS[name] = () => (<R />)
   })

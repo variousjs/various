@@ -18,7 +18,13 @@ export const Loading = () => (
 export const Error = ({ error, reload }) => ( // eslint-disable-line react/prop-types
   <>
     <h3>{error}</h3>
-    <button onClick={reload}>reload</button>
+    {
+      reload
+        ? (
+          <button onClick={reload}>reload</button>
+        )
+        : null
+    }
   </>
 )
 

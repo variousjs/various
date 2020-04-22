@@ -80,16 +80,15 @@ export default function ({
     }
 
     onReload = () => {
-      console.log('todo')
-      // window.requirejs.undef(name)
-      // window.requirejs.config({
-      //   paths: {
-      //     [name]: this.props[COMPONENT_PACKAGES][name].slice(0, -3),
-      //   },
-      // })
-      // this.setState({ component: undefined, error: undefined }, () => {
-      //   this.mountComponent()
-      // })
+      window.requirejs.undef(name)
+      window.requirejs.config({
+        paths: {
+          [name]: config.components[name].slice(0, -3),
+        },
+      })
+      this.setState({ component: undefined, error: undefined }, () => {
+        this.mountComponent()
+      })
     }
 
     render() {
