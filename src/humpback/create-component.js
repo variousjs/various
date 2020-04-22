@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import getDispatch from './dispatch'
 import { connect, getStore, dispatch } from './store'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
@@ -16,6 +17,12 @@ export default function ({
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
 
   class R extends Component {
+    static propTypes = {
+      history: PropTypes.func.isRequired,
+      match: PropTypes.object.isRequired,
+      location: PropTypes.object.isRequired,
+    }
+
     state = {
       component: undefined,
       error: undefined,
@@ -77,6 +84,7 @@ export default function ({
     }
 
     render() {
+      const { history, location, match } = this.props
       const { component: C, error } = this.state
       const store = {}
 
@@ -98,14 +106,15 @@ export default function ({
         }
       })
 
-      console.log(storeKeys, store)
-
       return (
         <C
           CONFIG={config}
           MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
+          history={history}
+          location={location}
+          match={match}
         />
       )
     }

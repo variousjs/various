@@ -28,21 +28,14 @@ export default (config) => {
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentDispatcher = {}
   const storeDispatcher = { ...dispatcher, ...defaultDispatcher }
-  // const componentCreator = (name) => withRouter((router) => {
-  //   const R = createComponent({
-  //     name,
-  //     storeDispatcher,
-  //     componentDispatcher,
-  //     Loading: L,
-  //     Error: E,
-  //     router,
-  //     config: rest,
-  //   })
-  //   return <R />
-  // })
   const COMPONENTS = {}
   const Routes = getRoutes(E)
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
+
+  createStore({
+    ...store,
+    [MOUNTED_COMPONENTS]: [],
+  })
 
   Object.keys(components).forEach((name) => {
     const R = createComponent({
@@ -110,11 +103,6 @@ export default (config) => {
       )
     }
   }
-
-  createStore({
-    ...store,
-    [MOUNTED_COMPONENTS]: [],
-  })
 
   const X = connect(...storeKeys)(withRouter(R))
 
