@@ -87,8 +87,8 @@ export default (config) => {
           Routes={Routes}
           store={storeData}
           componentCreator={componentCreator}
-          MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
-          CONFIG={rest}
+          mountedComponents={this.props[MOUNTED_COMPONENTS]}
+          config={rest}
         />
       )
     }

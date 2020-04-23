@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import Wrapper from './wrapper'
@@ -5,11 +8,11 @@ import './global.less'
 
 export default class extends Component {
   render() {
-    const { Routes, CONFIG, componentCreator } = this.props
-    const routes = CONFIG.routes.map((item) => ({
+    const { Routes, config, componentCreator } = this.props
+    const routes = config.routes.map((item) => ({
       ...item,
       path: item.path,
-      components: item.components.join().split(',')
+      components: item.components.join().split(','),
     }))
 
     return (

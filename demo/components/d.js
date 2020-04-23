@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react'
 
 export default class extends Component {
@@ -6,7 +8,10 @@ export default class extends Component {
     return (
       <>
         <input />
-        <p>current: {id}</p>
+        <p>
+          current:
+          {id}
+        </p>
       </>
     )
   }

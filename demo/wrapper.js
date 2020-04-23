@@ -1,15 +1,19 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react'
-import { Layout, Menu, Icon, Badge, Button, Tag, Input } from 'antd'
+import {
+  Layout, Menu, Icon, Badge, Button, Tag, Input,
+} from 'antd'
 import { Link } from 'react-router-dom'
 
 export default class extends Component {
   render() {
     const {
       children,
-      CONFIG,
+      config,
       store,
       dispatch,
-      MOUNTED_COMPONENTS
+      mountedComponents,
     } = this.props
 
     return (
@@ -22,14 +26,14 @@ export default class extends Component {
             theme="dark"
           >
             {
-              CONFIG.menu
+              config.menu
                 .filter(({ label }) => label)
                 .map((item) => {
                   const {
                     label,
                     path,
                     icon,
-                  } = item;
+                  } = item
 
                   return (
                     <Menu.Item
@@ -51,7 +55,7 @@ export default class extends Component {
               <div>{store.user.name}</div>
               <div style={{ margin: '0 20px' }}>
                 当前已经加载完成的组件:
-                <Tag>{MOUNTED_COMPONENTS}</Tag>
+                <Tag>{mountedComponents}</Tag>
               </div>
               <Button onClick={() => dispatch('global', 'setNumber', Math.random().toFixed(2))}>global</Button>
               <Button onClick={() => dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>

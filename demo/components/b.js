@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import { Button, message } from 'antd'
 import Nycticorax from 'nycticorax'
@@ -22,7 +23,6 @@ class X extends Component {
     try {
       message.info(this.props.dispatch('a', 'getValue'))
     } catch (e) {
-      console.log(e)
       message.error(e)
     }
   }
@@ -48,9 +48,18 @@ class X extends Component {
       <div>
         <p style={{ fontSize: 100 }}>B</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <p>全局值：{number}</p>
-          <p>组件值: {b}</p>
-          <p>当前路由参数：{match.params.id || '空'}</p>
+          <p>
+            全局值：
+            {number}
+          </p>
+          <p>
+            组件值:
+            {b}
+          </p>
+          <p>
+            当前路由参数：
+            {match.params.id || '空'}
+          </p>
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值</Button>

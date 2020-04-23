@@ -14,7 +14,10 @@ export default class extends Component {
 
   render() {
     return this.state.items.map((item) => (
-      <Link to={`/posts/${item}`}>/posts/{item}</Link>
+      <Link to={`/posts/${item}`}>
+        /posts/
+        {item}
+      </Link>
     ))
   }
 }

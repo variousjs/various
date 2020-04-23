@@ -1,5 +1,8 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
-import { Button, message, ConfigProvider, DatePicker, locales } from 'antd'
+import {
+  Button, message, ConfigProvider, DatePicker, locales,
+} from 'antd'
 import Nycticorax from 'nycticorax'
 
 const {
@@ -21,11 +24,10 @@ class X extends Component {
 
   state = {
     componentB: false,
-    value: 666,
   }
 
   static getDerivedStateFromProps(props) {
-    if (props.MOUNTED_COMPONENTS.includes('b')) {
+    if (props.mountedComponents.includes('b')) {
       return { componentB: true }
     }
     return null
@@ -47,20 +49,27 @@ class X extends Component {
   render() {
     const { user } = this.props.store
     const { a } = this.props
-    const { componentB, value } = this.state
+    const { componentB } = this.state
 
     return (
       <div>
         <p style={{ fontSize: 100 }}>A</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <p>全局值：{user.name}</p>
-          <p>B 组件值: {a}</p>
-          <p>当前组件值: {value}</p>
-          <p>B 组件加载完成：{componentB ? 'yes' : 'no'}</p>
+          <p>
+            全局值：
+            {user.name}
+          </p>
+          <p>
+            组件值:
+            {a}
+          </p>
+          <p>
+            B 组件加载完成：
+            {componentB ? 'yes' : 'no'}
+          </p>
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
           <Button onClick={this.onSetB}>更新 B 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值(异步)</Button>
-          <Button onClick={() => this.setState({ value: Math.random().toFixed(2) })}>更新自身值</Button>
           <ConfigProvider locale={locales.zh_CN}>
             <DatePicker />
           </ConfigProvider>

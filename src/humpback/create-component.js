@@ -15,6 +15,7 @@ export default function ({
 }) {
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
+  const { components, dependencies, ...rest } = config
 
   class R extends Component {
     static propTypes = {
@@ -83,7 +84,7 @@ export default function ({
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
-          [name]: config.components[name].slice(0, -3),
+          [name]: components[name].slice(0, -3),
         },
       })
       this.setState({ component: undefined, error: undefined }, () => {
@@ -116,8 +117,8 @@ export default function ({
 
       return (
         <C
-          CONFIG={config}
-          MOUNTED_COMPONENTS={this.props[MOUNTED_COMPONENTS]}
+          config={rest}
+          mountedComponents={this.props[MOUNTED_COMPONENTS]}
           store={store}
           dispatch={this.dispatch}
           history={history}
