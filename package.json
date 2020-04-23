@@ -1,8 +1,7 @@
 {
   "name": "@fratercula/humpback",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "RequireJS(AMD) + React",
-  "main": "lib/index.js",
   "files": [
     "lib"
   ],
@@ -17,7 +16,6 @@
     "index": "NODE_ENV=index falco -c -m src/index.js -o docs/dist",
     "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o docs/dist",
     "global": "NODE_ENV=global falco -c -m demo/index.js -o docs/dist",
-    "start": "npm run index && npm run humpback && npm run global && npm run a && npm run b",
     "build:index": "NODE_ENV=index falco -c -m src/index.js -o lib",
     "build:humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o lib",
     "build": "npm run build:index && npm run build:humpback && rm -rf lib/index.html"

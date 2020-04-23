@@ -12,15 +12,17 @@ index.html
 <!-- requirejs -->
 <script src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
 <!-- humpback -->
-<script src="https://unpkg.com/@fratercula/humpback@0.1.5/lib/index.js"></script>
+<script src="https://unpkg.com/@fratercula/humpback@0.2.0/lib/index.js"></script>
 
 <script>
 var config = {
-  packages: { // required
+  dependencies: { // required
+    antd: 'cdn/path/to/antd/umd', // optional, dependency packages
+  },
+  components: { // required
     global: 'cdn/path/to/container/component', // required
     'a': 'cdn/path/componet/a',
     'b': 'cdn/path/componet/b',
-    antd: 'cdn/path/to/antd/umd', // optional, dependency packages
   },
   routes: [
     {
@@ -84,36 +86,40 @@ const error = ({ error, reload }) => (
       description={error}
       type="error"
     />
-    <Button onClick={reload}>刷新</Button>
+    {reload && <Button onClick={reload}>刷新</Button>}
   </>
 )
 
 // container
+import { Route } from 'react-router-dom'
+
 const container = (props) => {
   const {
-    CONFIG,
+    config,
     Routes,
     componentCreator,
   } = props
 
-  const routes = CONFIG.routes.map(({ path, components }) => {
-    const route = components.map((name) => {
-      const C = componentCreator(name)
-      return (<div><C /></div>)
-    })
-    return (
-      <Route
-        key={path}
-        exact
-        path={path}
-        component={route}
-      />
-    )
-  })
-
   return (
     <Layout>
-      <Routes components={routes} />
+      <Routes>
+      {
+        config.routes.map(({ path, components }) => {
+          const route = components.map((name) => {
+            const C = componentCreator(name)
+            return (<div><C /></div>)
+          })
+          return (
+            <Route
+              key={path}
+              exact
+              path={path}
+              component={route}
+            />
+          )
+        })
+      }
+      </Routes>
     </Layout>
   )
 }
@@ -224,7 +230,7 @@ dispatch(typeORname, nameORvalue, value)
 
 - `global`
 - component name
-- default methods: `GET_MOUNTED_COMPONENTS`, `UN_MOUNT_COMPONENT`, `MOUNT_COMPONENT`
+- default methods: `GET_MOUNTED_COMPONENTS`
 
 example:
 
@@ -232,11 +238,6 @@ example:
 dispatch('global', 'setCount', 3)
 const value = dispatch('component-a', 'getValue')
 const loaded = dispatch('GET_MOUNTED_COMPONENTS') // get loaded components
-dispatch('UN_MOUNT_COMPONENT', { name: 'component-a' }) // unmount componet-a
-dispatch('MOUNT_COMPONENT', {
-  name: 'switch',
-  url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-}) // mount switch component
 ```
 
 ### global component
@@ -249,8 +250,8 @@ const container = (props) => {
     Routes, // components container
     componentCreator, // create component by name
     store, // global data
-    MOUNTED_COMPONENTS, // mounted components
-    CONFIG, // humpback config
+    mountedComponents, // mounted components
+    config, // humpback config
   } = props
   // return ...
 }
@@ -300,9 +301,8 @@ class X extends Component {
 
   componentDidMount() {
     const {
-      NAME, // current component name
-      CONFIG, // humpback config
-      MOUNTED_COMPONENTS, // mounted components
+      config, // humpback config
+      mountedComponents, // mounted components
       store, // global data
       dispatch, // dispatch function
 
@@ -310,7 +310,6 @@ class X extends Component {
       match,
       history,
       location,
-      staticContext,
 
       // local data
       count,
@@ -339,6 +338,8 @@ Dev
 ```bash
 $ npm run a # build component a
 $ npm run b # build component b
+$ npm run c # build component c
+$ npm run d # build component d
 $ npm run global # build container component
 
 $ npm run index # build humpack loader
@@ -349,7 +350,7 @@ Preview
 
 ```bash
 $ cd docs
-$ pv # liveReload server
+$ pv # liveReload web server pavane
 ```
 
 Build
