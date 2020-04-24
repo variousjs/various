@@ -12,7 +12,7 @@ index.html
 <!-- requirejs -->
 <script src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
 <!-- humpback -->
-<script src="https://unpkg.com/@fratercula/humpback@0.2.0/lib/index.js"></script>
+<script src="https://unpkg.com/@fratercula/humpback/lib/index.js"></script>
 
 <script>
 var config = {

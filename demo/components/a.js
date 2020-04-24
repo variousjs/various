@@ -22,17 +22,6 @@ class X extends Component {
     dispatch({ a: value }, true)
   }
 
-  state = {
-    componentB: false,
-  }
-
-  static getDerivedStateFromProps(props) {
-    if (props.mountedComponents.includes('b')) {
-      return { componentB: true }
-    }
-    return null
-  }
-
   onGetB = () => {
     message.info(this.props.dispatch('b', 'getValue'))
   }
@@ -48,8 +37,7 @@ class X extends Component {
 
   render() {
     const { user } = this.props.store
-    const { a } = this.props
-    const { componentB } = this.state
+    const { a, mountedComponents } = this.props
 
     return (
       <div>
@@ -65,7 +53,7 @@ class X extends Component {
           </p>
           <p>
             B 组件加载完成：
-            {componentB ? 'yes' : 'no'}
+            {mountedComponents.includes('b') ? 'yes' : 'no'}
           </p>
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
           <Button onClick={this.onSetB}>更新 B 组件的值</Button>

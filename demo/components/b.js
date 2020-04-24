@@ -37,7 +37,8 @@ class X extends Component {
   }
 
   onGetStatus = () => {
-    message.info(this.props.dispatch('GET_MOUNTED_COMPONENTS'))
+    const { mountedComponents } = this.props
+    message.info(mountedComponents)
   }
 
   render() {
