@@ -4,7 +4,6 @@ import { HashRouter as Router, Switch } from 'react-router-dom'
 import { createStore, connect } from './store'
 import getRoutes from './routes'
 import createComponent from './create-component'
-import defaultDispatcher from './dispatcher'
 import getDispatch from './dispatch'
 import {
   Loading,
@@ -26,7 +25,7 @@ export default (config) => {
   } = config
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentDispatcher = {}
-  const storeDispatcher = { ...dispatcher, ...defaultDispatcher }
+  const storeDispatcher = { ...dispatcher }
   const COMPONENTS = {}
   const Routes = getRoutes(E)
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)

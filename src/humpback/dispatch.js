@@ -1,34 +1,27 @@
 import { MOUNTED_COMPONENTS } from './config'
 import { dispatch } from './store'
-import defaultDispatch from './dispatcher'
 
 export default function (storeDispatcher, componentDispatcher) {
-  const names = Object.keys(defaultDispatch)
-
-  return function dispatcher(typeORname, funcORvalue, ...values) {
+  return function dispatcher(type, func, ...values) {
     const currentDispatch = this.props.dispatch || dispatch
 
-    if (names.includes(typeORname)) {
-      return currentDispatch(storeDispatcher[typeORname], funcORvalue)
-    }
-
-    if (typeORname === 'global') {
-      if (!storeDispatcher[funcORvalue]) {
-        throw `Dispatcher \`${funcORvalue}\` not exists`
+    if (type === 'global') {
+      if (!storeDispatcher[func]) {
+        throw `Dispatcher \`${func}\` not exists`
       }
-      return currentDispatch(storeDispatcher[funcORvalue], ...values)
+      return currentDispatch(storeDispatcher[func], ...values)
     }
 
-    if (!this.props[MOUNTED_COMPONENTS].includes(typeORname)) {
-      throw `Component \`${typeORname}\` not ready`
+    if (!this.props[MOUNTED_COMPONENTS].includes(type)) {
+      throw `Component \`${type}\` not ready`
     }
 
-    const actions = componentDispatcher[typeORname]
+    const actions = componentDispatcher[type]
 
-    if (!actions[funcORvalue]) {
-      throw `Dispatcher \`${funcORvalue}\` not exists`
+    if (!actions[func]) {
+      throw `Dispatcher \`${func}\` not exists`
     }
 
-    return actions[funcORvalue](...values)
+    return actions[func](...values)
   }
 }

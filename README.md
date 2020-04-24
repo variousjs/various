@@ -224,20 +224,18 @@ humpback core use https://github.com/fratercula/nycticorax
 
 ### dispatch
 
-dispatch(typeORname, nameORvalue, value)
+dispatch(type, name, value)
 
-**typeORname**
+**type**
 
 - `global`
 - component name
-- default methods: `GET_MOUNTED_COMPONENTS`
 
 example:
 
 ```js
 dispatch('global', 'setCount', 3)
 const value = dispatch('component-a', 'getValue')
-const loaded = dispatch('GET_MOUNTED_COMPONENTS') // get loaded components
 ```
 
 ### global component
