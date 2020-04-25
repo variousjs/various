@@ -5,6 +5,15 @@ import getDispatch from './dispatch'
 import { connect, getStore, dispatch } from './store'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
 
+const resetComponent = (components, name) => {
+  window.requirejs.undef(name)
+  window.requirejs.config({
+    paths: {
+      [name]: components[name].slice(0, -3),
+    },
+  })
+}
+
 export default function ({
   config,
   name,
@@ -76,17 +85,12 @@ export default function ({
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
       }, (e) => {
+        resetComponent(components, name)
         this.setState({ error: e.message || 'Component Load Error' })
       })
     }
 
     onReload = () => {
-      window.requirejs.undef(name)
-      window.requirejs.config({
-        paths: {
-          [name]: components[name].slice(0, -3),
-        },
-      })
       this.setState({ component: undefined, error: undefined }, () => {
         this.mountComponent()
       })

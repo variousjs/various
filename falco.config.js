@@ -39,6 +39,11 @@ module.exports = {
       root: 'antd',
       amd: 'antd',
     },
+    {
+      name: 'rc-table',
+      amd: 'rc-table',
+      root: 'rcTable',
+    },
   ],
   targets,
   // report: true,
