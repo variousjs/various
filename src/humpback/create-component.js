@@ -5,15 +5,6 @@ import getDispatch from './dispatch'
 import { connect, getStore, dispatch } from './store'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
 
-const resetComponent = (components, name) => {
-  window.requirejs.undef(name)
-  window.requirejs.config({
-    paths: {
-      [name]: components[name].slice(0, -3),
-    },
-  })
-}
-
 export default function ({
   config,
   name,
@@ -85,7 +76,12 @@ export default function ({
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
       }, (e) => {
-        resetComponent(components, name)
+        window.requirejs.undef(name)
+        window.requirejs.config({
+          paths: {
+            [name]: components[name].slice(0, -3),
+          },
+        })
         this.setState({ error: e.message || 'Component Load Error' })
       })
     }
@@ -121,6 +117,8 @@ export default function ({
 
       return (
         <C
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...this.props}
           config={rest}
           mountedComponents={this.props[MOUNTED_COMPONENTS]}
           store={store}

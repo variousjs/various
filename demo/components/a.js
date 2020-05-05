@@ -37,11 +37,11 @@ class X extends Component {
 
   render() {
     const { user } = this.props.store
-    const { a, mountedComponents } = this.props
+    const { a, mountedComponents, name } = this.props
 
     return (
       <div>
-        <p style={{ fontSize: 100 }}>A</p>
+        <p style={{ fontSize: 100 }}>{name.toUpperCase()}</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <p>
             全局值：

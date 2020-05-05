@@ -34,9 +34,11 @@ export default class extends Component {
                   )
                 }
 
+                const props = name === 'a' ? { name } : {}
+
                 return (
                   <div style={{ display: 'inline-block', width: 300 }}>
-                    <C />
+                    <C {...props} />
                   </div>
                 )
               })

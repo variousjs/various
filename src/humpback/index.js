@@ -44,7 +44,8 @@ export default (config) => {
       Error: E,
       config: { ...rest, components },
     })
-    COMPONENTS[name] = () => (<R />)
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    COMPONENTS[name] = (props) => (<R {...props} />)
   })
 
   const componentCreator = (name) => {
