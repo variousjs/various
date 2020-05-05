@@ -34,7 +34,6 @@ var config = {
     {
       path: '/next/:id',
       components: [
-        'switch', // component not defined in `packages`, can be mounted later
         'b',
       ],
     },
@@ -107,7 +106,11 @@ const container = (props) => {
         config.routes.map(({ path, components }) => {
           const route = components.map((name) => {
             const C = componentCreator(name)
-            return (<div><C /></div>)
+            return (
+              <div>
+                <C name="some props" />
+              </div>
+            )
           })
           return (
             <Route
@@ -200,10 +203,15 @@ export default connect('b')(X)
 
 ```js
 var config = {
-  packages: {
+  dependencies: {
     // ...
     moment: 'https://cdn.jsdelivr.net/npm/moment/min/moment.min.js',
     moment_zhCN: 'cdn/to/zh-cn.js',
+  },
+  components: { // required
+    global: 'cdn/path/to/container/component', // required
+    'a': 'cdn/path/componet/a',
+    'b': 'cdn/path/componet/b',
   },
 }
 
