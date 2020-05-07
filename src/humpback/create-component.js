@@ -113,17 +113,19 @@ export default function ({
       storeKeys.forEach((key) => {
         if (key !== MOUNTED_COMPONENTS) {
           store[key] = this.props[key]
+          delete this.props[key]
         }
-        delete this.props[key]
       })
 
       // eslint-disable-next-line react/prop-types
       delete this.props.staticContext
+      // eslint-disable-next-line react/prop-types
+      const { MOUNTED_COMPONENTS: M, ...propsRest } = this.props
 
       return (
         <C
           // eslint-disable-next-line react/jsx-props-no-spreading
-          {...this.props}
+          {...propsRest}
           config={rest}
           mountedComponents={mountComponent}
           store={store}
