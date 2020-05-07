@@ -34,7 +34,7 @@ export default class extends Component {
                   )
                 }
 
-                const props = name === 'a' ? { name } : {}
+                const props = name === 'a' ? { name, test: 123 } : {}
 
                 return (
                   <div style={{ display: 'inline-block', width: 300 }}>

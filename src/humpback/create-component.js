@@ -94,6 +94,7 @@ export default function ({
 
     render() {
       const { history, location, match } = this.props
+      const mountComponent = this.props[MOUNTED_COMPONENTS]
       const { component: C, error } = this.state
       const store = {}
 
@@ -113,14 +114,18 @@ export default function ({
         if (key !== MOUNTED_COMPONENTS) {
           store[key] = this.props[key]
         }
+        delete this.props[key]
       })
+
+      // eslint-disable-next-line react/prop-types
+      delete this.props.staticContext
 
       return (
         <C
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...this.props}
           config={rest}
-          mountedComponents={this.props[MOUNTED_COMPONENTS]}
+          mountedComponents={mountComponent}
           store={store}
           dispatch={this.dispatch}
           history={history}
