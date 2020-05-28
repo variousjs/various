@@ -60,7 +60,7 @@ export default (config) => {
       error: undefined,
     }
 
-    dispatch = currentDispatch.bind(this)
+    dispatch = currentDispatch.bind(this, 'global')
 
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Container Error' })

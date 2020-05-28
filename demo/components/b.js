@@ -15,7 +15,8 @@ createStore({ b: '666' })
 class X extends Component {
   static getValue = () => getStore().b
 
-  static updateValue = (value) => {
+  static updateValue = (value, caller) => {
+    message.info(`caller: ${caller}`)
     dispatch({ b: value })
   }
 

@@ -29,7 +29,7 @@ export default function ({
       error: undefined,
     }
 
-    dispatch = currentDispatch.bind(this)
+    dispatch = currentDispatch.bind(this, name)
 
     componentDidMount() {
       this.mountComponent()
