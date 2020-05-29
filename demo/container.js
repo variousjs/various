@@ -34,6 +34,15 @@ export default class extends Component {
                   )
                 }
 
+                if (name === 'f') {
+                  return (
+                    <div>
+                      silent component
+                      <C silent />
+                    </div>
+                  )
+                }
+
                 const props = name === 'a' ? { name, test: 123 } : {}
 
                 return (

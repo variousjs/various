@@ -65,7 +65,7 @@ export default function ({
         Object
           .getOwnPropertyNames(C)
           .forEach((method) => {
-            if (!IGNORE_STATIC_METHODS.includes(method)) {
+            if (!IGNORE_STATIC_METHODS.includes(method) && typeof C[method] === 'function') {
               actions[method] = C[method]
             }
           })
@@ -93,21 +93,30 @@ export default function ({
     }
 
     render() {
-      const { history, location, match } = this.props
-      const mountComponent = this.props[MOUNTED_COMPONENTS]
+      const {
+        history,
+        location,
+        match,
+        // eslint-disable-next-line react/prop-types
+        MOUNTED_COMPONENTS: mountedComponents, staticContext, silent, ...propsRest
+      } = this.props
       const { component: C, error } = this.state
       const store = {}
 
       if (error) {
-        return (
-          <Error error={error} reload={this.onReload} />
-        )
+        return !silent
+          ? (
+            <Error error={error} reload={this.onReload} />
+          )
+          : null
       }
 
       if (!C) {
-        return (
-          <Loading />
-        )
+        return !silent
+          ? (
+            <Loading />
+          )
+          : null
       }
 
       storeKeys.forEach((key) => {
@@ -117,17 +126,12 @@ export default function ({
         }
       })
 
-      // eslint-disable-next-line react/prop-types
-      delete this.props.staticContext
-      // eslint-disable-next-line react/prop-types
-      const { MOUNTED_COMPONENTS: M, ...propsRest } = this.props
-
       return (
         <C
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...propsRest}
           config={rest}
-          mountedComponents={mountComponent}
+          mountedComponents={mountedComponents}
           store={store}
           dispatch={this.dispatch}
           history={history}
