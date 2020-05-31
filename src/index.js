@@ -1,4 +1,5 @@
 import { DEFAULT_PACKAGES, SCRIPT_SRC } from './config'
+import { version } from '../package.json'
 
 window.Humpback = class {
   constructor(config = {}) {
@@ -19,6 +20,7 @@ window.Humpback = class {
 
     this.config = config
     this.paths = paths
+    this.version = version
   }
 
   start() {
