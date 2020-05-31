@@ -2,7 +2,7 @@
 
 RequireJS(AMD) + React
 
-DEMO: https://fratercula.github.io/humpback/
+https://humpbackjs.github.io/humpback/
 
 ## Usage
 
@@ -16,8 +16,8 @@ index.html
 
 <script>
 var config = {
-  dependencies: { // required
-    antd: 'cdn/path/to/antd/umd', // optional, dependency packages
+  dependencies: {
+    antd: 'cdn/path/to/antd/umd', // optional, component dependency packages
   },
   components: { // required
     global: 'cdn/path/to/container/component', // required
@@ -108,7 +108,7 @@ const container = (props) => {
             const C = componentCreator(name)
             return (
               <div>
-                <C name="some props" />
+                <C name="some props" silent={false} /> {/* silent component */}
               </div>
             )
           })
@@ -300,7 +300,8 @@ createStore({ count: 2, number: '233' })
 class X extends Component {
   // for others/global component access
   static getValue = () => getStore().count
-  static updateValue = async (number) => {
+  static updateValue = async (number, caller) => {
+    console.log(caller) // dispatch caller
     // await ...
     dispatch({ number }, true)
   }
@@ -346,6 +347,8 @@ $ npm run a # build component a
 $ npm run b # build component b
 $ npm run c # build component c
 $ npm run d # build component d
+$ npm run e # build component e
+$ npm run f # build component f
 $ npm run global # build container component
 
 $ npm run index # build humpack loader
