@@ -72,7 +72,7 @@ export default function ({
 
         componentDispatcher[name] = actions // eslint-disable-line no-param-reassign
 
-        this.setState({ component: C }, () => {
+        this.setState({ component: C.default || C }, () => {
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
       }, (e) => {
@@ -127,17 +127,19 @@ export default function ({
       })
 
       return (
-        <C
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...propsRest}
-          config={rest}
-          mountedComponents={mountedComponents}
-          store={store}
-          dispatch={this.dispatch}
-          history={history}
-          location={location}
-          match={match}
-        />
+        <div>
+          <C
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...propsRest}
+            config={rest}
+            mountedComponents={mountedComponents}
+            store={store}
+            dispatch={this.dispatch}
+            history={history}
+            location={location}
+            match={match}
+          />
+        </div>
       )
     }
   }
