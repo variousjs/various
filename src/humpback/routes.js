@@ -1,11 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-
-export default (Error) => class extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-  }
-
+export default (React, Error) => class extends React.Component {
   state = {
     error: undefined,
   }

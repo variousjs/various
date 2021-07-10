@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import getDispatch from './dispatch'
-import { connect, getStore, dispatch } from './store'
-import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from './config'
+import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from '../config'
 
 export default function ({
+  React,
+  ReactRouterDOM,
+  nycticorax,
+},{
   config,
   name,
   storeDispatcher,
@@ -13,17 +13,13 @@ export default function ({
   Loading,
   Error,
 }) {
+  const { withRouter } = ReactRouterDOM
+  const { connect, getStore, dispatch } = nycticorax
   const storeKeys = Object.keys(getStore())
-  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
+  const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
   const { components, dependencies, ...rest } = config
 
-  class R extends Component {
-    static propTypes = {
-      history: PropTypes.func.isRequired,
-      match: PropTypes.object.isRequired,
-      location: PropTypes.object.isRequired,
-    }
-
+  class R extends React.Component {
     state = {
       component: undefined,
       error: undefined,
@@ -79,7 +75,7 @@ export default function ({
         window.requirejs.undef(name)
         window.requirejs.config({
           paths: {
-            [name]: components[name].slice(0, -3),
+            [name]: `${components[name]}#`,
           },
         })
         this.setState({ error: e.message || 'Component Load Error' })

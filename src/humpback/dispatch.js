@@ -1,7 +1,6 @@
-import { MOUNTED_COMPONENTS } from './config'
-import { dispatch } from './store'
+import { MOUNTED_COMPONENTS } from '../config'
 
-export default function (storeDispatcher, componentDispatcher) {
+export default function (dispatch, storeDispatcher, componentDispatcher) {
   return function dispatcher(caller, name, func, value) {
     const currentDispatch = this.props.dispatch || dispatch
 
