@@ -141,9 +141,12 @@ export default function ({
             mountedComponents={mountedComponents}
             store={store}
             dispatch={this.dispatch}
-            history={history}
-            location={location}
-            match={match}
+            $router={{
+              history,
+              location,
+              match,
+              staticContext,
+            }}
           />
         </div>
       )

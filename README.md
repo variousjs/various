@@ -9,6 +9,7 @@ https://humpbackjs.github.io/humpback/
 1. remove `dependencies/components` path auto add `.js` extension
 2. remove `lib/humpback.js` dependency
 3. fix component props
+4. component props `$router`, remove `history/location/match`
 
 ## Usage
 

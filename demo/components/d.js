@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 
 export default class extends Component {
   render() {
-    const { id } = this.props.match.params
+    const { id } = this.props.$router.match.params
     return (
       <>
         <input />

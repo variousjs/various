@@ -44,7 +44,7 @@ class X extends Component {
 
   render() {
     const { number } = this.props.store
-    const { b, match } = this.props
+    const { b, $router } = this.props
 
     console.log('b', this.props)
 
@@ -62,7 +62,7 @@ class X extends Component {
           </p>
           <p>
             当前路由参数：
-            {match.params.id || '空'}
+            {$router.match.params.id || '空'}
           </p>
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
