@@ -46,6 +46,8 @@ class X extends Component {
     const { number } = this.props.store
     const { b, match } = this.props
 
+    console.log('b', this.props)
+
     return (
       <div>
         <p style={{ fontSize: 100 }}>B</p>

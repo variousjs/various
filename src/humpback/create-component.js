@@ -93,11 +93,14 @@ export default function ({
         history,
         location,
         match,
+        staticContext,
+
         // eslint-disable-next-line react/prop-types
-        MOUNTED_COMPONENTS: mountedComponents, staticContext, silent, ...propsRest
+        MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
       } = this.props
       const { component: C, error } = this.state
       const store = {}
+      const componentProps = {}
 
       if (error) {
         return !silent
@@ -122,11 +125,18 @@ export default function ({
         }
       })
 
+      Object.keys(propsRest).forEach((key) => {
+        if (store[key] !== propsRest[key]) {
+          componentProps[key] = propsRest[key]
+        }
+      })
+
       return (
         <div>
           <C
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...propsRest}
+            // {...propsRest}
+            {...componentProps}
             config={rest}
             mountedComponents={mountedComponents}
             store={store}

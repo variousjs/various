@@ -4,6 +4,12 @@ RequireJS(AMD) + React
 
 https://humpbackjs.github.io/humpback/
 
+## Changelog
+
+1. remove `dependencies/components` path auto add `.js` extension
+2. remove `lib/humpback.js` dependency
+3. fix component props
+
 ## Usage
 
 index.html

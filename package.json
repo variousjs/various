@@ -16,10 +16,8 @@
     "e": "NODE_ENV=e falco -c -m demo/components/e.js -o docs/dist",
     "f": "NODE_ENV=f falco -c -m demo/components/f.js -o docs/dist",
     "index": "NODE_ENV=index falco -c -m src/index.js -o docs/dist && rm docs/dist/index.html",
-    "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o docs/dist",
     "global": "NODE_ENV=global falco -c -m demo/index.js -o docs/dist",
     "build:index": "NODE_ENV=index falco -c -m src/index.js -o lib",
-    "build:humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o lib",
     "build": "npm run build:index && npm run build:humpback && rm -rf lib/index.html"
   },
   "repository": {

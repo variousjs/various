@@ -39,6 +39,8 @@ class X extends Component {
     const { user } = this.props.store
     const { a, mountedComponents, name } = this.props
 
+    console.log('a', this.props)
+
     return (
       <div>
         <p style={{ fontSize: 100 }}>{name.toUpperCase()}</p>
