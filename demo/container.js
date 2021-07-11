@@ -11,8 +11,8 @@ export default class extends Component {
   render() {
     console.log('global', this.props)
 
-    const { Routes, config, componentCreator } = this.props
-    const routes = config.routes.map((item) => ({
+    const { Router, $config, $component } = this.props
+    const routes = $config.routes.map((item) => ({
       ...item,
       path: item.path,
       components: item.components.join().split(','),
@@ -20,11 +20,11 @@ export default class extends Component {
 
     return (
       <Wrapper {...this.props}>
-        <Routes>
+        <Router>
           {
             routes.map(({ path, components }) => {
               const component = () => components.map((name) => {
-                const C = componentCreator(name)
+                const C = $component(name)
 
                 if (name === 'e') {
                   return (
@@ -64,7 +64,7 @@ export default class extends Component {
               )
             })
           }
-        </Routes>
+        </Router>
       </Wrapper>
     )
   }

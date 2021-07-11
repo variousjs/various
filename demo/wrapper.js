@@ -10,10 +10,10 @@ export default class extends Component {
   render() {
     const {
       children,
-      config,
-      store,
-      dispatch,
-      mountedComponents,
+      $config,
+      $store,
+      $dispatch,
+      $mounted,
     } = this.props
 
     return (
@@ -26,7 +26,7 @@ export default class extends Component {
             theme="dark"
           >
             {
-              config.menu
+              $config.menu
                 .filter(({ label }) => label)
                 .map((item) => {
                   const {
@@ -52,15 +52,15 @@ export default class extends Component {
           <Layout.Header style={{ background: '#fff', padding: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Input style={{ width: 100 }} />
-              <div>{store.user.name}</div>
+              <div>{$store.user.name}</div>
               <div style={{ margin: '0 20px' }}>
                 当前已经加载完成的组件:
-                <Tag>{mountedComponents}</Tag>
+                <Tag>{$mounted}</Tag>
               </div>
-              <Button onClick={() => dispatch('global', 'setNumber', Math.random().toFixed(2))}>global</Button>
-              <Button onClick={() => dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>
+              <Button onClick={() => $dispatch('global', 'setNumber', Math.random().toFixed(2))}>global</Button>
+              <Button onClick={() => $dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>
               <div style={{ margin: '0 20px' }}>
-                <Badge count={store.number} showZero />
+                <Badge count={$store.number} showZero />
               </div>
             </div>
           </Layout.Header>

@@ -10,6 +10,12 @@ https://humpbackjs.github.io/humpback/
 2. remove `lib/humpback.js` dependency
 3. fix component props
 4. component props `$router`, remove `history/location/match`
+5. props `config` to `$config`
+6. props `dispatch` to `$dispatch`
+7. props `store` to `$store`
+8. fix retry mount component
+9. props `mountedComponents` to `$mounted`
+10. props `componentCreator` to `$component`
 
 ## Usage
 

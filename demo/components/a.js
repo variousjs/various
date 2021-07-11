@@ -23,21 +23,21 @@ class X extends Component {
   }
 
   onGetB = () => {
-    message.info(this.props.dispatch('b', 'getValue'))
+    message.info(this.props.$dispatch('b', 'getValue'))
   }
 
   onSetB = () => {
-    this.props.dispatch('b', 'updateValue', Math.random().toFixed(2))
+    this.props.$dispatch('b', 'updateValue', Math.random().toFixed(2))
   }
 
   onSetG = async () => {
-    await this.props.dispatch('global', 'updateUserName', Math.random())
+    await this.props.$dispatch('global', 'updateUserName', Math.random())
     message.success('更新完成')
   }
 
   render() {
-    const { user } = this.props.store
-    const { a, mountedComponents, name } = this.props
+    const { user } = this.props.$store
+    const { a, $mounted, name } = this.props
 
     console.log('a', this.props)
 
@@ -55,7 +55,7 @@ class X extends Component {
           </p>
           <p>
             B 组件加载完成：
-            {mountedComponents.includes('b') ? 'yes' : 'no'}
+            {$mounted.includes('b') ? 'yes' : 'no'}
           </p>
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
           <Button onClick={this.onSetB}>更新 B 组件的值</Button>

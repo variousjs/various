@@ -33,9 +33,20 @@ export default function ({
 
     componentDidCatch(e) {
       this.setState({ error: e.message || 'Component Error' })
+      window.requirejs.undef(name)
+      window.requirejs.config({
+        paths: {
+          [name]: `${components[name]}#`,
+        },
+      })
+      this.unMountComponent()
     }
 
     componentWillUnmount() {
+      this.unMountComponent()
+    }
+
+    unMountComponent = () => {
       let mountedComponents = getStore()[MOUNTED_COMPONENTS]
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
@@ -137,10 +148,10 @@ export default function ({
             // eslint-disable-next-line react/jsx-props-no-spreading
             // {...propsRest}
             {...componentProps}
-            config={rest}
-            mountedComponents={mountedComponents}
-            store={store}
-            dispatch={this.dispatch}
+            $config={rest}
+            $dispatch={this.dispatch}
+            $store={store}
+            $mounted={mountedComponents}
             $router={{
               history,
               location,

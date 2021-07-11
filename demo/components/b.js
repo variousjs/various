@@ -22,28 +22,28 @@ class X extends Component {
 
   onGetA = () => {
     try {
-      message.info(this.props.dispatch('a', 'getValue'))
+      message.info(this.props.$dispatch('a', 'getValue'))
     } catch (e) {
       message.error(e)
     }
   }
 
   onSetA = async () => {
-    await this.props.dispatch('a', 'updateValue', Math.random().toFixed(2))
+    await this.props.$dispatch('a', 'updateValue', Math.random().toFixed(2))
     this.onGetA()
   }
 
   onSetG = () => {
-    this.props.dispatch('global', 'setNumber', Math.random().toFixed(2))
+    this.props.$dispatch('global', 'setNumber', Math.random().toFixed(2))
   }
 
   onGetStatus = () => {
-    const { mountedComponents } = this.props
-    message.info(mountedComponents)
+    const { $mounted } = this.props
+    message.info($mounted)
   }
 
   render() {
-    const { number } = this.props.store
+    const { number } = this.props.$store
     const { b, $router } = this.props
 
     console.log('b', this.props)

@@ -86,12 +86,12 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
 
         return (
           <C
-            dispatch={this.dispatch}
-            Routes={Routes}
-            store={storeData}
-            componentCreator={componentCreator}
-            mountedComponents={this.props[MOUNTED_COMPONENTS]}
-            config={rest}
+            Router={Routes}
+            $component={componentCreator}
+            $mounted={this.props[MOUNTED_COMPONENTS]}
+            $config={rest}
+            $dispatch={this.dispatch}
+            $store={storeData}
           />
         )
       }
