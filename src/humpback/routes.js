@@ -1,22 +1,25 @@
+import { ERRORS } from '../config'
+
 export default (React, Error) => class extends React.Component {
   state = {
-    error: undefined,
+    errorCode: undefined,
+    errorMessage: undefined,
   }
 
-  shouldComponentUpdate(props, { error }) {
-    return !!error
+  shouldComponentUpdate(props, { errorCode }) {
+    return !!errorCode
   }
 
   componentDidCatch(e) {
-    this.setState({ error: e.message || 'Routes Error' })
+    this.setState({ errorCode: 3, errorMessage: e.message })
   }
 
   render() {
-    const { error } = this.state
+    const { errorCode, errorMessage } = this.state
     const { children } = this.props
 
-    if (error) {
-      return (<Error error={error} />)
+    if (errorCode) {
+      return (<Error type={ERRORS[errorCode]} message={errorMessage} />)
     }
 
     return children

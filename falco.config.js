@@ -44,6 +44,11 @@ module.exports = {
       amd: 'rc-table',
       root: 'rcTable',
     },
+    {
+      name: 'table',
+      amd: 'table',
+      root: 'Tb',
+    },
   ],
   targets,
   // report: true,

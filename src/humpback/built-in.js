@@ -3,9 +3,10 @@ export default (React) => {
     <h3>Loading</h3>
   )
 
-  const Error = ({ error, reload }) => (
+  const Error = ({ type, message, reload }) => (
     <>
-      <h3>{error}</h3>
+      <h3>{type}</h3>
+      <p>{message}</p>
       {
         reload
           ? (

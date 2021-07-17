@@ -1,12 +1,12 @@
 import React from 'react'
 import { Alert, Button } from 'antd'
 
-export default function ({ error, reload }) {
+export default function ({ reload, type, message }) {
   return (
     <>
       <Alert
         message="Error"
-        description={error}
+        description={`[${type}]:${message || '组件错误'}`}
         type="error"
       />
       {

@@ -2,7 +2,7 @@ import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
-import { MOUNTED_COMPONENTS } from '../config'
+import { MOUNTED_COMPONENTS, ERRORS } from '../config'
 
 export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
   const { render } = ReactDOM
@@ -55,25 +55,26 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      return () => (<E error="Component undefined" />)
+      return () => (<E type={ERRORS[0]} />)
     }
 
     class R extends React.Component {
       state = {
-        error: undefined,
+        errorCode: undefined,
+        errorMessage: undefined,
       }
 
       dispatch = currentDispatch.bind(this, 'global')
 
       componentDidCatch(e) {
-        this.setState({ error: e.message || 'Container Error' })
+        this.setState({ errorCode: 4, errorMessage: e.message })
       }
 
       render() {
-        const { error } = this.state
+        const { errorCode, errorMessage } = this.state
 
-        if (error) {
-          return (<E error={error} />)
+        if (errorCode) {
+          return (<E type={ERRORS[errorCode]} message={errorMessage} />)
         }
 
         const storeData = {}

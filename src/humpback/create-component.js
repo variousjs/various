@@ -1,5 +1,5 @@
 import getDispatch from './dispatch'
-import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS } from '../config'
+import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERRORS } from '../config'
 
 export default function ({
   React,
@@ -22,7 +22,8 @@ export default function ({
   class R extends React.Component {
     state = {
       component: undefined,
-      error: undefined,
+      errorCode: undefined,
+      errorMessage: undefined,
     }
 
     dispatch = currentDispatch.bind(this, name)
@@ -32,7 +33,7 @@ export default function ({
     }
 
     componentDidCatch(e) {
-      this.setState({ error: e.message || 'Component Error' })
+      this.setState({ errorCode: 2, errorMessage: e.message })
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -56,9 +57,21 @@ export default function ({
     }
 
     mountComponent = () => {
+      try {
+        const { registry, urlFetched } = window.requirejs.s.contexts._
+        Object.keys(registry).forEach((key) => {
+          if (registry[key].error) {
+            delete urlFetched[registry[key].map.url]
+            delete registry[key]
+          }
+        })
+      } catch (e) {
+        // ignore
+      }
+
       window.requirejs([name], (C) => {
         if (!C) {
-          this.setState({ error: 'Component Name Error' })
+          this.setState({ errorCode: 1 })
           return
         }
 
@@ -89,12 +102,22 @@ export default function ({
             [name]: `${components[name]}#`,
           },
         })
-        this.setState({ error: e.message || 'Component Load Error' })
+
+        const [module] = e.requireModules
+
+        this.setState({
+          errorCode: module === name ? -2 : -1,
+          errorMessage: e.message,
+        })
       })
     }
 
     onReload = () => {
-      this.setState({ component: undefined, error: undefined }, () => {
+      this.setState({
+        component: undefined,
+        errorCode: undefined,
+        errorMessage: undefined,
+      }, () => {
         this.mountComponent()
       })
     }
@@ -109,14 +132,18 @@ export default function ({
         // eslint-disable-next-line react/prop-types
         MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
       } = this.props
-      const { component: C, error } = this.state
+      const { component: C, errorMessage, errorCode } = this.state
       const store = {}
       const componentProps = {}
 
-      if (error) {
+      if (errorCode) {
         return !silent
           ? (
-            <Error error={error} reload={this.onReload} />
+            <Error
+              type={ERRORS[errorCode]}
+              message={errorMessage}
+              reload={errorCode === 1 ? undefined : this.onReload}
+            />
           )
           : null
       }

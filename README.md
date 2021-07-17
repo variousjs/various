@@ -17,6 +17,18 @@ https://humpbackjs.github.io/humpback/
 9. props `mountedComponents` to `$mounted`
 10. props `componentCreator` to `$component`
 
+### error type
+
+| Type | Description | Reloadable
+| --- | ----------- | ---
+| LOADING_ERROR | Component loading error | yes |
+| DEPENDENCIES_LOADING_ERROR | Component Dependencies loading error | yes |
+| NOT_DEFINED | Component not defined in configuration | no |
+| COMPONENT_NAME_ERROR | Component name error | no |
+| SCRIPT_ERROR | Component script error | yes |
+| ROUTER_ERROR | React-Router catch error | no |
+| CONTAINER_ERROR | Global container error | no |
+
 ## Usage
 
 index.html

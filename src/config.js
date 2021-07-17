@@ -17,3 +17,13 @@ export const IGNORE_STATIC_METHODS = [
   'contextTypes',
   'displayName',
 ]
+
+export const ERRORS = {
+  '-2': 'LOADING_ERROR',
+  '-1': 'DEPENDENCIES_LOADING_ERROR',
+  0: 'NOT_DEFINED',
+  1: 'COMPONENT_NAME_ERROR',
+  2: 'SCRIPT_ERROR',
+  3: 'ROUTER_ERROR',
+  4: 'CONTAINER_ERROR',
+}

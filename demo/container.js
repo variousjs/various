@@ -6,8 +6,6 @@ import './global.less'
 
 export default class extends Component {
   render() {
-    console.log('global', this.props)
-
     const { Router, $config, $component } = this.props
     const routes = $config.routes.map((item) => ({
       ...item,
