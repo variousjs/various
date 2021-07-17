@@ -1,5 +1,5 @@
 export default (React) => {
-  const Loading = () => (
+  const Loader = () => (
     <h3>Loading</h3>
   )
 
@@ -21,5 +21,5 @@ export default (React) => {
     <h3>Nothing</h3>
   )
 
-  return { Loading, Error, Container }
+  return { Loader, Error, Container }
 }

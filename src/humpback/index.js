@@ -9,22 +9,22 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
   const { HashRouter: Router, Switch } = ReactRouterDOM
   const nycticorax = new Nycticorax()
   const { createStore, connect, dispatch } = nycticorax
-  const { Loading, Error, Container } = getBuiltIn(React)
+  const { Loader, Error, Container } = getBuiltIn(React)
 
   return (config, ctx) => {
     const {
       dependencies,
       components,
       store = {},
-      dispatcher = {},
-      loading: L = Loading,
-      error: E = Error,
-      container: C = Container,
+      actions = {},
+      Loader: L = Loader,
+      Error: E = Error,
+      Container: C = Container,
       ...rest
     } = config
     const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
     const componentDispatcher = {}
-    const storeDispatcher = { ...dispatcher }
+    const storeDispatcher = { ...actions }
     const COMPONENTS = {}
     const Routes = getRoutes(React, E)
     const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)

@@ -1,13 +1,13 @@
-import dispatcher from './dispatcher'
+import actions from './dispatcher'
 import store from './store'
-import container from './container'
-import loading from './loading'
-import error from './error'
+import Container from './container'
+import Loader from './loading'
+import Error from './error'
 
 export default {
   store,
-  dispatcher,
-  container,
-  loading,
-  error,
+  actions,
+  Container,
+  Loader,
+  Error,
 }

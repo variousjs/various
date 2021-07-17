@@ -19,6 +19,8 @@ https://humpbackjs.github.io/humpback/
 11. error type
 12. root container `#root` config
 13. initial error catch config
+14. `entry` config
+15. global config `loading/error/container` to `Loader/Error/Container`
 
 ### error type
 
