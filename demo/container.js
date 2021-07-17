@@ -13,8 +13,11 @@ export default class extends Component {
       components: item.components.join().split(','),
     }))
 
+    const X = $component('s')
+
     return (
       <Wrapper {...this.props}>
+        <X />
         <Router>
           {
             routes.map(({ path, components }) => {

@@ -4,14 +4,19 @@ import getHumpback from './humpback'
 
 window.Humpback = class {
   constructor(config = {}) {
-    const { dependencies, components } = config
-    const paths = { ...DEFAULT_PACKAGES, ...dependencies, ...components }
+    const { dependencies, components, entry } = config
+    const paths = {
+      ...DEFAULT_PACKAGES,
+      ...dependencies,
+      ...components,
+      $entry_component: entry,
+    }
 
     Object.keys(paths).forEach((name) => {
       paths[name] = `${paths[name]}#`
     })
 
-    window.requirejs.config({ paths, waitSeconds: 30 })
+    window.requirejs.config({ paths, waitSeconds: 20 })
 
     this.config = config
     this.paths = paths
@@ -21,8 +26,8 @@ window.Humpback = class {
 
   start() {
     const requires = ['react', 'react-dom', 'react-router-dom', 'nycticorax']
-    if (this.paths.global) {
-      requires.push('global')
+    if (this.paths.$entry_component) {
+      requires.push('$entry_component')
     }
     window.requirejs(requires, (React, ReactDom, ReactRouterDom, Nycticorax, global = {}) => {
       const humpback = getHumpback(React, ReactDom, ReactRouterDom, Nycticorax)

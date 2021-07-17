@@ -11,6 +11,10 @@ if (NODE_ENV !== 'index') {
   targets = { esmodules: true }
 }
 
+if (NODE_ENV === 'global') {
+  output.library = '$entry_component'
+}
+
 module.exports = {
   output,
   externals: [
