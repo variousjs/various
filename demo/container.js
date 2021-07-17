@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { Collapse } from 'antd'
@@ -36,9 +33,9 @@ export default class extends Component {
                   )
                 }
 
-                if (name === 'f') {
+                if (name === 'b' && path.includes('next')) {
                   return (
-                    <div>
+                    <div style={{ display: 'inline-block', width: 300 }}>
                       silent component
                       <C silent />
                     </div>

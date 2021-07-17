@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react'
 import {
   Layout, Menu, Icon, Badge, Button, Tag, Input,

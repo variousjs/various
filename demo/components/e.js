@@ -1,6 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Table from 'rc-table'
 
-export default () => (
-  <Table />
-)
+export default class extends Component {
+  render() {
+    console.log('e', this.props)
+
+    return (
+      <Table />
+    )
+  }
+}
