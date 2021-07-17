@@ -11,8 +11,9 @@
 <script src="./dist/index.js"></script>
 <script>
 var config = {
+  root: '#root',
   dependencies: {
-    moment: 'https://cdn.jsdelivr.net/npm/moment/min/moment.min.js?',
+    moment: 'https://cdn.jsdelivr.net/npm/moment/min/moment.min.js',
     antd: 'https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd-with-locales.min.js',
     moment_zhCN: './zh-cn.js',
     'rc-table': 'https://baidu.com/666.js',
@@ -84,6 +85,11 @@ var config = {
 }
 
 const humpback = new window.Humpback(config)
+
+humpback.onError = (e) => {
+  console.log(e)
+  document.write(e.message)
+}
 
 humpback.require(['moment', 'moment_zhCN'], function (moment) {
   moment.locale('zh-cn')

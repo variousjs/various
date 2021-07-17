@@ -16,6 +16,9 @@ https://humpbackjs.github.io/humpback/
 8. fix retry mount component
 9. props `mountedComponents` to `$mounted`
 10. props `componentCreator` to `$component`
+11. error type
+12. root container `#root` config
+13. initial error catch config
 
 ### error type
 

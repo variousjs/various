@@ -2,7 +2,7 @@ import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
-import { MOUNTED_COMPONENTS, ERRORS } from '../config'
+import { MOUNTED_COMPONENTS, ERRORS, ROOT_CONTAINER } from '../config'
 
 export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
   const { render } = ReactDOM
@@ -11,7 +11,7 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
   const { createStore, connect, dispatch } = nycticorax
   const { Loading, Error, Container } = getBuiltIn(React)
 
-  return (config) => {
+  return (config, ctx) => {
     const {
       dependencies,
       components,
@@ -100,12 +100,16 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
 
     const X = connect(...storeKeys)(R)
 
-    render((
-      <Router>
-        <Switch>
-          <X />
-        </Switch>
-      </Router>
-    ), document.querySelector('#root'))
+    try {
+      render((
+        <Router>
+          <Switch>
+            <X />
+          </Switch>
+        </Router>
+      ), document.querySelector(rest.root || ROOT_CONTAINER))
+    } catch (e) {
+      ctx.errorFn(e)
+    }
   }
 }

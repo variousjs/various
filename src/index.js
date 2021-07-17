@@ -16,6 +16,7 @@ window.Humpback = class {
     this.config = config
     this.paths = paths
     this.version = version
+    this.errorFn = (e) => document.write(e.message)
   }
 
   start() {
@@ -25,10 +26,12 @@ window.Humpback = class {
     }
     window.requirejs(requires, (React, ReactDom, ReactRouterDom, Nycticorax, global = {}) => {
       const humpback = getHumpback(React, ReactDom, ReactRouterDom, Nycticorax)
-      humpback({ ...this.config, ...global })
-    }, (e) => {
-      document.write(e.message || 'Initialization error')
-    })
+      humpback({ ...this.config, ...global }, this)
+    }, (e) => this.errorFn(e))
+  }
+
+  set onError(fn) {
+    this.errorFn = fn
   }
 
   require(...args) {

@@ -27,3 +27,5 @@ export const ERRORS = {
   3: 'ROUTER_ERROR',
   4: 'CONTAINER_ERROR',
 }
+
+export const ROOT_CONTAINER = '#root'
