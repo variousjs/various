@@ -22,6 +22,7 @@ https://humpbackjs.github.io/humpback/
 14. `entry` config
 15. global config `loading/error/container` to `Loader/Error/Container`
 16. router mode
+17. remove version params
 
 ### error type
 

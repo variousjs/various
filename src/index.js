@@ -1,5 +1,4 @@
 import { DEFAULT_PACKAGES } from './config'
-import { version } from '../package.json'
 import getHumpback from './humpback'
 
 window.Humpback = class {
@@ -20,7 +19,6 @@ window.Humpback = class {
 
     this.config = config
     this.paths = paths
-    this.version = version
     this.errorFn = (e) => document.write(e.message)
   }
 
