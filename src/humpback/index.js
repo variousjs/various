@@ -6,7 +6,7 @@ import { MOUNTED_COMPONENTS, ERRORS, ROOT_CONTAINER } from '../config'
 
 export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
   const { render } = ReactDOM
-  const { HashRouter: Router, Switch } = ReactRouterDOM
+  const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
   const nycticorax = new Nycticorax()
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
@@ -22,6 +22,7 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       Container: C = Container,
       ...rest
     } = config
+    const Router = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
     const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
     const componentDispatcher = {}
     const storeDispatcher = { ...actions }

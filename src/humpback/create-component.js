@@ -170,23 +170,21 @@ export default function ({
       })
 
       return (
-        <div>
-          <C
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            // {...propsRest}
-            {...componentProps}
-            $config={rest}
-            $dispatch={this.dispatch}
-            $store={store}
-            $mounted={mountedComponents}
-            $router={{
-              history,
-              location,
-              match,
-              staticContext,
-            }}
-          />
-        </div>
+        <C
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          // {...propsRest}
+          {...componentProps}
+          $config={rest}
+          $dispatch={this.dispatch}
+          $store={store}
+          $mounted={mountedComponents}
+          $router={{
+            history,
+            location,
+            match,
+            staticContext,
+          }}
+        />
       )
     }
   }
