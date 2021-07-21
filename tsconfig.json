@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "target": "ES5",
+    "types": [
+      "requirejs",
+      "react",
+      "react-dom",
+      "react-router-dom"
+    ],
     "moduleResolution": "node",
     "jsx": "react",
     "strict": true,
@@ -11,7 +18,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
-    "importHelpers": true,
     "sourceMap": true,
     "removeComments": true,
     "stripInternal": true,

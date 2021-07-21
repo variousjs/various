@@ -33,8 +33,6 @@ module.exports = {
     'import/extensions': 0,
     semi: 'off',
     '@typescript-eslint/semi': ['error', 'never'],
-    'no-continue': 0,
-    'no-use-before-define': 0,
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'react/state-in-constructor': 0,
@@ -51,5 +49,8 @@ module.exports = {
         requireLast: false,
       },
     }],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    'import/no-extraneous-dependencies': 0,
   },
 }

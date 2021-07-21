@@ -23,6 +23,8 @@ https://humpbackjs.github.io/humpback/
 15. global config `loading/error/container` to `Loader/Error/Container`
 16. router mode
 17. remove version params
+18. remove humpback require
+19. typescript support
 
 ### error type
 
