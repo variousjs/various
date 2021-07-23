@@ -1,7 +1,7 @@
 import { MOUNTED_COMPONENTS } from '../config'
 
 export default function (dispatch, storeDispatcher, componentDispatcher) {
-  return function dispatcher(caller, name, func, value) {
+  return function (caller, name, func, value) {
     const currentDispatch = this.props.dispatch || dispatch
 
     if (name === 'global') {

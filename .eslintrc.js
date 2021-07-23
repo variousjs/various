@@ -12,6 +12,9 @@ module.exports = {
       node: {
         extensions: ['.js', '.ts', '.tsx'],
       },
+      typescript: {
+        alwaysTryTypes: true,
+      },
     },
   },
   parser: '@typescript-eslint/parser',
@@ -21,6 +24,7 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: 'module',
+    allowImportExportEverywhere: true,
   },
   plugins: [
     'react',
@@ -52,5 +56,7 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     'import/no-extraneous-dependencies': 0,
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
   },
 }

@@ -33,7 +33,7 @@ export default function ({
     }
 
     componentDidCatch(e) {
-      this.setState({ errorCode: 2, errorMessage: e.message })
+      this.setState({ errorCode: 'SCRIPT_ERROR', errorMessage: e.message })
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -71,7 +71,7 @@ export default function ({
 
       window.requirejs([name], (C) => {
         if (!C) {
-          this.setState({ errorCode: 1 })
+          this.setState({ errorCode: 'COMPONENT_NAME_ERROR' })
           return
         }
 
@@ -106,7 +106,7 @@ export default function ({
         const [module] = e.requireModules
 
         this.setState({
-          errorCode: module === name ? -2 : -1,
+          errorCode: module === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
           errorMessage: e.message,
         })
       })
@@ -142,7 +142,7 @@ export default function ({
             <Error
               type={ERRORS[errorCode]}
               message={errorMessage}
-              reload={errorCode === 1 ? undefined : this.onReload}
+              reload={errorCode === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
             />
           )
           : null

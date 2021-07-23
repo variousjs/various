@@ -56,7 +56,7 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      return () => (<E type={ERRORS[0]} />)
+      return () => (<E type={ERRORS.NOT_DEFINED} />)
     }
 
     class R extends React.Component {
@@ -68,7 +68,7 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       dispatch = currentDispatch.bind(this, 'global')
 
       componentDidCatch(e) {
-        this.setState({ errorCode: 4, errorMessage: e.message })
+        this.setState({ errorCode: 'CONTAINER_ERROR', errorMessage: e.message })
       }
 
       render() {
