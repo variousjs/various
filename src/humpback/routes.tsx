@@ -1,24 +1,21 @@
-import { ComponentType, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { ERRORS } from '../config'
+import { Entry, State } from '../types'
 
 type P = {
   children: ReactNode,
 }
-type T = {
-  errorCode: string,
-  errorMessage: string,
-}
 
 export default (
   React: typeof window.React,
-  Error: ComponentType<{ type: string, message: string }>,
-) => class extends React.Component<P, T> {
+  Error: Entry['Error'],
+) => class extends React.Component<P, State> {
   state = {
     errorCode: '',
     errorMessage: '',
   }
 
-  shouldComponentUpdate(_props: P, { errorCode }: T) {
+  shouldComponentUpdate(_props: P, { errorCode }: State) {
     return !!errorCode
   }
 
@@ -32,7 +29,7 @@ export default (
 
     if (errorCode) {
       return (
-        <Error type={ERRORS[errorCode as unknown as keyof typeof ERRORS]} message={errorMessage} />
+        <Error type={ERRORS[errorCode as keyof typeof ERRORS]} message={errorMessage} />
       )
     }
 

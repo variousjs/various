@@ -1,20 +1,33 @@
+/* eslint-disable react/destructuring-assignment */
+import { ComponentType } from 'react'
 import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
 import { MOUNTED_COMPONENTS, ERRORS, ROOT_CONTAINER } from '../config'
+import {
+  Ny, Hr, Br, Sw, Config, Entry, State, OnError,
+} from '../types'
 
-export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
+type Store = { [key: string]: unknown }
+
+export default (
+  React: typeof window.React,
+  ReactDOM: typeof window.ReactDOM,
+  ReactRouterDOM: { HashRouter: Hr, BrowserRouter: Br, Switch: Sw },
+  Nycticorax: Ny,
+) => {
   const { render } = ReactDOM
   const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
-  const nycticorax = new Nycticorax()
+  const nycticorax = new Nycticorax<Store>()
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
 
-  return (config, ctx) => {
+  return (config: Config & Entry, ctx: { errorFn: OnError }) => {
     const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       dependencies,
-      components,
+      components = {},
       store = {},
       actions = {},
       Loader: L = Loader,
@@ -22,11 +35,11 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       Container: C = Container,
       ...rest
     } = config
-    const Router = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
+    const Router: Hr = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
     const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
     const componentDispatcher = {}
     const storeDispatcher = { ...actions }
-    const COMPONENTS = {}
+    const COMPONENTS: { [key: string]: ComponentType } = {}
     const Routes = getRoutes(React, E)
     const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
 
@@ -52,22 +65,22 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       COMPONENTS[name] = (props) => (<R {...props} />)
     })
 
-    const componentCreator = (name) => {
+    const componentCreator = (name: string) => {
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
       return () => (<E type={ERRORS.NOT_DEFINED} />)
     }
 
-    class R extends React.Component {
+    class R extends React.Component<Entry['store'] & { dispatch: typeof dispatch }, State> {
       state = {
-        errorCode: undefined,
-        errorMessage: undefined,
+        errorCode: '',
+        errorMessage: '',
       }
 
       dispatch = currentDispatch.bind(this, 'global')
 
-      componentDidCatch(e) {
+      componentDidCatch(e: Error) {
         this.setState({ errorCode: 'CONTAINER_ERROR', errorMessage: e.message })
       }
 
@@ -75,10 +88,10 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
         const { errorCode, errorMessage } = this.state
 
         if (errorCode) {
-          return (<E type={ERRORS[errorCode]} message={errorMessage} />)
+          return (<E type={ERRORS[errorCode as keyof typeof ERRORS]} message={errorMessage} />)
         }
 
-        const storeData = {}
+        const storeData: Entry['store'] = {}
 
         storeKeys.forEach((key) => {
           if (key !== MOUNTED_COMPONENTS) {
@@ -86,11 +99,13 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
           }
         })
 
+        const mounted = this.props[MOUNTED_COMPONENTS] as string[]
+
         return (
           <C
             Router={Routes}
             $component={componentCreator}
-            $mounted={this.props[MOUNTED_COMPONENTS]}
+            $mounted={mounted}
             $config={rest}
             $dispatch={this.dispatch}
             $store={storeData}
@@ -99,7 +114,9 @@ export default (React, ReactDOM, ReactRouterDOM, Nycticorax) => {
       }
     }
 
-    const X = connect(...storeKeys)(R)
+    // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
+    const [key0, ...keyn] = storeKeys
+    const X = connect(key0, ...keyn)(R)
 
     try {
       render((

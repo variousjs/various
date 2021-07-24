@@ -5,7 +5,7 @@ export default function ({
   React,
   ReactRouterDOM,
   nycticorax,
-},{
+}, {
   config,
   name,
   storeDispatcher,

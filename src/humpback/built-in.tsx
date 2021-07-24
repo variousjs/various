@@ -1,17 +1,12 @@
-import { ERRORS } from '../config'
-
-type E = {
-  type: keyof typeof ERRORS,
-  message: string,
-  reload: () => void,
-}
+/* eslint-disable react/prop-types */
+import { Entry } from '../types'
 
 export default (React: typeof window.React) => {
   const Loader = () => (
     <h3>Loading</h3>
   )
 
-  const Error = ({ type, message, reload }: E) => (
+  const Error: Entry['Error'] = ({ type, message, reload }) => (
     <>
       <h3>{type}</h3>
       <p>{message}</p>

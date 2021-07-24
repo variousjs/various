@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 import { MOUNTED_COMPONENTS } from '../config'
 
 export default function (dispatch, storeDispatcher, componentDispatcher) {

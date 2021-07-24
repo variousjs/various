@@ -1,16 +1,11 @@
-import N from 'nycticorax'
 import { DEFAULT_PACKAGES } from './config'
-// import getHumpback from './humpback'
-
-type E = typeof window.requirejs.onError
-type Config = {
-  dependencies?: { [key: string]: string },
-  components?: { [key: string]: string },
-  entry?: string,
-}
+import getHumpback from './humpback'
+import {
+  Config, Ny, Hr, Br, Sw, Entry, OnError,
+} from './types'
 
 class Humpback {
-  private errorFn: E
+  private errorFn: OnError
 
   private config: Config
 
@@ -43,18 +38,17 @@ class Humpback {
     }
     window.requirejs(requires, (
       React: typeof window.React,
-      ReactDom: typeof window.ReactDOM,
-      ReactRouterDom: unknown,
-      Nycticorax: typeof N,
-      global = {},
+      ReactDOM: typeof window.ReactDOM,
+      ReactRouterDOM: { HashRouter: Hr, BrowserRouter: Br, Switch: Sw },
+      Nycticorax: Ny,
+      entry: Entry,
     ) => {
-      console.log(global)
-      // const humpback = getHumpback(React, ReactDom, ReactRouterDom, Nycticorax)
-      // humpback({ ...this.config, ...global }, this)
+      const humpback = getHumpback(React, ReactDOM, ReactRouterDOM, Nycticorax)
+      humpback({ ...this.config, ...entry }, this)
     }, this.errorFn)
   }
 
-  public set onError(fn: E) {
+  public set onError(fn: OnError) {
     this.errorFn = fn
   }
 }
