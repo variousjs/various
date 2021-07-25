@@ -1,4 +1,4 @@
-import Nycticorax from 'nycticorax'
+import Nycticorax, { Connect } from 'nycticorax'
 import {
   HashRouter, BrowserRouter, Switch, withRouter, RouteComponentProps,
 } from 'react-router-dom'
@@ -64,3 +64,5 @@ const nycticorax = new Nycticorax<Store>()
 export type ny = typeof nycticorax
 
 export type dp = typeof nycticorax.dispatch
+
+export type connectComponent = ComponentType<Connect<Store>> & { [key: string]: any }

@@ -2,7 +2,7 @@ import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERRORS } from '../config'
 import {
-  Rrd, ny, Entry, Config, State, Component,
+  Rrd, ny, Entry, Config, State, Component, connectComponent,
 } from '../types'
 
 interface RequireError extends Error {
@@ -236,7 +236,9 @@ export default function ({
     }
   }
 
+  const RwithRouter = withRouter(R) as unknown as connectComponent
+
   // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
   const [key0, ...keyn] = storeKeys
-  return connect(key0, ...keyn)(withRouter(R))
+  return connect(key0, ...keyn)(RwithRouter)
 }
