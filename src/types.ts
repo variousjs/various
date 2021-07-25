@@ -1,5 +1,7 @@
 import Nycticorax from 'nycticorax'
-import { HashRouter, BrowserRouter, Switch } from 'react-router-dom'
+import {
+  HashRouter, BrowserRouter, Switch, withRouter, RouteComponentProps,
+} from 'react-router-dom'
 import { FC, ComponentType, ReactNode } from 'react'
 
 type E = {
@@ -10,7 +12,7 @@ type E = {
 
 export type Config = {
   dependencies?: { [key: string]: string },
-  components?: { [key: string]: string },
+  components: { [key: string]: string },
   entry?: string,
   routerMode?: 'browser' | 'hash',
   root?: string,
@@ -18,13 +20,16 @@ export type Config = {
 
 export type Ny = typeof Nycticorax
 
-export type Hr = typeof HashRouter
-export type Br = typeof BrowserRouter
-export type Sw = typeof Switch
+export type Rrd = {
+  HashRouter: typeof HashRouter,
+  BrowserRouter: typeof BrowserRouter,
+  Switch: typeof Switch,
+  withRouter: typeof withRouter,
+}
 
 export type Entry = {
-  store?: { [key: string]: unknown },
-  actions?: { [name: string]: (...args: unknown[]) => any },
+  store: { [key: string]: unknown },
+  actions: { [name: string]: (...args: unknown[]) => any },
   Loader: ComponentType,
   Error: FC<E>,
   Container: ComponentType<{
@@ -37,9 +42,23 @@ export type Entry = {
   }>,
 }
 
+export type Component = {
+  $config: { [key: string]: any },
+  $dispatch: (...args: any) => any,
+  $store: Entry['store'],
+  $mounted: string[],
+  $router: RouteComponentProps,
+}
+
 export type State = {
   errorCode: string,
   errorMessage: string,
 }
 
 export type OnError = typeof window.requirejs.onError
+
+export type Store = { [key: string]: unknown }
+
+const nycticorax = new Nycticorax<Store>()
+
+export type ny = typeof nycticorax

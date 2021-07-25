@@ -1,7 +1,7 @@
 import { DEFAULT_PACKAGES } from './config'
 import getHumpback from './humpback'
 import {
-  Config, Ny, Hr, Br, Sw, Entry, OnError,
+  Config, Ny, Entry, OnError, Rrd,
 } from './types'
 
 class Humpback {
@@ -11,8 +11,8 @@ class Humpback {
 
   private paths: { [key: string]: string }
 
-  constructor(config: Config = {}) {
-    const { dependencies, components, entry } = config
+  constructor(config: Config) {
+    const { dependencies, components, entry } = config || {}
     const paths = {
       ...DEFAULT_PACKAGES,
       ...dependencies,
@@ -39,7 +39,7 @@ class Humpback {
     window.requirejs(requires, (
       React: typeof window.React,
       ReactDOM: typeof window.ReactDOM,
-      ReactRouterDOM: { HashRouter: Hr, BrowserRouter: Br, Switch: Sw },
+      ReactRouterDOM: Rrd,
       Nycticorax: Ny,
       entry: Entry,
     ) => {

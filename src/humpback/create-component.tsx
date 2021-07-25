@@ -1,29 +1,70 @@
+import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERRORS } from '../config'
+import {
+  Rrd, ny, Entry, Config, State, Component,
+} from '../types'
+
+interface RequireError extends Error {
+  requireType: string,
+  requireModules: string[],
+  originalError: Error,
+}
+
+type P = {
+  React: typeof window.React,
+  ReactRouterDOM: Rrd,
+  nycticorax: ny,
+}
+
+type E = {
+  name: string,
+  storeDispatcher: Entry['actions'],
+  componentDispatcher: {
+    [name: string]: Entry['actions'],
+  },
+  config: Config,
+  Loader: Entry['Loader'],
+  Error: Entry['Error'],
+}
+
+declare global {
+  interface Require {
+    s: any,
+  }
+}
 
 export default function ({
   React,
   ReactRouterDOM,
   nycticorax,
-}, {
+}: P, {
   config,
   name,
   storeDispatcher,
   componentDispatcher,
-  Loading,
+  Loader,
   Error,
-}) {
+}: E) {
   const { withRouter } = ReactRouterDOM
   const { connect, getStore, dispatch } = nycticorax
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { components, dependencies, ...rest } = config
 
-  class R extends React.Component {
+  class R extends React.Component<Component['$router'] & {
+    silent: Boolean | undefined,
+    MOUNTED_COMPONENTS: string[],
+    dispatch: typeof dispatch,
+    [key: string]: unknown,
+  }, State & {
+    component: ComponentType | undefined,
+  }> {
     state = {
       component: undefined,
-      errorCode: undefined,
-      errorMessage: undefined,
+      errorCode: '',
+      errorMessage: '',
     }
 
     dispatch = currentDispatch.bind(this, name)
@@ -32,7 +73,7 @@ export default function ({
       this.mountComponent()
     }
 
-    componentDidCatch(e) {
+    componentDidCatch(e: Error) {
       this.setState({ errorCode: 'SCRIPT_ERROR', errorMessage: e.message })
       window.requirejs.undef(name)
       window.requirejs.config({
@@ -48,7 +89,7 @@ export default function ({
     }
 
     unMountComponent = () => {
-      let mountedComponents = getStore()[MOUNTED_COMPONENTS]
+      let mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
@@ -69,14 +110,18 @@ export default function ({
         // ignore
       }
 
-      window.requirejs([name], (C) => {
+      type Com = ComponentType & Entry['actions'] & {
+        default: ComponentType,
+      }
+
+      window.requirejs([name], (C: Com) => {
         if (!C) {
           this.setState({ errorCode: 'COMPONENT_NAME_ERROR' })
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
-        const actions = {}
+        const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+        const actions: Entry['actions'] = {}
 
         if (!mountedComponents.includes(name)) {
           mountedComponents.push(name)
@@ -95,7 +140,7 @@ export default function ({
         this.setState({ component: C.default || C }, () => {
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
-      }, (e) => {
+      }, (e: RequireError) => {
         window.requirejs.undef(name)
         window.requirejs.config({
           paths: {
@@ -115,8 +160,8 @@ export default function ({
     onReload = () => {
       this.setState({
         component: undefined,
-        errorCode: undefined,
-        errorMessage: undefined,
+        errorCode: '',
+        errorMessage: '',
       }, () => {
         this.mountComponent()
       })
@@ -132,15 +177,15 @@ export default function ({
         // eslint-disable-next-line react/prop-types
         MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
       } = this.props
-      const { component: C, errorMessage, errorCode } = this.state
-      const store = {}
-      const componentProps = {}
+      const { component, errorMessage, errorCode } = this.state
+      const store: Entry['store'] = {}
+      const componentProps: Entry['store'] = {}
 
       if (errorCode) {
         return !silent
           ? (
             <Error
-              type={ERRORS[errorCode]}
+              type={ERRORS[errorCode as keyof typeof ERRORS]}
               message={errorMessage}
               reload={errorCode === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
             />
@@ -148,18 +193,18 @@ export default function ({
           : null
       }
 
-      if (!C) {
+      if (!component) {
         return !silent
           ? (
-            <Loading />
+            <Loader />
           )
           : null
       }
 
       storeKeys.forEach((key) => {
         if (key !== MOUNTED_COMPONENTS) {
+          // eslint-disable-next-line react/destructuring-assignment
           store[key] = this.props[key]
-          delete this.props[key]
         }
       })
 
@@ -168,6 +213,8 @@ export default function ({
           componentProps[key] = propsRest[key]
         }
       })
+
+      const C = component as unknown as ComponentType<Component>
 
       return (
         <C
@@ -189,5 +236,7 @@ export default function ({
     }
   }
 
-  return connect(...storeKeys)(withRouter(R))
+  // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
+  const [key0, ...keyn] = storeKeys
+  return connect(key0, ...keyn)(withRouter(R))
 }
