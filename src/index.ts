@@ -1,3 +1,5 @@
+import 'core-js-pure/stable'
+import 'regenerator-runtime/runtime'
 import { DEFAULT_PACKAGES } from './config'
 import getHumpback from './humpback'
 import {

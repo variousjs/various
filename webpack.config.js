@@ -2,14 +2,10 @@ const { resolve, join } = require('path')
 
 const { ENTRY, LIBRARY } = process.env
 
-module.exports = {
+const config = {
   entry: join(__dirname, ENTRY),
   output: {
-    path: resolve(__dirname, './docs/dist'),
     filename: '[name].js',
-    library: LIBRARY,
-    libraryTarget: 'amd',
-    libraryExport: 'default',
   },
   externals: {
     react: {
@@ -20,21 +16,13 @@ module.exports = {
       root: 'ReactDOM',
       amd: 'react-dom',
     },
+    'react-router-dom': {
+      name: 'react-router-dom',
+      root: 'ReactRouterDOM',
+    },
     nycticorax: {
       root: 'Nycticorax',
       amd: 'nycticorax',
-    },
-    antd: {
-      root: 'antd',
-      amd: 'antd',
-    },
-    'rc-table': {
-      root: 'rcTable',
-      amd: 'rc-table',
-    },
-    table: {
-      root: 'Tb',
-      amd: 'table',
     },
   },
   mode: 'production',
@@ -64,3 +52,32 @@ module.exports = {
     ],
   },
 }
+
+// antd: {
+//   root: 'antd',
+//   amd: 'antd',
+// },
+// 'rc-table': {
+//   root: 'rcTable',
+//   amd: 'rc-table',
+// },
+// table: {
+//   root: 'Tb',
+//   amd: 'table',
+// },
+
+// output: {
+//   path: resolve(__dirname, './docs/dist'),
+//   filename: '[name].js',
+//   library: LIBRARY,
+//   libraryTarget: 'amd',
+//   libraryExport: 'default',
+// },
+
+if (!LIBRARY) {
+  config.output.path = resolve(__dirname, './dist')
+  config.output.filename = 'index.js'
+  config.module.rules[0].use.options.presets[1][1].targets = ['defaults']
+}
+
+module.exports = config
