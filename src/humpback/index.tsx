@@ -35,7 +35,7 @@ export default (
     } = config
     const Router: Rrd['HashRouter'] = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
     const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
-    const componentDispatcher = {}
+    const componentDispatcher: { [name: string]: Entry['actions'] } = {}
     const storeDispatcher = { ...actions }
     const COMPONENTS: { [key: string]: ComponentType } = {}
     const Routes = getRoutes(React, E)
@@ -70,7 +70,10 @@ export default (
       return () => (<E type={ERRORS.NOT_DEFINED} />)
     }
 
-    class R extends React.Component<Entry['store'] & { dispatch: typeof dispatch }, State> {
+    class R extends React.Component<Entry['store'] & {
+      dispatch: typeof dispatch,
+      [MOUNTED_COMPONENTS]: string[],
+    }, State> {
       state = {
         errorCode: '',
         errorMessage: '',

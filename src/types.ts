@@ -29,7 +29,7 @@ export type Rrd = {
 
 export type Entry = {
   store: { [key: string]: unknown },
-  actions: { [name: string]: (...args: unknown[]) => any },
+  actions: { [name: string]: (...args: any) => any },
   Loader: ComponentType,
   Error: FC<E>,
   Container: ComponentType<{
@@ -62,3 +62,5 @@ export type Store = { [key: string]: unknown }
 const nycticorax = new Nycticorax<Store>()
 
 export type ny = typeof nycticorax
+
+export type dp = typeof nycticorax.dispatch
