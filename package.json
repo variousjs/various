@@ -8,9 +8,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "types": "types/index.d.ts",
   "scripts": {
     "humpback": "ENTRY=src/index.ts webpack --progress",
-
     "a": "NODE_ENV=a falco -c -m demo/components/a.js -o docs/dist",
     "b": "NODE_ENV=b falco -c -m demo/components/b.js -o docs/dist",
     "c": "NODE_ENV=c falco -c -m demo/components/c.js -o docs/dist",
@@ -45,7 +45,6 @@
     "@babel/runtime-corejs3": "^7.14.8",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
-    "@types/react-router-dom": "^5.1.8",
     "@types/requirejs": "^2.1.33",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
@@ -63,5 +62,8 @@
     "typescript": "^4.3.5",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "^5.1.8"
   }
 }

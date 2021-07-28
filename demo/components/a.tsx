@@ -1,22 +1,32 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable import/no-unresolved */
 import React, { Component } from 'react'
 import {
   Button, message, ConfigProvider, DatePicker, locales,
 } from 'antd'
-import Nycticorax from 'nycticorax'
+import Nycticorax, { Connect as CT } from 'nycticorax'
+import { ComponentProps } from 'humpback'
+
+type Store = { a: string }
+type Connect = CT<Store>
+type GlobalStore = {
+  user: { name: string },
+  number: string,
+}
 
 const {
   createStore,
   connect,
   dispatch,
   getStore,
-} = new Nycticorax()
+} = new Nycticorax<Store>()
 
 createStore({ a: '9' })
 
-class X extends Component {
+class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
   static getValue = () => getStore().a
 
-  static updateValue = async (value) => {
+  static updateValue = async (value: string) => {
     await new Promise((r) => setTimeout(r, 1000))
     dispatch({ a: value }, true)
   }

@@ -4,9 +4,7 @@ const { ENTRY, LIBRARY } = process.env
 
 const config = {
   entry: join(__dirname, ENTRY),
-  output: {
-    filename: '[name].js',
-  },
+  output: {},
   externals: {
     react: {
       root: 'React',
@@ -53,31 +51,24 @@ const config = {
   },
 }
 
-// antd: {
-//   root: 'antd',
-//   amd: 'antd',
-// },
-// 'rc-table': {
-//   root: 'rcTable',
-//   amd: 'rc-table',
-// },
-// table: {
-//   root: 'Tb',
-//   amd: 'table',
-// },
-
-// output: {
-//   path: resolve(__dirname, './docs/dist'),
-//   filename: '[name].js',
-//   library: LIBRARY,
-//   libraryTarget: 'amd',
-//   libraryExport: 'default',
-// },
-
 if (!LIBRARY) {
   config.output.path = resolve(__dirname, './dist')
   config.output.filename = 'index.js'
   config.module.rules[0].use.options.presets[1][1].targets = ['defaults']
+}
+
+if (LIBRARY) {
+  config.externals.antd = { root: 'antd', amd: 'antd' }
+  config.externals['rc-table'] = { root: 'rcTable', amd: 'rc-table' }
+  config.externals.table = { root: 'Tb', amd: 'table' }
+
+  config.output = {
+    path: resolve(__dirname, './docs/dist'),
+    filename: '[name].js',
+    library: LIBRARY,
+    libraryTarget: 'amd',
+    libraryExport: 'default',
+  }
 }
 
 module.exports = config

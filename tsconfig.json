@@ -7,6 +7,9 @@
       "react-dom",
       "react-router-dom"
     ],
+    "typeRoots": [
+      "./types"
+    ],
     "moduleResolution": "node",
     "jsx": "react",
     "strict": true,
@@ -23,5 +26,5 @@
     "stripInternal": true,
     "strictPropertyInitialization": false
   },
-  "include": ["src"],
+  "exclude": ["dist", "docs"],
 }
