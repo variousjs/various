@@ -23,7 +23,7 @@ const {
 
 createStore({ a: '9' })
 
-class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
+class X extends Component<Connect & ComponentProps<{}, GlobalStore> & { name: string }> {
   static getValue = () => getStore().a
 
   static updateValue = async (value: string) => {
