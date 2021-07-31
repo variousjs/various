@@ -6,13 +6,10 @@ import {
 } from 'antd'
 import Nycticorax, { Connect as CT } from 'nycticorax'
 import { ComponentProps } from 'humpback'
+import { Store as GlobalStore } from '../types'
 
 type Store = { a: string }
 type Connect = CT<Store>
-type GlobalStore = {
-  user: { name: string },
-  number: string,
-}
 
 const {
   createStore,
@@ -23,7 +20,7 @@ const {
 
 createStore({ a: '9' })
 
-class X extends Component<Connect & ComponentProps<{}, GlobalStore> & { name: string }> {
+class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
   static getValue = () => getStore().a
 
   static updateValue = async (value: string) => {

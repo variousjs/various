@@ -4,13 +4,10 @@ import React, { Component } from 'react'
 import { Button, message } from 'antd'
 import Nycticorax, { Connect as CT } from 'nycticorax'
 import { ComponentProps } from 'humpback'
+import { Store as GlobalStore, Config } from '../types'
 
 type Store = { b: string }
 type Connect = CT<Store>
-type GlobalStore = {
-  user: { name: string },
-  number: string,
-}
 
 const {
   createStore,
@@ -21,12 +18,16 @@ const {
 
 createStore({ b: '666' })
 
-class X extends Component<Connect & ComponentProps<{}, GlobalStore>> {
+class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   static getValue = () => getStore().b
 
   static updateValue = (value: string, caller: string) => {
     message.info(`caller: ${caller}`)
     dispatch({ b: value })
+  }
+
+  componentDidMount() {
+    console.log(this.props.$config.menu[0].label)
   }
 
   onGetA = () => {

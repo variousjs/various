@@ -1,10 +1,13 @@
-import React, { Component } from 'react'
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable import/no-unresolved */
+import React, { Component, ComponentType } from 'react'
 import { Route } from 'react-router-dom'
 import { Collapse } from 'antd'
+import { ContainerProps } from 'humpback'
 import Wrapper from './wrapper'
-import './global.less'
+import { Config, Store } from './types'
 
-export default class extends Component {
+class Container extends Component<ContainerProps<Store, Config>> {
   render() {
     const { Router, $config, $component } = this.props
     const routes = $config.routes.map((item) => ({
@@ -54,10 +57,10 @@ export default class extends Component {
 
               return (
                 <Route
-                  key={path}
+                  key={path as string}
                   exact
                   path={path}
-                  component={component}
+                  component={component as unknown as ComponentType}
                 />
               )
             })
@@ -67,3 +70,5 @@ export default class extends Component {
     )
   }
 }
+
+export default Container
