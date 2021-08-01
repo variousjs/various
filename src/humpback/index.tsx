@@ -6,7 +6,7 @@ import createComponent from './create-component'
 import getDispatch from './dispatch'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  Dependency, HumpbackConfig, Entry, ErrorState, Store, ErrorType,
+  Dependency, HumpbackConfig, Entry, ErrorState, Connector, ErrorType,
 } from '../types'
 
 export default (
@@ -17,7 +17,7 @@ export default (
 ) => {
   const { render } = ReactDOM
   const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
-  const nycticorax = new Nycticorax<Store>()
+  const nycticorax = new Nycticorax<Connector.Store>()
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
 

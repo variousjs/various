@@ -2,7 +2,7 @@ import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import {
-  Dependency, ny, Entry, HumpbackConfig, ErrorState, ErrorType, Component, connectComponent,
+  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ErrorType, Component,
 } from '../types'
 
 interface RequireError extends Error {
@@ -14,7 +14,7 @@ interface RequireError extends Error {
 type P = {
   React: Dependency.React,
   ReactRouterDOM: Dependency.ReactRouterDOM,
-  nycticorax: ny,
+  nycticorax: Connector.nycticorax,
 }
 
 type E = {
@@ -236,7 +236,7 @@ export default function ({
     }
   }
 
-  const RwithRouter = withRouter(R) as unknown as connectComponent
+  const RwithRouter = withRouter(R) as unknown as Connector.connect
 
   // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
   const [key0, ...keyn] = storeKeys

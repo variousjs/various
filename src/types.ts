@@ -20,6 +20,14 @@ export namespace Dependency {
   export type RequireJsError = typeof window.requirejs.onError
 }
 
+export namespace Connector {
+  export type Store = { [key: string]: unknown }
+  const ctx = new Nycticorax<Store>()
+  export type nycticorax = typeof ctx
+  export type dispatch = typeof ctx.dispatch
+  export type connect = ComponentType<Connect<Store>> & { [key: string]: any }
+}
+
 export interface ErrorState {
   errorType: string,
   errorMessage: string,
@@ -66,13 +74,3 @@ export type Component = {
   $mounted: string[],
   $router: RouteComponentProps,
 }
-
-export type Store = { [key: string]: unknown }
-
-const nycticorax = new Nycticorax<Store>()
-
-export type ny = typeof nycticorax
-
-export type dp = typeof nycticorax.dispatch
-
-export type connectComponent = ComponentType<Connect<Store>> & { [key: string]: any }

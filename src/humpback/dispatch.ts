@@ -1,16 +1,16 @@
 /* eslint-disable no-throw-literal */
 import { MOUNTED_COMPONENTS } from '../config'
-import { dp, Entry } from '../types'
+import { Connector, Entry } from '../types'
 
 type Ctx = {
   props: {
-    dispatch: dp,
+    dispatch: Connector.dispatch,
     [MOUNTED_COMPONENTS]: string[],
   },
 }
 
 export default function (
-  dispatch: dp,
+  dispatch: Connector.dispatch,
   storeDispatcher: Entry['actions'],
   componentDispatcher: { [name: string]: Entry['actions'] },
 ) {
