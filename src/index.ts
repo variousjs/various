@@ -3,17 +3,17 @@ import 'regenerator-runtime/runtime'
 import { DEFAULT_PACKAGES } from './config'
 import getHumpback from './humpback'
 import {
-  Config, Entry, Dependency,
+  HumpbackConfig, Entry, Dependency,
 } from './types'
 
 class Humpback {
   private errorFn: Dependency.RequireJsError
 
-  private config: Config
+  private config: HumpbackConfig
 
   private paths: { [key: string]: string }
 
-  constructor(config: Config) {
+  constructor(config: HumpbackConfig) {
     const { dependencies, components, entry } = config || {}
     const paths = {
       ...DEFAULT_PACKAGES,

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { Entry } from '../types'
+import { Entry, Dependency } from '../types'
 
-export default (React: typeof window.React) => {
+export default (React: Dependency.React) => {
   const Loader = () => (
     <h3>Loading</h3>
   )

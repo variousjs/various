@@ -4,9 +4,9 @@ import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
-import { MOUNTED_COMPONENTS, ERRORS, ROOT_CONTAINER } from '../config'
+import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  Dependency, Config, Entry, State, Store,
+  Dependency, HumpbackConfig, Entry, ErrorState, Store, ErrorType,
 } from '../types'
 
 export default (
@@ -21,7 +21,7 @@ export default (
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
 
-  return (config: Config & Entry, ctx: { onError: Dependency.RequireJsError }) => {
+  return (config: HumpbackConfig & Entry, ctx: { onError: Dependency.RequireJsError }) => {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       dependencies,
@@ -67,29 +67,31 @@ export default (
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      return () => (<E type={ERRORS.NOT_DEFINED} />)
+      return () => (<E type={ERROR_TYPE.NOT_DEFINED} />)
     }
 
     class R extends React.Component<Entry['store'] & {
       dispatch: typeof dispatch,
       [MOUNTED_COMPONENTS]: string[],
-    }, State> {
+    }, ErrorState> {
       state = {
-        errorCode: '',
+        errorType: '',
         errorMessage: '',
       }
 
       dispatch = currentDispatch.bind(this, 'global')
 
       componentDidCatch(e: Error) {
-        this.setState({ errorCode: 'CONTAINER_ERROR', errorMessage: e.message })
+        this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })
       }
 
       render() {
-        const { errorCode, errorMessage } = this.state
+        const { errorType, errorMessage } = this.state
 
-        if (errorCode) {
-          return (<E type={ERRORS[errorCode as keyof typeof ERRORS]} message={errorMessage} />)
+        if (errorType) {
+          return (
+            <E type={ERROR_TYPE[errorType as ErrorType]} message={errorMessage} />
+          )
         }
 
         const storeData: Entry['store'] = {}

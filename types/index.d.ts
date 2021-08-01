@@ -12,7 +12,7 @@ declare module 'humpback' {
 
   export type ErrorProps = {
     reload?: () => void,
-    type: string,
+    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'COMPONENT_NAME_ERROR' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
     message?: string,
   }
 

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "RequireJS(AMD) + React",
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "publishConfig": {
     "access": "public"

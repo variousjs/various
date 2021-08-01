@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom'
 import React, { FC, ComponentType, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
+import { ERROR_TYPE } from './config'
 // import { ErrorProps } from 'humpback'
 
 export namespace Dependency {
@@ -19,6 +20,20 @@ export namespace Dependency {
   export type RequireJsError = typeof window.requirejs.onError
 }
 
+export interface ErrorState {
+  errorType: string,
+  errorMessage: string,
+}
+export type ErrorType = keyof typeof ERROR_TYPE
+
+export interface HumpbackConfig {
+  dependencies?: { [key: string]: string },
+  components: { [key: string]: string },
+  entry?: string,
+  routerMode?: 'browser' | 'hash',
+  root?: string,
+}
+
 /*
 
 */
@@ -27,14 +42,6 @@ type E = {
   type: string,
   message?: string,
   reload?: () => void,
-}
-
-export type Config = {
-  dependencies?: { [key: string]: string },
-  components: { [key: string]: string },
-  entry?: string,
-  routerMode?: 'browser' | 'hash',
-  root?: string,
 }
 
 export type Entry = {
@@ -58,11 +65,6 @@ export type Component = {
   $store: Entry['store'],
   $mounted: string[],
   $router: RouteComponentProps,
-}
-
-export type State = {
-  errorCode: string,
-  errorMessage: string,
 }
 
 export type Store = { [key: string]: unknown }

@@ -1,35 +1,37 @@
 import { ReactNode } from 'react'
-import { ERRORS } from '../config'
-import { Entry, State } from '../types'
+import { ERROR_TYPE } from '../config'
+import {
+  Entry, ErrorState, ErrorType, Dependency,
+} from '../types'
 
 type P = {
   children: ReactNode,
 }
 
 export default (
-  React: typeof window.React,
+  React: Dependency.React,
   Error: Entry['Error'],
-) => class extends React.Component<P, State> {
+) => class extends React.Component<P, ErrorState> {
   state = {
-    errorCode: '',
+    errorType: '',
     errorMessage: '',
   }
 
-  shouldComponentUpdate(_props: P, { errorCode }: State) {
-    return !!errorCode
+  shouldComponentUpdate(_props: P, { errorType }: ErrorState) {
+    return !!errorType
   }
 
   componentDidCatch(e: Error) {
-    this.setState({ errorCode: 'ROUTER_ERROR', errorMessage: e.message })
+    this.setState({ errorType: 'ROUTER_ERROR', errorMessage: e.message })
   }
 
   render() {
-    const { errorCode, errorMessage } = this.state
+    const { errorType, errorMessage } = this.state
     const { children } = this.props
 
-    if (errorCode) {
+    if (errorType) {
       return (
-        <Error type={ERRORS[errorCode as keyof typeof ERRORS]} message={errorMessage} />
+        <Error type={ERROR_TYPE[errorType as ErrorType]} message={errorMessage} />
       )
     }
 

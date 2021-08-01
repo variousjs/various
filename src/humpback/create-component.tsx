@@ -1,8 +1,8 @@
 import { ComponentType } from 'react'
 import getDispatch from './dispatch'
-import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERRORS } from '../config'
+import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import {
-  Dependency, ny, Entry, Config, State, Component, connectComponent,
+  Dependency, ny, Entry, HumpbackConfig, ErrorState, ErrorType, Component, connectComponent,
 } from '../types'
 
 interface RequireError extends Error {
@@ -23,7 +23,7 @@ type E = {
   componentDispatcher: {
     [name: string]: Entry['actions'],
   },
-  config: Config,
+  config: HumpbackConfig,
   Loader: Entry['Loader'],
   Error: Entry['Error'],
 }
@@ -58,12 +58,12 @@ export default function ({
     MOUNTED_COMPONENTS: string[],
     dispatch: typeof dispatch,
     [key: string]: unknown,
-  }, State & {
+  }, ErrorState & {
     component: ComponentType | undefined,
   }> {
     state = {
       component: undefined,
-      errorCode: '',
+      errorType: '',
       errorMessage: '',
     }
 
@@ -74,7 +74,7 @@ export default function ({
     }
 
     componentDidCatch(e: Error) {
-      this.setState({ errorCode: 'SCRIPT_ERROR', errorMessage: e.message })
+      this.setState({ errorType: 'SCRIPT_ERROR', errorMessage: e.message })
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -116,7 +116,7 @@ export default function ({
 
       window.requirejs([name], (C: Com) => {
         if (!C) {
-          this.setState({ errorCode: 'COMPONENT_NAME_ERROR' })
+          this.setState({ errorType: 'COMPONENT_NAME_ERROR' })
           return
         }
 
@@ -151,7 +151,7 @@ export default function ({
         const [module] = e.requireModules
 
         this.setState({
-          errorCode: module === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
+          errorType: module === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
           errorMessage: e.message,
         })
       })
@@ -160,7 +160,7 @@ export default function ({
     onReload = () => {
       this.setState({
         component: undefined,
-        errorCode: '',
+        errorType: '',
         errorMessage: '',
       }, () => {
         this.mountComponent()
@@ -177,17 +177,17 @@ export default function ({
         // eslint-disable-next-line react/prop-types
         MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
       } = this.props
-      const { component, errorMessage, errorCode } = this.state
+      const { component, errorMessage, errorType } = this.state
       const store: Entry['store'] = {}
       const componentProps: Entry['store'] = {}
 
-      if (errorCode) {
+      if (errorType) {
         return !silent
           ? (
             <Error
-              type={ERRORS[errorCode as keyof typeof ERRORS]}
+              type={ERROR_TYPE[errorType as ErrorType]}
               message={errorMessage}
-              reload={errorCode === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
+              reload={errorType === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
             />
           )
           : null
