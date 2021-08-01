@@ -5,12 +5,6 @@ import {
   Dependency, Connector, Entry, HumpbackConfig, ErrorState, ErrorType, Component,
 } from '../types'
 
-interface RequireError extends Error {
-  requireType: string,
-  requireModules: string[],
-  originalError: Error,
-}
-
 type P = {
   React: Dependency.React,
   ReactRouterDOM: Dependency.ReactRouterDOM,
@@ -140,7 +134,7 @@ export default function ({
         this.setState({ component: C.default || C }, () => {
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
-      }, (e: RequireError) => {
+      }, (e: Dependency.RequireError) => {
         window.requirejs.undef(name)
         window.requirejs.config({
           paths: {
@@ -174,7 +168,6 @@ export default function ({
         match,
         staticContext,
 
-        // eslint-disable-next-line react/prop-types
         MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
       } = this.props
       const { component, errorMessage, errorType } = this.state
@@ -185,7 +178,7 @@ export default function ({
         return !silent
           ? (
             <Error
-              type={ERROR_TYPE[errorType as ErrorType]}
+              type={ERROR_TYPE[errorType as ErrorType] as ErrorType}
               message={errorMessage}
               reload={errorType === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
             />

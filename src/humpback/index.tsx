@@ -29,7 +29,7 @@ export default (
       store = {},
       actions = {},
       Loader: L = Loader,
-      Error: E = Error,
+      Error: ErrorNode = Error,
       Container: C = Container,
       ...rest
     } = config
@@ -38,7 +38,7 @@ export default (
     const componentDispatcher: { [name: string]: Entry['actions'] } = {}
     const storeDispatcher = { ...actions }
     const COMPONENTS: { [key: string]: ComponentType } = {}
-    const Routes = getRoutes(React, E)
+    const Routes = getRoutes(React, ErrorNode)
     const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
 
     createStore({
@@ -56,7 +56,7 @@ export default (
         storeDispatcher,
         componentDispatcher,
         Loader: L,
-        Error: E,
+        Error: ErrorNode,
         config: { ...rest, components },
       })
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -67,7 +67,9 @@ export default (
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      return () => (<E type={ERROR_TYPE.NOT_DEFINED} />)
+      return () => (
+        <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
+      )
     }
 
     class R extends React.Component<Entry['store'] & {
@@ -90,7 +92,10 @@ export default (
 
         if (errorType) {
           return (
-            <E type={ERROR_TYPE[errorType as ErrorType]} message={errorMessage} />
+            <ErrorNode
+              type={ERROR_TYPE[errorType as ErrorType] as ErrorType}
+              message={errorMessage}
+            />
           )
         }
 

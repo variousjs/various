@@ -1,11 +1,14 @@
+/* eslint-disable import/no-unresolved */
 import Nycticorax, { Connect } from 'nycticorax'
 import {
   HashRouter, BrowserRouter, Switch, withRouter, RouteComponentProps,
 } from 'react-router-dom'
 import React, { FC, ComponentType, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
+import { ErrorProps } from 'humpback'
 import { ERROR_TYPE } from './config'
-// import { ErrorProps } from 'humpback'
+
+export { ErrorProps, ComponentProps } from 'humpback'
 
 export namespace Dependency {
   export type React = typeof React
@@ -18,6 +21,11 @@ export namespace Dependency {
   }
   export type Nycticorax = typeof Nycticorax
   export type RequireJsError = typeof window.requirejs.onError
+  export interface RequireError extends Error {
+    requireType: string,
+    requireModules: string[],
+    originalError: Error,
+  }
 }
 
 export namespace Connector {
@@ -46,17 +54,11 @@ export interface HumpbackConfig {
 
 */
 
-type E = {
-  type: string,
-  message?: string,
-  reload?: () => void,
-}
-
 export type Entry = {
   store: { [key: string]: unknown },
   actions: { [name: string]: (...args: any) => any },
   Loader: ComponentType,
-  Error: FC<E>,
+  Error: FC<ErrorProps>,
   Container: ComponentType<{
     Router: ReactNode,
     $component: (name: string) => ComponentType,

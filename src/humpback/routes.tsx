@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
+import { ReactNode, ComponentType } from 'react'
 import { ERROR_TYPE } from '../config'
 import {
-  Entry, ErrorState, ErrorType, Dependency,
+  ErrorProps, ErrorState, ErrorType, Dependency,
 } from '../types'
 
 type P = {
@@ -10,7 +10,7 @@ type P = {
 
 export default (
   React: Dependency.React,
-  Error: Entry['Error'],
+  ErrorNode: ComponentType<ErrorProps>,
 ) => class extends React.Component<P, ErrorState> {
   state = {
     errorType: '',
@@ -31,7 +31,10 @@ export default (
 
     if (errorType) {
       return (
-        <Error type={ERROR_TYPE[errorType as ErrorType]} message={errorMessage} />
+        <ErrorNode
+          type={ERROR_TYPE[errorType as ErrorType] as ErrorType}
+          message={errorMessage}
+        />
       )
     }
 

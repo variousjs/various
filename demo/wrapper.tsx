@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, { FC } from 'react'
 import {

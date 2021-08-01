@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
-import { Entry, Dependency } from '../types'
+import { FC } from 'react'
+import { ErrorProps, Dependency } from '../types'
 
 export default (React: Dependency.React) => {
   const Loader = () => (
     <h3>Loading</h3>
   )
 
-  const Error: Entry['Error'] = ({ type, message, reload }) => (
+  const Error: FC<ErrorProps> = ({ type, message, reload }) => (
     <>
       <h3>{type}</h3>
       <p>{message}</p>
