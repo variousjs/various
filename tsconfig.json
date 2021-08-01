@@ -3,9 +3,6 @@
     "target": "ES2016",
     "types": [
       "requirejs",
-      "react",
-      "react-dom",
-      "react-router-dom"
     ],
     "typeRoots": [
       "./types"

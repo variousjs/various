@@ -2,7 +2,7 @@ import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERRORS } from '../config'
 import {
-  Rrd, ny, Entry, Config, State, Component, connectComponent,
+  Dependency, ny, Entry, Config, State, Component, connectComponent,
 } from '../types'
 
 interface RequireError extends Error {
@@ -12,8 +12,8 @@ interface RequireError extends Error {
 }
 
 type P = {
-  React: typeof window.React,
-  ReactRouterDOM: Rrd,
+  React: Dependency.React,
+  ReactRouterDOM: Dependency.ReactRouterDOM,
   nycticorax: ny,
 }
 

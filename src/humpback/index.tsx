@@ -6,14 +6,14 @@ import createComponent from './create-component'
 import getDispatch from './dispatch'
 import { MOUNTED_COMPONENTS, ERRORS, ROOT_CONTAINER } from '../config'
 import {
-  Ny, Rrd, Config, Entry, State, OnError, Store,
+  Dependency, Config, Entry, State, Store,
 } from '../types'
 
 export default (
-  React: typeof window.React,
-  ReactDOM: typeof window.ReactDOM,
-  ReactRouterDOM: Rrd,
-  Nycticorax: Ny,
+  React: Dependency.React,
+  ReactDOM: Dependency.ReactDOM,
+  ReactRouterDOM: Dependency.ReactRouterDOM,
+  Nycticorax: Dependency.Nycticorax,
 ) => {
   const { render } = ReactDOM
   const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
@@ -21,7 +21,7 @@ export default (
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
 
-  return (config: Config & Entry, ctx: { onError: OnError }) => {
+  return (config: Config & Entry, ctx: { onError: Dependency.RequireJsError }) => {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       dependencies,
@@ -33,7 +33,7 @@ export default (
       Container: C = Container,
       ...rest
     } = config
-    const Router: Rrd['HashRouter'] = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
+    const Router: Dependency.ReactRouterDOM['HashRouter'] = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
     const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
     const componentDispatcher: { [name: string]: Entry['actions'] } = {}
     const storeDispatcher = { ...actions }

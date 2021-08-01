@@ -3,11 +3,11 @@ import 'regenerator-runtime/runtime'
 import { DEFAULT_PACKAGES } from './config'
 import getHumpback from './humpback'
 import {
-  Config, Ny, Entry, OnError, Rrd,
+  Config, Entry, Dependency,
 } from './types'
 
 class Humpback {
-  private errorFn: OnError
+  private errorFn: Dependency.RequireJsError
 
   private config: Config
 
@@ -39,10 +39,10 @@ class Humpback {
       requires.push('$entry_component')
     }
     window.requirejs(requires, (
-      React: typeof window.React,
-      ReactDOM: typeof window.ReactDOM,
-      ReactRouterDOM: Rrd,
-      Nycticorax: Ny,
+      React: Dependency.React,
+      ReactDOM: Dependency.ReactDOM,
+      ReactRouterDOM: Dependency.ReactRouterDOM,
+      Nycticorax: Dependency.Nycticorax,
       entry: Entry,
     ) => {
       const humpback = getHumpback(React, ReactDOM, ReactRouterDOM, Nycticorax)
@@ -50,7 +50,7 @@ class Humpback {
     }, this.errorFn)
   }
 
-  public set onError(fn: OnError) {
+  public set onError(fn: Dependency.RequireJsError) {
     this.errorFn = fn
   }
 }

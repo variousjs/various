@@ -2,7 +2,7 @@ declare module 'humpback' {
   import { RouteComponentProps } from 'react-router-dom'
   import { ComponentType } from 'react'
 
-  export type ComponentProps<S = any, C = any> = {
+  export type ComponentProps<S = {}, C = {}> = {
     $config: Readonly<C>,
     $mounted: string[],
     $router: RouteComponentProps<{ [key: string]: string }>,
@@ -11,12 +11,12 @@ declare module 'humpback' {
   }
 
   export type ErrorProps = {
-    reload: () => void,
+    reload?: () => void,
     type: string,
-    message: string,
+    message?: string,
   }
 
-  export type ContainerProps<S = any, C = any> = {
+  export type ContainerProps<S = {}, C = {}> = {
     Router: ComponentType,
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
@@ -33,11 +33,11 @@ declare module 'humpback' {
     dispatch: (next: Partial<S>) => void,
   }
 
-  export type Actions<S = any> = {
+  export type Actions<S = {}> = {
     [name: string]: (nycticorax: Nycticorax<S>, ...args: any) => any,
   }
 
-  export interface Entry<S = any, C = any> {
+  export interface Entry<S = {}, C = {}> {
     store?: Readonly<S>,
     actions?: Actions<S>,
     Loader?: ComponentType,

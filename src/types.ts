@@ -2,7 +2,26 @@ import Nycticorax, { Connect } from 'nycticorax'
 import {
   HashRouter, BrowserRouter, Switch, withRouter, RouteComponentProps,
 } from 'react-router-dom'
-import { FC, ComponentType, ReactNode } from 'react'
+import React, { FC, ComponentType, ReactNode } from 'react'
+import ReactDOM from 'react-dom'
+// import { ErrorProps } from 'humpback'
+
+export namespace Dependency {
+  export type React = typeof React
+  export type ReactDOM = typeof ReactDOM
+  export interface ReactRouterDOM {
+    HashRouter: typeof HashRouter,
+    BrowserRouter: typeof BrowserRouter,
+    Switch: typeof Switch,
+    withRouter: typeof withRouter,
+  }
+  export type Nycticorax = typeof Nycticorax
+  export type RequireJsError = typeof window.requirejs.onError
+}
+
+/*
+
+*/
 
 type E = {
   type: string,
@@ -16,15 +35,6 @@ export type Config = {
   entry?: string,
   routerMode?: 'browser' | 'hash',
   root?: string,
-}
-
-export type Ny = typeof Nycticorax
-
-export type Rrd = {
-  HashRouter: typeof HashRouter,
-  BrowserRouter: typeof BrowserRouter,
-  Switch: typeof Switch,
-  withRouter: typeof withRouter,
 }
 
 export type Entry = {
@@ -54,8 +64,6 @@ export type State = {
   errorCode: string,
   errorMessage: string,
 }
-
-export type OnError = typeof window.requirejs.onError
 
 export type Store = { [key: string]: unknown }
 
