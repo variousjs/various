@@ -22,11 +22,7 @@ interface E {
   Error: Entry['Error'],
 }
 
-declare global {
-  interface Require {
-    s: any,
-  }
-}
+type RequiredComponent = ComponentType & Entry['actions'] & { default: ComponentType }
 
 export default function ({
   React,
@@ -44,8 +40,7 @@ export default function ({
   const { connect, getStore, dispatch } = nycticorax
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { components, dependencies, ...rest } = config
+  const { components, ...rest } = config
 
   class R extends React.Component<ComponentProps['$router'] & {
     silent: Boolean | undefined,
@@ -83,7 +78,7 @@ export default function ({
     }
 
     unMountComponent = () => {
-      let mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+      let mountedComponents = getStore()[MOUNTED_COMPONENTS]
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
@@ -104,17 +99,13 @@ export default function ({
         // ignore
       }
 
-      type Com = ComponentType & Entry['actions'] & {
-        default: ComponentType,
-      }
-
-      window.requirejs([name], (C: Com) => {
+      window.requirejs([name], (C: RequiredComponent) => {
         if (!C) {
           this.setState({ errorType: 'COMPONENT_NAME_ERROR' })
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
         const actions: Entry['actions'] = {}
 
         if (!mountedComponents.includes(name)) {
@@ -203,10 +194,10 @@ export default function ({
         }
       })
 
-      const C = component as unknown as ComponentType<ComponentProps>
+      const ComponentNode = component as unknown as ComponentType<ComponentProps>
 
       return (
-        <C
+        <ComponentNode
           // eslint-disable-next-line react/jsx-props-no-spreading
           // {...propsRest}
           {...componentProps}

@@ -6,7 +6,7 @@ import {
 import React, { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
 import { Entry as HumpbackEntry } from 'humpback'
-import { ERROR_TYPE } from './config'
+import { ERROR_TYPE, MOUNTED_COMPONENTS } from './config'
 
 export { ErrorProps, ComponentProps } from 'humpback'
 
@@ -36,7 +36,7 @@ export namespace Dependency {
 }
 
 export namespace Connector {
-  export type Store = { [key: string]: unknown }
+  export type Store = { [key: string]: unknown, [MOUNTED_COMPONENTS]: string[] }
   const ctx = new Nycticorax<Store>()
   export type nycticorax = typeof ctx
   export type dispatch = typeof ctx.dispatch
@@ -55,4 +55,10 @@ export interface HumpbackConfig {
   entry?: string,
   routerMode?: 'browser' | 'hash',
   root?: string,
+}
+
+declare global {
+  interface Require {
+    s: any,
+  }
 }

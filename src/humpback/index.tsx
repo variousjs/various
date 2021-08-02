@@ -24,16 +24,18 @@ export default (
   return (config: HumpbackConfig & Entry, ctx: { onError: Dependency.RequireJsError }) => {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      dependencies,
+      dependencies, entry,
+      routerMode,
+      root,
       components = {},
       store = {},
       actions = {},
-      Loader: L = Loader,
+      Loader: LoaderNode = Loader,
       Error: ErrorNode = Error,
-      Container: C = Container,
+      Container: ContainerNode = Container,
       ...rest
     } = config
-    const Router: Dependency.ReactRouterDOM['HashRouter'] = rest.routerMode === 'browser' ? BrowserRouter : HashRouter
+    const Router: Dependency.ReactRouterDOM['HashRouter'] = routerMode === 'browser' ? BrowserRouter : HashRouter
     const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
     const componentDispatcher: { [name: string]: Entry['actions'] } = {}
     const storeDispatcher = { ...actions }
@@ -55,7 +57,7 @@ export default (
         name,
         storeDispatcher,
         componentDispatcher,
-        Loader: L,
+        Loader: LoaderNode,
         Error: ErrorNode,
         config: { ...rest, components },
       })
@@ -107,10 +109,10 @@ export default (
           }
         })
 
-        const mounted = this.props[MOUNTED_COMPONENTS] as string[]
+        const mounted = this.props[MOUNTED_COMPONENTS]
 
         return (
-          <C
+          <ContainerNode
             Router={Routes}
             $component={componentCreator}
             $mounted={mounted}
@@ -133,7 +135,7 @@ export default (
             <X />
           </Switch>
         </Router>
-      ), document.querySelector(rest.root || ROOT_CONTAINER))
+      ), document.querySelector(root || ROOT_CONTAINER))
     } catch (e) {
       ctx.onError(e)
     }
