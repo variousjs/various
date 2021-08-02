@@ -2,16 +2,16 @@ import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import {
-  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ErrorType, Component,
+  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ErrorType, ComponentProps,
 } from '../types'
 
-type P = {
+interface P {
   React: Dependency.React,
   ReactRouterDOM: Dependency.ReactRouterDOM,
   nycticorax: Connector.nycticorax,
 }
 
-type E = {
+interface E {
   name: string,
   storeDispatcher: Entry['actions'],
   componentDispatcher: {
@@ -47,7 +47,7 @@ export default function ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { components, dependencies, ...rest } = config
 
-  class R extends React.Component<Component['$router'] & {
+  class R extends React.Component<ComponentProps['$router'] & {
     silent: Boolean | undefined,
     MOUNTED_COMPONENTS: string[],
     dispatch: typeof dispatch,
@@ -187,11 +187,7 @@ export default function ({
       }
 
       if (!component) {
-        return !silent
-          ? (
-            <Loader />
-          )
-          : null
+        return !silent ? (<Loader />) : null
       }
 
       storeKeys.forEach((key) => {
@@ -207,7 +203,7 @@ export default function ({
         }
       })
 
-      const C = component as unknown as ComponentType<Component>
+      const C = component as unknown as ComponentType<ComponentProps>
 
       return (
         <C

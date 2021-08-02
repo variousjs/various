@@ -1,14 +1,21 @@
 /* eslint-disable import/no-unresolved */
 import Nycticorax, { Connect } from 'nycticorax'
 import {
-  HashRouter, BrowserRouter, Switch, withRouter, RouteComponentProps,
+  HashRouter, BrowserRouter, Switch, withRouter,
 } from 'react-router-dom'
-import React, { FC, ComponentType, ReactNode } from 'react'
+import React, { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
-import { ErrorProps } from 'humpback'
+import { Entry as HumpbackEntry } from 'humpback'
 import { ERROR_TYPE } from './config'
 
 export { ErrorProps, ComponentProps } from 'humpback'
+
+type Writeable<T> = { -readonly [P in keyof T]: T[P] }
+type RequiredEntry = Required<HumpbackEntry<{ [key: string]: unknown }>>
+
+export type Entry = Omit<RequiredEntry, 'store'> & {
+  store: Writeable<RequiredEntry['store']>,
+}
 
 export namespace Dependency {
   export type React = typeof React
@@ -48,31 +55,4 @@ export interface HumpbackConfig {
   entry?: string,
   routerMode?: 'browser' | 'hash',
   root?: string,
-}
-
-/*
-
-*/
-
-export type Entry = {
-  store: { [key: string]: unknown },
-  actions: { [name: string]: (...args: any) => any },
-  Loader: ComponentType,
-  Error: FC<ErrorProps>,
-  Container: ComponentType<{
-    Router: ReactNode,
-    $component: (name: string) => ComponentType,
-    $mounted: string[],
-    $config: { [key: string]: any },
-    $dispatch: (...args: any) => any,
-    $store: Entry['store'],
-  }>,
-}
-
-export type Component = {
-  $config: { [key: string]: any },
-  $dispatch: (...args: any) => any,
-  $store: Entry['store'],
-  $mounted: string[],
-  $router: RouteComponentProps,
 }

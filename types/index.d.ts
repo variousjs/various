@@ -1,6 +1,6 @@
 declare module 'humpback' {
   import { RouteComponentProps } from 'react-router-dom'
-  import { ComponentType } from 'react'
+  import { ComponentType, ReactNode } from 'react'
 
   export type ComponentProps<S = {}, C = {}> = {
     $config: Readonly<C>,
@@ -17,7 +17,7 @@ declare module 'humpback' {
   }
 
   export type ContainerProps<S = {}, C = {}> = {
-    Router: ComponentType,
+    Router: ComponentType<{ children: ReactNode }>,
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
       silent?: boolean,
