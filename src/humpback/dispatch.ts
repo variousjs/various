@@ -23,7 +23,7 @@ export default function (
   ) {
     const currentDispatch = this.props.dispatch || dispatch
 
-    if (name === 'global') {
+    if (name === 'store') {
       if (!storeDispatcher[func]) {
         throw `Dispatcher \`${func}\` not exists`
       }

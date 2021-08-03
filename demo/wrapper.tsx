@@ -57,7 +57,7 @@ const W: FC<ContainerProps<Store, Config>> = (props) => {
               当前已经加载完成的组件:
               <Tag>{$mounted}</Tag>
             </div>
-            <Button onClick={() => $dispatch('global', 'setNumber', Math.random().toFixed(2))}>global</Button>
+            <Button onClick={() => $dispatch('store', 'setNumber', Math.random().toFixed(2))}>store</Button>
             <Button onClick={() => $dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>
             <div style={{ margin: '0 20px' }}>
               <Badge count={$store.number} showZero />

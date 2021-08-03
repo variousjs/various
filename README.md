@@ -25,6 +25,7 @@ https://humpbackjs.github.io/humpback/
 17. remove version params
 18. remove humpback require
 19. typescript support
+20. dispatch 'global' => 'store'
 
 ### error type
 

@@ -83,7 +83,7 @@ export default (
         errorMessage: '',
       }
 
-      dispatch = currentDispatch.bind(this, 'global')
+      dispatch = currentDispatch.bind(this, 'store')
 
       componentDidCatch(e: Error) {
         this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })

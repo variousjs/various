@@ -37,7 +37,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
   }
 
   onSetG = async () => {
-    await this.props.$dispatch('global', 'updateUserName', Math.random())
+    await this.props.$dispatch('store', 'updateUserName', Math.random())
     message.success('更新完成')
   }
 

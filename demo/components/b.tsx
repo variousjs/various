@@ -44,7 +44,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   }
 
   onSetG = () => {
-    this.props.$dispatch('global', 'setNumber', Math.random().toFixed(2))
+    this.props.$dispatch('store', 'setNumber', Math.random().toFixed(2))
   }
 
   onGetStatus = () => {
