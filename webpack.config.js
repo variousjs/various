@@ -15,8 +15,8 @@ const config = {
       amd: 'react-dom',
     },
     'react-router-dom': {
-      name: 'react-router-dom',
       root: 'ReactRouterDOM',
+      amd: 'react-router-dom',
     },
     nycticorax: {
       root: 'Nycticorax',
@@ -58,14 +58,24 @@ if (!LIBRARY) {
 }
 
 if (LIBRARY) {
+  const map = {
+    entry: '$entry_component',
+    a: 'a',
+    b: 'b',
+    c: 'c',
+    d: 'd',
+    e: 'e',
+    f: 'f',
+  }
+
   config.externals.antd = { root: 'antd', amd: 'antd' }
   config.externals['rc-table'] = { root: 'rcTable', amd: 'rc-table' }
   config.externals.table = { root: 'Tb', amd: 'table' }
 
   config.output = {
     path: resolve(__dirname, './docs/dist'),
-    filename: '[name].js',
-    library: LIBRARY,
+    filename: `${LIBRARY}.js`,
+    library: map[LIBRARY],
     libraryTarget: 'amd',
     libraryExport: 'default',
   }

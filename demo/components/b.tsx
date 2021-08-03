@@ -27,7 +27,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   }
 
   componentDidMount() {
-    console.log(this.props.$config.menu[0].label)
+    window.console.log(this.props.$config.menu[0].label)
   }
 
   onGetA = () => {

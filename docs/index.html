@@ -8,11 +8,11 @@
 <body>
 <div id="root"></div>
 <script src="https://cdn.jsdelivr.net/npm/requirejs/require.js"></script>
-<script src="./dist/index.js"></script>
+<script src="/dist/index.js"></script>
 <script>
 var config = {
   root: '#root',
-  entry: '/dist/global.js',
+  entry: '/dist/entry.js',
   // routerMode: 'browser',
   dependencies: {
     moment: 'https://cdn.jsdelivr.net/npm/moment/min/moment.min.js',
@@ -92,7 +92,7 @@ humpback.onError = (e) => {
   document.write(e.message)
 }
 
-humpback.require(['moment', 'moment_zhCN'], function (moment) {
+window.require(['moment', 'moment_zhCN'], function (moment) {
   moment.locale('zh-cn')
   humpback.start()
 })
