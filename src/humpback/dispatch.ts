@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 import { MOUNTED_COMPONENTS } from '../config'
 import { Connector, Entry } from '../types'
 
@@ -25,19 +24,19 @@ export default function (
 
     if (name === 'store') {
       if (!storeDispatcher[func]) {
-        throw `Dispatcher \`${func}\` not exists`
+        throw new Error(`action \`${func}\` is not present`)
       }
       return currentDispatch(storeDispatcher[func], value, dispatcher)
     }
 
     if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
-      throw `Component \`${name}\` not ready`
+      throw new Error(`component \`${name}\` is not ready`)
     }
 
     const actions = componentDispatcher[name]
 
     if (!actions[func]) {
-      throw `Dispatcher \`${func}\` not exists`
+      throw new Error(`action \`${func}\` of component \`${name}\` is not present`)
     }
 
     return actions[func](value, dispatcher)

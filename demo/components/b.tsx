@@ -34,13 +34,14 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
     try {
       message.info(this.props.$dispatch('a', 'getValue'))
     } catch (e) {
-      message.error(e)
+      message.error(e.message)
     }
   }
 
   onSetA = async () => {
     await this.props.$dispatch('a', 'updateValue', Math.random().toFixed(2))
     this.onGetA()
+    this.props.$dispatch('a', 'cdy')
   }
 
   onSetG = () => {

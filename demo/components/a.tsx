@@ -29,7 +29,11 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
   }
 
   onGetB = () => {
-    message.info(this.props.$dispatch('b', 'getValue'))
+    try {
+      message.info(this.props.$dispatch('b', 'getValue'))
+    } catch (e) {
+      window.console.log(e.message)
+    }
   }
 
   onSetB = () => {
@@ -39,6 +43,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
   onSetG = async () => {
     await this.props.$dispatch('store', 'updateUserName', Math.random())
     message.success('更新完成')
+    this.props.$dispatch('store', 'abs')
   }
 
   render() {
