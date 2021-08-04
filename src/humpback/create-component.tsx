@@ -78,6 +78,7 @@ export default function ({
     }
 
     componentWillUnmount() {
+      this.ComponentNode = null as RequiredComponent
       this.unMountComponent()
     }
 

@@ -66,6 +66,7 @@ if (LIBRARY) {
     d: 'd',
     e: 'e',
     f: 'f',
+    hooks: 'hooks',
   }
 
   config.externals.antd = { root: 'antd', amd: 'antd' }

@@ -26,6 +26,8 @@ https://humpbackjs.github.io/humpback/
 18. remove humpback require
 19. typescript support
 20. dispatch 'global' => 'store'
+21. fix dispatch error catch
+22. optimize component load
 
 ### error type
 

@@ -19,6 +19,7 @@
     "d": "ENTRY=demo/components/d.tsx LIBRARY=d webpack --progress",
     "e": "ENTRY=demo/components/e.tsx LIBRARY=e webpack --progress",
     "f": "ENTRY=demo/components/f.tsx LIBRARY=f webpack --progress",
+    "hooks": "ENTRY=demo/components/hooks.tsx LIBRARY=hooks webpack --progress",
     "entry": "ENTRY=demo/index.ts LIBRARY=entry webpack --progress"
   },
   "repository": {

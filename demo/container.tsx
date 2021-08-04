@@ -16,7 +16,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
       components: item.components.join().split(','),
     }))
 
-    const X = $component('s')
+    const X = $component('hooks')
 
     return (
       <Wrapper {...this.props}>
