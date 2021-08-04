@@ -22,7 +22,9 @@ interface E {
   Error: Entry['Error'],
 }
 
-type RequiredComponent = ComponentType & Entry['actions'] & { default: ComponentType }
+type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
+   default: RequiredComponent,
+}
 
 export default function ({
   React,
@@ -48,13 +50,15 @@ export default function ({
     dispatch: typeof dispatch,
     [key: string]: unknown,
   }, ErrorState & {
-    component: ComponentType | undefined,
+    componentReady: boolean,
   }> {
     state = {
-      component: undefined,
+      componentReady: false,
       errorType: '',
       errorMessage: '',
     }
+
+    private ComponentNode: RequiredComponent
 
     dispatch = currentDispatch.bind(this, name)
 
@@ -122,7 +126,9 @@ export default function ({
 
         componentDispatcher[name] = actions // eslint-disable-line no-param-reassign
 
-        this.setState({ component: C.default || C }, () => {
+        this.ComponentNode = C.default || C
+
+        this.setState({ componentReady: true }, () => {
           dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
         })
       }, (e: Dependency.RequireError) => {
@@ -144,7 +150,7 @@ export default function ({
 
     onReload = () => {
       this.setState({
-        component: undefined,
+        componentReady: false,
         errorType: '',
         errorMessage: '',
       }, () => {
@@ -161,9 +167,10 @@ export default function ({
 
         MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
       } = this.props
-      const { component, errorMessage, errorType } = this.state
+      const { componentReady, errorMessage, errorType } = this.state
       const store: Entry['store'] = {}
       const componentProps: Entry['store'] = {}
+      const { ComponentNode } = this
 
       if (errorType) {
         return !silent
@@ -177,7 +184,7 @@ export default function ({
           : null
       }
 
-      if (!component) {
+      if (!componentReady) {
         return !silent ? (<Loader />) : null
       }
 
@@ -194,12 +201,8 @@ export default function ({
         }
       })
 
-      const ComponentNode = component as unknown as ComponentType<ComponentProps>
-
       return (
         <ComponentNode
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          // {...propsRest}
           {...componentProps}
           $config={rest}
           $dispatch={this.dispatch}
