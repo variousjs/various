@@ -1,26 +1,26 @@
 {
   "name": "@fratercula/humpback",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "RequireJS(AMD) + React",
   "files": [
-    "lib"
+    "dist",
+    "types"
   ],
   "publishConfig": {
     "access": "public"
   },
+  "types": "types/index.d.ts",
   "scripts": {
-    "a": "NODE_ENV=a falco -c -m demo/components/a.js -o docs/dist",
-    "b": "NODE_ENV=b falco -c -m demo/components/b.js -o docs/dist",
-    "c": "NODE_ENV=c falco -c -m demo/components/c.js -o docs/dist",
-    "d": "NODE_ENV=d falco -c -m demo/components/d.js -o docs/dist",
-    "e": "NODE_ENV=e falco -c -m demo/components/e.js -o docs/dist",
-    "f": "NODE_ENV=f falco -c -m demo/components/f.js -o docs/dist",
-    "index": "NODE_ENV=index falco -c -m src/index.js -o docs/dist && rm docs/dist/index.html",
-    "humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o docs/dist",
-    "global": "NODE_ENV=global falco -c -m demo/index.js -o docs/dist",
-    "build:index": "NODE_ENV=index falco -c -m src/index.js -o lib",
-    "build:humpback": "NODE_ENV=humpback falco -c -m src/humpback/index.js -o lib",
-    "build": "npm run build:index && npm run build:humpback && rm -rf lib/index.html"
+    "lint": "eslint . --ext .ts,.tsx,.js",
+    "build": "ENTRY=src/index.ts webpack --progress && cp -R dist/ docs/dist/",
+    "a": "ENTRY=demo/components/a.tsx LIBRARY=a webpack --progress",
+    "b": "ENTRY=demo/components/b.tsx LIBRARY=b webpack --progress",
+    "c": "ENTRY=demo/components/c.tsx LIBRARY=c webpack --progress",
+    "d": "ENTRY=demo/components/d.tsx LIBRARY=d webpack --progress",
+    "e": "ENTRY=demo/components/e.tsx LIBRARY=e webpack --progress",
+    "f": "ENTRY=demo/components/f.tsx LIBRARY=f webpack --progress",
+    "hooks": "ENTRY=demo/components/hooks.tsx LIBRARY=hooks webpack --progress",
+    "entry": "ENTRY=demo/index.ts LIBRARY=entry webpack --progress"
   },
   "repository": {
     "type": "git",
@@ -36,5 +36,35 @@
   "bugs": {
     "url": "https://github.com/fratercula/humpback/issues"
   },
-  "homepage": "https://github.com/fratercula/humpback#readme"
+  "homepage": "https://github.com/fratercula/humpback#readme",
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.14.5",
+    "@babel/runtime-corejs3": "^7.14.8",
+    "@types/react-dom": "^17.0.9",
+    "@types/requirejs": "^2.1.33",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.1.0",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react": "^17.0.2",
+    "style-loader": "^3.1.0",
+    "typescript": "^4.3.5",
+    "webpack": "^5.45.1",
+    "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "@types/react": "^17.0.15",
+    "@types/react-router-dom": "^5.1.8",
+    "nycticorax": "^2.0.5"
+  }
 }
