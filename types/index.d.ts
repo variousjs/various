@@ -2,7 +2,7 @@ declare module 'humpback' {
   import { RouteComponentProps } from 'react-router-dom'
   import { ComponentType, ReactNode } from 'react'
 
-  export type ComponentProps<S = {}, C = {}> = {
+  export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
     $mounted: string[],
     $router: RouteComponentProps<{ [key: string]: string }>,
@@ -10,13 +10,13 @@ declare module 'humpback' {
     $dispatch: (type: string, method: string, value?: any) => any,
   }
 
-  export type ErrorProps = {
+  export interface ErrorProps {
     reload?: () => void,
     type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'COMPONENT_NAME_ERROR' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
     message?: string,
   }
 
-  export type ContainerProps<S = {}, C = {}> = {
+  export interface ContainerProps<S = {}, C = {}> {
     Router: ComponentType<{ children: ReactNode }>,
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{

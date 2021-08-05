@@ -1,12 +1,11 @@
-import { FC } from 'react'
-import { ErrorProps, Dependency } from '../types'
+import { Entry, Dependency } from '../types'
 
-export default (React: Dependency.React) => {
+const builtIn = (React: Dependency.React) => {
   const Loader = () => (
     <h3>Loading</h3>
   )
 
-  const Error: FC<ErrorProps> = ({ type, message, reload }) => (
+  const Error: Entry['Error'] = ({ type, message, reload }) => (
     <>
       <h3>{type}</h3>
       <p>{message}</p>
@@ -31,3 +30,5 @@ export default (React: Dependency.React) => {
 
   return { Loader, Error, Container }
 }
+
+export default builtIn

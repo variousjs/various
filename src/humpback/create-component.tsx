@@ -2,7 +2,7 @@ import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import {
-  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ErrorType, ComponentProps,
+  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ComponentProps,
 } from '../types'
 
 interface P {
@@ -177,7 +177,7 @@ export default function ({
         return !silent
           ? (
             <Error
-              type={ERROR_TYPE[errorType as ErrorType] as ErrorType}
+              type={ERROR_TYPE[errorType]}
               message={errorMessage}
               reload={errorType === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
             />

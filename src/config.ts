@@ -18,7 +18,7 @@ export const IGNORE_STATIC_METHODS = [
   'displayName',
 ]
 
-export const ERROR_TYPE = {
+export const ERROR_TYPE: { [key: string]: string } = {
   LOADING_ERROR: 'LOADING_ERROR',
   DEPENDENCIES_LOADING_ERROR: 'DEPENDENCIES_LOADING_ERROR',
   NOT_DEFINED: 'NOT_DEFINED',

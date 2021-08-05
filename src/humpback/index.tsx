@@ -6,7 +6,7 @@ import createComponent from './create-component'
 import getDispatch from './dispatch'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  Dependency, HumpbackConfig, Entry, ErrorState, Connector, ErrorType,
+  Dependency, HumpbackConfig, Entry, ErrorState, Connector,
 } from '../types'
 
 export default (
@@ -95,7 +95,7 @@ export default (
         if (errorType) {
           return (
             <ErrorNode
-              type={ERROR_TYPE[errorType as ErrorType] as ErrorType}
+              type={ERROR_TYPE[errorType]}
               message={errorMessage}
             />
           )

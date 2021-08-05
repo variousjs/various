@@ -11,8 +11,8 @@ const errorComponent: FC<ErrorProps> = ({ reload, type, message }) => (
       type="error"
     />
     {
-        reload && <Button onClick={reload}>刷新</Button>
-      }
+      reload && <Button onClick={reload}>刷新</Button>
+    }
   </>
 )
 

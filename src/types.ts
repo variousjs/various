@@ -5,16 +5,20 @@ import {
 } from 'react-router-dom'
 import React, { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
-import { Entry as HumpbackEntry } from 'humpback'
-import { ERROR_TYPE, MOUNTED_COMPONENTS } from './config'
+import { Entry as HumpbackEntry, ErrorProps as Ep } from 'humpback'
+import { MOUNTED_COMPONENTS } from './config'
 
-export { ErrorProps, ComponentProps } from 'humpback'
+export { ComponentProps } from 'humpback'
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 type RequiredEntry = Required<HumpbackEntry<{ [key: string]: unknown }>>
+export interface ErrorProps extends Omit<Ep, 'type'> {
+  type: string,
+}
 
-export type Entry = Omit<RequiredEntry, 'store'> & {
+export interface Entry extends Omit<RequiredEntry, 'store' | 'Error'> {
   store: Writeable<RequiredEntry['store']>,
+  Error: ComponentType<ErrorProps>,
 }
 
 export namespace Dependency {
@@ -47,7 +51,6 @@ export interface ErrorState {
   errorType: string,
   errorMessage: string,
 }
-export type ErrorType = keyof typeof ERROR_TYPE
 
 export interface HumpbackConfig {
   dependencies?: { [key: string]: string },
