@@ -4,30 +4,6 @@ RequireJS(AMD) + React
 
 https://humpbackjs.github.io/humpback/
 
-## Changelog
-
-1. remove `dependencies/components` path auto add `.js` extension
-2. remove `lib/humpback.js` dependency
-3. fix component props
-4. component props `$router`, remove `history/location/match`
-5. props `config` to `$config`
-6. props `dispatch` to `$dispatch`
-7. props `store` to `$store`
-8. fix retry mount component
-9. props `mountedComponents` to `$mounted`
-10. props `componentCreator` to `$component`
-11. error type
-12. root container `#root` config
-13. initial error catch config
-14. `entry` config
-15. global config `loading/error/container` to `Loader/Error/Container`
-16. router mode
-17. remove version params
-18. remove humpback require
-19. typescript support
-20. dispatch 'global' => 'store'
-21. fix dispatch error catch
-22. optimize component load
 
 ### error type
 
