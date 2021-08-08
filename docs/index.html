@@ -86,9 +86,9 @@ var config = {
   ],
 }
 
-const humpback = new window.Humpback(config)
+var humpback = new window.Humpback(config)
 
-humpback.onError = (e) => {
+humpback.onError = function(e) {
   console.log(e)
   document.write(e.message)
 }

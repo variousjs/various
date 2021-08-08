@@ -7,7 +7,7 @@ declare module 'humpback' {
     $mounted: string[],
     $router: RouteComponentProps<{ [key: string]: string }>,
     $store: Readonly<S>,
-    $dispatch: (type: string, method: string, value?: any) => any,
+    $dispatch: (type: string, method: string, value?: any) => unknown,
   }
 
   export interface ErrorProps {
@@ -25,7 +25,7 @@ declare module 'humpback' {
     }>,
     $store: Readonly<S>,
     $mounted: string[],
-    $dispatch: (type: string, method: string, value?: any) => any,
+    $dispatch: (type: string, method: string, value?: any) => unknown,
   }
 
   type Nycticorax<S> = {
@@ -34,7 +34,7 @@ declare module 'humpback' {
   }
 
   export type Actions<S = {}> = {
-    [name: string]: (nycticorax: Nycticorax<S>, ...args: any) => any,
+    [name: string]: (nycticorax: Nycticorax<S>, ...args: any[]) => unknown,
   }
 
   export interface Entry<S = {}, C = {}> {
