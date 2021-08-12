@@ -2,12 +2,21 @@ declare module 'humpback' {
   import { RouteComponentProps } from 'react-router-dom'
   import { ComponentType, ReactNode } from 'react'
 
+  type $dispatch = (type: string, method: string, value?: any) => unknown
+  type $render = (params: {
+    name: string,
+    url?: string,
+    props?: { [key: string]: any },
+    target: Element | null,
+    onMounted?: () => void,
+  }) => () => void
+
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
     $mounted: string[],
-    $router: RouteComponentProps<{ [key: string]: string }>,
+    $router?: RouteComponentProps<{ [key: string]: string }>,
     $store: Readonly<S>,
-    $dispatch: (type: string, method: string, value?: any) => unknown,
+    $dispatch: $dispatch,
   }
 
   export interface ErrorProps {
@@ -25,7 +34,8 @@ declare module 'humpback' {
     }>,
     $store: Readonly<S>,
     $mounted: string[],
-    $dispatch: (type: string, method: string, value?: any) => unknown,
+    $dispatch: $dispatch,
+    $render: $render,
   }
 
   type Nycticorax<S> = {

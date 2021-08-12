@@ -1,7 +1,7 @@
 export const DEFAULT_PACKAGES = {
-  react: 'https://unpkg.com/react/umd/react.production.min.js',
-  'react-dom': 'https://unpkg.com/react-dom/umd/react-dom.production.min.js',
-  'react-router-dom': 'https://unpkg.com/react-router-dom/umd/react-router-dom.min.js',
+  react: 'https://unpkg.com/react/umd/react.development.js',
+  'react-dom': 'https://unpkg.com/react-dom/umd/react-dom.development.js',
+  'react-router-dom': 'https://unpkg.com/react-router-dom/umd/react-router-dom.js',
   nycticorax: 'https://unpkg.com/nycticorax/dist/umd/index.js',
 }
 

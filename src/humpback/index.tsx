@@ -6,7 +6,7 @@ import createComponent from './create-component'
 import getDispatch from './dispatch'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  Dependency, HumpbackConfig, Entry, ErrorState, Connector,
+  Dependency, HumpbackConfig, Entry, ErrorState, Connector, ComponentProps, ContainerProps,
 } from '../types'
 
 export default (
@@ -15,7 +15,7 @@ export default (
   ReactRouterDOM: Dependency.ReactRouterDOM,
   Nycticorax: Dependency.Nycticorax,
 ) => {
-  const { render } = ReactDOM
+  const { render, unmountComponentAtNode } = ReactDOM
   const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
   const nycticorax = new Nycticorax<Connector.Store>()
   const { createStore, connect, dispatch } = nycticorax
@@ -48,8 +48,12 @@ export default (
       [MOUNTED_COMPONENTS]: [],
     })
 
-    Object.keys(components).forEach((name) => {
-      const R = createComponent({
+    const componentCreator = (
+      name: string,
+      routerProps?: ComponentProps['$router'] | {},
+      onMounted?: () => void,
+    ) => {
+      const C = createComponent({
         React,
         ReactRouterDOM,
         nycticorax,
@@ -60,18 +64,65 @@ export default (
         Loader: LoaderNode,
         Error: ErrorNode,
         config: { ...rest, components },
+        routerProps,
+        onMounted,
       })
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      COMPONENTS[name] = (props) => (<R {...props} />)
-    })
 
-    const componentCreator = (name: string) => {
+      return (props: { [key: string]: any }) => (<C {...props} />)
+    }
+
+    const $component = (name: string) => {
+      if (!components[name]) {
+        return () => (
+          <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
+        )
+      }
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      return () => (
-        <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
-      )
+      const component = componentCreator(name)
+      COMPONENTS[name] = component
+      return component
+    }
+
+    const $render: ContainerProps['$render'] = ({
+      name,
+      url,
+      target,
+      props,
+      onMounted,
+    }) => {
+      const unMount = () => unmountComponentAtNode(target as Element)
+
+      const key = `${name}+${url}`
+      if (COMPONENTS[key]) {
+        const C = COMPONENTS[key]
+        render(<C {...props} />, target)
+        return unMount
+      }
+
+      if (!components[name] && !url) {
+        const C = () => (
+          <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
+        )
+        render(<C />, target)
+        return unMount
+      }
+
+      if (url) {
+        window.requirejs.undef(name)
+        window.requirejs.config({
+          paths: {
+            [name]: `${url}#`,
+          },
+        })
+      }
+
+      const C = componentCreator(name, {}, onMounted)
+      COMPONENTS[key] = C
+      render(<C {...props} />, target)
+
+      return unMount
     }
 
     class R extends React.Component<Entry['store'] & {
@@ -114,7 +165,8 @@ export default (
         return (
           <ContainerNode
             Router={Routes}
-            $component={componentCreator}
+            $component={$component}
+            $render={$render}
             $mounted={mounted}
             $config={rest}
             $dispatch={this.dispatch}

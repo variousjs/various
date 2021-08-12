@@ -6,9 +6,10 @@ import { ComponentProps } from 'humpback'
 
 export default class extends Component<ComponentProps> {
   render() {
-    const { id } = this.props.$router.match.params
+    const id = this.props.$router?.match?.params?.id
     return (
       <>
+        <div id="portals" />
         <input />
         <p>
           current:

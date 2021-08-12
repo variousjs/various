@@ -20,13 +20,15 @@ interface E {
   config: HumpbackConfig,
   Loader: Entry['Loader'],
   Error: Entry['Error'],
+  routerProps?: ComponentProps['$router'] | {},
+  onMounted?: () => void,
 }
 
 type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
    default: RequiredComponent,
 }
 
-export default function ({
+function componentCreator({
   React,
   ReactRouterDOM,
   nycticorax,
@@ -37,6 +39,8 @@ export default function ({
   componentDispatcher,
   Loader,
   Error,
+  routerProps,
+  onMounted = () => undefined,
 }: E) {
   const { withRouter } = ReactRouterDOM
   const { connect, getStore, dispatch } = nycticorax
@@ -130,7 +134,11 @@ export default function ({
         this.ComponentNode = C.default || C
 
         this.setState({ componentReady: true }, () => {
-          dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+          if (!routerProps) {
+            dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+          } else {
+            onMounted()
+          }
         })
       }, (e: Dependency.RequireError) => {
         window.requirejs.undef(name)
@@ -202,6 +210,13 @@ export default function ({
         }
       })
 
+      const $router = routerProps || {
+        history,
+        location,
+        match,
+        staticContext,
+      }
+
       return (
         <ComponentNode
           {...componentProps}
@@ -209,20 +224,17 @@ export default function ({
           $dispatch={this.dispatch}
           $store={store}
           $mounted={mountedComponents}
-          $router={{
-            history,
-            location,
-            match,
-            staticContext,
-          }}
+          $router={$router as ComponentProps['$router']}
         />
       )
     }
   }
 
-  const RwithRouter = withRouter(R) as unknown as Connector.connect
+  const RwithRouter: unknown = routerProps ? R : withRouter(R)
 
   // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
   const [key0, ...keyn] = storeKeys
-  return connect(key0, ...keyn)(RwithRouter)
+  return connect(key0, ...keyn)(RwithRouter as Connector.connect)
 }
+
+export default componentCreator

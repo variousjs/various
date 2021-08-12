@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom'
 import { Entry as HumpbackEntry, ErrorProps as Ep } from 'humpback'
 import { MOUNTED_COMPONENTS } from './config'
 
-export { ComponentProps } from 'humpback'
+export { ComponentProps, ContainerProps } from 'humpback'
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 type RequiredEntry = Required<HumpbackEntry<{ [key: string]: unknown }>>

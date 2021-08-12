@@ -30,7 +30,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
 
   onGetB = () => {
     try {
-      message.info(this.props.$dispatch('b', 'getValue'))
+      message.info(this.props.$dispatch('b', 'getValue') as string)
     } catch (e) {
       window.console.log(e.message)
     }
@@ -48,7 +48,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
 
   render() {
     const { user } = this.props.$store
-    const { a, $mounted, name } = this.props
+    const { a, $mounted, name = 'a' } = this.props
 
     return (
       <div>
