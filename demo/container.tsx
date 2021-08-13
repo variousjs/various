@@ -10,23 +10,19 @@ import { Config, Store } from './types'
 
 class Container extends Component<ContainerProps<Store, Config>> {
   onPortals = () => {
-    // switch: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-
     try {
       const unMount = this.props.$render({
         name: 'switch',
         url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
         props: { checked: true },
-        // onMounted: () => {
-        //   console.log('ready')
-        // },
+        onMounted: () => {
+          console.log('ready')
+        },
         // props: { name: 'bbbbb' },
         target: document.querySelector('#portals'),
       })
 
-      console.log(unMount)
-
-      // setTimeout(unMount, 5000)
+      setTimeout(unMount, 5000)
     } catch (e) {
       console.log(e)
     }

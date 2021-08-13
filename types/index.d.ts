@@ -8,7 +8,8 @@ declare module 'humpback' {
     url?: string,
     props?: { [key: string]: any },
     target: Element | null,
-  }) => void
+    onMounted?: () => void,
+  }) => () => void
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,

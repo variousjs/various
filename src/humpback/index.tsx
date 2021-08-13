@@ -15,7 +15,7 @@ export default (
   ReactRouterDOM: Dependency.ReactRouterDOM,
   Nycticorax: Dependency.Nycticorax,
 ) => {
-  const { render } = ReactDOM
+  const { render, unmountComponentAtNode } = ReactDOM
   const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
   const nycticorax = new Nycticorax<Connector.Store>()
   const { createStore, connect, dispatch } = nycticorax
@@ -51,6 +51,7 @@ export default (
     const componentCreator = (
       name: string,
       routerProps?: ComponentProps['$router'] | {},
+      onMounted?: () => void,
     ) => {
       const C = createComponent({
         React,
@@ -65,6 +66,7 @@ export default (
         Error: ErrorNode,
         config: { ...rest, components },
         routerProps,
+        onMounted,
       })
 
       return (props: { [key: string]: any }) => (<C {...props} />)
@@ -89,6 +91,7 @@ export default (
       url,
       target,
       props,
+      onMounted,
     }) => {
       if (url) {
         window.requirejs.undef(name)
@@ -99,8 +102,9 @@ export default (
         })
       }
 
-      const C = componentCreator(name, {})
+      const C = componentCreator(name, {}, onMounted)
       render(<C {...props} />, target)
+      return () => unmountComponentAtNode(target as Element)
     }
 
     class R extends React.Component<Entry['store'] & {

@@ -22,6 +22,7 @@ interface E {
   Loader: Entry['Loader'],
   Error: Entry['Error'],
   routerProps?: ComponentProps['$router'] | {},
+  onMounted?: () => void,
 }
 
 type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
@@ -41,8 +42,9 @@ function componentCreator({
   Loader,
   Error,
   routerProps,
+  onMounted = () => undefined,
 }: E) {
-  const { render } = ReactDOM
+  const { render, unmountComponentAtNode } = ReactDOM
   const { withRouter } = ReactRouterDOM
   const { connect, getStore, dispatch } = nycticorax
   const storeKeys = Object.keys(getStore())
@@ -137,6 +139,8 @@ function componentCreator({
         this.setState({ componentReady: true }, () => {
           if (!routerProps) {
             dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+          } else {
+            onMounted()
           }
         })
       }, (e: Dependency.RequireError) => {
@@ -171,6 +175,7 @@ function componentCreator({
       url,
       target,
       props,
+      onMounted: onMountedFn,
     }) => {
       const {
         history,
@@ -207,10 +212,12 @@ function componentCreator({
         Error,
         config: { ...rest, components },
         routerProps: router,
+        onMounted: onMountedFn,
       })
       const Fc = (p: { [key: string]: any }) => (<C {...p} />)
 
       render(<Fc {...props} />, target)
+      return () => unmountComponentAtNode(target as Element)
     }
 
     render() {
