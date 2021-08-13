@@ -17,14 +17,16 @@ class Container extends Component<ContainerProps<Store, Config>> {
         name: 'switch',
         url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
         props: { checked: true },
-        onMounted: () => {
-          console.log('ready')
-        },
+        // onMounted: () => {
+        //   console.log('ready')
+        // },
         // props: { name: 'bbbbb' },
         target: document.querySelector('#portals'),
       })
 
-      setTimeout(unMount, 5000)
+      console.log(unMount)
+
+      // setTimeout(unMount, 5000)
     } catch (e) {
       console.log(e)
     }

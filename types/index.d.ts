@@ -8,8 +8,7 @@ declare module 'humpback' {
     url?: string,
     props?: { [key: string]: any },
     target: Element | null,
-    onMounted?: () => void,
-  }) => () => void
+  }) => void
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
@@ -17,6 +16,7 @@ declare module 'humpback' {
     $router?: RouteComponentProps<{ [key: string]: string }>,
     $store: Readonly<S>,
     $dispatch: $dispatch,
+    $render?: $render,
   }
 
   export interface ErrorProps {

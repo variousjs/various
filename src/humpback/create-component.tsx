@@ -7,6 +7,7 @@ import {
 
 interface P {
   React: Dependency.React,
+  ReactDOM: Dependency.ReactDOM,
   ReactRouterDOM: Dependency.ReactRouterDOM,
   nycticorax: Connector.nycticorax,
 }
@@ -21,7 +22,6 @@ interface E {
   Loader: Entry['Loader'],
   Error: Entry['Error'],
   routerProps?: ComponentProps['$router'] | {},
-  onMounted?: () => void,
 }
 
 type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
@@ -30,6 +30,7 @@ type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
 
 function componentCreator({
   React,
+  ReactDOM,
   ReactRouterDOM,
   nycticorax,
 }: P, {
@@ -40,8 +41,8 @@ function componentCreator({
   Loader,
   Error,
   routerProps,
-  onMounted = () => undefined,
 }: E) {
+  const { render } = ReactDOM
   const { withRouter } = ReactRouterDOM
   const { connect, getStore, dispatch } = nycticorax
   const storeKeys = Object.keys(getStore())
@@ -136,8 +137,6 @@ function componentCreator({
         this.setState({ componentReady: true }, () => {
           if (!routerProps) {
             dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
-          } else {
-            onMounted()
           }
         })
       }, (e: Dependency.RequireError) => {
@@ -167,6 +166,53 @@ function componentCreator({
       })
     }
 
+    $render: ComponentProps['$render'] = ({
+      name: componentName,
+      url,
+      target,
+      props,
+    }) => {
+      const {
+        history,
+        location,
+        match,
+        staticContext,
+      } = this.props
+      const router = {
+        history,
+        location,
+        match,
+        staticContext,
+      }
+
+      if (url) {
+        window.requirejs.undef(componentName)
+        window.requirejs.config({
+          paths: {
+            [componentName]: `${url}#`,
+          },
+        })
+      }
+
+      const C = componentCreator({
+        React,
+        ReactDOM,
+        ReactRouterDOM,
+        nycticorax,
+      }, {
+        name: componentName,
+        storeDispatcher,
+        componentDispatcher,
+        Loader,
+        Error,
+        config: { ...rest, components },
+        routerProps: router,
+      })
+      const Fc = (p: { [key: string]: any }) => (<C {...p} />)
+
+      render(<Fc {...props} />, target)
+    }
+
     render() {
       const {
         history,
@@ -174,7 +220,11 @@ function componentCreator({
         match,
         staticContext,
 
-        MOUNTED_COMPONENTS: mountedComponents, silent, ...propsRest
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        dispatch: componentDispatch,
+        MOUNTED_COMPONENTS: mountedComponents,
+        silent,
+        ...propsRest
       } = this.props
       const { componentReady, errorMessage, errorType } = this.state
       const store: Entry['store'] = {}
@@ -210,12 +260,13 @@ function componentCreator({
         }
       })
 
-      const $router = routerProps || {
+      const router = routerProps || {
         history,
         location,
         match,
         staticContext,
       }
+      const $router = Object.keys(router).length ? router : undefined
 
       return (
         <ComponentNode
@@ -225,6 +276,7 @@ function componentCreator({
           $store={store}
           $mounted={mountedComponents}
           $router={$router as ComponentProps['$router']}
+          $render={routerProps ? undefined : this.$render}
         />
       )
     }

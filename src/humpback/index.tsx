@@ -15,7 +15,7 @@ export default (
   ReactRouterDOM: Dependency.ReactRouterDOM,
   Nycticorax: Dependency.Nycticorax,
 ) => {
-  const { render, unmountComponentAtNode } = ReactDOM
+  const { render } = ReactDOM
   const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
   const nycticorax = new Nycticorax<Connector.Store>()
   const { createStore, connect, dispatch } = nycticorax
@@ -51,10 +51,10 @@ export default (
     const componentCreator = (
       name: string,
       routerProps?: ComponentProps['$router'] | {},
-      onMounted?: () => void,
     ) => {
       const C = createComponent({
         React,
+        ReactDOM,
         ReactRouterDOM,
         nycticorax,
       }, {
@@ -65,7 +65,6 @@ export default (
         Error: ErrorNode,
         config: { ...rest, components },
         routerProps,
-        onMounted,
       })
 
       return (props: { [key: string]: any }) => (<C {...props} />)
@@ -90,25 +89,7 @@ export default (
       url,
       target,
       props,
-      onMounted,
     }) => {
-      const unMount = () => unmountComponentAtNode(target as Element)
-
-      const key = `${name}+${url}`
-      if (COMPONENTS[key]) {
-        const C = COMPONENTS[key]
-        render(<C {...props} />, target)
-        return unMount
-      }
-
-      if (!components[name] && !url) {
-        const C = () => (
-          <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
-        )
-        render(<C />, target)
-        return unMount
-      }
-
       if (url) {
         window.requirejs.undef(name)
         window.requirejs.config({
@@ -118,11 +99,8 @@ export default (
         })
       }
 
-      const C = componentCreator(name, {}, onMounted)
-      COMPONENTS[key] = C
+      const C = componentCreator(name, {})
       render(<C {...props} />, target)
-
-      return unMount
     }
 
     class R extends React.Component<Entry['store'] & {
