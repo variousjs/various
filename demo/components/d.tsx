@@ -6,21 +6,25 @@ import { Button } from 'antd'
 import { ComponentProps } from 'humpback'
 
 export default class extends Component<ComponentProps> {
+  private unMount: () => void
+
+  componentWillUnmount() {
+    this.unMount()
+  }
+
   onPortals = () => {
     try {
       const { $render } = this.props
       if ($render) {
-        const unMount = $render({
+        this.unMount = $render({
           name: 'switch',
           url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
           props: { checked: true },
           target: document.querySelector('#portals'),
           onMounted: () => {
-            console.log('?????')
+            console.log('ready')
           },
         })
-
-        setTimeout(unMount, 5000)
       }
     } catch (e) {
       console.log(e)
