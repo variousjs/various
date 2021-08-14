@@ -32,7 +32,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
 
   onGetA = () => {
     try {
-      message.info(this.props.$dispatch('a', 'getValue'))
+      message.info(this.props.$dispatch('a', 'getValue') as string)
     } catch (e) {
       message.error(e.message)
     }
@@ -71,7 +71,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
           </p>
           <p>
             当前路由参数：
-            {$router.match.params.id || '空'}
+            {$router?.match.params.id || '空'}
           </p>
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
