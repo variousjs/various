@@ -4,9 +4,16 @@ import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
+import preload from './preload'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  Dependency, HumpbackConfig, Entry, ErrorState, Connector, ComponentProps, ContainerProps,
+  Dependency,
+  HumpbackConfig,
+  Entry,
+  ErrorState,
+  Connector,
+  ComponentProps,
+  ContainerProps,
 } from '../types'
 
 export default (
@@ -153,6 +160,7 @@ export default (
             $config={rest}
             $dispatch={this.dispatch}
             $store={storeData}
+            $preload={preload}
           />
         )
       }

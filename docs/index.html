@@ -10,6 +10,12 @@
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.js"></script>
 <script src="./dist/index.js"></script>
 <script>
+window.process = {
+  env: {
+    NODE_ENV: 'production',
+  },
+}
+
 var config = {
   root: '#root',
   entry: './dist/entry.js',
@@ -29,6 +35,8 @@ var config = {
     f: './dist/f.js',
     g: './dist/d.js',
     hooks: './dist/hooks.js',
+    // reactEditor: 'https://unpkg.com/react-editor@2.0.0-alpha.5/dist/index.js',
+    photo: 'https://humpbackjs.github.io/humpback-demo/dist/photo/0.0.3/index.js',
     w: 'https://www.baidu.com/s.js',
   },
   menu: [
@@ -52,12 +60,21 @@ var config = {
       path: '/posts',
       icon: 'book',
     },
+    {
+      label: 'Inspector',
+      path: '/inspector',
+      icon: 'plus',
+    },
   ],
   routes: [
     {
       path: ['/posts', '/posts/:id'],
       type: 'post',
       components: ['c', 'd']
+    },
+    {
+      path: '/inspector',
+      components: ['photo'],
     },
     {
       path: '/',

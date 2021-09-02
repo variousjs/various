@@ -1,8 +1,14 @@
 import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
+import preload from './preload'
 import {
-  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ComponentProps,
+  Dependency,
+  Connector,
+  Entry,
+  HumpbackConfig,
+  ErrorState,
+  ComponentProps,
 } from '../types'
 
 interface P {
@@ -284,6 +290,7 @@ function componentCreator({
           $mounted={mountedComponents}
           $router={$router as ComponentProps['$router']}
           $render={routerProps ? undefined : this.$render}
+          $preload={routerProps ? undefined : preload}
         />
       )
     }

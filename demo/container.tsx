@@ -9,6 +9,12 @@ import Wrapper from './wrapper'
 import { Config, Store } from './types'
 
 class Container extends Component<ContainerProps<Store, Config>> {
+  onPreload = async () => {
+    const { $preload } = this.props
+    await $preload(['photo'])
+    console.log('preload photo')
+  }
+
   onPortals = () => {
     try {
       const unMount = this.props.$render({
@@ -34,7 +40,9 @@ class Container extends Component<ContainerProps<Store, Config>> {
   }
 
   render() {
-    const { Router, $config, $component } = this.props
+    const {
+      Router, $config, $component, $mounted,
+    } = this.props
     const routes = $config.routes.map((item) => ({
       ...item,
       path: item.path,
@@ -49,6 +57,10 @@ class Container extends Component<ContainerProps<Store, Config>> {
         <div>
           <h3>动态组件</h3>
           <Button onClick={this.onPortals}>加载组件</Button>
+          {
+            $mounted.join() === 'hooks,a,b'
+              ? <Button onClick={this.onPreload}>预加载组件</Button> : null
+          }
         </div>
         <Router>
           {

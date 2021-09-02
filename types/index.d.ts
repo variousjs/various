@@ -10,6 +10,7 @@ declare module 'humpback' {
     target: Element | null,
     onMounted?: () => void,
   }) => () => void
+  type $preload = (names: string[]) => Promise<void>
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
@@ -18,6 +19,7 @@ declare module 'humpback' {
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
+    $preload?: $preload,
   }
 
   export interface ErrorProps {
@@ -37,6 +39,7 @@ declare module 'humpback' {
     $mounted: string[],
     $dispatch: $dispatch,
     $render: $render,
+    $preload: $preload,
   }
 
   type Nycticorax<S> = {
