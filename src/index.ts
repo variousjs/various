@@ -24,7 +24,13 @@ class Humpback {
       paths[name] = `${paths[name]}#`
     })
 
-    window.requirejs.config({ paths, waitSeconds: 20 })
+    window.requirejs.config({
+      paths,
+      waitSeconds: 20,
+      onNodeCreated(node) {
+        node.setAttribute('crossorigin', 'anonymous')
+      },
+    })
 
     this.config = config
     this.paths = paths
