@@ -79,7 +79,8 @@ export default (
       return (props: { [key: string]: any }) => (<C {...props} />)
     }
 
-    const $component = (name: string) => {
+    const $component = (nameWidthSub: string) => {
+      const [name] = nameWidthSub.split('.')
       if (!components[name]) {
         return () => (
           <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
@@ -88,7 +89,7 @@ export default (
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      const component = componentCreator(name)
+      const component = componentCreator(nameWidthSub)
       COMPONENTS[name] = component
       return component
     }
@@ -98,6 +99,7 @@ export default (
       url,
       target,
       props,
+      module,
       onMounted,
     }) => {
       if (url) {
@@ -109,7 +111,11 @@ export default (
         })
       }
 
-      const C = componentCreator(name, {}, onMounted)
+      const C = componentCreator(
+        module ? `${name}.${module}` : name,
+        {},
+        onMounted,
+      )
       render(<C {...props} />, target)
       return () => unmountComponentAtNode(target as Element)
     }

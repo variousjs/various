@@ -6,6 +6,7 @@ declare module 'humpback' {
   type $render = (params: {
     name: string,
     url?: string,
+    module?: string,
     props?: { [key: string]: any },
     target: Element | null,
     onMounted?: () => void,
@@ -24,7 +25,7 @@ declare module 'humpback' {
 
   export interface ErrorProps {
     reload?: () => void,
-    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'COMPONENT_NAME_ERROR' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
+    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
     message?: string,
   }
 

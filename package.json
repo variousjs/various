@@ -13,14 +13,15 @@
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx,.js",
     "build": "ENTRY=src/index.ts webpack --progress && cp -R dist/ docs/dist/",
-    "a": "ENTRY=demo/components/a.tsx LIBRARY=a webpack --progress",
-    "b": "ENTRY=demo/components/b.tsx LIBRARY=b webpack --progress",
-    "c": "ENTRY=demo/components/c.tsx LIBRARY=c webpack --progress",
-    "d": "ENTRY=demo/components/d.tsx LIBRARY=d webpack --progress",
-    "e": "ENTRY=demo/components/e.tsx LIBRARY=e webpack --progress",
-    "f": "ENTRY=demo/components/f.tsx LIBRARY=f webpack --progress",
-    "hooks": "ENTRY=demo/components/hooks.tsx LIBRARY=hooks webpack --progress",
-    "entry": "ENTRY=demo/index.ts LIBRARY=entry webpack --progress"
+    "a": "ENTRY=demo/components/a.tsx webpack --progress",
+    "b": "ENTRY=demo/components/b.tsx webpack --progress",
+    "c": "ENTRY=demo/components/c.tsx webpack --progress",
+    "d": "ENTRY=demo/components/d.tsx webpack --progress",
+    "e": "ENTRY=demo/components/e.tsx webpack --progress",
+    "f": "ENTRY=demo/components/f.tsx webpack --progress",
+    "m": "ENTRY=demo/components/m.tsx webpack --progress",
+    "hooks": "ENTRY=demo/components/hooks.tsx webpack --progress",
+    "entry": "ENTRY=demo/index.ts webpack --progress"
   },
   "repository": {
     "type": "git",

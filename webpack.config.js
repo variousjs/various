@@ -1,6 +1,6 @@
 const { resolve, join } = require('path')
 
-const { ENTRY, LIBRARY } = process.env
+const { ENTRY } = process.env
 
 const config = {
   entry: join(__dirname, ENTRY),
@@ -51,34 +51,21 @@ const config = {
   },
 }
 
-if (!LIBRARY) {
+if (ENTRY === 'src/index.ts') {
   config.output.path = resolve(__dirname, './dist')
   config.output.filename = 'index.js'
   config.module.rules[0].use.options.presets[1][1].targets = ['defaults']
-}
-
-if (LIBRARY) {
-  const map = {
-    entry: '$entry_component',
-    a: 'a',
-    b: 'b',
-    c: 'c',
-    d: 'd',
-    e: 'e',
-    f: 'f',
-    hooks: 'hooks',
-  }
-
+} else {
   config.externals.antd = { root: 'antd', amd: 'antd' }
   config.externals['rc-table'] = { root: 'rcTable', amd: 'rc-table' }
   config.externals.table = { root: 'Tb', amd: 'table' }
 
+  const name = ENTRY.split('/').slice(-1)[0].split('.')[0]
+
   config.output = {
     path: resolve(__dirname, './docs/dist'),
-    filename: `${LIBRARY}.js`,
-    library: map[LIBRARY],
+    filename: `${name}.js`,
     libraryTarget: 'amd',
-    libraryExport: 'default',
   }
 }
 
