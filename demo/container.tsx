@@ -41,8 +41,9 @@ class Container extends Component<ContainerProps<Store, Config>> {
 
   render() {
     const {
-      Router, $config, $component, $mounted,
+      Router, $config, $component, $mounted, $router,
     } = this.props
+    console.log($router.location.pathname)
     const routes = $config.routes.map((item) => ({
       ...item,
       path: item.path,

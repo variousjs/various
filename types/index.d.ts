@@ -41,6 +41,7 @@ declare module 'humpback' {
     $dispatch: $dispatch,
     $render: $render,
     $preload: $preload,
+    $router: RouteComponentProps<{ [key: string]: string }>,
   }
 
   type Nycticorax<S> = {

@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import { ComponentType } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
@@ -23,7 +24,12 @@ export default (
   Nycticorax: Dependency.Nycticorax,
 ) => {
   const { render, unmountComponentAtNode } = ReactDOM
-  const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
+  const {
+    HashRouter,
+    Switch,
+    BrowserRouter,
+    withRouter,
+  } = ReactRouterDOM
   const nycticorax = new Nycticorax<Connector.Store>()
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
@@ -120,7 +126,7 @@ export default (
       return () => unmountComponentAtNode(target as Element)
     }
 
-    class R extends React.Component<Entry['store'] & {
+    class R extends React.Component<Entry['store'] & RouteComponentProps & {
       dispatch: typeof dispatch,
       [MOUNTED_COMPONENTS]: string[],
     }, ErrorState> {
@@ -137,6 +143,12 @@ export default (
 
       render() {
         const { errorType, errorMessage } = this.state
+        const {
+          history,
+          location,
+          match,
+          staticContext,
+        } = this.props
 
         if (errorType) {
           return (
@@ -167,6 +179,12 @@ export default (
             $dispatch={this.dispatch}
             $store={storeData}
             $preload={preload}
+            $router={{
+              history,
+              location,
+              match,
+              staticContext,
+            }}
           />
         )
       }
@@ -174,7 +192,8 @@ export default (
 
     // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
     const [key0, ...keyn] = storeKeys
-    const X = connect(key0, ...keyn)(R)
+    const RwithRouter = withRouter(R)
+    const X = connect(key0, ...keyn)(RwithRouter as any)
 
     try {
       render((

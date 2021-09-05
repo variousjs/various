@@ -21,7 +21,7 @@
     "f": "ENTRY=demo/components/f.tsx webpack --progress",
     "m": "ENTRY=demo/components/m.tsx webpack --progress",
     "hooks": "ENTRY=demo/components/hooks.tsx webpack --progress",
-    "entry": "ENTRY=demo/index.ts webpack --progress"
+    "entry": "ENTRY=demo/entry.ts webpack --progress"
   },
   "repository": {
     "type": "git",
