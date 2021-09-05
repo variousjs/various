@@ -30,7 +30,7 @@ declare module 'humpback' {
   }
 
   export interface ContainerProps<S = {}, C = {}> {
-    Router: ComponentType<{ children: ReactNode }>,
+    Router: ComponentType<{ children?: ReactNode }>,
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
       silent?: boolean,

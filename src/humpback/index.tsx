@@ -47,7 +47,7 @@ export default (
     const componentDispatcher: { [name: string]: Entry['actions'] } = {}
     const storeDispatcher = { ...actions }
     const COMPONENTS: { [key: string]: ComponentType } = {}
-    const Routes = getRoutes(React, ErrorNode)
+    const Routes = getRoutes(React, ReactRouterDOM, ErrorNode)
     const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
 
     createStore({
