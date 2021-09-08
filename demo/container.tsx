@@ -11,8 +11,8 @@ import { Config, Store } from './types'
 class Container extends Component<ContainerProps<Store, Config>> {
   onPreload = async () => {
     const { $preload } = this.props
-    await $preload(['photo'])
-    console.log('preload photo')
+    await $preload(['mmmmmm'])
+    console.log('preload mmmmmm')
   }
 
   onPortals = () => {

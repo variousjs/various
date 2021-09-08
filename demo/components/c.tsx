@@ -20,8 +20,8 @@ export default class extends Component<ComponentProps> {
   onPreload = async () => {
     const { $preload } = this.props
     if ($preload) {
-      await $preload(['photo'])
-      console.log('preload photo')
+      await $preload(['mmmmmm'])
+      console.log('preload mmmmmm')
     }
   }
 
