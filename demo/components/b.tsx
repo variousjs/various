@@ -34,7 +34,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
     try {
       message.info(this.props.$dispatch('a', 'getValue') as string)
     } catch (e) {
-      message.error(e.message)
+      message.error((e as Error).message)
     }
   }
 

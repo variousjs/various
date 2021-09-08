@@ -204,7 +204,7 @@ export default (
         </Router>
       ), document.querySelector(root || ROOT_CONTAINER))
     } catch (e) {
-      ctx.onError(e)
+      ctx.onError(e as Dependency.RequireError)
     }
   }
 }

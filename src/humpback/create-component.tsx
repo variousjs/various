@@ -72,7 +72,7 @@ function componentCreator({
       errorMessage: '',
     }
 
-    private ComponentNode: RequiredComponent
+    private ComponentNode: RequiredComponent | null
 
     dispatch = currentDispatch.bind(this, name)
 
@@ -92,7 +92,7 @@ function componentCreator({
     }
 
     componentWillUnmount() {
-      this.ComponentNode = null as RequiredComponent
+      this.ComponentNode = null
       this.unMountComponent()
     }
 
@@ -246,7 +246,7 @@ function componentCreator({
       const { componentReady, errorMessage, errorType } = this.state
       const store: Entry['store'] = {}
       const componentProps: Entry['store'] = {}
-      const { ComponentNode } = this
+      const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (errorType) {
         return !silent
