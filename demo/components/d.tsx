@@ -9,7 +9,9 @@ export default class extends Component<ComponentProps> {
   private unMount: () => void
 
   componentWillUnmount() {
-    this.unMount()
+    if (this.unMount) {
+      this.unMount()
+    }
   }
 
   onPortals = () => {

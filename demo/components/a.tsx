@@ -32,7 +32,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
     try {
       message.info(this.props.$dispatch('b', 'getValue') as string)
     } catch (e) {
-      window.console.log(e.message)
+      window.console.log((e as Error).message)
     }
   }
 

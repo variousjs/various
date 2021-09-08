@@ -6,10 +6,12 @@ declare module 'humpback' {
   type $render = (params: {
     name: string,
     url?: string,
+    module?: string,
     props?: { [key: string]: any },
     target: Element | null,
     onMounted?: () => void,
   }) => () => void
+  type $preload = (names: string[]) => Promise<void>
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
@@ -18,16 +20,17 @@ declare module 'humpback' {
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
+    $preload?: $preload,
   }
 
   export interface ErrorProps {
     reload?: () => void,
-    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'COMPONENT_NAME_ERROR' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
+    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
     message?: string,
   }
 
   export interface ContainerProps<S = {}, C = {}> {
-    Router: ComponentType<{ children: ReactNode }>,
+    Router: ComponentType<{ children?: ReactNode }>,
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
       silent?: boolean,
@@ -37,6 +40,8 @@ declare module 'humpback' {
     $mounted: string[],
     $dispatch: $dispatch,
     $render: $render,
+    $preload: $preload,
+    $router: RouteComponentProps<{ [key: string]: string }>,
   }
 
   type Nycticorax<S> = {

@@ -60,5 +60,6 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error'],
     'import/prefer-default-export': 0,
     'react/prop-types': 0,
+    'react/destructuring-assignment': 0,
   },
 }

@@ -29,6 +29,8 @@ var config = {
     f: './dist/f.js',
     g: './dist/d.js',
     hooks: './dist/hooks.js',
+    mmmmmm: './dist/m.js',
+    empty: './dist/empty.js',
     w: 'https://www.baidu.com/s.js',
   },
   menu: [
@@ -52,12 +54,21 @@ var config = {
       path: '/posts',
       icon: 'book',
     },
+    {
+      label: 'Inspector',
+      path: '/inspector',
+      icon: 'plus',
+    },
   ],
   routes: [
     {
       path: ['/posts', '/posts/:id'],
       type: 'post',
-      components: ['c', 'd']
+      components: ['c', 'd', 'empty']
+    },
+    {
+      path: '/inspector',
+      components: [['a'], ['mmmmmm.X']],
     },
     {
       path: '/',

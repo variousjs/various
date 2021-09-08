@@ -1,12 +1,20 @@
 /* eslint-disable react/destructuring-assignment */
 import { ComponentType } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
+import preload from './preload'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  Dependency, HumpbackConfig, Entry, ErrorState, Connector, ComponentProps, ContainerProps,
+  Dependency,
+  HumpbackConfig,
+  Entry,
+  ErrorState,
+  Connector,
+  ComponentProps,
+  ContainerProps,
 } from '../types'
 
 export default (
@@ -16,7 +24,12 @@ export default (
   Nycticorax: Dependency.Nycticorax,
 ) => {
   const { render, unmountComponentAtNode } = ReactDOM
-  const { HashRouter, Switch, BrowserRouter } = ReactRouterDOM
+  const {
+    HashRouter,
+    Switch,
+    BrowserRouter,
+    withRouter,
+  } = ReactRouterDOM
   const nycticorax = new Nycticorax<Connector.Store>()
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
@@ -40,7 +53,7 @@ export default (
     const componentDispatcher: { [name: string]: Entry['actions'] } = {}
     const storeDispatcher = { ...actions }
     const COMPONENTS: { [key: string]: ComponentType } = {}
-    const Routes = getRoutes(React, ErrorNode)
+    const Routes = getRoutes(React, ReactRouterDOM, ErrorNode)
     const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
 
     createStore({
@@ -72,7 +85,8 @@ export default (
       return (props: { [key: string]: any }) => (<C {...props} />)
     }
 
-    const $component = (name: string) => {
+    const $component = (nameWidthSub: string) => {
+      const [name] = nameWidthSub.split('.')
       if (!components[name]) {
         return () => (
           <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
@@ -81,7 +95,7 @@ export default (
       if (COMPONENTS[name]) {
         return COMPONENTS[name]
       }
-      const component = componentCreator(name)
+      const component = componentCreator(nameWidthSub)
       COMPONENTS[name] = component
       return component
     }
@@ -91,6 +105,7 @@ export default (
       url,
       target,
       props,
+      module,
       onMounted,
     }) => {
       if (url) {
@@ -102,12 +117,16 @@ export default (
         })
       }
 
-      const C = componentCreator(name, {}, onMounted)
+      const C = componentCreator(
+        module ? `${name}.${module}` : name,
+        {},
+        onMounted,
+      )
       render(<C {...props} />, target)
       return () => unmountComponentAtNode(target as Element)
     }
 
-    class R extends React.Component<Entry['store'] & {
+    class R extends React.Component<Entry['store'] & RouteComponentProps & {
       dispatch: typeof dispatch,
       [MOUNTED_COMPONENTS]: string[],
     }, ErrorState> {
@@ -124,6 +143,12 @@ export default (
 
       render() {
         const { errorType, errorMessage } = this.state
+        const {
+          history,
+          location,
+          match,
+          staticContext,
+        } = this.props
 
         if (errorType) {
           return (
@@ -153,6 +178,13 @@ export default (
             $config={rest}
             $dispatch={this.dispatch}
             $store={storeData}
+            $preload={preload}
+            $router={{
+              history,
+              location,
+              match,
+              staticContext,
+            }}
           />
         )
       }
@@ -160,7 +192,8 @@ export default (
 
     // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
     const [key0, ...keyn] = storeKeys
-    const X = connect(key0, ...keyn)(R)
+    const RwithRouter = withRouter(R)
+    const X = connect(key0, ...keyn)(RwithRouter as any)
 
     try {
       render((
@@ -171,7 +204,7 @@ export default (
         </Router>
       ), document.querySelector(root || ROOT_CONTAINER))
     } catch (e) {
-      ctx.onError(e)
+      ctx.onError(e as Dependency.RequireError)
     }
   }
 }

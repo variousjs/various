@@ -29,11 +29,11 @@ export default function (
       return currentDispatch(storeDispatcher[func], value, dispatcher)
     }
 
-    if (!this.props[MOUNTED_COMPONENTS].includes(name)) {
+    const actions = componentDispatcher[name]
+
+    if (!actions) {
       throw new Error(`component \`${name}\` is not ready`)
     }
-
-    const actions = componentDispatcher[name]
 
     if (!actions[func]) {
       throw new Error(`action \`${func}\` of component \`${name}\` is not present`)

@@ -1,8 +1,14 @@
 import { ComponentType } from 'react'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
+import preload from './preload'
 import {
-  Dependency, Connector, Entry, HumpbackConfig, ErrorState, ComponentProps,
+  Dependency,
+  Connector,
+  Entry,
+  HumpbackConfig,
+  ErrorState,
+  ComponentProps,
 } from '../types'
 
 interface P {
@@ -26,7 +32,7 @@ interface E {
 }
 
 type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
-   default: RequiredComponent,
+   [key: string]: RequiredComponent,
 }
 
 function componentCreator({
@@ -36,7 +42,7 @@ function componentCreator({
   nycticorax,
 }: P, {
   config,
-  name,
+  name: nameWidthModule,
   storeDispatcher,
   componentDispatcher,
   Loader,
@@ -50,9 +56,10 @@ function componentCreator({
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
+  const [name, module = Symbol('module')] = nameWidthModule.split('.')
 
   class R extends React.Component<ComponentProps['$router'] & {
-    silent: Boolean | undefined,
+    silent?: boolean,
     MOUNTED_COMPONENTS: string[],
     dispatch: typeof dispatch,
     [key: string]: unknown,
@@ -65,7 +72,7 @@ function componentCreator({
       errorMessage: '',
     }
 
-    private ComponentNode: RequiredComponent
+    private ComponentNode: RequiredComponent | null
 
     dispatch = currentDispatch.bind(this, name)
 
@@ -85,7 +92,7 @@ function componentCreator({
     }
 
     componentWillUnmount() {
-      this.ComponentNode = null as RequiredComponent
+      this.ComponentNode = null
       this.unMountComponent()
     }
 
@@ -95,7 +102,7 @@ function componentCreator({
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
       // eslint-disable-next-line no-param-reassign
-      delete componentDispatcher[name]
+      delete componentDispatcher[nameWidthModule]
     }
 
     mountComponent = () => {
@@ -113,7 +120,7 @@ function componentCreator({
 
       window.requirejs([name], (C: RequiredComponent) => {
         if (!C) {
-          this.setState({ errorType: 'COMPONENT_NAME_ERROR' })
+          this.setState({ errorType: 'INVALID_COMPONENT' })
           return
         }
 
@@ -124,17 +131,19 @@ function componentCreator({
           mountedComponents.push(name)
         }
 
+        const componentNode = C[module as string] || C.default || C
+
         Object
-          .getOwnPropertyNames(C)
+          .getOwnPropertyNames(componentNode)
           .forEach((method) => {
-            if (!IGNORE_STATIC_METHODS.includes(method) && typeof C[method] === 'function') {
-              actions[method] = C[method]
+            if (!IGNORE_STATIC_METHODS.includes(method) && typeof componentNode[method] === 'function') {
+              actions[method] = componentNode[method]
             }
           })
 
-        componentDispatcher[name] = actions // eslint-disable-line no-param-reassign
+        componentDispatcher[nameWidthModule] = actions // eslint-disable-line no-param-reassign
 
-        this.ComponentNode = C.default || C
+        this.ComponentNode = componentNode
 
         this.setState({ componentReady: true }, () => {
           if (!routerProps) {
@@ -151,10 +160,10 @@ function componentCreator({
           },
         })
 
-        const [module] = e.requireModules
+        const [requireModule] = e.requireModules
 
         this.setState({
-          errorType: module === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
+          errorType: requireModule === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
           errorMessage: e.message,
         })
       })
@@ -175,6 +184,7 @@ function componentCreator({
       url,
       target,
       props,
+      module: componentModule,
       onMounted: onMountedFn,
     }) => {
       const {
@@ -205,7 +215,7 @@ function componentCreator({
         ReactRouterDOM,
         nycticorax,
       }, {
-        name: componentName,
+        name: componentModule ? `${componentName}.${componentModule}` : componentName,
         storeDispatcher,
         componentDispatcher,
         Loader,
@@ -236,7 +246,7 @@ function componentCreator({
       const { componentReady, errorMessage, errorType } = this.state
       const store: Entry['store'] = {}
       const componentProps: Entry['store'] = {}
-      const { ComponentNode } = this
+      const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (errorType) {
         return !silent
@@ -244,7 +254,7 @@ function componentCreator({
             <Error
               type={ERROR_TYPE[errorType]}
               message={errorMessage}
-              reload={errorType === 'COMPONENT_NAME_ERROR' ? undefined : this.onReload}
+              reload={errorType === 'INVALID_COMPONENT' ? undefined : this.onReload}
             />
           )
           : null
@@ -284,6 +294,7 @@ function componentCreator({
           $mounted={mountedComponents}
           $router={$router as ComponentProps['$router']}
           $render={routerProps ? undefined : this.$render}
+          $preload={routerProps ? undefined : preload}
         />
       )
     }
