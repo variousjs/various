@@ -74,6 +74,8 @@ function componentCreator({
 
     private ComponentNode: RequiredComponent | null
 
+    private isUnMounted?: boolean
+
     dispatch = currentDispatch.bind(this, name)
 
     componentDidMount() {
@@ -94,6 +96,7 @@ function componentCreator({
     componentWillUnmount() {
       this.ComponentNode = null
       this.unMountComponent()
+      this.isUnMounted = true
     }
 
     unMountComponent = () => {
@@ -119,6 +122,10 @@ function componentCreator({
       }
 
       window.requirejs([name], (C: RequiredComponent) => {
+        if (this.isUnMounted) {
+          return
+        }
+
         if (!C) {
           this.setState({ errorType: 'INVALID_COMPONENT' })
           return
@@ -159,6 +166,10 @@ function componentCreator({
             [name]: `${components[name]}#`,
           },
         })
+
+        if (this.isUnMounted) {
+          return
+        }
 
         const [requireModule] = e.requireModules
 
