@@ -131,14 +131,19 @@ function componentCreator({
           return
         }
 
+        const componentNode = C[module as string] || C.default || C
+
+        if (typeof componentNode !== 'function') {
+          this.setState({ errorType: 'INVALID_COMPONENT' })
+          return
+        }
+
         const mountedComponents = getStore()[MOUNTED_COMPONENTS]
         const actions: Entry['actions'] = {}
 
         if (!mountedComponents.includes(name)) {
           mountedComponents.push(name)
         }
-
-        const componentNode = C[module as string] || C.default || C
 
         Object
           .getOwnPropertyNames(componentNode)

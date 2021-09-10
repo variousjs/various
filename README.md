@@ -17,6 +17,10 @@ https://humpbackjs.github.io/humpback/
 | ROUTER_ERROR | React-Router catch error | no |
 | CONTAINER_ERROR | Global container error | no |
 
+### notice
+
+requirejs 问题：不能同一个组件（同一个 url）多个名字定义，会造成加载超时
+
 ## Usage
 
 index.html
