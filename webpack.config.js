@@ -5,6 +5,7 @@ const { ENTRY } = process.env
 const config = {
   entry: join(__dirname, ENTRY),
   output: {},
+  target: ['web', 'es5'],
   externals: {
     react: {
       root: 'React',
@@ -39,7 +40,8 @@ const config = {
             presets: [
               '@babel/preset-typescript',
               ['@babel/preset-env', {
-                targets: { esmodules: true },
+                // targets: { esmodules: true },
+                targets: ['defaults'],
                 modules: false,
               }],
               '@babel/preset-react',
@@ -54,7 +56,7 @@ const config = {
 if (ENTRY === 'src/index.ts') {
   config.output.path = resolve(__dirname, './dist')
   config.output.filename = 'index.js'
-  config.module.rules[0].use.options.presets[1][1].targets = ['defaults']
+  // config.module.rules[0].use.options.presets[1][1].targets = ['defaults']
 } else {
   config.externals.antd = { root: 'antd', amd: 'antd' }
   config.externals['rc-table'] = { root: 'rcTable', amd: 'rc-table' }

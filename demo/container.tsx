@@ -97,13 +97,19 @@ class Container extends Component<ContainerProps<Store, Config>> {
                 )
               })
 
+              const N = component as unknown as ComponentType
+
               return (
                 <Route
                   key={path as string}
                   exact
                   path={path}
-                  component={component as unknown as ComponentType}
-                />
+                  component={path === '/ttt' ? N : undefined}
+                >
+                  {
+                    path === '/ttt' ? null : <N />
+                  }
+                </Route>
               )
             })
           }
