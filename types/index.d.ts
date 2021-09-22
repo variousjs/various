@@ -53,11 +53,11 @@ declare module 'humpback' {
     [name: string]: (nycticorax: Nycticorax<S>, ...args: any[]) => unknown,
   }
 
-  export interface Entry<S = {}, C = {}> {
-    store?: Readonly<S>,
-    actions?: Actions<S>,
-    Loader?: ComponentType,
-    Error?: ComponentType<ErrorProps>,
-    Container: ComponentType<ContainerProps<S, C>>,
+  export interface Config {
+    dependencies?: { [key: string]: string },
+    components: { [key: string]: string },
+    entry?: string,
+    routerMode?: 'browser' | 'hash',
+    root?: string,
   }
 }

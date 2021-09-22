@@ -5,20 +5,21 @@ import {
 } from 'react-router-dom'
 import React, { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
-import { Entry as HumpbackEntry, ErrorProps as Ep } from 'humpback'
+import { ErrorProps as Ep, Actions, ContainerProps } from 'humpback'
 import { MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps } from 'humpback'
 
-type Writeable<T> = { -readonly [P in keyof T]: T[P] }
-type RequiredEntry = Required<HumpbackEntry<{ [key: string]: unknown }>>
 export interface ErrorProps extends Omit<Ep, 'type'> {
   type: string,
 }
 
-export interface Entry extends Omit<RequiredEntry, 'store' | 'Error'> {
-  store: Writeable<RequiredEntry['store']>,
+export interface Entry<S = { [key: string]: unknown }, C = {}> {
+  store: S,
   Error: ComponentType<ErrorProps>,
+  Loader: ComponentType,
+  actions: Actions<S>,
+  Container: ComponentType<ContainerProps<S, C>>,
 }
 
 export namespace Dependency {
@@ -50,14 +51,6 @@ export namespace Connector {
 export interface ErrorState {
   errorType: string,
   errorMessage: string,
-}
-
-export interface HumpbackConfig {
-  dependencies?: { [key: string]: string },
-  components: { [key: string]: string },
-  entry?: string,
-  routerMode?: 'browser' | 'hash',
-  root?: string,
 }
 
 declare global {

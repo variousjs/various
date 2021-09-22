@@ -1,4 +1,6 @@
+/* eslint-disable import/no-unresolved */
 import { ComponentType } from 'react'
+import { Config } from 'humpback'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import preload from './preload'
@@ -6,7 +8,6 @@ import {
   Dependency,
   Connector,
   Entry,
-  HumpbackConfig,
   ErrorState,
   ComponentProps,
 } from '../types'
@@ -24,7 +25,7 @@ interface E {
   componentDispatcher: {
     [name: string]: Entry['actions'],
   },
-  config: HumpbackConfig,
+  config: Config,
   Loader: Entry['Loader'],
   Error: Entry['Error'],
   routerProps?: ComponentProps['$router'] | {},

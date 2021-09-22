@@ -1,6 +1,8 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable react/destructuring-assignment */
 import { ComponentType } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { Config } from 'humpback'
 import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'
@@ -9,7 +11,6 @@ import preload from './preload'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
   Dependency,
-  HumpbackConfig,
   Entry,
   ErrorState,
   Connector,
@@ -34,7 +35,7 @@ export default (
   const { createStore, connect, dispatch } = nycticorax
   const { Loader, Error, Container } = getBuiltIn(React)
 
-  return (config: HumpbackConfig & Entry, ctx: { onError: Dependency.RequireJsError }) => {
+  return (config: Config & Entry, ctx: { onError: Dependency.RequireJsError }) => {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       dependencies, entry,
