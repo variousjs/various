@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import React, { FC } from 'react'
 import { Alert, Button } from 'antd'
 import { ErrorProps } from 'humpback'

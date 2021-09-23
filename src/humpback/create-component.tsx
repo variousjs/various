@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { ComponentType } from 'react'
 import { Config } from 'humpback'
 import getDispatch from './dispatch'
@@ -283,7 +282,6 @@ function componentCreator({
 
       storeKeys.forEach((key) => {
         if (key !== MOUNTED_COMPONENTS) {
-          // eslint-disable-next-line react/destructuring-assignment
           store[key] = this.props[key]
         }
       })

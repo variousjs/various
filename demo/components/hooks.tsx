@@ -1,5 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable import/no-unresolved */
 import React, { FC, useCallback } from 'react'
 import { Button, message } from 'antd'
 import { ComponentProps } from 'humpback'

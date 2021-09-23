@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/destructuring-assignment */
 import { ComponentType } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Config } from 'humpback'

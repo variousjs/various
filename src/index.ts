@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import 'core-js-pure/stable'
 import 'regenerator-runtime/runtime'
 import { Config } from 'humpback'

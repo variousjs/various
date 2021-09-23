@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import Nycticorax, { Connect } from 'nycticorax'
 import {
   HashRouter, BrowserRouter, Switch, withRouter,
