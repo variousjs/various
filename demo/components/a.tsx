@@ -1,5 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable import/no-unresolved */
 import React, { Component } from 'react'
 import {
   Button, message, ConfigProvider, DatePicker, locales,

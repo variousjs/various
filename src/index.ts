@@ -1,17 +1,18 @@
 import 'core-js-pure/stable'
 import 'regenerator-runtime/runtime'
+import { Config } from 'humpback'
 import { DEFAULT_PACKAGES } from './config'
 import getHumpback from './humpback'
-import { HumpbackConfig, Entry, Dependency } from './types'
+import { Entry, Dependency } from './types'
 
 class Humpback {
   private errorFn: Dependency.RequireJsError
 
-  private config: HumpbackConfig
+  private config: Config
 
   private paths: { [key: string]: string }
 
-  constructor(config: HumpbackConfig) {
+  constructor(config: Config) {
     const { dependencies, components, entry } = config || {}
     const paths = {
       ...DEFAULT_PACKAGES,

@@ -1,6 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable import/no-unresolved */
 import React, { Component, ComponentType } from 'react'
 import { Route } from 'react-router-dom'
 import { Collapse, Button } from 'antd'

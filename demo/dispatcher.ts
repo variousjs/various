@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { Actions } from 'humpback'
 import { Store } from './types'
 

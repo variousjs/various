@@ -1,6 +1,6 @@
 {
-  "name": "@fratercula/humpback",
-  "version": "1.0.0",
+  "name": "@humpback/runtime",
+  "version": "0.0.1",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",

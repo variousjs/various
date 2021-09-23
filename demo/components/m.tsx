@@ -1,6 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable import/no-unresolved */
 import React, { Component } from 'react'
 import { Button } from 'antd'
 import { ComponentProps } from 'humpback'

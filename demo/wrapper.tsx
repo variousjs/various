@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import React, { FC } from 'react'
 import {
   Layout, Menu, Icon, Badge, Button, Tag, Input,
