@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
-import { ComponentProps } from 'humpback'
+import { ComponentProps } from '@variousjs/various'
 
 export default class extends Component<ComponentProps> {
   state = {
@@ -27,7 +27,7 @@ export default class extends Component<ComponentProps> {
       <>
         {
       this.state.items.map((item) => (
-        <Link to={`/posts/${item}`}>
+        <Link key={item} to={`/posts/${item}`}>
           /posts/
           {item}
         </Link>

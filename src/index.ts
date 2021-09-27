@@ -1,11 +1,11 @@
 import 'core-js-pure/stable'
 import 'regenerator-runtime/runtime'
-import { Config } from 'humpback'
+import { Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
-import getHumpback from './humpback'
+import getVarious from './core'
 import { Entry, Dependency } from './types'
 
-class Humpback {
+class Various {
   private errorFn: Dependency.RequireJsError
 
   private config: Config
@@ -50,8 +50,8 @@ class Humpback {
       Nycticorax: Dependency.Nycticorax,
       entry: Entry,
     ) => {
-      const humpback = getHumpback(React, ReactDOM, ReactRouterDOM, Nycticorax)
-      humpback({ ...this.config, ...entry }, this)
+      const various = getVarious(React, ReactDOM, ReactRouterDOM, Nycticorax)
+      various({ ...this.config, ...entry }, this)
     }, this.errorFn)
   }
 
@@ -61,7 +61,7 @@ class Humpback {
 }
 
 declare global {
-  interface Window { Humpback: typeof Humpback }
+  interface Window { Various: typeof Various }
 }
 
-window.Humpback = Humpback
+window.Various = Various

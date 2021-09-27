@@ -1,4 +1,4 @@
-import { Actions } from 'humpback'
+import { Actions } from '@variousjs/various'
 import { Store } from './types'
 
 const actions: Actions<Store> = {

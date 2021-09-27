@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title> Humpback </title>
+<title> VariousJS </title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd.min.css" />
 </head>
 <body>
@@ -27,7 +27,7 @@ var config = {
     d: './dist/d.js',
     e: './dist/e.js',
     f: './dist/f.js',
-    g: 'https://humpbackjs.github.io/humpback/dist/m.js',
+    g: 'https://variousjs.github.io/various/dist/m.js',
     hooks: './dist/hooks.js',
     mmmmmm: './dist/m.js',
     empty: './dist/empty.js',
@@ -97,16 +97,16 @@ var config = {
   ],
 }
 
-var humpback = new window.Humpback(config)
+var various = new window.Various(config)
 
-humpback.onError = function(e) {
+various.onError = function(e) {
   console.log(e)
   document.write(e.message)
 }
 
 window.require(['moment', 'moment_zhCN'], function (moment) {
   moment.locale('zh-cn')
-  humpback.start()
+  various.start()
 })
 </script>
 

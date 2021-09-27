@@ -1,5 +1,5 @@
 import { ComponentType } from 'react'
-import { Config } from 'humpback'
+import { Config } from '@variousjs/various'
 import getDispatch from './dispatch'
 import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import preload from './preload'

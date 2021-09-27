@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { ComponentProps } from 'humpback'
+import { ComponentProps } from '@variousjs/various'
 
 export class X extends Component<ComponentProps> {
   private unMount: () => void

@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Config } from 'humpback'
+import { Config } from '@variousjs/various'
 import getRoutes from './routes'
 import getBuiltIn from './built-in'
 import createComponent from './create-component'

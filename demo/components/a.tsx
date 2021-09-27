@@ -3,7 +3,7 @@ import {
   Button, message, ConfigProvider, DatePicker, locales,
 } from 'antd'
 import Nycticorax, { Connect as CT } from 'nycticorax'
-import { ComponentProps } from 'humpback'
+import { ComponentProps } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
 type Store = { a: string }

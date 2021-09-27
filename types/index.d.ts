@@ -1,4 +1,4 @@
-declare module 'humpback' {
+declare module '@variousjs/various' {
   import { RouteComponentProps } from 'react-router-dom'
   import { ComponentType, ReactNode } from 'react'
 

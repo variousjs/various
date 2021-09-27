@@ -3,7 +3,7 @@ import {
   Layout, Menu, Icon, Badge, Button, Tag, Input,
 } from 'antd'
 import { Link } from 'react-router-dom'
-import { ContainerProps } from 'humpback'
+import { ContainerProps } from '@variousjs/various'
 import { Store, Config } from './types'
 
 const W: FC<ContainerProps<Store, Config>> = (props) => {
@@ -18,7 +18,7 @@ const W: FC<ContainerProps<Store, Config>> = (props) => {
   return (
     <Layout style={{ height: '100vh' }}>
       <Layout.Sider>
-        <h1 style={{ color: '#fff', textAlign: 'center', paddingTop: 20 }}>Humpback</h1>
+        <h1 style={{ color: '#fff', textAlign: 'center', paddingTop: 20 }}> VariousJS </h1>
         <Menu
           defaultSelectedKeys={window.location.hash.split('#/')[1] || 'default'}
           mode="inline"

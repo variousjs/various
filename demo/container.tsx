@@ -1,7 +1,7 @@
 import React, { Component, ComponentType } from 'react'
 import { Route } from 'react-router-dom'
 import { Collapse, Button } from 'antd'
-import { ContainerProps } from 'humpback'
+import { ContainerProps } from '@variousjs/various'
 import Wrapper from './wrapper'
 import { Config, Store } from './types'
 

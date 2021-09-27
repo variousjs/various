@@ -1,5 +1,5 @@
 {
-  "name": "@humpback/runtime",
+  "name": "@variousjs/various",
   "version": "0.0.1",
   "description": "RequireJS(AMD) + React",
   "files": [
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fratercula/humpback.git"
+    "url": "git+https://github.com/variousjs/various.git"
   },
   "keywords": [
     "requirejs",
@@ -35,9 +35,9 @@
   "author": "LoeiFy <LoeiFy@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fratercula/humpback/issues"
+    "url": "https://github.com/variousjs/various/issues"
   },
-  "homepage": "https://github.com/fratercula/humpback#readme",
+  "homepage": "https://github.com/variousjs/various#readme",
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",

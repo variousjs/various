@@ -4,10 +4,10 @@ import {
 } from 'react-router-dom'
 import React, { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
-import { ErrorProps as Ep, Actions, ContainerProps } from 'humpback'
+import { ErrorProps as Ep, Actions, ContainerProps } from '@variousjs/various'
 import { MOUNTED_COMPONENTS } from './config'
 
-export { ComponentProps, ContainerProps } from 'humpback'
+export { ComponentProps, ContainerProps } from '@variousjs/various'
 
 export interface ErrorProps extends Omit<Ep, 'type'> {
   type: string,

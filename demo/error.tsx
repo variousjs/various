@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Alert, Button } from 'antd'
-import { ErrorProps } from 'humpback'
+import { ErrorProps } from '@variousjs/various'
 
 const errorComponent: FC<ErrorProps> = ({ reload, type, message }) => (
   <>

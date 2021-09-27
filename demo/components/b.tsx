@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, message } from 'antd'
 import Nycticorax, { Connect as CT } from 'nycticorax'
-import { ComponentProps } from 'humpback'
+import { ComponentProps } from '@variousjs/various'
 import { Store as GlobalStore, Config } from '../types'
 
 type Store = { b: string }

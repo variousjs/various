@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react'
 import { Button, message } from 'antd'
-import { ComponentProps } from 'humpback'
+import { ComponentProps } from '@variousjs/various'
 import { Store } from '../types'
 
 const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
