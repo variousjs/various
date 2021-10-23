@@ -1,7 +1,12 @@
 import { ComponentType } from 'react'
 import { Config } from '@variousjs/various'
 import getDispatch from './dispatch'
-import { IGNORE_STATIC_METHODS, MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
+import {
+  IGNORE_STATIC_METHODS,
+  MOUNTED_COMPONENTS,
+  ERROR_TYPE,
+  RETRY_COUNT,
+} from '../config'
 import preload from './preload'
 import {
   Dependency,
@@ -75,6 +80,8 @@ function componentCreator({
     private ComponentNode: RequiredComponent | null
 
     private isUnMounted?: boolean
+
+    private retryCount: number = 0
 
     dispatch = currentDispatch.bind(this, name)
 
@@ -173,6 +180,12 @@ function componentCreator({
         })
 
         if (this.isUnMounted) {
+          return
+        }
+
+        if (this.retryCount < RETRY_COUNT) {
+          this.retryCount += 1
+          setTimeout(this.mountComponent, 1000)
           return
         }
 

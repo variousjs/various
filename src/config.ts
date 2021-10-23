@@ -29,3 +29,5 @@ export const ERROR_TYPE: { [key: string]: string } = {
 }
 
 export const ROOT_CONTAINER = '#root'
+
+export const RETRY_COUNT = 1
