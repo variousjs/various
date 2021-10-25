@@ -4,14 +4,10 @@ import {
 } from 'react-router-dom'
 import React, { ComponentType } from 'react'
 import ReactDOM from 'react-dom'
-import { ErrorProps as Ep, Actions, ContainerProps } from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps } from '@variousjs/various'
 import { MOUNTED_COMPONENTS } from './config'
 
-export { ComponentProps, ContainerProps } from '@variousjs/various'
-
-export interface ErrorProps extends Omit<Ep, 'type'> {
-  type: string,
-}
+export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
 
 export interface Entry<S = { [key: string]: unknown }, C = {}> {
   store: S,
@@ -48,7 +44,7 @@ export namespace Connector {
 }
 
 export interface ErrorState {
-  errorType: string,
+  errorType?: ErrorProps['type'],
   errorMessage: string,
 }
 

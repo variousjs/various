@@ -88,7 +88,7 @@ export default (
       const [name] = nameWidthSub.split('.')
       if (!components[name]) {
         return () => (
-          <ErrorNode type={ERROR_TYPE.NOT_DEFINED as 'NOT_DEFINED'} />
+          <ErrorNode type={ERROR_TYPE.NOT_DEFINED} />
         )
       }
       if (COMPONENTS[name]) {
@@ -130,7 +130,7 @@ export default (
       [MOUNTED_COMPONENTS]: string[],
     }, ErrorState> {
       state = {
-        errorType: '',
+        errorType: undefined,
         errorMessage: '',
       }
 

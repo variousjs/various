@@ -2,13 +2,12 @@ import { Entry, Dependency } from '../types'
 
 const builtIn = (React: Dependency.React) => {
   const Loader = () => (
-    <h3>Loading</h3>
+    <div>Loading</div>
   )
 
   const Error: Entry['Error'] = ({ type, message, reload }) => (
     <>
-      <h3>{type}</h3>
-      <p>{message}</p>
+      <div>{`[${type}]${message}`}</div>
       {
         reload
           ? (
@@ -16,7 +15,7 @@ const builtIn = (React: Dependency.React) => {
               type="button"
               onClick={reload}
             >
-              reload
+              Reload
             </button>
           )
           : null
@@ -25,7 +24,7 @@ const builtIn = (React: Dependency.React) => {
   )
 
   const Container = () => (
-    <h3>Nothing</h3>
+    <div>Container component not defined</div>
   )
 
   return { Loader, Error, Container }

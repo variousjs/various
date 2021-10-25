@@ -73,7 +73,7 @@ function componentCreator({
   }> {
     state = {
       componentReady: false,
-      errorType: '',
+      errorType: undefined,
       errorMessage: '',
     }
 
@@ -201,7 +201,7 @@ function componentCreator({
     onReload = () => {
       this.setState({
         componentReady: false,
-        errorType: '',
+        errorType: undefined,
         errorMessage: '',
       }, () => {
         this.mountComponent()

@@ -15,7 +15,7 @@ export default (
   const { withRouter } = ReactRouterDOM
   class R extends React.Component<P, ErrorState> {
     state = {
-      errorType: '',
+      errorType: undefined,
       errorMessage: '',
     }
 
