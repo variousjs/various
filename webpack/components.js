@@ -7,6 +7,7 @@ const config = {
   ...base,
   // watch components change
   watch: NODE_ENV === 'development',
+  mode: 'production',
   entry: rest,
 }
 

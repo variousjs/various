@@ -7,6 +7,7 @@ const { index } = base.entry
 const config = {
   ...base,
   entry: { index },
+  mode: NODE_ENV,
   output: {
     path: path.resolve(__dirname, '../docs/dist'),
     publicPath: '/dist/',

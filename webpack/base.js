@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs')
 
-const { NODE_ENV = 'development' } = process.env
 const components = {
   entry: path.resolve(__dirname, '../demo/entry.ts'),
 }
@@ -57,7 +56,6 @@ const config = {
       amd: 'table',
     },
   },
-  mode: NODE_ENV,
   devtool: 'source-map',
   resolve: {
     // includes .js, for webpack dev server
