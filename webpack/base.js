@@ -1,12 +1,10 @@
-const { resolve, join } = require('path')
-
-const { ENTRY } = process.env
+const path = require('path')
 
 const config = {
-  entry: join(__dirname, ENTRY),
-  output: {},
+  stats: 'minimal',
   target: ['web', 'es5'],
   externals: {
+    // default
     react: {
       root: 'React',
       amd: 'react',
@@ -23,11 +21,34 @@ const config = {
       root: 'Nycticorax',
       amd: 'nycticorax',
     },
+
+    antd: {
+      root: 'antd',
+      amd: 'antd',
+    },
+    'rc-table': {
+      root: 'rcTable',
+      amd: 'rc-table',
+    },
+    table: {
+      root: 'Tb',
+      amd: 'table',
+    },
   },
-  mode: 'production',
   devtool: 'source-map',
   resolve: {
+    // includes .js, for webpack dev server
     extensions: ['.js', '.ts', '.tsx'],
+  },
+  devServer: {
+    allowedHosts: 'all',
+    port: 2333,
+    host: '0.0.0.0',
+    https: true,
+    static: {
+      directory: path.join(__dirname, '../docs'),
+    },
+    watchFiles: ['../docs'],
   },
   module: {
     rules: [
@@ -40,7 +61,6 @@ const config = {
             presets: [
               '@babel/preset-typescript',
               ['@babel/preset-env', {
-                // targets: { esmodules: true },
                 targets: ['defaults'],
                 modules: false,
               }],
@@ -51,24 +71,6 @@ const config = {
       },
     ],
   },
-}
-
-if (ENTRY === 'src/index.ts') {
-  config.output.path = resolve(__dirname, './dist')
-  config.output.filename = 'index.js'
-  // config.module.rules[0].use.options.presets[1][1].targets = ['defaults']
-} else {
-  config.externals.antd = { root: 'antd', amd: 'antd' }
-  config.externals['rc-table'] = { root: 'rcTable', amd: 'rc-table' }
-  config.externals.table = { root: 'Tb', amd: 'table' }
-
-  const name = ENTRY.split('/').slice(-1)[0].split('.')[0]
-
-  config.output = {
-    path: resolve(__dirname, './docs/dist'),
-    filename: `${name}.js`,
-    libraryTarget: 'amd',
-  }
 }
 
 module.exports = config

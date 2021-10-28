@@ -21,8 +21,8 @@ class Various {
       $entry_component: entry,
     } as { [key: string]: string }
 
-    Object.keys(paths).forEach((name) => {
-      paths[name] = `${paths[name]}#`
+    Object.keys(paths).forEach((name, i) => {
+      paths[name] = `${paths[name]}#${i}`
     })
 
     window.requirejs.config({
