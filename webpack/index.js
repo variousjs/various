@@ -3,10 +3,11 @@ const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
 
-const { index } = base.entry
 const config = {
   ...base,
-  entry: { index },
+  entry: {
+    index: path.resolve(__dirname, '../src/index.ts'),
+  },
   mode: NODE_ENV,
   output: {
     path: path.resolve(__dirname, '../docs/dist'),

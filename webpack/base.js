@@ -1,28 +1,7 @@
 const path = require('path')
-const fs = require('fs')
-
-const components = {
-  entry: path.resolve(__dirname, '../demo/entry.ts'),
-}
-
-fs
-  .readdirSync(path.resolve(__dirname, '../demo/components'))
-  .filter((name) => name.includes('.tsx'))
-  .forEach((name) => {
-    components[name.split('.tsx')[0]] = path.resolve(__dirname, '../demo/components', name)
-  })
 
 const config = {
-  entry: {
-    ...components,
-    index: path.resolve(__dirname, '../src/index.ts'),
-  },
-  output: {
-    path: path.resolve(__dirname, '../docs/dist'),
-    publicPath: '/dist/',
-    filename: '[name].js',
-    libraryTarget: 'amd',
-  },
+  stats: 'minimal',
   target: ['web', 'es5'],
   externals: {
     // default

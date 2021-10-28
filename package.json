@@ -13,7 +13,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
-    "start": "webpack --progress --config webpack/components.js & webpack serve --config webpack/index.js --progress",
+    "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress",
     "build": "NODE_ENV=production webpack --progress --config webpack/components.js && NODE_ENV=production webpack --config webpack/index.js --progress",
     "postbuild": "cp -R dist/ docs/dist/"
   },
@@ -54,8 +54,8 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "nycticorax": "^2.0.6",
     "typescript": "^4.4.2",
-    "webpack": "^5.45.1",
-    "webpack-cli": "^4.7.2",
+    "webpack": "^5.60.0",
+    "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
   }
 }
