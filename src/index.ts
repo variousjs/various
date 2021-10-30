@@ -1,5 +1,3 @@
-import 'core-js-pure/stable'
-import 'regenerator-runtime/runtime'
 import { Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
 import getVarious from './core'

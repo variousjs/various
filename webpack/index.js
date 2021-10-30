@@ -6,7 +6,11 @@ const { NODE_ENV = 'development' } = process.env
 const config = {
   ...base,
   entry: {
-    index: path.resolve(__dirname, '../src/index.ts'),
+    index: [
+      'core-js-pure/stable',
+      'regenerator-runtime/runtime',
+      path.resolve(__dirname, '../src/index.ts'),
+    ],
   },
   mode: NODE_ENV,
   output: {
