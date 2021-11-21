@@ -1,27 +1,23 @@
-import { ComponentType } from 'react'
+import React, { ComponentType } from 'react'
+import { render, unmountComponentAtNode } from 'react-dom'
+import { withRouter } from 'react-router-dom'
 import { Config } from '@variousjs/various'
 import getDispatch from './dispatch'
+import preload from './preload'
+import { connect, getStore, dispatch } from './store'
 import {
   IGNORE_STATIC_METHODS,
   MOUNTED_COMPONENTS,
   ERROR_TYPE,
   RETRY_COUNT,
 } from '../config'
-import preload from './preload'
 import {
-  Dependency,
+  RequireError,
   Connector,
   Entry,
   ErrorState,
   ComponentProps,
 } from '../types'
-
-interface P {
-  React: Dependency.React,
-  ReactDOM: Dependency.ReactDOM,
-  ReactRouterDOM: Dependency.ReactRouterDOM,
-  nycticorax: Connector.nycticorax,
-}
 
 interface E {
   name: string,
@@ -41,11 +37,6 @@ type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
 }
 
 function componentCreator({
-  React,
-  ReactDOM,
-  ReactRouterDOM,
-  nycticorax,
-}: P, {
   config,
   name: nameWidthModule,
   storeDispatcher,
@@ -55,9 +46,6 @@ function componentCreator({
   routerProps,
   onMounted = () => undefined,
 }: E) {
-  const { render, unmountComponentAtNode } = ReactDOM
-  const { withRouter } = ReactRouterDOM
-  const { connect, getStore, dispatch } = nycticorax
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
@@ -171,7 +159,7 @@ function componentCreator({
             onMounted()
           }
         })
-      }, (e: Dependency.RequireError) => {
+      }, (e: RequireError) => {
         window.requirejs.undef(name)
         window.requirejs.config({
           paths: {
@@ -239,11 +227,6 @@ function componentCreator({
       }
 
       const C = componentCreator({
-        React,
-        ReactDOM,
-        ReactRouterDOM,
-        nycticorax,
-      }, {
         name: componentModule ? `${componentName}.${componentModule}` : componentName,
         storeDispatcher,
         componentDispatcher,
