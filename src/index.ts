@@ -20,7 +20,7 @@ class Loader {
       ...dependencies,
       ...components,
       'various-entry': entry,
-      'various-core': corePath,
+      '@variousjs/various': corePath,
     } as { [key: string]: string }
 
     Object.keys(paths).forEach((name, i) => {
@@ -41,7 +41,7 @@ class Loader {
   }
 
   public start() {
-    const requires = ['various-core']
+    const requires = ['@variousjs/various']
     if (this.paths['various-entry']) {
       requires.push('various-entry')
     }

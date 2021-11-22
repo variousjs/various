@@ -24,6 +24,16 @@ import {
   ContainerProps,
 } from '../types'
 
+export const Router = Routes
+export {
+  Route,
+  Link,
+  generatePath,
+  Redirect,
+  Prompt,
+  NavLink,
+} from 'react-router-dom'
+
 export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,7 +48,7 @@ export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
     Container: ContainerNode = Container,
     ...rest
   } = config
-  const Router: typeof HashRouter = routerMode === 'browser' ? BrowserRouter : HashRouter
+  const RouterMode: typeof HashRouter = routerMode === 'browser' ? BrowserRouter : HashRouter
   const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
   const componentDispatcher: { [name: string]: Entry['actions'] } = {}
   const storeDispatcher = { ...actions }
@@ -155,7 +165,6 @@ export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
 
         return (
           <ContainerNode
-            Router={Routes}
             $component={$component}
             $render={$render}
             $mounted={mounted}
@@ -181,11 +190,11 @@ export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
 
   try {
     render((
-      <Router>
+      <RouterMode>
         <Switch>
           <X />
         </Switch>
-      </Router>
+      </RouterMode>
     ), document.querySelector(root || ROOT_CONTAINER))
   } catch (e) {
     ctx.onError(e as RequireError)

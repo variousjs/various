@@ -2,8 +2,7 @@ import React, { FC } from 'react'
 import {
   Layout, Menu, Icon, Badge, Button, Tag, Input,
 } from 'antd'
-import { Link } from 'react-router-dom'
-import { ContainerProps } from '@variousjs/various'
+import { ContainerProps, Link } from '@variousjs/various'
 import { Store, Config } from './types'
 
 const W: FC<ContainerProps<Store, Config>> = (props) => {

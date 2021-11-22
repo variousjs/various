@@ -1,7 +1,6 @@
 import React, { Component, ComponentType } from 'react'
-import { Route } from 'react-router-dom'
 import { Collapse, Button } from 'antd'
-import { ContainerProps } from '@variousjs/various'
+import { ContainerProps, Router, Route } from '@variousjs/various'
 import Wrapper from './wrapper'
 import { Config, Store } from './types'
 
@@ -38,7 +37,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
 
   render() {
     const {
-      Router, $config, $component, $mounted, $router,
+      $config, $component, $mounted, $router,
     } = this.props
     console.log($router.location.pathname)
     const routes = $config.routes.map((item) => ({
