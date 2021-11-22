@@ -2,6 +2,10 @@ import { Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
 import { Entry, RequireJsError, Various } from './types'
 
+const { currentScript } = document
+const { src } = currentScript as HTMLScriptElement
+const corePath = src.replace('index.js', 'core.js')
+
 class Loader {
   private errorFn: RequireJsError
 
@@ -16,7 +20,7 @@ class Loader {
       ...dependencies,
       ...components,
       'various-entry': entry,
-      'various-core': 'path/to/core',
+      'various-core': corePath,
     } as { [key: string]: string }
 
     Object.keys(paths).forEach((name, i) => {
@@ -42,7 +46,7 @@ class Loader {
       requires.push('various-entry')
     }
     window.requirejs(requires, (various: Various, entry: Entry) => {
-      various({ ...this.config, ...entry }, this)
+      various.default({ ...this.config, ...entry }, this)
     }, this.errorFn)
   }
 

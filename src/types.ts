@@ -38,9 +38,9 @@ export interface ErrorState {
   errorMessage: string,
 }
 
-export type Various = (config: Config & Entry, ctx: {
-  onError: RequireJsError,
-}) => void
+export interface Various {
+  default: (config: Config & Entry, ctx: { onError: RequireJsError }) => void,
+}
 
 declare global {
   interface Require {
