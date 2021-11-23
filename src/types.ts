@@ -1,10 +1,11 @@
 import Nycticorax, { Connect } from 'nycticorax'
+import { ComponentType } from 'react'
 import {
-  HashRouter, BrowserRouter, Switch, withRouter,
-} from 'react-router-dom'
-import React, { ComponentType } from 'react'
-import ReactDOM from 'react-dom'
-import { ErrorProps, Actions, ContainerProps } from '@variousjs/various'
+  ErrorProps,
+  Actions,
+  ContainerProps,
+  Config,
+} from '@variousjs/various'
 import { MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
@@ -17,22 +18,11 @@ export interface Entry<S = { [key: string]: unknown }, C = {}> {
   Container: ComponentType<ContainerProps<S, C>>,
 }
 
-export namespace Dependency {
-  export type React = typeof React
-  export type ReactDOM = typeof ReactDOM
-  export interface ReactRouterDOM {
-    HashRouter: typeof HashRouter,
-    BrowserRouter: typeof BrowserRouter,
-    Switch: typeof Switch,
-    withRouter: typeof withRouter,
-  }
-  export type Nycticorax = typeof Nycticorax
-  export type RequireJsError = typeof window.requirejs.onError
-  export interface RequireError extends Error {
-    requireType: string,
-    requireModules: string[],
-    originalError: Error,
-  }
+export type RequireJsError = typeof window.requirejs.onError
+export interface RequireError extends Error {
+  requireType: string,
+  requireModules: string[],
+  originalError: Error,
 }
 
 export namespace Connector {
@@ -46,6 +36,10 @@ export namespace Connector {
 export interface ErrorState {
   errorType?: ErrorProps['type'],
   errorMessage: string,
+}
+
+export interface Various {
+  default: (config: Config & Entry, ctx: { onError: RequireJsError }) => void,
 }
 
 declare global {

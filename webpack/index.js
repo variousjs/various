@@ -3,7 +3,7 @@ const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
 
-const config = {
+const configs = [{
   ...base,
   entry: {
     index: [
@@ -18,13 +18,25 @@ const config = {
     publicPath: '/dist/',
     filename: '[name].js',
   },
-}
+}]
 
 if (NODE_ENV === 'production') {
-  config.output = {
+  configs[0].output = {
     path: path.join(__dirname, '../dist'),
-    filename: 'index.js',
+    filename: '[name].js',
   }
+  configs.push({
+    ...base,
+    entry: {
+      core: path.resolve(__dirname, '../src/core'),
+    },
+    mode: 'production',
+    output: {
+      path: path.join(__dirname, '../dist'),
+      filename: '[name].js',
+      libraryTarget: 'amd',
+    },
+  })
 }
 
-module.exports = config
+module.exports = configs

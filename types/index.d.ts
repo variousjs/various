@@ -1,6 +1,6 @@
 declare module '@variousjs/various' {
   import { RouteComponentProps } from 'react-router-dom'
-  import { ComponentType, ReactNode } from 'react'
+  import { ComponentType, Component } from 'react'
 
   type $dispatch = (type: string, method: string, value?: any) => unknown
   type $render = (params: {
@@ -12,6 +12,18 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }) => () => void
   type $preload = (names: string[]) => Promise<void>
+
+  export { default as Nycticorax, Connect, Dispatch } from 'nycticorax'
+
+  export class Router extends Component {}
+  export {
+    Route,
+    Link,
+    generatePath,
+    Redirect,
+    Prompt,
+    NavLink,
+  } from 'react-router-dom'
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
@@ -30,7 +42,6 @@ declare module '@variousjs/various' {
   }
 
   export interface ContainerProps<S = {}, C = {}> {
-    Router: ComponentType<{ children?: ReactNode }>,
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
       silent?: boolean,

@@ -1,10 +1,13 @@
 import { Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
-import getVarious from './core'
-import { Entry, Dependency } from './types'
+import { Entry, RequireJsError, Various } from './types'
 
-class Various {
-  private errorFn: Dependency.RequireJsError
+const { currentScript } = document
+const { src } = currentScript as HTMLScriptElement
+const corePath = src.replace('index.js', 'core.js')
+
+class Loader {
+  private errorFn: RequireJsError
 
   private config: Config
 
@@ -16,7 +19,8 @@ class Various {
       ...DEFAULT_PACKAGES,
       ...dependencies,
       ...components,
-      $entry_component: entry,
+      'various-entry': entry,
+      '@variousjs/various': corePath,
     } as { [key: string]: string }
 
     Object.keys(paths).forEach((name, i) => {
@@ -37,29 +41,22 @@ class Various {
   }
 
   public start() {
-    const requires = ['react', 'react-dom', 'react-router-dom', 'nycticorax']
-    if (this.paths.$entry_component) {
-      requires.push('$entry_component')
+    const requires = ['@variousjs/various']
+    if (this.paths['various-entry']) {
+      requires.push('various-entry')
     }
-    window.requirejs(requires, (
-      React: Dependency.React,
-      ReactDOM: Dependency.ReactDOM,
-      ReactRouterDOM: Dependency.ReactRouterDOM,
-      Nycticorax: Dependency.Nycticorax,
-      entry: Entry,
-    ) => {
-      const various = getVarious(React, ReactDOM, ReactRouterDOM, Nycticorax)
-      various({ ...this.config, ...entry }, this)
+    window.requirejs(requires, (various: Various, entry: Entry) => {
+      various.default({ ...this.config, ...entry }, this)
     }, this.errorFn)
   }
 
-  public set onError(fn: Dependency.RequireJsError) {
+  public set onError(fn: RequireJsError) {
     this.errorFn = fn
   }
 }
 
 declare global {
-  interface Window { Various: typeof Various }
+  interface Window { Various: typeof Loader }
 }
 
-window.Various = Various
+window.Various = Loader

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import {
   Button, message, ConfigProvider, DatePicker, locales,
 } from 'antd'
-import Nycticorax, { Connect as CT } from 'nycticorax'
-import { ComponentProps } from '@variousjs/various'
+import { ComponentProps, Nycticorax, Connect as CT } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
 type Store = { a: string }

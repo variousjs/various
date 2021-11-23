@@ -14,11 +14,15 @@ fs
     components[name.split('.tsx')[0]] = path.resolve(__dirname, '../demo/components', name)
   })
 
+if (NODE_ENV === 'development') {
+  components.core = path.resolve(__dirname, '../src/core')
+}
+
 const config = {
   ...base,
   // watch components change
   watch: NODE_ENV === 'development',
-  mode: 'production',
+  mode: NODE_ENV,
   entry: components,
   output: {
     path: path.resolve(__dirname, '../docs/dist'),
