@@ -24,5 +24,5 @@ export const Error: Entry['Error'] = ({ type, message, reload }) => (
 )
 
 export const Container = () => (
-  <div>Container component not defined</div>
+  <div>Container not defined</div>
 )
