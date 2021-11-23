@@ -17,14 +17,6 @@ const config = {
       root: 'various',
       amd: '@variousjs/various',
     },
-    'react-router-dom': {
-      root: 'ReactRouterDOM',
-      amd: 'react-router-dom',
-    },
-    nycticorax: {
-      root: 'Nycticorax',
-      amd: 'nycticorax',
-    },
 
     antd: {
       root: 'antd',

@@ -13,6 +13,8 @@ declare module '@variousjs/various' {
   }) => () => void
   type $preload = (names: string[]) => Promise<void>
 
+  export { default as Nycticorax, Connect, Dispatch } from 'nycticorax'
+
   export class Router extends Component {}
   export {
     Route,
