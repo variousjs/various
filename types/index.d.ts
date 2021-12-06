@@ -13,7 +13,7 @@ declare module '@variousjs/various' {
   }) => () => void
   type $preload = (names: string[]) => Promise<void>
 
-  export { default as Nycticorax, Connect, Dispatch } from 'nycticorax'
+  export { default as Store, Connect, Dispatch } from 'nycticorax'
 
   export class Router extends Component {}
   export {
@@ -55,13 +55,13 @@ declare module '@variousjs/various' {
     $router: RouteComponentProps<{ [key: string]: string }>,
   }
 
-  type Nycticorax<S> = {
+  type Store<S> = {
     getStore: () => S,
     dispatch: (next: Partial<S>) => void,
   }
 
   export type Actions<S = {}> = {
-    [name: string]: (nycticorax: Nycticorax<S>, ...args: any[]) => unknown,
+    [name: string]: (store: Store<S>, ...args: any[]) => unknown,
   }
 
   export interface Config {

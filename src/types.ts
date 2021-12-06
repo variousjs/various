@@ -28,7 +28,6 @@ export interface RequireError extends Error {
 export namespace Connector {
   export type Store = { [key: string]: unknown, [MOUNTED_COMPONENTS]: string[] }
   const ctx = new Nycticorax<Store>()
-  export type nycticorax = typeof ctx
   export type dispatch = typeof ctx.dispatch
   export type connect = ComponentType<Connect<Store>> & { [key: string]: any }
 }

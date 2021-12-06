@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import {
   Button, message, ConfigProvider, DatePicker, locales,
 } from 'antd'
-import { ComponentProps, Nycticorax, Connect as CT } from '@variousjs/various'
+import { ComponentProps, Store, Connect as CT } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
-type Store = { a: string }
-type Connect = CT<Store>
+type S = { a: string }
+type Connect = CT<S>
 
 const {
   createStore,
   connect,
   dispatch,
   getStore,
-} = new Nycticorax<Store>()
+} = new Store<S>()
 
 createStore({ a: '9' })
 

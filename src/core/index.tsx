@@ -24,7 +24,7 @@ import {
   ContainerProps,
 } from '../types'
 
-export { default as Nycticorax } from 'nycticorax'
+export { default as Store } from 'nycticorax'
 export const Router = Routes
 export {
   Route,
