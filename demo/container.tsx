@@ -1,6 +1,11 @@
 import React, { Component, ComponentType } from 'react'
 import { Collapse, Button } from 'antd'
-import { ContainerProps, Router, Route } from '@variousjs/various'
+import {
+  ContainerProps,
+  Router,
+  Route,
+  Switch,
+} from '@variousjs/various'
 import Wrapper from './wrapper'
 import { Config, Store } from './types'
 
@@ -60,7 +65,8 @@ class Container extends Component<ContainerProps<Store, Config>> {
           }
         </div>
         <Router>
-          {
+          <Switch>
+            {
             routes.map(({ path, components }) => {
               const component = () => components.map((name) => {
                 const C = $component(name)
@@ -109,9 +115,10 @@ class Container extends Component<ContainerProps<Store, Config>> {
               )
             })
           }
-          <Route path="*">
-            <div style={{ fontSize: 100 }}>404</div>
-          </Route>
+            <Route path="*">
+              <div style={{ fontSize: 100 }}>404</div>
+            </Route>
+          </Switch>
         </Router>
       </Wrapper>
     )

@@ -24,6 +24,7 @@ declare module '@variousjs/various' {
     Prompt,
     NavLink,
     matchPath,
+    Switch,
   } from 'react-router-dom'
 
   export interface ComponentProps<S = {}, C = {}> {

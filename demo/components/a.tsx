@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import {
   Button, message, ConfigProvider, DatePicker, locales,
 } from 'antd'
-import { ComponentProps, Store, Connect as CT } from '@variousjs/various'
+import {
+  ComponentProps, Store, Connect as CT,
+} from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
 type S = { a: string }

@@ -3,7 +3,6 @@ import { render, unmountComponentAtNode } from 'react-dom'
 import {
   RouteComponentProps,
   HashRouter,
-  Switch,
   BrowserRouter,
   withRouter,
 } from 'react-router-dom'
@@ -34,6 +33,7 @@ export {
   Prompt,
   NavLink,
   matchPath,
+  Switch,
 } from 'react-router-dom'
 
 export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
@@ -193,9 +193,7 @@ export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
   try {
     render((
       <RouterMode>
-        <Switch>
-          <X />
-        </Switch>
+        <X />
       </RouterMode>
     ), document.querySelector(root || ROOT_CONTAINER))
   } catch (e) {
