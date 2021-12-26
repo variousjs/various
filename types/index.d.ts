@@ -23,6 +23,7 @@ declare module '@variousjs/various' {
     Redirect,
     Prompt,
     NavLink,
+    matchPath,
   } from 'react-router-dom'
 
   export interface ComponentProps<S = {}, C = {}> {
@@ -62,13 +63,5 @@ declare module '@variousjs/various' {
 
   export type Actions<S = {}> = {
     [name: string]: (store: Store<S>, ...args: any[]) => unknown,
-  }
-
-  export interface Config {
-    dependencies?: { [key: string]: string },
-    components: { [key: string]: string },
-    entry?: string,
-    routerMode?: 'browser' | 'hash',
-    root?: string,
   }
 }

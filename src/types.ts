@@ -1,14 +1,17 @@
 import Nycticorax, { Connect } from 'nycticorax'
 import { ComponentType } from 'react'
-import {
-  ErrorProps,
-  Actions,
-  ContainerProps,
-  Config,
-} from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps } from '@variousjs/various'
 import { MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
+
+export interface Config {
+  dependencies?: { [key: string]: string },
+  components: { [key: string]: string },
+  entry?: string,
+  routerMode?: 'browser' | 'hash',
+  root?: string,
+}
 
 export interface Entry<S = { [key: string]: unknown }, C = {}> {
   store: S,
