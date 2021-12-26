@@ -33,6 +33,7 @@ export {
   Redirect,
   Prompt,
   NavLink,
+  matchPath,
 } from 'react-router-dom'
 
 export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {

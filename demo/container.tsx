@@ -109,6 +109,9 @@ class Container extends Component<ContainerProps<Store, Config>> {
               )
             })
           }
+          <Route path="*">
+            <div style={{ fontSize: 100 }}>404</div>
+          </Route>
         </Router>
       </Wrapper>
     )

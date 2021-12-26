@@ -23,6 +23,7 @@ declare module '@variousjs/various' {
     Redirect,
     Prompt,
     NavLink,
+    matchPath,
   } from 'react-router-dom'
 
   export interface ComponentProps<S = {}, C = {}> {
