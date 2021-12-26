@@ -7,7 +7,6 @@ import {
   BrowserRouter,
   withRouter,
 } from 'react-router-dom'
-import { Config } from '@variousjs/various'
 import { createStore, connect, dispatch } from './store'
 import Routes from './routes'
 import { Loader, Error, Container } from './built-in'
@@ -22,6 +21,7 @@ import {
   ErrorState,
   ComponentProps,
   ContainerProps,
+  Config,
 } from '../types'
 
 export { default as Store } from 'nycticorax'

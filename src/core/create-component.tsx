@@ -1,7 +1,6 @@
 import React, { ComponentType } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { withRouter } from 'react-router-dom'
-import { Config } from '@variousjs/various'
 import getDispatch from './dispatch'
 import preload from './preload'
 import { connect, getStore, dispatch } from './store'
@@ -17,6 +16,7 @@ import {
   Entry,
   ErrorState,
   ComponentProps,
+  Config,
 } from '../types'
 
 interface E {

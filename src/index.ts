@@ -1,6 +1,10 @@
-import { Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
-import { Entry, RequireJsError, Various } from './types'
+import {
+  Entry,
+  RequireJsError,
+  Various,
+  Config,
+} from './types'
 
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
