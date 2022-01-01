@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable import/no-duplicates */
+
 declare module 'antd' {
   import { ComponentType, Component } from 'react'
 
@@ -27,6 +28,11 @@ declare module 'antd' {
     static Panel: ComponentType<any>
   }
   export const locales: { [key: string]: any }
+}
+
+declare module 'moment' {
+  const A: any
+  export default A
 }
 
 declare module 'rc-table' {

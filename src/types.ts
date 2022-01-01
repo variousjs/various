@@ -21,7 +21,6 @@ export interface Entry<S = { [key: string]: unknown }, C = {}> {
   Container: ComponentType<ContainerProps<S, C>>,
 }
 
-export type RequireJsError = typeof window.requirejs.onError
 export interface RequireError extends Error {
   requireType: string,
   requireModules: string[],
@@ -41,11 +40,15 @@ export interface ErrorState {
 }
 
 export interface Various {
-  default: (config: Config & Entry, ctx: { onError: RequireJsError }) => void,
+  default: (config: Config & Entry) => void,
 }
 
 declare global {
   interface Require {
     s: any,
   }
+}
+
+declare global {
+  interface Window { VARIOUS_CONFIG: Config }
 }

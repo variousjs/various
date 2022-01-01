@@ -4,13 +4,8 @@
 <meta charset="UTF-8" />
 <title> VariousJS </title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd.min.css" />
-</head>
-<body>
-<div id="root"></div>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.js"></script>
-<script src="./dist/index.js"></script>
 <script>
-var config = {
+var VARIOUS_CONFIG = {
   root: '#root',
   entry: './dist/entry.js',
   // routerMode: 'browser',
@@ -102,19 +97,16 @@ var config = {
     },
   ],
 }
-
-var various = new window.Various(config)
-
-various.onError = function(e) {
-  console.log(e)
-  document.write(e.message)
-}
-
-window.require(['moment', 'moment_zhCN'], function (moment) {
-  moment.locale('zh-cn')
-  various.start()
-})
 </script>
-
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.js"></script>
+<script>
+window.requirejs.onError = (e) => {
+  console.warn(e)
+}
+</script>
+<script src="./dist/index.js"></script>
 </body>
 </html>

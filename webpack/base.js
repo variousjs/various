@@ -30,6 +30,14 @@ const config = {
       root: 'Tb',
       amd: 'table',
     },
+    moment: {
+      root: 'moment',
+      amd: 'moment',
+    },
+    moment_zhCN: {
+      root: 'moment_zhCN',
+      amd: 'moment_zhCN',
+    },
   },
   devtool: 'source-map',
   resolve: {

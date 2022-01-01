@@ -14,8 +14,6 @@ import getDispatch from './dispatch'
 import preload from './preload'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
 import {
-  RequireJsError,
-  RequireError,
   Entry,
   ErrorState,
   ComponentProps,
@@ -36,7 +34,7 @@ export {
   Switch,
 } from 'react-router-dom'
 
-export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
+export default (config: Config & Entry) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
@@ -190,13 +188,9 @@ export default (config: Config & Entry, ctx: { onError: RequireJsError }) => {
   const RwithRouter = withRouter(R)
   const X = connect(key0, ...keyn)(RwithRouter as any)
 
-  try {
-    render((
-      <RouterMode>
-        <X />
-      </RouterMode>
-    ), document.querySelector(root || ROOT_CONTAINER))
-  } catch (e) {
-    ctx.onError(e as RequireError)
-  }
+  render((
+    <RouterMode>
+      <X />
+    </RouterMode>
+  ), document.querySelector(root || ROOT_CONTAINER))
 }
