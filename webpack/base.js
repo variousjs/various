@@ -48,7 +48,6 @@ const config = {
     allowedHosts: 'all',
     port: 2333,
     host: '0.0.0.0',
-    https: true,
     static: {
       directory: path.join(__dirname, '../docs'),
     },

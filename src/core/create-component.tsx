@@ -58,8 +58,10 @@ function componentCreator({
     [key: string]: unknown,
   }, ErrorState & {
     componentReady: boolean,
+    componentExist: boolean | undefined,
   }> {
     state = {
+      componentExist: undefined,
       componentReady: false,
       errorType: undefined,
       errorMessage: '',
@@ -74,6 +76,7 @@ function componentCreator({
     dispatch = currentDispatch.bind(this, name)
 
     componentDidMount() {
+      this.setState({ componentExist: window.requirejs.specified(name) })
       this.mountComponent()
     }
 
@@ -255,7 +258,12 @@ function componentCreator({
         silent,
         ...propsRest
       } = this.props
-      const { componentReady, errorMessage, errorType } = this.state
+      const {
+        componentReady,
+        errorMessage,
+        errorType,
+        componentExist,
+      } = this.state
       const store: Entry['store'] = {}
       const componentProps: Entry['store'] = {}
       const ComponentNode = this.ComponentNode as RequiredComponent
@@ -273,7 +281,7 @@ function componentCreator({
       }
 
       if (!componentReady) {
-        return !silent ? (<Loader />) : null
+        return !silent && componentExist === false ? (<Loader />) : null
       }
 
       storeKeys.forEach((key) => {
