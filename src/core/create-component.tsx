@@ -52,7 +52,7 @@ function componentCreator({
   const [name, module = Symbol('module')] = nameWidthModule.split('.')
 
   class R extends React.Component<ComponentProps['$router'] & {
-    silent?: boolean,
+    $silent?: boolean,
     MOUNTED_COMPONENTS: string[],
     dispatch: typeof dispatch,
     [key: string]: unknown,
@@ -255,7 +255,7 @@ function componentCreator({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         dispatch: componentDispatch,
         MOUNTED_COMPONENTS: mountedComponents,
-        silent,
+        $silent,
         ...propsRest
       } = this.props
       const {
@@ -269,7 +269,7 @@ function componentCreator({
       const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (errorType) {
-        return !silent
+        return !$silent
           ? (
             <Error
               type={ERROR_TYPE[errorType]}
@@ -281,7 +281,7 @@ function componentCreator({
       }
 
       if (!componentReady) {
-        return !silent && componentExist === false ? (<Loader />) : null
+        return !$silent && componentExist === false ? (<Loader />) : null
       }
 
       storeKeys.forEach((key) => {

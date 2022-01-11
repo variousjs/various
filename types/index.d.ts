@@ -46,7 +46,7 @@ declare module '@variousjs/various' {
   export interface ContainerProps<S = {}, C = {}> {
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
-      silent?: boolean,
+      $silent?: boolean,
       [key: string]: any,
     }>,
     $store: Readonly<S>,

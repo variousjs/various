@@ -55,7 +55,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
 
     return (
       <Wrapper {...this.props}>
-        <X />
+        <X $silent />
         <div>
           <h3>动态组件</h3>
           <Button onClick={this.onPortals}>加载组件</Button>
@@ -85,7 +85,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
                   return (
                     <div key={name} style={{ display: 'inline-block', width: 300 }}>
                       silent component
-                      <C silent />
+                      <C $silent />
                     </div>
                   )
                 }
