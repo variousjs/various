@@ -55,6 +55,7 @@ declare module '@variousjs/various' {
     $render: $render,
     $preload: $preload,
     $router: RouteComponentProps<{ [key: string]: string }>,
+    $postMessage: (name: string, value: any) => unknown,
   }
 
   type Store<S> = {
@@ -65,4 +66,12 @@ declare module '@variousjs/various' {
   export type Actions<S = {}> = {
     [name: string]: (store: Store<S>, ...args: any[]) => unknown,
   }
+
+  export type Message = {
+    type: string,
+    name: string,
+    value?: any,
+  }
+
+  export type OnMessage<S = {}> = (store: Store<S>, message: Message) => void
 }

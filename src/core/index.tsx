@@ -6,19 +6,32 @@ import {
   BrowserRouter,
   withRouter,
 } from 'react-router-dom'
-import { createStore, connect, dispatch } from './store'
+import {
+  createStore,
+  connect,
+  dispatch,
+  subscribe,
+  getStore,
+} from './store'
 import Routes from './routes'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
+import { getPostMessage } from './message'
 import preload from './preload'
-import { MOUNTED_COMPONENTS, ERROR_TYPE, ROOT_CONTAINER } from '../config'
+import {
+  MOUNTED_COMPONENTS,
+  ERROR_TYPE,
+  ROOT_CONTAINER,
+  MESSAGE_KEY,
+} from '../config'
 import {
   Entry,
   ErrorState,
   ComponentProps,
   ContainerProps,
   Config,
+  Connector,
 } from '../types'
 
 export { default as Store } from 'nycticorax'
@@ -43,6 +56,7 @@ export default (config: Config & Entry) => {
     components = {},
     store = {},
     actions = {},
+    onMessage = () => null,
     Loader: LoaderNode = Loader,
     Error: ErrorNode = Error,
     Container: ContainerNode = Container,
@@ -58,6 +72,7 @@ export default (config: Config & Entry) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS]: [],
+    [MESSAGE_KEY]: {} as Connector.Message,
   })
 
   const componentCreator = (
@@ -121,18 +136,37 @@ export default (config: Config & Entry) => {
   }
 
   class R extends React.Component<Entry['store'] & RouteComponentProps & {
-      dispatch: typeof dispatch,
-      [MOUNTED_COMPONENTS]: string[],
+      dispatch: Connector.dispatch,
+      [MOUNTED_COMPONENTS]: Connector.Store['MOUNTED_COMPONENTS'],
     }, ErrorState> {
       state = {
         errorType: undefined,
         errorMessage: '',
       }
 
+      unsubscribe: () => void
+
       dispatch = currentDispatch.bind(this, 'store')
+
+      postMessage = getPostMessage('store')
+
+      componentDidMount() {
+        this.unsubscribe = subscribe((keys) => {
+          if (keys[0] === MESSAGE_KEY) {
+            const { name, value, type } = getStore()[MESSAGE_KEY]
+            if (type !== 'store') {
+              onMessage({ getStore, dispatch }, { name, value, type })
+            }
+          }
+        })
+      }
 
       componentDidCatch(e: Error) {
         this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })
+      }
+
+      componentWillUnmount() {
+        this.unsubscribe()
       }
 
       render() {
@@ -178,6 +212,7 @@ export default (config: Config & Entry) => {
               match,
               staticContext,
             }}
+            $postMessage={this.postMessage}
           />
         )
       }

@@ -1,2 +1,268 @@
-define(["react","antd","@variousjs/various"],(function(e,t,n){return function(){"use strict";var r={161:function(t){t.exports=e},937:function(e){e.exports=t},437:function(e){e.exports=n}},o={};function u(e){var t=o[e];if(void 0!==t)return t.exports;var n=o[e]={exports:{}};return r[e](n,n.exports,u),n.exports}u.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return u.d(t,{a:t}),t},u.d=function(e,t){for(var n in t)u.o(t,n)&&!u.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},u.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},u.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var c={};return function(){u.r(c);var e=u(161),t=u.n(e),n=u(937);function r(e){return r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},r(e)}function o(e,t,n,r,o,u,c){try{var i=e[u](c),a=i.value}catch(e){return void n(e)}i.done?t(a):Promise.resolve(a).then(r,o)}function i(e){return function(){var t=this,n=arguments;return new Promise((function(r,u){var c=e.apply(t,n);function i(e){o(c,r,u,i,a,"next",e)}function a(e){o(c,r,u,i,a,"throw",e)}i(void 0)}))}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function f(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function l(e,t){return l=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e},l(e,t)}function s(e,t){return!t||"object"!==r(t)&&"function"!=typeof t?p(e):t}function p(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function y(e){return y=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)},y(e)}function d(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var m=new(u(437).Store),b=m.createStore,v=m.connect,h=m.dispatch,g=m.getStore;b({b:"666"});var S=function(e){!function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&l(e,t)}(b,e);var r,o,u,c,m=(u=b,c=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],(function(){}))),!0}catch(e){return!1}}(),function(){var e,t=y(u);if(c){var n=y(this).constructor;e=Reflect.construct(t,arguments,n)}else e=t.apply(this,arguments);return s(this,e)});function b(){var e;a(this,b);for(var t=arguments.length,r=new Array(t),o=0;o<t;o++)r[o]=arguments[o];return d(p(e=m.call.apply(m,[this].concat(r))),"onGetA",(function(){try{n.message.info(e.props.$dispatch("a","getValue"))}catch(e){n.message.error(e.message)}})),d(p(e),"onSetA",i(regeneratorRuntime.mark((function t(){return regeneratorRuntime.wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,e.props.$dispatch("a","updateValue",Math.random().toFixed(2));case 2:e.onGetA(),e.props.$dispatch("a","cdy");case 4:case"end":return t.stop()}}),t)})))),d(p(e),"onSetG",(function(){e.props.$dispatch("store","setNumber",Math.random().toFixed(2))})),d(p(e),"onGetStatus",(function(){var t=e.props.$mounted;n.message.info(t)})),e}return r=b,(o=[{key:"componentDidMount",value:function(){window.console.log(this.props.$config.menu[0].label)}},{key:"render",value:function(){var e=this.props.$store.number,r=this.props,o=r.b,u=r.$router;return t().createElement("div",null,t().createElement("p",{style:{fontSize:100}},"B"),t().createElement("div",{style:{display:"flex",flexDirection:"column"}},t().createElement("p",null,"全局值：",e),t().createElement("p",null,"组件值:",o),t().createElement("p",null,"当前路由参数：",(null==u?void 0:u.match.params.id)||"空"),t().createElement(n.Button,{onClick:this.onGetA},"获取 A 组件的值"),t().createElement(n.Button,{onClick:this.onSetA},"更新 A 组件的值"),t().createElement(n.Button,{onClick:this.onSetG},"更新全局值"),t().createElement(n.Button,{onClick:this.onGetStatus},"获取当前加载组件")))}}])&&f(r.prototype,o),b}(e.Component);d(S,"getValue",(function(){return g().b})),d(S,"updateValue",(function(e,t){n.message.info("caller: ".concat(t)),h({b:e})})),c.default=v("b")(S)}(),c}()}));
+define(["react","antd","@variousjs/various"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__, __WEBPACK_EXTERNAL_MODULE__variousjs_various__) { return /******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "react":
+/*!***********************************************!*\
+  !*** external {"root":"React","amd":"react"} ***!
+  \***********************************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
+
+/***/ }),
+
+/***/ "antd":
+/*!*********************************************!*\
+  !*** external {"root":"antd","amd":"antd"} ***!
+  \*********************************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_antd__;
+
+/***/ }),
+
+/***/ "@variousjs/various":
+/*!**************************************************************!*\
+  !*** external {"root":"various","amd":"@variousjs/various"} ***!
+  \**************************************************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__variousjs_various__;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+!function() {
+/*!*******************************!*\
+  !*** ./demo/components/b.tsx ***!
+  \*******************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @variousjs/various */ "@variousjs/various");
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_variousjs_various__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var _Store = new _variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Store(),
+    createStore = _Store.createStore,
+    connect = _Store.connect,
+    dispatch = _Store.dispatch,
+    getStore = _Store.getStore;
+
+createStore({
+  b: '666'
+});
+
+var X = /*#__PURE__*/function (_Component) {
+  _inherits(X, _Component);
+
+  var _super = _createSuper(X);
+
+  function X() {
+    var _this;
+
+    _classCallCheck(this, X);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+
+    _defineProperty(_assertThisInitialized(_this), "onGetA", function () {
+      try {
+        antd__WEBPACK_IMPORTED_MODULE_1__.message.info(_this.props.$dispatch('a', 'getValue'));
+      } catch (e) {
+        antd__WEBPACK_IMPORTED_MODULE_1__.message.error(e.message);
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onSetA", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this.props.$dispatch('a', 'updateValue', Math.random().toFixed(2));
+
+            case 2:
+              _this.onGetA();
+
+              _this.props.$dispatch('a', 'cdy');
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    })));
+
+    _defineProperty(_assertThisInitialized(_this), "onSetG", function () {
+      _this.props.$dispatch('store', 'setNumber', Math.random().toFixed(2));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onGetStatus", function () {
+      var $mounted = _this.props.$mounted;
+      antd__WEBPACK_IMPORTED_MODULE_1__.message.info($mounted);
+    });
+
+    return _this;
+  }
+
+  _createClass(X, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      window.console.log(this.props.$config.menu[0].label);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var number = this.props.$store.number;
+      var _this$props = this.props,
+          b = _this$props.b,
+          $router = _this$props.$router;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+        style: {
+          fontSize: 100
+        }
+      }, "B"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        style: {
+          display: 'flex',
+          flexDirection: 'column'
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u5168\u5C40\u503C\uFF1A", number), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u7EC4\u4EF6\u503C:", b), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u5F53\u524D\u8DEF\u7531\u53C2\u6570\uFF1A", ($router === null || $router === void 0 ? void 0 : $router.match.params.id) || '空'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onGetA
+      }, "\u83B7\u53D6 A \u7EC4\u4EF6\u7684\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onSetA
+      }, "\u66F4\u65B0 A \u7EC4\u4EF6\u7684\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onSetG
+      }, "\u66F4\u65B0\u5168\u5C40\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onGetStatus
+      }, "\u83B7\u53D6\u5F53\u524D\u52A0\u8F7D\u7EC4\u4EF6")));
+    }
+  }]);
+
+  return X;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+_defineProperty(X, "getValue", function () {
+  return getStore().b;
+});
+
+_defineProperty(X, "updateValue", function (value, caller) {
+  antd__WEBPACK_IMPORTED_MODULE_1__.message.info("caller: ".concat(caller));
+  dispatch({
+    b: value
+  });
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (connect('b')(X));
+}();
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});;
 //# sourceMappingURL=b.js.map

@@ -5,6 +5,8 @@ export const DEFAULT_PACKAGES = {
 
 export const MOUNTED_COMPONENTS = 'MOUNTED_COMPONENTS'
 
+export const MESSAGE_KEY = Symbol('MESSAGE_KEY')
+
 export const IGNORE_STATIC_METHODS = [
   'name',
   'prototype',
