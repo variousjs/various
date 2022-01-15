@@ -11,13 +11,12 @@ import {
   connect,
   dispatch,
   subscribe,
-  getStore,
 } from './store'
 import Routes from './routes'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
 import getDispatch from './dispatch'
-import { getPostMessage } from './message'
+import { getPostMessage, getOnMessage } from './message'
 import preload from './preload'
 import {
   MOUNTED_COMPONENTS,
@@ -144,21 +143,14 @@ export default (config: Config & Entry) => {
         errorMessage: '',
       }
 
-      unsubscribe: () => void
+      private unsubscribe: () => void
 
       dispatch = currentDispatch.bind(this, 'store')
 
       postMessage = getPostMessage('store')
 
       componentDidMount() {
-        this.unsubscribe = subscribe((keys) => {
-          if (keys[0] === MESSAGE_KEY) {
-            const { name, value, type } = getStore()[MESSAGE_KEY]
-            if (type !== 'store') {
-              onMessage({ getStore, dispatch }, { name, value, type })
-            }
-          }
-        })
+        this.unsubscribe = subscribe(getOnMessage('store', onMessage))
       }
 
       componentDidCatch(e: Error) {

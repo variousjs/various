@@ -207,6 +207,8 @@ var X = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "onGetStatus", function () {
       var $mounted = _this.props.$mounted;
       antd__WEBPACK_IMPORTED_MODULE_1__.message.info($mounted);
+
+      _this.props.$postMessage('bbbbb', 'ccccc');
     });
 
     return _this;
@@ -257,6 +259,10 @@ _defineProperty(X, "updateValue", function (value, caller) {
   dispatch({
     b: value
   });
+});
+
+_defineProperty(X, "$onMessage", function (params) {
+  console.log(params);
 });
 
 /* harmony default export */ __webpack_exports__["default"] = (connect('b')(X));

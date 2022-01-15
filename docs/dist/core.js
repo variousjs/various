@@ -88,11 +88,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _dispatch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dispatch */ "./src/core/dispatch.ts");
 /* harmony import */ var _preload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./preload */ "./src/core/preload.ts");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./src/core/store.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./message */ "./src/core/message.ts");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _excluded = ["components"],
@@ -160,6 +161,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 
+
 function componentCreator(_ref) {
   var config = _ref.config,
       nameWidthModule = _ref.name,
@@ -207,6 +209,8 @@ function componentCreator(_ref) {
         errorMessage: ''
       });
 
+      _defineProperty(_assertThisInitialized(_this), "unsubscribe", void 0);
+
       _defineProperty(_assertThisInitialized(_this), "ComponentNode", void 0);
 
       _defineProperty(_assertThisInitialized(_this), "isUnMounted", void 0);
@@ -215,12 +219,14 @@ function componentCreator(_ref) {
 
       _defineProperty(_assertThisInitialized(_this), "dispatch", currentDispatch.bind(_assertThisInitialized(_this), name));
 
+      _defineProperty(_assertThisInitialized(_this), "postMessage", (0,_message__WEBPACK_IMPORTED_MODULE_5__.getPostMessage)(name));
+
       _defineProperty(_assertThisInitialized(_this), "unMountComponent", function () {
-        var mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_5__.MOUNTED_COMPONENTS];
+        var mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
         mountedComponents = mountedComponents.filter(function (item) {
           return item !== name;
         });
-        (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_5__.MOUNTED_COMPONENTS, mountedComponents), true); // eslint-disable-next-line no-param-reassign
+        (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS, mountedComponents), true); // eslint-disable-next-line no-param-reassign
 
         delete componentDispatcher[nameWidthModule];
       });
@@ -262,7 +268,7 @@ function componentCreator(_ref) {
             return;
           }
 
-          var mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_5__.MOUNTED_COMPONENTS];
+          var mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
           var actions = {};
 
           if (!mountedComponents.includes(name)) {
@@ -270,7 +276,12 @@ function componentCreator(_ref) {
           }
 
           Object.getOwnPropertyNames(componentNode).forEach(function (method) {
-            if (!_config__WEBPACK_IMPORTED_MODULE_5__.IGNORE_STATIC_METHODS.includes(method) && typeof componentNode[method] === 'function') {
+            if (method === '$onMessage') {
+              _this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_4__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_5__.getOnMessage)(name, componentNode[method]));
+              return;
+            }
+
+            if (!_config__WEBPACK_IMPORTED_MODULE_6__.IGNORE_STATIC_METHODS.includes(method) && typeof componentNode[method] === 'function') {
               actions[method] = componentNode[method];
             }
           });
@@ -282,7 +293,7 @@ function componentCreator(_ref) {
             componentReady: true
           }, function () {
             if (!routerProps) {
-              (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_5__.MOUNTED_COMPONENTS, mountedComponents), true);
+              (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS, mountedComponents), true);
             } else {
               onMounted();
             }
@@ -297,7 +308,7 @@ function componentCreator(_ref) {
             return;
           }
 
-          if (_this.retryCount < _config__WEBPACK_IMPORTED_MODULE_5__.RETRY_COUNT) {
+          if (_this.retryCount < _config__WEBPACK_IMPORTED_MODULE_6__.RETRY_COUNT) {
             _this.retryCount += 1;
             setTimeout(_this.mountComponent, 1000);
             return;
@@ -402,6 +413,7 @@ function componentCreator(_ref) {
         this.ComponentNode = null;
         this.unMountComponent();
         this.isUnMounted = true;
+        this.unsubscribe();
       }
     }, {
       key: "render",
@@ -429,7 +441,7 @@ function componentCreator(_ref) {
 
         if (errorType) {
           return !$silent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Error, {
-            type: _config__WEBPACK_IMPORTED_MODULE_5__.ERROR_TYPE[errorType],
+            type: _config__WEBPACK_IMPORTED_MODULE_6__.ERROR_TYPE[errorType],
             message: errorMessage,
             reload: errorType === 'INVALID_COMPONENT' ? undefined : this.onReload
           }) : null;
@@ -440,7 +452,7 @@ function componentCreator(_ref) {
         }
 
         storeKeys.forEach(function (key) {
-          if (key !== _config__WEBPACK_IMPORTED_MODULE_5__.MOUNTED_COMPONENTS) {
+          if (key !== _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS) {
             store[key] = _this2.props[key];
           }
         });
@@ -463,7 +475,8 @@ function componentCreator(_ref) {
           $mounted: mountedComponents,
           $router: $router,
           $render: routerProps ? undefined : this.$render,
-          $preload: routerProps ? undefined : _preload__WEBPACK_IMPORTED_MODULE_3__["default"]
+          $preload: routerProps ? undefined : _preload__WEBPACK_IMPORTED_MODULE_3__["default"],
+          $postMessage: this.postMessage
         }));
       }
     }]);
@@ -471,7 +484,7 @@ function componentCreator(_ref) {
     return R;
   }((react__WEBPACK_IMPORTED_MODULE_0___default().Component));
 
-  var RwithRouter = routerProps ? R : (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.withRouter)(R); // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
+  var RwithRouter = routerProps ? R : (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.withRouter)(R); // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
 
   var _storeKeys = _toArray(storeKeys),
       key0 = _storeKeys[0],
@@ -534,7 +547,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getPostMessage": function() { return /* binding */ getPostMessage; }
+/* harmony export */   "getPostMessage": function() { return /* binding */ getPostMessage; },
+/* harmony export */   "getOnMessage": function() { return /* binding */ getOnMessage; }
 /* harmony export */ });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/core/store.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
@@ -550,6 +564,38 @@ var getPostMessage = function getPostMessage(type) {
       name: name,
       value: value
     }));
+  };
+};
+var getOnMessage = function getOnMessage(type, onMessage) {
+  return function (keys) {
+    if (keys[0] === _config__WEBPACK_IMPORTED_MODULE_1__.MESSAGE_KEY) {
+      var _getStore$MESSAGE_KEY = (0,_store__WEBPACK_IMPORTED_MODULE_0__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_1__.MESSAGE_KEY],
+          name = _getStore$MESSAGE_KEY.name,
+          value = _getStore$MESSAGE_KEY.value,
+          triggerType = _getStore$MESSAGE_KEY.type;
+
+      if (triggerType !== type) {
+        if (type === 'store') {
+          var trigger = onMessage;
+          trigger({
+            getStore: _store__WEBPACK_IMPORTED_MODULE_0__.getStore,
+            dispatch: _store__WEBPACK_IMPORTED_MODULE_0__.dispatch
+          }, {
+            name: name,
+            value: value,
+            type: triggerType
+          });
+        } else {
+          var _trigger = onMessage;
+
+          _trigger({
+            name: name,
+            value: value,
+            type: triggerType
+          });
+        }
+      }
+    }
   };
 };
 
@@ -5852,25 +5898,7 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
     _createClass(R, [{
       key: "componentDidMount",
       value: function componentDidMount() {
-        this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_2__.subscribe)(function (keys) {
-          if (keys[0] === _config__WEBPACK_IMPORTED_MODULE_9__.MESSAGE_KEY) {
-            var _getStore$MESSAGE_KEY = (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_9__.MESSAGE_KEY],
-                _name = _getStore$MESSAGE_KEY.name,
-                value = _getStore$MESSAGE_KEY.value,
-                type = _getStore$MESSAGE_KEY.type;
-
-            if (type !== 'store') {
-              onMessage({
-                getStore: _store__WEBPACK_IMPORTED_MODULE_2__.getStore,
-                dispatch: _store__WEBPACK_IMPORTED_MODULE_2__.dispatch
-              }, {
-                name: _name,
-                value: value,
-                type: type
-              });
-            }
-          }
-        });
+        this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_2__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_7__.getOnMessage)('store', onMessage));
       }
     }, {
       key: "componentDidCatch",

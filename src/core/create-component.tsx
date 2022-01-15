@@ -3,7 +3,13 @@ import { render, unmountComponentAtNode } from 'react-dom'
 import { withRouter } from 'react-router-dom'
 import getDispatch from './dispatch'
 import preload from './preload'
-import { connect, getStore, dispatch } from './store'
+import {
+  connect,
+  getStore,
+  dispatch,
+  subscribe,
+} from './store'
+import { getOnMessage, getPostMessage } from './message'
 import {
   IGNORE_STATIC_METHODS,
   MOUNTED_COMPONENTS,
@@ -67,6 +73,8 @@ function componentCreator({
       errorMessage: '',
     }
 
+    private unsubscribe: () => void
+
     private ComponentNode: RequiredComponent | null
 
     private isUnMounted?: boolean
@@ -74,6 +82,8 @@ function componentCreator({
     private retryCount: number = 0
 
     dispatch = currentDispatch.bind(this, name)
+
+    postMessage = getPostMessage(name)
 
     componentDidMount() {
       this.setState({ componentExist: window.requirejs.specified(name) })
@@ -95,6 +105,7 @@ function componentCreator({
       this.ComponentNode = null
       this.unMountComponent()
       this.isUnMounted = true
+      this.unsubscribe()
     }
 
     unMountComponent = () => {
@@ -146,6 +157,11 @@ function componentCreator({
         Object
           .getOwnPropertyNames(componentNode)
           .forEach((method) => {
+            if (method === '$onMessage') {
+              this.unsubscribe = subscribe(getOnMessage(name, componentNode[method]))
+              return
+            }
+
             if (!IGNORE_STATIC_METHODS.includes(method) && typeof componentNode[method] === 'function') {
               actions[method] = componentNode[method]
             }
@@ -314,6 +330,7 @@ function componentCreator({
           $router={$router as ComponentProps['$router']}
           $render={routerProps ? undefined : this.$render}
           $preload={routerProps ? undefined : preload}
+          $postMessage={this.postMessage}
         />
       )
     }
