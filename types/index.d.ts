@@ -12,7 +12,7 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }) => () => void
   type $preload = (names: string[]) => Promise<void>
-  type $postMessage = (name: string, value: any) => unknown
+  type $postMessage = (name: string, value?: any) => unknown
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 

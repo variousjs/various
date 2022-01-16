@@ -105,7 +105,10 @@ function componentCreator({
       this.ComponentNode = null
       this.unMountComponent()
       this.isUnMounted = true
-      this.unsubscribe()
+
+      if (this.unsubscribe) {
+        this.unsubscribe()
+      }
     }
 
     unMountComponent = () => {

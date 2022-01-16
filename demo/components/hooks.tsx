@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react'
 import { Button, message } from 'antd'
-import { ComponentProps } from '@variousjs/various'
+import { ComponentProps, Message } from '@variousjs/various'
 import { Store } from '../types'
 
 const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
@@ -16,6 +16,10 @@ const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
     }
   }, [props])
 
+  const onPost = () => {
+    props.$postMessage('from hooks')
+  }
+
   return (
     <div>
       <h3>Hooks</h3>
@@ -29,10 +33,15 @@ const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
       </p>
       <Button onClick={onSet}>更新全局</Button>
       <Button onClick={onGet}>调用自身方法</Button>
+      <Button onClick={onPost}>广播消息（组件）</Button>
     </div>
   )
 }
 
 H.getName = () => 'name'
+
+H.$onMessage = (params: Message) => {
+  console.log(params)
+}
 
 export default H

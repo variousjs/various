@@ -39,6 +39,10 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
     this.props.$dispatch('b', 'updateValue', Math.random().toFixed(2))
   }
 
+  onPost = () => {
+    this.props.$postMessage('from a', { a: 1 })
+  }
+
   onSetG = async () => {
     await this.props.$dispatch('store', 'updateUserName', Math.random())
     message.success('更新完成')
@@ -66,6 +70,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
             {$mounted.includes('b') ? 'yes' : 'no'}
           </p>
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
+          <Button onClick={this.onPost}>广播消息</Button>
           <Button onClick={this.onSetB}>更新 B 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值(异步)</Button>
           <ConfigProvider locale={locales.zh_CN}>
