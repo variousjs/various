@@ -121,6 +121,11 @@ function componentCreator({
     }
 
     mountComponent = () => {
+      if (name === 'store') {
+        this.setState({ errorType: 'INVALID_COMPONENT', errorMessage: 'Cannot load component named `store`' })
+        return
+      }
+
       try {
         const { registry, urlFetched } = window.requirejs.s.contexts._
         Object.keys(registry).forEach((key) => {
