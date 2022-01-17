@@ -22,9 +22,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -46,8 +44,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -59,67 +55,9 @@ var Container = /*#__PURE__*/function (_Component) {
   var _super = _createSuper(Container);
 
   function Container() {
-    var _this;
-
     _classCallCheck(this, Container);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    _defineProperty(_assertThisInitialized(_this), "onPreload", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var $preload;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              $preload = _this.props.$preload;
-              _context.next = 3;
-              return $preload(['mmmmmm']);
-
-            case 3:
-              console.log('preload mmmmmm');
-
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    })));
-
-    _defineProperty(_assertThisInitialized(_this), "onMessage", function () {
-      _this.props.$postMessage('aaa', 'bbbb');
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "onPortals", function () {
-      try {
-        var unMount = _this.props.$render({
-          name: 'switch',
-          url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-          props: {
-            checked: true
-          },
-          onMounted: function onMounted() {
-            console.log('ready');
-          },
-          // props: { name: 'bbbbb' },
-          target: document.querySelector('#portals')
-        });
-
-        setTimeout(unMount, 5000);
-      } catch (e) {
-        console.log(e);
-      } // const Switch = this.props.$component('switch')
-      // render((
-      //   <Switch />
-      // ), document.querySelector('#portals') as Element)
-
-    });
-
-    return _this;
+    return _super.apply(this, arguments);
   }
 
   _createClass(Container, [{
@@ -127,9 +65,7 @@ var Container = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this$props = this.props,
           $config = _this$props.$config,
-          $component = _this$props.$component,
-          $router = _this$props.$router;
-      console.log($router.location.pathname);
+          $component = _this$props.$component;
       var routes = $config.routes.map(function (item) {
         return _objectSpread(_objectSpread({}, item), {}, {
           path: item.path,
@@ -139,15 +75,9 @@ var Container = /*#__PURE__*/function (_Component) {
       var X = $component('hooks');
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wrapper__WEBPACK_IMPORTED_MODULE_3__["default"], this.props, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(X, {
         $silent: true
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onPortals
-      }, "\u52A8\u6001\u52A0\u8F7D\u7EC4\u4EF6"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onMessage
-      }, "\u5E7F\u64AD\u6D88\u606F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onPreload
-      }, "\u9884\u52A0\u8F7D\u7EC4\u4EF6")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Switch, null, routes.map(function (_ref2) {
-        var path = _ref2.path,
-            components = _ref2.components;
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Router, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Switch, null, routes.map(function (_ref) {
+        var path = _ref.path,
+            components = _ref.components;
 
         var component = function component() {
           return components.map(function (name) {
@@ -200,7 +130,7 @@ var Container = /*#__PURE__*/function (_Component) {
         style: {
           fontSize: 100
         }
-      }, "404"))));
+      }, "404")))));
     }
   }]);
 
@@ -332,23 +262,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./demo/message.ts":
-/*!*************************!*\
-  !*** ./demo/message.ts ***!
-  \*************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-var onMessage = function onMessage(_ref, message) {
-  var getStore = _ref.getStore;
-  console.log(getStore());
-  console.log(message);
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (onMessage);
-
-/***/ }),
-
 /***/ "./demo/store.ts":
 /*!***********************!*\
   !*** ./demo/store.ts ***!
@@ -384,9 +297,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var W = function W(props) {
   var children = props.children,
-      $config = props.$config,
-      $store = props.$store,
-      $dispatch = props.$dispatch;
+      $config = props.$config;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Layout, {
     style: {
       height: '100vh'
@@ -433,22 +344,7 @@ var W = function W(props) {
     style: {
       width: 100
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, $store.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    onClick: function onClick() {
-      return $dispatch('store', 'setNumber', Math.random().toFixed(2));
-    }
-  }, "store"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    onClick: function onClick() {
-      return $dispatch('a', 'updateValue', Math.random().toFixed(2));
-    }
-  }, "component"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      margin: '0 20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Badge, {
-    count: $store.number,
-    showZero: true
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Layout.Content, {
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Layout.Content, {
     style: {
       margin: '24px 16px',
       padding: 24,
@@ -591,8 +487,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "store": function() { return /* reexport safe */ _store__WEBPACK_IMPORTED_MODULE_3__["default"]; },
 /* harmony export */   "Container": function() { return /* reexport safe */ _container__WEBPACK_IMPORTED_MODULE_4__["default"]; },
 /* harmony export */   "Loader": function() { return /* reexport safe */ _loading__WEBPACK_IMPORTED_MODULE_5__["default"]; },
-/* harmony export */   "Error": function() { return /* reexport safe */ _error__WEBPACK_IMPORTED_MODULE_6__["default"]; },
-/* harmony export */   "onMessage": function() { return /* reexport safe */ _message__WEBPACK_IMPORTED_MODULE_7__["default"]; }
+/* harmony export */   "Error": function() { return /* reexport safe */ _error__WEBPACK_IMPORTED_MODULE_6__["default"]; }
 /* harmony export */ });
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "moment");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
@@ -603,11 +498,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _container__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./container */ "./demo/container.tsx");
 /* harmony import */ var _loading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./loading */ "./demo/loading.tsx");
 /* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./error */ "./demo/error.tsx");
-/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./message */ "./demo/message.ts");
 
 
 moment__WEBPACK_IMPORTED_MODULE_0___default().locale('zh-cn');
-
 
 
 

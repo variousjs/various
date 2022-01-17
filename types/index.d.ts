@@ -44,18 +44,12 @@ declare module '@variousjs/various' {
     message?: string,
   }
 
-  export interface ContainerProps<S = {}, C = {}> {
+  export interface ContainerProps<C = {}> {
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
       $silent?: boolean,
       [key: string]: any,
     }>,
-    $store: Readonly<S>,
-    $dispatch: $dispatch,
-    $render: $render,
-    $preload: $preload,
-    $router: RouteComponentProps<{ [key: string]: string }>,
-    $postMessage: $postMessage,
   }
 
   type Store<S> = {

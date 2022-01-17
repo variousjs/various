@@ -1,24 +1,10 @@
 import React, { ComponentType, Component } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
-import {
-  RouteComponentProps,
-  HashRouter,
-  BrowserRouter,
-  withRouter,
-} from 'react-router-dom'
-import {
-  createStore,
-  connect,
-  dispatch,
-  subscribe,
-  getStore,
-} from './store'
+import { render } from 'react-dom'
+import { HashRouter, BrowserRouter } from 'react-router-dom'
+import { createStore } from './store'
 import Routes from './routes'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
-import getDispatch from './dispatch'
-import { getPostMessage, getOnMessage } from './message'
-import preload from './preload'
 import {
   MOUNTED_COMPONENTS,
   ERROR_TYPE,
@@ -29,7 +15,6 @@ import {
   Entry,
   ErrorState,
   ComponentProps,
-  ContainerProps,
   Config,
   Connector,
 } from '../types'
@@ -56,19 +41,15 @@ export default (config: Config & Entry) => {
     components = {},
     store = {},
     actions = {},
-    onMessage = () => null,
     Loader: LoaderNode = Loader,
     Error: ErrorNode = Error,
     Container: ContainerNode = Container,
     ...rest
   } = config
   const RouterMode: typeof HashRouter = routerMode === 'browser' ? BrowserRouter : HashRouter
-  // const storeKeys = Object.keys(store)
-  const storeKeys = [] as string[]
   const componentDispatcher: { [name: string]: Entry['actions'] } = {}
   const storeDispatcher = { ...actions }
   const COMPONENTS: { [key: string]: ComponentType } = {}
-  const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
 
   createStore({
     ...store,
@@ -110,66 +91,18 @@ export default (config: Config & Entry) => {
     return component
   }
 
-  const $render: ContainerProps['$render'] = ({
-    name,
-    url,
-    target,
-    props,
-    module,
-    onMounted,
-  }) => {
-    if (url) {
-      window.requirejs.undef(name)
-      window.requirejs.config({
-        paths: {
-          [name]: `${url}#`,
-        },
-      })
-    }
-
-    const C = componentCreator(
-      module ? `${name}.${module}` : name,
-      {},
-      onMounted,
-    )
-    render(<C {...props} />, target)
-    return () => unmountComponentAtNode(target as Element)
-  }
-
-  class R extends Component<Entry['store'] & RouteComponentProps & { dispatch: Connector.dispatch }, ErrorState> {
+  class R extends Component<{}, ErrorState> {
       state = {
         errorType: undefined,
         errorMessage: '',
-
-        stateStore: getStore(),
-      }
-
-      private unsubscribe: () => void
-
-      dispatch = currentDispatch.bind(this, 'store')
-
-      postMessage = getPostMessage('store')
-
-      componentDidMount() {
-        this.unsubscribe = subscribe(getOnMessage('store', onMessage))
       }
 
       componentDidCatch(e: Error) {
         this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })
       }
 
-      componentWillUnmount() {
-        this.unsubscribe()
-      }
-
       render() {
-        const { errorType, errorMessage, stateStore } = this.state
-        const {
-          history,
-          location,
-          match,
-          staticContext,
-        } = this.props
+        const { errorType, errorMessage } = this.state
 
         if (errorType) {
           return (
@@ -180,41 +113,18 @@ export default (config: Config & Entry) => {
           )
         }
 
-        const storeData: Entry['store'] = {}
-
-        storeKeys.forEach((key) => {
-          storeData[key] = this.props[key]
-        })
-
         return (
           <ContainerNode
             $component={$component}
-            $render={$render}
             $config={rest}
-            $dispatch={this.dispatch}
-            // $store={storeData}
-            $store={stateStore}
-            $preload={preload}
-            $router={{
-              history,
-              location,
-              match,
-              staticContext,
-            }}
-            $postMessage={this.postMessage}
           />
         )
       }
   }
 
-  // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
-  const [key0, ...keyn] = storeKeys
-  const RwithRouter = withRouter(R)
-  const X = connect(key0, ...keyn)(RwithRouter as any)
-
   render((
     <RouterMode>
-      <X />
+      <R />
     </RouterMode>
   ), document.querySelector(root || ROOT_CONTAINER))
 }

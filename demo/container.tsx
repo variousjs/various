@@ -1,5 +1,5 @@
 import React, { Component, ComponentType } from 'react'
-import { Collapse, Button } from 'antd'
+import { Collapse } from 'antd'
 import {
   ContainerProps,
   Router,
@@ -7,48 +7,13 @@ import {
   Switch,
 } from '@variousjs/various'
 import Wrapper from './wrapper'
-import { Config, Store } from './types'
+import { Config } from './types'
 
-class Container extends Component<ContainerProps<Store, Config>> {
-  onPreload = async () => {
-    const { $preload } = this.props
-    await $preload(['mmmmmm'])
-    console.log('preload mmmmmm')
-  }
-
-  onMessage = () => {
-    this.props.$postMessage('aaa', 'bbbb')
-  }
-
-  onPortals = () => {
-    try {
-      const unMount = this.props.$render({
-        name: 'switch',
-        url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-        props: { checked: true },
-        onMounted: () => {
-          console.log('ready')
-        },
-        // props: { name: 'bbbbb' },
-        target: document.querySelector('#portals'),
-      })
-
-      setTimeout(unMount, 5000)
-    } catch (e) {
-      console.log(e)
-    }
-
-    // const Switch = this.props.$component('switch')
-    // render((
-    //   <Switch />
-    // ), document.querySelector('#portals') as Element)
-  }
-
+class Container extends Component<ContainerProps<Config>> {
   render() {
     const {
-      $config, $component, $router,
+      $config, $component,
     } = this.props
-    console.log($router.location.pathname)
     const routes = $config.routes.map((item) => ({
       ...item,
       path: item.path,
@@ -60,12 +25,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
     return (
       <Wrapper {...this.props}>
         <X $silent />
-        <div>
-          <Button onClick={this.onPortals}>动态加载组件</Button>
-          <Button onClick={this.onMessage}>广播消息</Button>
-          <Button onClick={this.onPreload}>预加载组件</Button>
-        </div>
-        {/* <Router> */}
+        <Router>
           <Switch>
             {
             routes.map(({ path, components }) => {
@@ -120,7 +80,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
               <div style={{ fontSize: 100 }}>404</div>
             </Route>
           </Switch>
-        {/* </Router> */}
+        </Router>
       </Wrapper>
     )
   }

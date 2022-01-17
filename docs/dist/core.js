@@ -5673,43 +5673,32 @@ var __webpack_exports__ = {};
   \****************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Store": function() { return /* reexport safe */ nycticorax__WEBPACK_IMPORTED_MODULE_10__["default"]; },
+/* harmony export */   "Store": function() { return /* reexport safe */ nycticorax__WEBPACK_IMPORTED_MODULE_7__["default"]; },
 /* harmony export */   "Router": function() { return /* binding */ Router; },
-/* harmony export */   "Route": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Route; },
-/* harmony export */   "Link": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_12__.Link; },
-/* harmony export */   "generatePath": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_11__.generatePath; },
-/* harmony export */   "Redirect": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Redirect; },
-/* harmony export */   "Prompt": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Prompt; },
-/* harmony export */   "NavLink": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_12__.NavLink; },
-/* harmony export */   "matchPath": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_11__.matchPath; },
-/* harmony export */   "Switch": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Switch; }
+/* harmony export */   "Route": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route; },
+/* harmony export */   "Link": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link; },
+/* harmony export */   "generatePath": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_8__.generatePath; },
+/* harmony export */   "Redirect": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Redirect; },
+/* harmony export */   "Prompt": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Prompt; },
+/* harmony export */   "NavLink": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_9__.NavLink; },
+/* harmony export */   "matchPath": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_8__.matchPath; },
+/* harmony export */   "Switch": function() { return /* reexport safe */ react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Switch; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store */ "./src/core/store.ts");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./src/core/routes.tsx");
 /* harmony import */ var _built_in__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./built-in */ "./src/core/built-in.tsx");
 /* harmony import */ var _create_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./create-component */ "./src/core/create-component.tsx");
-/* harmony import */ var _dispatch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./dispatch */ "./src/core/dispatch.ts");
-/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./message */ "./src/core/message.ts");
-/* harmony import */ var _preload__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./preload */ "./src/core/preload.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../config */ "./src/config.ts");
-/* harmony import */ var nycticorax__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! nycticorax */ "./node_modules/nycticorax/dist/esm/index.js");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+/* harmony import */ var nycticorax__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! nycticorax */ "./node_modules/nycticorax/dist/esm/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var _excluded = ["dependencies", "entry", "routerMode", "root", "components", "store", "actions", "onMessage", "Loader", "Error", "Container"];
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+var _excluded = ["dependencies", "entry", "routerMode", "root", "components", "store", "actions", "Loader", "Error", "Container"];
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5762,9 +5751,6 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 
-
-
-
 var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
 
 /* harmony default export */ __webpack_exports__["default"] = (function (config) {
@@ -5780,10 +5766,6 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
       store = _config$store === void 0 ? {} : _config$store,
       _config$actions = config.actions,
       actions = _config$actions === void 0 ? {} : _config$actions,
-      _config$onMessage = config.onMessage,
-      onMessage = _config$onMessage === void 0 ? function () {
-    return null;
-  } : _config$onMessage,
       _config$Loader = config.Loader,
       LoaderNode = _config$Loader === void 0 ? _built_in__WEBPACK_IMPORTED_MODULE_4__.Loader : _config$Loader,
       _config$Error = config.Error,
@@ -5792,16 +5774,13 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
       ContainerNode = _config$Container === void 0 ? _built_in__WEBPACK_IMPORTED_MODULE_4__.Container : _config$Container,
       rest = _objectWithoutProperties(config, _excluded);
 
-  var RouterMode = routerMode === 'browser' ? react_router_dom__WEBPACK_IMPORTED_MODULE_12__.BrowserRouter : react_router_dom__WEBPACK_IMPORTED_MODULE_12__.HashRouter; // const storeKeys = Object.keys(store)
-
-  var storeKeys = [];
+  var RouterMode = routerMode === 'browser' ? react_router_dom__WEBPACK_IMPORTED_MODULE_9__.BrowserRouter : react_router_dom__WEBPACK_IMPORTED_MODULE_9__.HashRouter;
   var componentDispatcher = {};
 
   var storeDispatcher = _objectSpread({}, actions);
 
   var COMPONENTS = {};
-  var currentDispatch = (0,_dispatch__WEBPACK_IMPORTED_MODULE_6__["default"])(_store__WEBPACK_IMPORTED_MODULE_2__.dispatch, storeDispatcher, componentDispatcher);
-  (0,_store__WEBPACK_IMPORTED_MODULE_2__.createStore)(_objectSpread(_objectSpread({}, store), {}, (_objectSpread2 = {}, _defineProperty(_objectSpread2, _config__WEBPACK_IMPORTED_MODULE_9__.MOUNTED_COMPONENTS, []), _defineProperty(_objectSpread2, _config__WEBPACK_IMPORTED_MODULE_9__.MESSAGE_KEY, {}), _objectSpread2)));
+  (0,_store__WEBPACK_IMPORTED_MODULE_2__.createStore)(_objectSpread(_objectSpread({}, store), {}, (_objectSpread2 = {}, _defineProperty(_objectSpread2, _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS, []), _defineProperty(_objectSpread2, _config__WEBPACK_IMPORTED_MODULE_6__.MESSAGE_KEY, {}), _objectSpread2)));
 
   var componentCreator = function componentCreator(name, routerProps, onMounted) {
     var C = (0,_create_component__WEBPACK_IMPORTED_MODULE_5__["default"])({
@@ -5829,7 +5808,7 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
     if (!components[name]) {
       return function () {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorNode, {
-          type: _config__WEBPACK_IMPORTED_MODULE_9__.ERROR_TYPE.NOT_DEFINED
+          type: _config__WEBPACK_IMPORTED_MODULE_6__.ERROR_TYPE.NOT_DEFINED
         });
       };
     }
@@ -5841,28 +5820,6 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
     var component = componentCreator(nameWidthSub);
     COMPONENTS[name] = component;
     return component;
-  };
-
-  var $render = function $render(_ref) {
-    var name = _ref.name,
-        url = _ref.url,
-        target = _ref.target,
-        props = _ref.props,
-        module = _ref.module,
-        onMounted = _ref.onMounted;
-
-    if (url) {
-      window.requirejs.undef(name);
-      window.requirejs.config({
-        paths: _defineProperty({}, name, "".concat(url, "#"))
-      });
-    }
-
-    var C = componentCreator(module ? "".concat(name, ".").concat(module) : name, {}, onMounted);
-    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(C, props), target);
-    return function () {
-      return (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.unmountComponentAtNode)(target);
-    };
   };
 
   var R = /*#__PURE__*/function (_Component) {
@@ -5883,25 +5840,13 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
 
       _defineProperty(_assertThisInitialized(_this), "state", {
         errorType: undefined,
-        errorMessage: '',
-        stateStore: (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)()
+        errorMessage: ''
       });
-
-      _defineProperty(_assertThisInitialized(_this), "unsubscribe", void 0);
-
-      _defineProperty(_assertThisInitialized(_this), "dispatch", currentDispatch.bind(_assertThisInitialized(_this), 'store'));
-
-      _defineProperty(_assertThisInitialized(_this), "postMessage", (0,_message__WEBPACK_IMPORTED_MODULE_7__.getPostMessage)('store'));
 
       return _this;
     }
 
     _createClass(R, [{
-      key: "componentDidMount",
-      value: function componentDidMount() {
-        this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_2__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_7__.getOnMessage)('store', onMessage));
-      }
-    }, {
       key: "componentDidCatch",
       value: function componentDidCatch(e) {
         this.setState({
@@ -5910,64 +5855,30 @@ var Router = _routes__WEBPACK_IMPORTED_MODULE_3__["default"];
         });
       }
     }, {
-      key: "componentWillUnmount",
-      value: function componentWillUnmount() {
-        this.unsubscribe();
-      }
-    }, {
       key: "render",
       value: function render() {
-        var _this2 = this;
-
         var _this$state = this.state,
             errorType = _this$state.errorType,
-            errorMessage = _this$state.errorMessage,
-            stateStore = _this$state.stateStore;
-        var _this$props = this.props,
-            history = _this$props.history,
-            location = _this$props.location,
-            match = _this$props.match,
-            staticContext = _this$props.staticContext;
+            errorMessage = _this$state.errorMessage;
 
         if (errorType) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorNode, {
-            type: _config__WEBPACK_IMPORTED_MODULE_9__.ERROR_TYPE[errorType],
+            type: _config__WEBPACK_IMPORTED_MODULE_6__.ERROR_TYPE[errorType],
             message: errorMessage
           });
         }
 
-        var storeData = {};
-        storeKeys.forEach(function (key) {
-          storeData[key] = _this2.props[key];
-        });
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ContainerNode, {
           $component: $component,
-          $render: $render,
-          $config: rest,
-          $dispatch: this.dispatch // $store={storeData}
-          ,
-          $store: stateStore,
-          $preload: _preload__WEBPACK_IMPORTED_MODULE_8__["default"],
-          $router: {
-            history: history,
-            location: location,
-            match: match,
-            staticContext: staticContext
-          },
-          $postMessage: this.postMessage
+          $config: rest
         });
       }
     }]);
 
     return R;
-  }(react__WEBPACK_IMPORTED_MODULE_0__.Component); // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
+  }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
-
-  var key0 = storeKeys[0],
-      keyn = storeKeys.slice(1);
-  var RwithRouter = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.withRouter)(R);
-  var X = _store__WEBPACK_IMPORTED_MODULE_2__.connect.apply(void 0, [key0].concat(_toConsumableArray(keyn)))(RwithRouter);
-  (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(RouterMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(X, null)), document.querySelector(root || _config__WEBPACK_IMPORTED_MODULE_9__.ROOT_CONTAINER));
+  (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(RouterMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(R, null)), document.querySelector(root || _config__WEBPACK_IMPORTED_MODULE_6__.ROOT_CONTAINER));
 });
 }();
 /******/ 	return __webpack_exports__;

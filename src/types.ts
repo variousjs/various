@@ -22,7 +22,7 @@ export interface Entry<S = { [key: string]: unknown }, C = {}> {
   Error: ComponentType<ErrorProps>,
   Loader: ComponentType,
   actions: Actions<S>,
-  Container: ComponentType<ContainerProps<S, C>>,
+  Container: ComponentType<ContainerProps<C>>,
   onMessage: OnMessage<S>,
 }
 
