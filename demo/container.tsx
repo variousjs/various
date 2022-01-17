@@ -16,6 +16,10 @@ class Container extends Component<ContainerProps<Store, Config>> {
     console.log('preload mmmmmm')
   }
 
+  onMessage = () => {
+    this.props.$postMessage('aaa', 'bbbb')
+  }
+
   onPortals = () => {
     try {
       const unMount = this.props.$render({
@@ -57,8 +61,8 @@ class Container extends Component<ContainerProps<Store, Config>> {
       <Wrapper {...this.props}>
         <X $silent />
         <div>
-          <h3>动态组件</h3>
-          <Button onClick={this.onPortals}>加载组件</Button>
+          <Button onClick={this.onPortals}>动态加载组件</Button>
+          <Button onClick={this.onMessage}>广播消息</Button>
           {
             $mounted.join() === 'hooks,a,b'
               ? <Button onClick={this.onPreload}>预加载组件</Button> : null

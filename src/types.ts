@@ -1,6 +1,11 @@
 import Nycticorax, { Connect } from 'nycticorax'
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ContainerProps } from '@variousjs/various'
+import {
+  ErrorProps,
+  Actions,
+  ContainerProps,
+  OnMessage,
+} from '@variousjs/various'
 import { MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
@@ -19,6 +24,7 @@ export interface Entry<S = { [key: string]: unknown }, C = {}> {
   Loader: ComponentType,
   actions: Actions<S>,
   Container: ComponentType<ContainerProps<S, C>>,
+  onMessage: OnMessage<S>,
 }
 
 export interface RequireError extends Error {
@@ -28,7 +34,17 @@ export interface RequireError extends Error {
 }
 
 export namespace Connector {
-  export type Store = { [key: string]: unknown, [MOUNTED_COMPONENTS]: string[] }
+  export type Message = {
+    timestamp: number,
+    type: string,
+    name: string,
+    value?: any,
+  }
+  export type Store = {
+    [key: string]: unknown,
+    [MOUNTED_COMPONENTS]: string[],
+    [key: symbol]: Message,
+  }
   const ctx = new Nycticorax<Store>()
   export type dispatch = typeof ctx.dispatch
   export type connect = ComponentType<Connect<Store>> & { [key: string]: any }

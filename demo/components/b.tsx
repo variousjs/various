@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Button, message } from 'antd'
-import { ComponentProps, Store, Connect as CT } from '@variousjs/various'
+import {
+  ComponentProps, Store, Connect as CT, Message,
+} from '@variousjs/various'
 import { Store as GlobalStore, Config } from '../types'
 
 type S = { b: string }
@@ -21,6 +23,10 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   static updateValue = (value: string, caller: string) => {
     message.info(`caller: ${caller}`)
     dispatch({ b: value })
+  }
+
+  static $onMessage = (params: Message) => {
+    console.log(params)
   }
 
   componentDidMount() {
@@ -48,6 +54,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   onGetStatus = () => {
     const { $mounted } = this.props
     message.info($mounted)
+    this.props.$postMessage('bbbbb', 'ccccc')
   }
 
   render() {
