@@ -17,7 +17,7 @@ export const getPostMessage = (type: string) => (name: string, value: any) => di
 
 export const getOnMessage = (type: string, onMessage: OnMessage) => (keys: Keys) => {
   if (keys[0] === MESSAGE_KEY) {
-    const { name, value, type: triggerType } = getStore()[MESSAGE_KEY]
+    const { name, value, type: triggerType } = getStore()[MESSAGE_KEY] as Connector.Message
     if (triggerType !== type) {
       if (type === 'store') {
         const trigger = onMessage as onMessageListener<Connector.Store>

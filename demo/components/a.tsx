@@ -50,24 +50,22 @@ class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string
   }
 
   render() {
-    const { user } = this.props.$store
-    const { a, $mounted, name = 'a' } = this.props
+    const { user, number } = this.props.$store
+    const { a, name = 'a' } = this.props
 
     return (
       <div>
-        <p style={{ fontSize: 100 }}>{name.toUpperCase()}</p>
+        <p style={{ fontSize: 20 }}>{name.toUpperCase()}</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <p>
             全局值：
             {user.name}
+            /
+            {number}
           </p>
           <p>
             组件值:
             {a}
-          </p>
-          <p>
-            B 组件加载完成：
-            {$mounted.includes('b') ? 'yes' : 'no'}
           </p>
           <Button onClick={this.onGetB}>获取 B 组件的值</Button>
           <Button onClick={this.onPost}>广播消息</Button>

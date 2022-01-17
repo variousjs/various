@@ -14,15 +14,15 @@ class R extends React.Component<P, ErrorState> {
     errorMessage: '',
   }
 
-  shouldComponentUpdate(_props: P, { errorType }: ErrorState) {
-    const { pathname: newPath } = _props.location
-    const { pathname: oldPath } = this.props.location
-    if (newPath !== oldPath && errorType) {
-      window.location.reload()
-      return false
-    }
-    return !!errorType
-  }
+  // shouldComponentUpdate(_props: P, { errorType }: ErrorState) {
+  //   const { pathname: newPath } = _props.location
+  //   const { pathname: oldPath } = this.props.location
+  //   if (newPath !== oldPath && errorType) {
+  //     window.location.reload()
+  //     return false
+  //   }
+  //   return !!errorType
+  // }
 
   componentDidCatch(e: Error) {
     this.setState({ errorType: ERROR_TYPE.ROUTER_ERROR, errorMessage: e.message })

@@ -59,7 +59,6 @@ function componentCreator({
 
   class R extends React.Component<ComponentProps['$router'] & {
     $silent?: boolean,
-    MOUNTED_COMPONENTS: string[],
     dispatch: typeof dispatch,
     [key: string]: unknown,
   }, ErrorState & {
@@ -112,7 +111,7 @@ function componentCreator({
     }
 
     unMountComponent = () => {
-      let mountedComponents = getStore()[MOUNTED_COMPONENTS]
+      let mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
@@ -155,7 +154,7 @@ function componentCreator({
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
+        const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
         const actions: Entry['actions'] = {}
 
         if (!mountedComponents.includes(name)) {
@@ -278,7 +277,6 @@ function componentCreator({
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         dispatch: componentDispatch,
-        MOUNTED_COMPONENTS: mountedComponents,
         $silent,
         ...propsRest
       } = this.props
@@ -309,9 +307,7 @@ function componentCreator({
       }
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS) {
-          store[key] = this.props[key]
-        }
+        store[key] = this.props[key]
       })
 
       Object.keys(propsRest).forEach((key) => {
@@ -334,7 +330,6 @@ function componentCreator({
           $config={rest}
           $dispatch={this.dispatch}
           $store={store}
-          $mounted={mountedComponents}
           $router={$router as ComponentProps['$router']}
           $render={routerProps ? undefined : this.$render}
           $preload={routerProps ? undefined : preload}

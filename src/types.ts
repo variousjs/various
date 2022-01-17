@@ -6,7 +6,6 @@ import {
   ContainerProps,
   OnMessage,
 } from '@variousjs/various'
-import { MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
 
@@ -42,8 +41,8 @@ export namespace Connector {
   }
   export type Store = {
     [key: string]: unknown,
-    [MOUNTED_COMPONENTS]: string[],
-    [key: symbol]: Message,
+    // message / mountedComponent
+    [key: symbol]: Message | string[],
   }
   const ctx = new Nycticorax<Store>()
   export type dispatch = typeof ctx.dispatch

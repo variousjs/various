@@ -52,8 +52,6 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   }
 
   onGetStatus = () => {
-    const { $mounted } = this.props
-    message.info($mounted)
     this.props.$postMessage('bbbbb', 'ccccc')
   }
 
@@ -63,7 +61,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
 
     return (
       <div>
-        <p style={{ fontSize: 100 }}>B</p>
+        <p style={{ fontSize: 20 }}>B</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <p>
             全局值：
@@ -80,7 +78,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值</Button>
-          <Button onClick={this.onGetStatus}>获取当前加载组件</Button>
+          <Button onClick={this.onGetStatus}>广播消息</Button>
         </div>
       </div>
     )

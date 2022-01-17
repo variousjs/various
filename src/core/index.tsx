@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import {
   RouteComponentProps,
@@ -11,6 +11,7 @@ import {
   connect,
   dispatch,
   subscribe,
+  getStore,
 } from './store'
 import Routes from './routes'
 import { Loader, Error, Container } from './built-in'
@@ -62,7 +63,8 @@ export default (config: Config & Entry) => {
     ...rest
   } = config
   const RouterMode: typeof HashRouter = routerMode === 'browser' ? BrowserRouter : HashRouter
-  const storeKeys = Object.keys(store).concat([MOUNTED_COMPONENTS])
+  // const storeKeys = Object.keys(store)
+  const storeKeys = [] as string[]
   const componentDispatcher: { [name: string]: Entry['actions'] } = {}
   const storeDispatcher = { ...actions }
   const COMPONENTS: { [key: string]: ComponentType } = {}
@@ -134,13 +136,12 @@ export default (config: Config & Entry) => {
     return () => unmountComponentAtNode(target as Element)
   }
 
-  class R extends React.Component<Entry['store'] & RouteComponentProps & {
-      dispatch: Connector.dispatch,
-      [MOUNTED_COMPONENTS]: Connector.Store['MOUNTED_COMPONENTS'],
-    }, ErrorState> {
+  class R extends Component<Entry['store'] & RouteComponentProps & { dispatch: Connector.dispatch }, ErrorState> {
       state = {
         errorType: undefined,
         errorMessage: '',
+
+        stateStore: getStore(),
       }
 
       private unsubscribe: () => void
@@ -162,7 +163,7 @@ export default (config: Config & Entry) => {
       }
 
       render() {
-        const { errorType, errorMessage } = this.state
+        const { errorType, errorMessage, stateStore } = this.state
         const {
           history,
           location,
@@ -182,21 +183,17 @@ export default (config: Config & Entry) => {
         const storeData: Entry['store'] = {}
 
         storeKeys.forEach((key) => {
-          if (key !== MOUNTED_COMPONENTS) {
-            storeData[key] = this.props[key]
-          }
+          storeData[key] = this.props[key]
         })
-
-        const mounted = this.props[MOUNTED_COMPONENTS]
 
         return (
           <ContainerNode
             $component={$component}
             $render={$render}
-            $mounted={mounted}
             $config={rest}
             $dispatch={this.dispatch}
-            $store={storeData}
+            // $store={storeData}
+            $store={stateStore}
             $preload={preload}
             $router={{
               history,

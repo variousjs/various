@@ -46,7 +46,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
 
   render() {
     const {
-      $config, $component, $mounted, $router,
+      $config, $component, $router,
     } = this.props
     console.log($router.location.pathname)
     const routes = $config.routes.map((item) => ({
@@ -63,12 +63,9 @@ class Container extends Component<ContainerProps<Store, Config>> {
         <div>
           <Button onClick={this.onPortals}>动态加载组件</Button>
           <Button onClick={this.onMessage}>广播消息</Button>
-          {
-            $mounted.join() === 'hooks,a,b'
-              ? <Button onClick={this.onPreload}>预加载组件</Button> : null
-          }
+          <Button onClick={this.onPreload}>预加载组件</Button>
         </div>
-        <Router>
+        {/* <Router> */}
           <Switch>
             {
             routes.map(({ path, components }) => {
@@ -123,7 +120,7 @@ class Container extends Component<ContainerProps<Store, Config>> {
               <div style={{ fontSize: 100 }}>404</div>
             </Route>
           </Switch>
-        </Router>
+        {/* </Router> */}
       </Wrapper>
     )
   }

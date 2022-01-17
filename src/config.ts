@@ -3,7 +3,7 @@ export const DEFAULT_PACKAGES = {
   'react-dom': 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js',
 }
 
-export const MOUNTED_COMPONENTS = 'MOUNTED_COMPONENTS'
+export const MOUNTED_COMPONENTS = Symbol('MOUNTED_COMPONENTS')
 
 export const MESSAGE_KEY = Symbol('MESSAGE_KEY')
 

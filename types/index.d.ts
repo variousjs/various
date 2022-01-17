@@ -30,7 +30,6 @@ declare module '@variousjs/various' {
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
-    $mounted: string[],
     $router?: RouteComponentProps<{ [key: string]: string }>,
     $store: Readonly<S>,
     $dispatch: $dispatch,
@@ -52,7 +51,6 @@ declare module '@variousjs/various' {
       [key: string]: any,
     }>,
     $store: Readonly<S>,
-    $mounted: string[],
     $dispatch: $dispatch,
     $render: $render,
     $preload: $preload,

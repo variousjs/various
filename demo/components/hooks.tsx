@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { Button, message } from 'antd'
+import { Button, message, DatePicker } from 'antd'
 import { ComponentProps, Message } from '@variousjs/various'
 import { Store } from '../types'
 
@@ -27,13 +27,10 @@ const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
         全局值:
         {props.$store.user.name}
       </p>
-      <p>
-        mounted:
-        {props.$mounted.join(', ')}
-      </p>
       <Button onClick={onSet}>更新全局</Button>
       <Button onClick={onGet}>调用自身方法</Button>
       <Button onClick={onPost}>广播消息（组件）</Button>
+      <DatePicker />
     </div>
   )
 }
