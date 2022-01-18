@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, Link } from '@variousjs/various'
+import { Link } from 'react-router-dom'
+import { ComponentProps } from '@variousjs/various'
 
 export default class extends Component<ComponentProps> {
   state = {

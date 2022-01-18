@@ -13,6 +13,10 @@ const config = {
       root: 'ReactDOM',
       amd: 'react-dom',
     },
+    'react-router-dom': {
+      root: 'ReactRouterDOM',
+      amd: 'react-router-dom',
+    },
     '@variousjs/various': {
       root: 'various',
       amd: '@variousjs/various',

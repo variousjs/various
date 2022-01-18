@@ -1,4 +1,4 @@
-define(["react","antd"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__) { return /******/ (function() { // webpackBootstrap
+define(["react","antd","react-router-dom"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) { return /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -9,6 +9,16 @@ define(["react","antd"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_E
 /***/ (function(module) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
+
+/***/ }),
+
+/***/ "react-router-dom":
+/*!*******************************************************************!*\
+  !*** external {"root":"ReactRouterDOM","amd":"react-router-dom"} ***!
+  \*******************************************************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 
 /***/ }),
 
@@ -97,13 +107,12 @@ var __webpack_exports__ = {};
   !*** ./demo/components/d.tsx ***!
   \*******************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ _default; }
-/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "react-router-dom");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -131,15 +140,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var _default = /*#__PURE__*/function (_Component) {
-  _inherits(_default, _Component);
 
-  var _super = _createSuper(_default);
+var D = /*#__PURE__*/function (_Component) {
+  _inherits(D, _Component);
 
-  function _default() {
+  var _super = _createSuper(D);
+
+  function D() {
     var _this;
 
-    _classCallCheck(this, _default);
+    _classCallCheck(this, D);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -174,7 +184,7 @@ var _default = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass(_default, [{
+  _createClass(D, [{
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       if (this.unMount) {
@@ -184,9 +194,7 @@ var _default = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props$$router, _this$props$$router$m, _this$props$$router$m2;
-
-      var id = (_this$props$$router = this.props.$router) === null || _this$props$$router === void 0 ? void 0 : (_this$props$$router$m = _this$props$$router.match) === null || _this$props$$router$m === void 0 ? void 0 : (_this$props$$router$m2 = _this$props$$router$m.params) === null || _this$props$$router$m2 === void 0 ? void 0 : _this$props$$router$m2.id;
+      var id = this.props.match.params.id;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         id: "portals"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -195,10 +203,10 @@ var _default = /*#__PURE__*/function (_Component) {
     }
   }]);
 
-  return _default;
+  return D;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
-
+/* harmony default export */ __webpack_exports__["default"] = ((0,react_router_dom__WEBPACK_IMPORTED_MODULE_2__.withRouter)(D));
 }();
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -1,6 +1,5 @@
 declare module '@variousjs/various' {
-  import { RouteComponentProps } from 'react-router-dom'
-  import { ComponentType, Component } from 'react'
+  import { ComponentType } from 'react'
 
   type $dispatch = (type: string, method: string, value?: any) => unknown
   type $render = (params: {
@@ -16,21 +15,8 @@ declare module '@variousjs/various' {
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 
-  export class Router extends Component {}
-  export {
-    Route,
-    Link,
-    generatePath,
-    Redirect,
-    Prompt,
-    NavLink,
-    matchPath,
-    Switch,
-  } from 'react-router-dom'
-
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
-    $router?: RouteComponentProps<{ [key: string]: string }>,
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
@@ -66,6 +52,4 @@ declare module '@variousjs/various' {
     name: string,
     value?: any,
   }
-
-  export type OnMessage<S = {}> = (store: Store<S>, message: Message) => void
 }

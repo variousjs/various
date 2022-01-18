@@ -4,7 +4,6 @@ import {
   ErrorProps,
   Actions,
   ContainerProps,
-  OnMessage,
 } from '@variousjs/various'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
@@ -13,7 +12,6 @@ export interface Config {
   dependencies?: { [key: string]: string },
   components: { [key: string]: string },
   entry?: string,
-  routerMode?: 'browser' | 'hash',
   root?: string,
 }
 
@@ -23,7 +21,6 @@ export interface Entry<S = { [key: string]: unknown }, C = {}> {
   Loader: ComponentType,
   actions: Actions<S>,
   Container: ComponentType<ContainerProps<C>>,
-  onMessage: OnMessage<S>,
 }
 
 export interface RequireError extends Error {

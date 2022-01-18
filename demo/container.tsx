@@ -1,11 +1,7 @@
 import React, { Component, ComponentType } from 'react'
 import { Collapse } from 'antd'
-import {
-  ContainerProps,
-  Router,
-  Route,
-  Switch,
-} from '@variousjs/various'
+import { HashRouter, Switch, Route } from 'react-router-dom'
+import { ContainerProps } from '@variousjs/various'
 import Wrapper from './wrapper'
 import { Config } from './types'
 
@@ -23,9 +19,9 @@ class Container extends Component<ContainerProps<Config>> {
     const X = $component('hooks')
 
     return (
-      <Wrapper {...this.props}>
-        <X $silent />
-        <Router>
+      <HashRouter>
+        <Wrapper {...this.props}>
+          <X $silent />
           <Switch>
             {
             routes.map(({ path, components }) => {
@@ -80,8 +76,8 @@ class Container extends Component<ContainerProps<Config>> {
               <div style={{ fontSize: 100 }}>404</div>
             </Route>
           </Switch>
-        </Router>
-      </Wrapper>
+        </Wrapper>
+      </HashRouter>
     )
   }
 }

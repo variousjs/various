@@ -3,6 +3,7 @@ import { Button, message } from 'antd'
 import {
   ComponentProps, Store, Connect as CT, Message,
 } from '@variousjs/various'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Store as GlobalStore, Config } from '../types'
 
 type S = { b: string }
@@ -17,7 +18,9 @@ const {
 
 createStore({ b: '666' })
 
-class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
+class X extends Component<
+  Connect & RouteComponentProps<{ id: string }> & ComponentProps<GlobalStore, Config>
+> {
   static getValue = () => getStore().b
 
   static updateValue = (value: string, caller: string) => {
@@ -57,7 +60,9 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
 
   render() {
     const { number } = this.props.$store
-    const { b, $router } = this.props
+    const { b, match } = this.props
+
+    console.log(this.props)
 
     return (
       <div>
@@ -73,7 +78,7 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
           </p>
           <p>
             当前路由参数：
-            {$router?.match.params.id || '空'}
+            {match.params.id || '空'}
           </p>
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
@@ -85,4 +90,6 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   }
 }
 
-export default connect('b')(X)
+const Y = withRouter(X)
+
+export default connect('b')(Y)
