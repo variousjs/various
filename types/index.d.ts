@@ -12,6 +12,7 @@ declare module '@variousjs/various' {
   }) => () => void
   type $preload = (names: string[]) => Promise<void>
   type $postMessage = (name: string, value?: any) => unknown
+  type $getMountedComponents = () => string[]
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 
@@ -22,6 +23,7 @@ declare module '@variousjs/various' {
     $render?: $render,
     $preload?: $preload,
     $postMessage: $postMessage,
+    $getMountedComponents: $getMountedComponents,
   }
 
   export interface ErrorProps {

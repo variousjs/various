@@ -335,6 +335,10 @@ function componentCreator(_ref) {
         });
       });
 
+      _defineProperty(_assertThisInitialized(_this), "$getMountedComponents", function () {
+        return (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
+      });
+
       _defineProperty(_assertThisInitialized(_this), "$render", function (_ref2) {
         var componentName = _ref2.name,
             url = _ref2.url,
@@ -452,7 +456,8 @@ function componentCreator(_ref) {
           $store: store,
           $render: onMounted ? undefined : this.$render,
           $preload: onMounted ? undefined : _preload__WEBPACK_IMPORTED_MODULE_3__["default"],
-          $postMessage: this.postMessage
+          $postMessage: this.postMessage,
+          $getMountedComponents: this.$getMountedComponents
         }));
       }
     }]);

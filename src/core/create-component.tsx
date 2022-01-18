@@ -218,6 +218,8 @@ function componentCreator({
       })
     }
 
+    $getMountedComponents = () => getStore()[MOUNTED_COMPONENTS] as string[]
+
     $render: ComponentProps['$render'] = ({
       name: componentName,
       url,
@@ -302,6 +304,7 @@ function componentCreator({
           $render={onMounted ? undefined : this.$render}
           $preload={onMounted ? undefined : preload}
           $postMessage={this.postMessage}
+          $getMountedComponents={this.$getMountedComponents}
         />
       )
     }

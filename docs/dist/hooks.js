@@ -139,7 +139,14 @@ var H = function H(props) {
     props.$postMessage('from hooks');
   };
 
+  var onMounted = function onMounted() {
+    var res = props.$getMountedComponents();
+    console.log(res);
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Hooks"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u5168\u5C40\u503C:", props.$store.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: onMounted
+  }, "\u83B7\u53D6\u5F53\u524D\u52A0\u8F7D\u7EC4\u4EF6"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: onSet
   }, "\u66F4\u65B0\u5168\u5C40"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: onGet

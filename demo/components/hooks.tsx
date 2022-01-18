@@ -20,6 +20,11 @@ const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
     props.$postMessage('from hooks')
   }
 
+  const onMounted = () => {
+    const res = props.$getMountedComponents()
+    console.log(res)
+  }
+
   return (
     <div>
       <h3>Hooks</h3>
@@ -27,6 +32,7 @@ const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
         全局值:
         {props.$store.user.name}
       </p>
+      <Button onClick={onMounted}>获取当前加载组件</Button>
       <Button onClick={onSet}>更新全局</Button>
       <Button onClick={onGet}>调用自身方法</Button>
       <Button onClick={onPost}>广播消息（组件）</Button>
