@@ -74,34 +74,34 @@ export default (config: Config & Entry) => {
   }
 
   class R extends Component<{}, ErrorState> {
-      state = {
-        errorType: undefined,
-        errorMessage: '',
-      }
+    state = {
+      errorType: undefined,
+      errorMessage: '',
+    }
 
-      componentDidCatch(e: Error) {
-        this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })
-      }
+    componentDidCatch(e: Error) {
+      this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })
+    }
 
-      render() {
-        const { errorType, errorMessage } = this.state
+    render() {
+      const { errorType, errorMessage } = this.state
 
-        if (errorType) {
-          return (
-            <ErrorNode
-              type={ERROR_TYPE[errorType]}
-              message={errorMessage}
-            />
-          )
-        }
-
+      if (errorType) {
         return (
-          <ContainerNode
-            $component={$component}
-            $config={rest}
+          <ErrorNode
+            type={ERROR_TYPE[errorType]}
+            message={errorMessage}
           />
         )
       }
+
+      return (
+        <ContainerNode
+          $component={$component}
+          $config={rest}
+        />
+      )
+    }
   }
 
   render((<R />), document.querySelector(root || ROOT_CONTAINER))
