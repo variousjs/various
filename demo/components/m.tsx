@@ -42,7 +42,8 @@ export class X extends Component<ComponentProps> {
   }
 }
 
-export function Y() {
+export function Y(props: any) {
+  console.log(props)
   return (
     <Button>子组件Y</Button>
   )

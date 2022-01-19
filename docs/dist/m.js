@@ -212,7 +212,8 @@ var X = /*#__PURE__*/function (_Component) {
 
   return X;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
-function Y() {
+function Y(props) {
+  console.log(props);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, null, "\u5B50\u7EC4\u4EF6Y");
 }
 
