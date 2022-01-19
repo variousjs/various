@@ -1,6 +1,5 @@
 declare module '@variousjs/various' {
-  import { RouteComponentProps } from 'react-router-dom'
-  import { ComponentType, Component } from 'react'
+  import { ComponentType } from 'react'
 
   type $dispatch = (type: string, method: string, value?: any) => unknown
   type $render = (params: {
@@ -13,30 +12,18 @@ declare module '@variousjs/various' {
   }) => () => void
   type $preload = (names: string[]) => Promise<void>
   type $postMessage = (name: string, value?: any) => unknown
+  type $getMountedComponents = () => string[]
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 
-  export class Router extends Component {}
-  export {
-    Route,
-    Link,
-    generatePath,
-    Redirect,
-    Prompt,
-    NavLink,
-    matchPath,
-    Switch,
-  } from 'react-router-dom'
-
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
-    $mounted: string[],
-    $router?: RouteComponentProps<{ [key: string]: string }>,
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
     $preload?: $preload,
     $postMessage: $postMessage,
+    $getMountedComponents: $getMountedComponents,
   }
 
   export interface ErrorProps {
@@ -45,19 +32,12 @@ declare module '@variousjs/various' {
     message?: string,
   }
 
-  export interface ContainerProps<S = {}, C = {}> {
+  export interface ContainerProps<C = {}> {
     $config: Readonly<C>,
     $component: (name: string) => ComponentType<{
       $silent?: boolean,
       [key: string]: any,
     }>,
-    $store: Readonly<S>,
-    $mounted: string[],
-    $dispatch: $dispatch,
-    $render: $render,
-    $preload: $preload,
-    $router: RouteComponentProps<{ [key: string]: string }>,
-    $postMessage: $postMessage,
   }
 
   type Store<S> = {
@@ -74,6 +54,4 @@ declare module '@variousjs/various' {
     name: string,
     value?: any,
   }
-
-  export type OnMessage<S = {}> = (store: Store<S>, message: Message) => void
 }

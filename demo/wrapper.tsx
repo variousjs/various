@@ -1,17 +1,15 @@
 import React, { FC } from 'react'
 import {
-  Layout, Menu, Icon, Badge, Button, Tag, Input,
+  Layout, Menu, Icon, Input,
 } from 'antd'
-import { ContainerProps, Link } from '@variousjs/various'
-import { Store, Config } from './types'
+import { Link } from 'react-router-dom'
+import { ContainerProps } from '@variousjs/various'
+import { Config } from './types'
 
-const W: FC<ContainerProps<Store, Config>> = (props) => {
+const W: FC<ContainerProps<Config>> = (props) => {
   const {
     children,
     $config,
-    $store,
-    $dispatch,
-    $mounted,
   } = props
 
   return (
@@ -50,20 +48,6 @@ const W: FC<ContainerProps<Store, Config>> = (props) => {
         <Layout.Header style={{ background: '#fff', padding: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Input style={{ width: 100 }} />
-            <div>{$store.user.name}</div>
-            <div style={{ margin: '0 20px' }}>
-              已加载组件：
-              {
-                $mounted.map((t) => (
-                  <Tag key={t}>{t}</Tag>
-                ))
-              }
-            </div>
-            <Button onClick={() => $dispatch('store', 'setNumber', Math.random().toFixed(2))}>store</Button>
-            <Button onClick={() => $dispatch('a', 'updateValue', Math.random().toFixed(2))}>component</Button>
-            <div style={{ margin: '0 20px' }}>
-              <Badge count={$store.number} showZero />
-            </div>
           </div>
         </Layout.Header>
         <Layout.Content

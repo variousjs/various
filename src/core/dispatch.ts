@@ -1,11 +1,7 @@
-import { MOUNTED_COMPONENTS } from '../config'
 import { Connector, Entry } from '../types'
 
 type Ctx = {
-  props: {
-    dispatch: Connector.dispatch,
-    [MOUNTED_COMPONENTS]: string[],
-  },
+  props: { dispatch: Connector.dispatch },
 }
 
 export default function (

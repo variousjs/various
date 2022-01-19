@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
 import { ComponentProps } from '@variousjs/various'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
-export default class extends Component<ComponentProps> {
+class D extends Component<ComponentProps & RouteComponentProps<{ id: string }>> {
   private unMount: () => void
 
   componentWillUnmount() {
@@ -31,7 +32,7 @@ export default class extends Component<ComponentProps> {
   }
 
   render() {
-    const id = this.props.$router?.match?.params?.id
+    const { id } = this.props.match.params
     return (
       <>
         <div id="portals" />
@@ -45,3 +46,5 @@ export default class extends Component<ComponentProps> {
     )
   }
 }
+
+export default withRouter(D)

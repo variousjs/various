@@ -3,6 +3,7 @@ import { Button, message } from 'antd'
 import {
   ComponentProps, Store, Connect as CT, Message,
 } from '@variousjs/various'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Store as GlobalStore, Config } from '../types'
 
 type S = { b: string }
@@ -17,7 +18,9 @@ const {
 
 createStore({ b: '666' })
 
-class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
+class X extends Component<
+  Connect & RouteComponentProps<{ id: string }> & ComponentProps<GlobalStore, Config>
+> {
   static getValue = () => getStore().b
 
   static updateValue = (value: string, caller: string) => {
@@ -52,18 +55,18 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
   }
 
   onGetStatus = () => {
-    const { $mounted } = this.props
-    message.info($mounted)
     this.props.$postMessage('bbbbb', 'ccccc')
   }
 
   render() {
     const { number } = this.props.$store
-    const { b, $router } = this.props
+    const { b, match } = this.props
+
+    console.log(this.props)
 
     return (
       <div>
-        <p style={{ fontSize: 100 }}>B</p>
+        <p style={{ fontSize: 20 }}>B</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <p>
             全局值：
@@ -75,16 +78,18 @@ class X extends Component<Connect & ComponentProps<GlobalStore, Config>> {
           </p>
           <p>
             当前路由参数：
-            {$router?.match.params.id || '空'}
+            {match.params.id || '空'}
           </p>
           <Button onClick={this.onGetA}>获取 A 组件的值</Button>
           <Button onClick={this.onSetA}>更新 A 组件的值</Button>
           <Button onClick={this.onSetG}>更新全局值</Button>
-          <Button onClick={this.onGetStatus}>获取当前加载组件</Button>
+          <Button onClick={this.onGetStatus}>广播消息</Button>
         </div>
       </div>
     )
   }
 }
 
-export default connect('b')(X)
+const Y = withRouter(X)
+
+export default connect('b')(Y)

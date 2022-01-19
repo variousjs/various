@@ -4,9 +4,7 @@ import {
   ErrorProps,
   Actions,
   ContainerProps,
-  OnMessage,
 } from '@variousjs/various'
-import { MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
 
@@ -14,7 +12,6 @@ export interface Config {
   dependencies?: { [key: string]: string },
   components: { [key: string]: string },
   entry?: string,
-  routerMode?: 'browser' | 'hash',
   root?: string,
 }
 
@@ -23,8 +20,7 @@ export interface Entry<S = { [key: string]: unknown }, C = {}> {
   Error: ComponentType<ErrorProps>,
   Loader: ComponentType,
   actions: Actions<S>,
-  Container: ComponentType<ContainerProps<S, C>>,
-  onMessage: OnMessage<S>,
+  Container: ComponentType<ContainerProps<C>>,
 }
 
 export interface RequireError extends Error {
@@ -42,8 +38,8 @@ export namespace Connector {
   }
   export type Store = {
     [key: string]: unknown,
-    [MOUNTED_COMPONENTS]: string[],
-    [key: symbol]: Message,
+    // message / mountedComponent
+    [key: symbol]: Message | string[],
   }
   const ctx = new Nycticorax<Store>()
   export type dispatch = typeof ctx.dispatch

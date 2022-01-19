@@ -1,6 +1,5 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import { withRouter } from 'react-router-dom'
 import getDispatch from './dispatch'
 import preload from './preload'
 import {
@@ -18,7 +17,6 @@ import {
 } from '../config'
 import {
   RequireError,
-  Connector,
   Entry,
   ErrorState,
   ComponentProps,
@@ -34,7 +32,6 @@ interface E {
   config: Config,
   Loader: Entry['Loader'],
   Error: Entry['Error'],
-  routerProps?: ComponentProps['$router'] | {},
   onMounted?: () => void,
 }
 
@@ -49,17 +46,15 @@ function componentCreator({
   componentDispatcher,
   Loader,
   Error,
-  routerProps,
-  onMounted = () => undefined,
+  onMounted,
 }: E) {
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
   const [name, module = Symbol('module')] = nameWidthModule.split('.')
 
-  class R extends React.Component<ComponentProps['$router'] & {
+  class R extends Component<{
     $silent?: boolean,
-    MOUNTED_COMPONENTS: string[],
     dispatch: typeof dispatch,
     [key: string]: unknown,
   }, ErrorState & {
@@ -112,7 +107,7 @@ function componentCreator({
     }
 
     unMountComponent = () => {
-      let mountedComponents = getStore()[MOUNTED_COMPONENTS]
+      let mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
@@ -155,7 +150,7 @@ function componentCreator({
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
+        const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
         const actions: Entry['actions'] = {}
 
         if (!mountedComponents.includes(name)) {
@@ -180,10 +175,10 @@ function componentCreator({
         this.ComponentNode = componentNode
 
         this.setState({ componentReady: true }, () => {
-          if (!routerProps) {
-            dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
-          } else {
+          if (onMounted) {
             onMounted()
+          } else {
+            dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
           }
         })
       }, (e: RequireError) => {
@@ -223,6 +218,8 @@ function componentCreator({
       })
     }
 
+    $getMountedComponents = () => getStore()[MOUNTED_COMPONENTS] as string[]
+
     $render: ComponentProps['$render'] = ({
       name: componentName,
       url,
@@ -231,19 +228,6 @@ function componentCreator({
       module: componentModule,
       onMounted: onMountedFn,
     }) => {
-      const {
-        history,
-        location,
-        match,
-        staticContext,
-      } = this.props
-      const router = {
-        history,
-        location,
-        match,
-        staticContext,
-      }
-
       if (url) {
         window.requirejs.undef(componentName)
         window.requirejs.config({
@@ -260,7 +244,6 @@ function componentCreator({
         Loader,
         Error,
         config: { ...rest, components },
-        routerProps: router,
         onMounted: onMountedFn,
       })
       const Fc = (p: { [key: string]: any }) => (<C {...p} />)
@@ -271,14 +254,8 @@ function componentCreator({
 
     render() {
       const {
-        history,
-        location,
-        match,
-        staticContext,
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         dispatch: componentDispatch,
-        MOUNTED_COMPONENTS: mountedComponents,
         $silent,
         ...propsRest
       } = this.props
@@ -309,9 +286,7 @@ function componentCreator({
       }
 
       storeKeys.forEach((key) => {
-        if (key !== MOUNTED_COMPONENTS) {
-          store[key] = this.props[key]
-        }
+        store[key] = this.props[key]
       })
 
       Object.keys(propsRest).forEach((key) => {
@@ -320,35 +295,24 @@ function componentCreator({
         }
       })
 
-      const router = routerProps || {
-        history,
-        location,
-        match,
-        staticContext,
-      }
-      const $router = Object.keys(router).length ? router : undefined
-
       return (
         <ComponentNode
           {...componentProps}
           $config={rest}
           $dispatch={this.dispatch}
           $store={store}
-          $mounted={mountedComponents}
-          $router={$router as ComponentProps['$router']}
-          $render={routerProps ? undefined : this.$render}
-          $preload={routerProps ? undefined : preload}
+          $render={onMounted ? undefined : this.$render}
+          $preload={onMounted ? undefined : preload}
           $postMessage={this.postMessage}
+          $getMountedComponents={this.$getMountedComponents}
         />
       )
     }
   }
 
-  const RwithRouter: unknown = routerProps ? R : withRouter(R)
-
   // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
   const [key0, ...keyn] = storeKeys
-  return connect(key0, ...keyn)(RwithRouter as Connector.connect)
+  return connect(key0, ...keyn)(R)
 }
 
 export default componentCreator
