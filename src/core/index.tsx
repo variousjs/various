@@ -17,16 +17,6 @@ import {
 } from '../types'
 
 export { default as Store } from 'nycticorax'
-export {
-  Route,
-  Link,
-  generatePath,
-  Redirect,
-  Prompt,
-  NavLink,
-  matchPath,
-  Switch,
-} from 'react-router-dom'
 
 export default (config: Config & Entry) => {
   const {
