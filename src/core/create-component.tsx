@@ -160,12 +160,14 @@ function componentCreator({
         Object
           .getOwnPropertyNames(componentNode)
           .forEach((method) => {
+            if (typeof componentNode[method] !== 'function') {
+              return
+            }
             if (method === '$onMessage') {
               this.unsubscribe = subscribe(getOnMessage(name, componentNode[method]))
               return
             }
-
-            if (!IGNORE_STATIC_METHODS.includes(method) && typeof componentNode[method] === 'function') {
+            if (!IGNORE_STATIC_METHODS.includes(method)) {
               actions[method] = componentNode[method]
             }
           })
