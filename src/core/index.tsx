@@ -65,11 +65,11 @@ export default (config: Config & Entry) => {
         <ErrorNode type={ERROR_TYPE.NOT_DEFINED} />
       )
     }
-    if (COMPONENTS[name]) {
-      return COMPONENTS[name]
+    if (COMPONENTS[nameWidthSub]) {
+      return COMPONENTS[nameWidthSub]
     }
     const component = componentCreator(nameWidthSub)
-    COMPONENTS[name] = component
+    COMPONENTS[nameWidthSub] = component
     return component
   }
 

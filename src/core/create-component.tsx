@@ -304,7 +304,7 @@ function componentCreator({
           $dispatch={this.dispatch}
           $store={store}
           $render={onMounted ? undefined : this.$render}
-          $preload={onMounted ? undefined : preload}
+          $preload={preload}
           $postMessage={this.postMessage}
           $getMountedComponents={this.$getMountedComponents}
         />

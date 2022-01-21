@@ -21,7 +21,7 @@ declare module '@variousjs/various' {
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
-    $preload?: $preload,
+    $preload: $preload,
     $postMessage: $postMessage,
     $getMountedComponents: $getMountedComponents,
   }
