@@ -13,7 +13,7 @@ export const getPostMessage = (type: string) => (name: string, value: any) => di
     name,
     value,
   },
-})
+}) as void
 
 export const getOnMessage = (type: string, onMessage: OnMessage) => (keys: Keys) => {
   if (keys[0] === MESSAGE_KEY) {
