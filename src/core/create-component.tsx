@@ -231,6 +231,7 @@ function componentCreator({
       onMounted: onMountedFn,
     }) => {
       if (url) {
+        // if define url, means replace component
         window.requirejs.undef(componentName)
         window.requirejs.config({
           paths: {
