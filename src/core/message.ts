@@ -1,10 +1,9 @@
-import { Message } from '@variousjs/various'
+import { OnMessage } from '@variousjs/various'
 import { dispatch, getStore } from './store'
 import { MESSAGE_KEY } from '../config'
 import { Connector } from '../types'
 
 type Keys = (keyof Connector.Store)[]
-type OnMessage = ((params: Message) => void)
 
 export const getPostMessage = (type: string) => (name: string, value: any) => dispatch({
   [MESSAGE_KEY]: {
