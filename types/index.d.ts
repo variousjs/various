@@ -49,9 +49,9 @@ declare module '@variousjs/various' {
     [name: string]: (store: Store<S>, ...args: any[]) => unknown,
   }
 
-  export type Message = {
+  export type OnMessage = (message: {
     type: string,
     name: string,
     value?: any,
-  }
+  }) => void
 }

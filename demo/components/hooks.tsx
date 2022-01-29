@@ -1,9 +1,12 @@
 import React, { FC, useCallback } from 'react'
 import { Button, message, DatePicker } from 'antd'
-import { ComponentProps, Message } from '@variousjs/various'
+import { ComponentProps, OnMessage } from '@variousjs/various'
 import { Store } from '../types'
 
-const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
+const H: FC<ComponentProps<Store>> & {
+  $onMessage: OnMessage,
+  getName: () => string,
+} = (props) => {
   const onSet = useCallback(async () => {
     await props.$dispatch('store', 'updateUserName', 'updated from hooks')
     message.success('updated')
@@ -43,7 +46,7 @@ const H: FC<ComponentProps<Store>> & { [key: string]: any } = (props) => {
 
 H.getName = () => 'name'
 
-H.$onMessage = (params: Message) => {
+H.$onMessage = (params) => {
   console.log(params)
 }
 

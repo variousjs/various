@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, message } from 'antd'
 import {
-  ComponentProps, Store, Connect as CT, Message,
+  ComponentProps, Store, Connect as CT, OnMessage,
 } from '@variousjs/various'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Store as GlobalStore, Config } from '../types'
@@ -28,7 +28,7 @@ class X extends Component<
     dispatch({ b: value })
   }
 
-  static $onMessage = (params: Message) => {
+  static $onMessage: OnMessage = (params) => {
     console.log(params)
   }
 
