@@ -99,7 +99,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "X": function() { return /* binding */ X; },
-/* harmony export */   "Y": function() { return /* binding */ Y; }
+/* harmony export */   "Y": function() { return /* binding */ Y; },
+/* harmony export */   "Z": function() { return /* binding */ Z; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -151,9 +152,16 @@ var X = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty(_assertThisInitialized(_this), "unMount", void 0);
+    _defineProperty(_assertThisInitialized(_this), "unMountZ", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "onY", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    _defineProperty(_assertThisInitialized(_this), "unMountSwitch", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "state", {
+      zReady: false,
+      switchReady: false
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onZ", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var $render;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -162,13 +170,14 @@ var X = /*#__PURE__*/function (_Component) {
               $render = _this.props.$render;
 
               if ($render) {
-                _this.unMount = $render({
-                  name: 'mmmmmm',
-                  url: './dist/m.js',
-                  module: 'Y',
-                  target: document.querySelector('#y'),
+                _this.unMountZ = $render({
+                  name: 'z',
+                  module: 'Z',
+                  target: document.querySelector('#z'),
                   onMounted: function onMounted() {
-                    console.log('ready');
+                    _this.setState({
+                      zReady: true
+                    });
                   }
                 });
               }
@@ -181,11 +190,37 @@ var X = /*#__PURE__*/function (_Component) {
       }, _callee);
     })));
 
-    _defineProperty(_assertThisInitialized(_this), "dY", function () {
-      var s = _this.props.$dispatch('mmmmmm.Y', 'getName');
+    _defineProperty(_assertThisInitialized(_this), "onSwitch", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var $render;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              $render = _this.props.$render;
 
-      console.log(s);
-    });
+              if ($render) {
+                _this.unMountSwitch = $render({
+                  name: 'switch',
+                  url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+                  props: {
+                    checked: true
+                  },
+                  target: document.querySelector('#switch'),
+                  onMounted: function onMounted() {
+                    _this.setState({
+                      switchReady: true
+                    });
+                  }
+                });
+              }
+
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    })));
 
     return _this;
   }
@@ -193,33 +228,50 @@ var X = /*#__PURE__*/function (_Component) {
   _createClass(X, [{
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      if (this.unMount) {
-        this.unMount();
+      if (this.unMountZ) {
+        this.unMountZ();
+      }
+
+      if (this.unMountSwitch) {
+        this.unMountSwitch();
       }
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.dY
-      }, "\u5B50\u7EC4\u4EF6X"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onY
-      }, "\u52A0\u8F7D\u5B50\u7EC4\u4EF6 Y"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        id: "y"
+      var _this$state = this.state,
+          zReady = _this$state.zReady,
+          switchReady = _this$state.switchReady;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rendered(Z): ", zReady ? 'yes' : 'no'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rendered(switch): ", switchReady ? 'yes' : 'no'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onZ
+      }, "$render(Z)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onSwitch
+      }, "$render(switch)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        id: "z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        id: "switch"
       }));
     }
   }]);
 
   return X;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
-function Y(props) {
-  console.log(props);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, null, "\u5B50\u7EC4\u4EF6Y");
+function Y() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      fontSize: 50,
+      margin: 0
+    }
+  }, "Y");
 }
-
-Y.getName = function () {
-  return 'Y';
-};
+function Z() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      fontSize: 50,
+      margin: 0
+    }
+  }, "Z");
+}
 }();
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -3,50 +3,77 @@ import { Button } from 'antd'
 import { ComponentProps } from '@variousjs/various'
 
 export class X extends Component<ComponentProps> {
-  private unMount: () => void
+  private unMountZ: () => void
+
+  private unMountSwitch: () => void
+
+  state = {
+    zReady: false,
+    switchReady: false,
+  }
 
   componentWillUnmount() {
-    if (this.unMount) {
-      this.unMount()
+    if (this.unMountZ) {
+      this.unMountZ()
+    }
+    if (this.unMountSwitch) {
+      this.unMountSwitch()
     }
   }
 
-  onY = async () => {
+  onZ = async () => {
     const { $render } = this.props
     if ($render) {
-      this.unMount = $render({
-        name: 'mmmmmm',
-        url: './dist/m.js',
-        module: 'Y',
-        target: document.querySelector('#y'),
+      this.unMountZ = $render({
+        name: 'z',
+        module: 'Z',
+        target: document.querySelector('#z'),
         onMounted: () => {
-          console.log('ready')
+          this.setState({ zReady: true })
         },
       })
     }
   }
 
-  dY = () => {
-    const s = this.props.$dispatch('mmmmmm.Y', 'getName')
-    console.log(s)
+  onSwitch = async () => {
+    const { $render } = this.props
+    if ($render) {
+      this.unMountSwitch = $render({
+        name: 'switch',
+        url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
+        props: { checked: true },
+        target: document.querySelector('#switch'),
+        onMounted: () => {
+          this.setState({ switchReady: true })
+        },
+      })
+    }
   }
 
   render() {
+    const { zReady, switchReady } = this.state
+
     return (
       <>
-        <Button onClick={this.dY}>子组件X</Button>
-        <Button onClick={this.onY}>加载子组件 Y</Button>
-        <div id="y" />
+        <p>Rendered(Z): {zReady ? 'yes' : 'no'}</p>
+        <p>Rendered(switch): {switchReady ? 'yes' : 'no'}</p>
+        <Button onClick={this.onZ}>$render(Z)</Button>
+        <Button onClick={this.onSwitch}>$render(switch)</Button>
+        <div id="z" />
+        <div id="switch" />
       </>
     )
   }
 }
 
-export function Y(props: any) {
-  console.log(props)
+export function Y() {
   return (
-    <Button>子组件Y</Button>
+    <div style={{ fontSize: 50, margin: 0 }}>Y</div>
   )
 }
 
-Y.getName = () => 'Y'
+export function Z() {
+  return (
+    <div style={{ fontSize: 50, margin: 0 }}>Z</div>
+  )
+}

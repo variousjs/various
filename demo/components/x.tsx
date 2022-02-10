@@ -22,7 +22,6 @@ const X: FC<ComponentProps<Store>> = (props) => {
 
   return (
     <>
-      <div className="title">X</div>
       <p>Store: {props.$store.user.name}</p>
       <p>MountedComponents: {m.join()}</p>
       <Button onClick={onMounted}>$getMountedComponents</Button>

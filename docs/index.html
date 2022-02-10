@@ -40,23 +40,34 @@ var VARIOUS_CONFIG = {
   components: {
     a: './dist/a.js',
     ca: './dist/a.js',
-    store: './dist/a.js',
     b: './dist/b.js',
     c: './dist/c.js',
     d: './dist/d.js',
     e: './dist/e.js',
     f: './dist/f.js',
+    g: './dist/g.js',
     x: './dist/x.js',
-    g: 'https://variousjs.github.io/various/dist/m.js',
     z: './dist/z.js',
+
+    store: './dist/a.js',
     empty: './dist/empty.js',
-    w: 'https://www.baidu.com/s.js',
+    link: 'https://www.baidu.com/s.js',
   },
   menu: [
     {
       label: 'home',
       icon: 'dashboard',
       path: '/',
+    },
+    {
+      label: 'Error',
+      icon: 'close-circle',
+      path: '/error',
+    },
+    {
+      label: 'Module',
+      icon: 'appstore',
+      path: '/module',
     },
     {
       label: 'next',
@@ -81,8 +92,15 @@ var VARIOUS_CONFIG = {
   ],
   routes: [
     {
+      path: '/error',
+      components: ['store', 'link', 'e', 'f', 'z.Z', 'no-exist', 'empty'],
+    },
+    {
+      path: '/module',
+      components: ['z.Y', 'z.X', 'g', 'g.Y'],
+    },
+    {
       path: ['/posts', '/posts/:id'],
-      type: 'post',
       components: ['c', 'd', 'empty']
     },
     {

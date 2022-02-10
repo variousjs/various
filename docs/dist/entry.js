@@ -72,7 +72,9 @@ var Container = /*#__PURE__*/function (_Component) {
       var X = $component('x');
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.HashRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wrapper__WEBPACK_IMPORTED_MODULE_2__["default"], this.props, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         className: "component"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(X, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        className: "title"
+      }, "X"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(X, {
         $silent: true,
         text: "x"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Switch, null, routes.map(function (_ref) {
@@ -85,7 +87,9 @@ var Container = /*#__PURE__*/function (_Component) {
             return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
               key: name,
               className: "component"
-            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(C, null));
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+              className: "title"
+            }, name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(C, null));
           });
         };
 
