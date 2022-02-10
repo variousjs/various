@@ -1,4 +1,4 @@
-define(["react","antd","react-router-dom"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) { return /******/ (function() { // webpackBootstrap
+define(["react","antd"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__) { return /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -9,16 +9,6 @@ define(["react","antd","react-router-dom"], function(__WEBPACK_EXTERNAL_MODULE_r
 /***/ (function(module) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
-
-/***/ }),
-
-/***/ "react-router-dom":
-/*!*******************************************************************!*\
-  !*** external {"root":"ReactRouterDOM","amd":"react-router-dom"} ***!
-  \*******************************************************************/
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 
 /***/ }),
 
@@ -104,18 +94,17 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
 /*!*******************************!*\
-  !*** ./demo/components/c.tsx ***!
+  !*** ./demo/components/z.tsx ***!
   \*******************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ _default; }
+/* harmony export */   "X": function() { return /* binding */ X; },
+/* harmony export */   "Y": function() { return /* binding */ Y; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "react-router-dom");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -146,17 +135,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+var X = /*#__PURE__*/function (_Component) {
+  _inherits(X, _Component);
 
+  var _super = _createSuper(X);
 
-var _default = /*#__PURE__*/function (_Component) {
-  _inherits(_default, _Component);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
+  function X() {
     var _this;
 
-    _classCallCheck(this, _default);
+    _classCallCheck(this, X);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -164,30 +151,29 @@ var _default = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty(_assertThisInitialized(_this), "state", {
-      items: [1, 2, 3, 4, 5]
-    });
+    _defineProperty(_assertThisInitialized(_this), "unMount", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "onPreload", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var $preload;
+    _defineProperty(_assertThisInitialized(_this), "onY", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var $render;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              $preload = _this.props.$preload;
+              $render = _this.props.$render;
 
-              if (!$preload) {
-                _context.next = 5;
-                break;
+              if ($render) {
+                _this.unMount = $render({
+                  name: 'mmmmmm',
+                  url: './dist/m.js',
+                  module: 'Y',
+                  target: document.querySelector('#y'),
+                  onMounted: function onMounted() {
+                    console.log('ready');
+                  }
+                });
               }
 
-              _context.next = 4;
-              return $preload(['mmmmmm']);
-
-            case 4:
-              console.log('preload mmmmmm');
-
-            case 5:
+            case 2:
             case "end":
               return _context.stop();
           }
@@ -195,30 +181,48 @@ var _default = /*#__PURE__*/function (_Component) {
       }, _callee);
     })));
 
+    _defineProperty(_assertThisInitialized(_this), "dY", function () {
+      var s = _this.props.$dispatch('mmmmmm.Y', 'getName');
+
+      console.log(s);
+    });
+
     return _this;
   }
 
-  _createClass(_default, [{
+  _createClass(X, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.unMount) {
+        this.unMount();
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, this.state.items.map(function (item) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-          key: item,
-          to: "/posts/".concat(item)
-        }, "/posts/", item);
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onPreload
-      }, "\u9884\u52A0\u8F7D\u7EC4\u4EF6"));
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.dY
+      }, "\u5B50\u7EC4\u4EF6X"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onY
+      }, "\u52A0\u8F7D\u5B50\u7EC4\u4EF6 Y"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        id: "y"
+      }));
     }
   }]);
 
-  return _default;
+  return X;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+function Y(props) {
+  console.log(props);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, null, "\u5B50\u7EC4\u4EF6Y");
+}
 
-
+Y.getName = function () {
+  return 'Y';
+};
 }();
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;
 });;
-//# sourceMappingURL=c.js.map
+//# sourceMappingURL=z.js.map

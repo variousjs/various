@@ -66,5 +66,6 @@ module.exports = {
     'react/destructuring-assignment': 0,
     'import/no-unresolved': 0,
     'react/prefer-stateless-function': 0,
+    'react/jsx-one-expression-per-line': 0,
   },
 }

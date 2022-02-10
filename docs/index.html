@@ -4,6 +4,28 @@
 <meta charset="UTF-8" />
 <title> VariousJS </title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd.min.css" />
+<style>
+.component {
+  background: #fff;
+  padding: 20px;
+  display: inline-block;
+  width: 300px;
+  margin: 0 10px 10px 0;
+  vertical-align: top;
+}
+.component:empty {
+  display: none;
+}
+.title {
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+button {
+  margin: 0 10px 10px 0;
+}
+</style>
 <script>
 var VARIOUS_CONFIG = {
   root: '#root',
@@ -24,9 +46,9 @@ var VARIOUS_CONFIG = {
     d: './dist/d.js',
     e: './dist/e.js',
     f: './dist/f.js',
+    x: './dist/x.js',
     g: 'https://variousjs.github.io/various/dist/m.js',
-    hooks: './dist/hooks.js',
-    mmmmmm: './dist/m.js',
+    z: './dist/z.js',
     empty: './dist/empty.js',
     w: 'https://www.baidu.com/s.js',
   },
@@ -56,11 +78,6 @@ var VARIOUS_CONFIG = {
       path: '/inspector',
       icon: 'plus',
     },
-    {
-      label: '404',
-      path: '/404',
-      icon: 'plus',
-    },
   ],
   routes: [
     {
@@ -70,7 +87,7 @@ var VARIOUS_CONFIG = {
     },
     {
       path: '/inspector',
-      components: [['a'], ['mmmmmm.X']],
+      components: [['a'], ['z.X']],
     },
     {
       path: '/',
@@ -92,7 +109,7 @@ var VARIOUS_CONFIG = {
       path: '/ttt',
       components: [
         [
-          ['a', 'w', 'mmmmmm.X', 'mmmmmm.Y'],
+          ['a', 'w', 'z.X', 'z.Y'],
         ],
       ],
     },

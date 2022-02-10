@@ -107,7 +107,7 @@ function componentCreator({
     }
 
     unMountComponent = () => {
-      let mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+      let mountedComponents = this.$getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
