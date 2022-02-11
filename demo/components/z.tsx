@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, FC, useState } from 'react'
 import { Button } from 'antd'
 import { ComponentProps } from '@variousjs/various'
+import { Store } from '../types'
 
 export class X extends Component<ComponentProps> {
   private unMountZ: () => void
@@ -10,6 +11,7 @@ export class X extends Component<ComponentProps> {
   state = {
     zReady: false,
     switchReady: false,
+    hPreloaded: false,
   }
 
   componentWillUnmount() {
@@ -50,15 +52,22 @@ export class X extends Component<ComponentProps> {
     }
   }
 
+  onH = async () => {
+    await this.props.$preload(['h'])
+    this.setState({ hPreloaded: true })
+  }
+
   render() {
-    const { zReady, switchReady } = this.state
+    const { zReady, switchReady, hPreloaded } = this.state
 
     return (
       <>
         <p>Rendered(Z): {zReady ? 'yes' : 'no'}</p>
         <p>Rendered(switch): {switchReady ? 'yes' : 'no'}</p>
+        <p>Preloaded(H): {hPreloaded ? 'yes' : 'no'}</p>
         <Button onClick={this.onZ}>$render(Z)</Button>
         <Button onClick={this.onSwitch}>$render(switch)</Button>
+        <Button onClick={this.onH}>$preload(H)</Button>
         <div id="z" />
         <div id="switch" />
       </>
@@ -66,14 +75,22 @@ export class X extends Component<ComponentProps> {
   }
 }
 
-export function Y() {
-  return (
-    <div style={{ fontSize: 50, margin: 0 }}>Y</div>
-  )
-}
+export const Z: FC<ComponentProps<Store>> = (props) => {
+  const [l, setL] = useState(false)
 
-export function Z() {
   return (
-    <div style={{ fontSize: 50, margin: 0 }}>Z</div>
+    <div style={{ borderTop: '1px solid #eee', marginTop: 10, paddingTop: 10 }}>
+      <p>Store: {props.$store.user.name}</p>
+      <p>ComponentLoaded(H): {l ? 'yes' : 'no'}</p>
+      <Button
+        onClick={() => {
+          if (props.$isComponentLoaded('h')) {
+            setL(true)
+          }
+        }}
+      >
+        $isComponentLoaded(H)
+      </Button>
+    </div>
   )
 }

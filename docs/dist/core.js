@@ -460,9 +460,10 @@ function componentCreator(_ref) {
           $dispatch: this.dispatch,
           $store: store,
           $render: onMounted ? undefined : this.$render,
-          $preload: _preload__WEBPACK_IMPORTED_MODULE_3__["default"],
+          $preload: _preload__WEBPACK_IMPORTED_MODULE_3__.preload,
           $postMessage: this.postMessage,
-          $getMountedComponents: this.$getMountedComponents
+          $getMountedComponents: this.$getMountedComponents,
+          $isComponentLoaded: _preload__WEBPACK_IMPORTED_MODULE_3__.isComponentLoaded
         }));
       }
     }]);
@@ -575,11 +576,18 @@ var getOnMessage = function getOnMessage(type, onMessage) {
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = (function (names) {
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "preload": function() { return /* binding */ preload; },
+/* harmony export */   "isComponentLoaded": function() { return /* binding */ isComponentLoaded; }
+/* harmony export */ });
+var preload = function preload(names) {
   return new Promise(function (resolve) {
     window.requirejs(names, resolve);
   });
-});
+};
+var isComponentLoaded = function isComponentLoaded(name) {
+  return window.requirejs.specified(name.split('.')[0]);
+};
 
 /***/ }),
 

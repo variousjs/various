@@ -46,6 +46,7 @@ var VARIOUS_CONFIG = {
     e: './dist/e.js',
     f: './dist/f.js',
     g: './dist/g.js',
+    h: './dist/h.js',
     x: './dist/x.js',
     z: './dist/z.js',
 
@@ -93,11 +94,11 @@ var VARIOUS_CONFIG = {
   routes: [
     {
       path: '/error',
-      components: ['store', 'link', 'e', 'f', 'z.Z', 'no-exist', 'empty'],
+      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty'],
     },
     {
       path: '/module',
-      components: ['z.Y', 'z.X', 'g', 'g.Y'],
+      components: ['z.X', 'g', 'g.Y'],
     },
     {
       path: ['/posts', '/posts/:id'],
