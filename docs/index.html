@@ -56,7 +56,7 @@ var VARIOUS_CONFIG = {
   },
   menu: [
     {
-      label: 'home',
+      label: 'Home',
       icon: 'dashboard',
       path: '/',
     },
@@ -69,6 +69,11 @@ var VARIOUS_CONFIG = {
       label: 'Module',
       icon: 'appstore',
       path: '/module',
+    },
+    {
+      label: 'Dispatch',
+      icon: 'api',
+      path: '/dispatch',
     },
     {
       label: 'next',
@@ -101,6 +106,10 @@ var VARIOUS_CONFIG = {
       components: ['z.X', 'g', 'g.Y', 'gg'],
     },
     {
+      path: '/dispatch',
+      components: ['a', 'b'],
+    },
+    {
       path: ['/posts', '/posts/:id'],
       components: ['c', 'd', 'empty']
     },
@@ -110,11 +119,7 @@ var VARIOUS_CONFIG = {
     },
     {
       path: '/',
-      components: [
-        [
-          ['a'], ['b'], ['ca'], ['store'],
-        ],
-      ],
+      components: [],
     },
     {
       path: '/next/:id',

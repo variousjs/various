@@ -6,14 +6,7 @@ import { Config } from './types'
 
 class Container extends Component<ContainerProps<Config>> {
   render() {
-    const {
-      $config, $component,
-    } = this.props
-    const routes = $config.routes.map((item) => ({
-      ...item,
-      path: item.path,
-      components: item.components.join().split(','),
-    }))
+    const { $config, $component } = this.props
 
     const X = $component('x')
 
@@ -22,18 +15,18 @@ class Container extends Component<ContainerProps<Config>> {
         <Wrapper {...this.props}>
           <div className="component">
             <div className="title">X</div>
-            <X $silent text="x" />
+            <X $silent />
           </div>
           <Switch>
             {
-              routes.map(({ path, components }) => {
+              $config.routes.map(({ path, components }) => {
                 const component = () => components.map((name) => {
                   const C = $component(name)
 
                   return (
                     <div key={name} className="component">
                       <div className="title">{name}</div>
-                      <C />
+                      <C name={name} />
                     </div>
                   )
                 })

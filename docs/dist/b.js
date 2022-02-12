@@ -1,4 +1,4 @@
-define(["react","antd","@variousjs/various","react-router-dom"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__, __WEBPACK_EXTERNAL_MODULE__variousjs_various__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) { return /******/ (function() { // webpackBootstrap
+define(["react","antd","@variousjs/various"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__, __WEBPACK_EXTERNAL_MODULE__variousjs_various__) { return /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -9,16 +9,6 @@ define(["react","antd","@variousjs/various","react-router-dom"], function(__WEBP
 /***/ (function(module) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
-
-/***/ }),
-
-/***/ "react-router-dom":
-/*!*******************************************************************!*\
-  !*** external {"root":"ReactRouterDOM","amd":"react-router-dom"} ***!
-  \*******************************************************************/
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 
 /***/ }),
 
@@ -123,36 +113,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @variousjs/various */ "@variousjs/various");
 /* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_variousjs_various__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "react-router-dom");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_3__);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
@@ -161,123 +136,108 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var _Store = new _variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Store(),
     createStore = _Store.createStore,
     connect = _Store.connect,
-    dispatch = _Store.dispatch,
     getStore = _Store.getStore;
 
 createStore({
-  b: '666'
+  value: 'b'
 });
 
-var X = /*#__PURE__*/function (_Component) {
-  _inherits(X, _Component);
+var B = function B(props) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      de = _useState2[0],
+      setDe = _useState2[1];
 
-  var _super = _createSuper(X);
-
-  function X() {
-    var _this;
-
-    _classCallCheck(this, X);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    _defineProperty(_assertThisInitialized(_this), "onGetA", function () {
-      try {
-        antd__WEBPACK_IMPORTED_MODULE_1__.message.info(_this.props.$dispatch('a', 'getValue'));
-      } catch (e) {
-        antd__WEBPACK_IMPORTED_MODULE_1__.message.error(e.message);
-      }
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "onSetA", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+  var setA = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this.props.$dispatch('a', 'updateValue', Math.random().toFixed(2));
+              return props.$dispatch('a', 'updateValue', 'ab');
 
             case 2:
-              _this.onGetA();
-
-              _this.props.$dispatch('a', 'cdy');
-
-            case 4:
             case "end":
               return _context.stop();
           }
         }
       }, _callee);
-    })));
+    }));
 
-    _defineProperty(_assertThisInitialized(_this), "onSetG", function () {
-      _this.props.$dispatch('store', 'setNumber', Math.random().toFixed(2));
-    });
+    return function setA() {
+      return _ref.apply(this, arguments);
+    };
+  }();
 
-    _defineProperty(_assertThisInitialized(_this), "onGetStatus", function () {
-      _this.props.$postMessage('bbbbb', 'ccccc');
-    });
+  var setGlobal = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return props.$dispatch('store', 'updateUserName', 'B');
 
-    return _this;
-  }
-
-  _createClass(X, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      window.console.log(this.props.$config.menu[0].label);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var number = this.props.$store.number;
-      var _this$props = this.props,
-          b = _this$props.b,
-          match = _this$props.match;
-      console.log(this.props);
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-        style: {
-          fontSize: 20
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
         }
-      }, "B"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        style: {
-          display: 'flex',
-          flexDirection: 'column'
+      }, _callee2);
+    }));
+
+    return function setGlobal() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  var setE = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.prev = 0;
+              _context3.next = 3;
+              return props.$dispatch('no-exist', 'some method');
+
+            case 3:
+              _context3.next = 8;
+              break;
+
+            case 5:
+              _context3.prev = 5;
+              _context3.t0 = _context3["catch"](0);
+              setDe(_context3.t0.message);
+
+            case 8:
+            case "end":
+              return _context3.stop();
+          }
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u5168\u5C40\u503C\uFF1A", number), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u7EC4\u4EF6\u503C:", b), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u5F53\u524D\u8DEF\u7531\u53C2\u6570\uFF1A", match.params.id || '空'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onGetA
-      }, "\u83B7\u53D6 A \u7EC4\u4EF6\u7684\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onSetA
-      }, "\u66F4\u65B0 A \u7EC4\u4EF6\u7684\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onSetG
-      }, "\u66F4\u65B0\u5168\u5C40\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onGetStatus
-      }, "\u5E7F\u64AD\u6D88\u606F")));
-    }
-  }]);
+      }, _callee3, null, [[0, 5]]);
+    }));
 
-  return X;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+    return function setE() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
 
-_defineProperty(X, "getValue", function () {
-  return getStore().b;
-});
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Dispatch Error: ", de), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: setA
+  }, "$dispatch(a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: setE
+  }, "$dispatch(no-exist)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: setGlobal
+  }, "$dispatch(global)"));
+};
 
-_defineProperty(X, "updateValue", function (value, caller) {
-  antd__WEBPACK_IMPORTED_MODULE_1__.message.info("caller: ".concat(caller));
-  dispatch({
-    b: value
-  });
-});
+B.getValue = function () {
+  return getStore().value;
+};
 
-_defineProperty(X, "$onMessage", function (params) {
-  console.log(params);
-});
-
-var Y = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.withRouter)(X);
-/* harmony default export */ __webpack_exports__["default"] = (connect('b')(Y));
+/* harmony default export */ __webpack_exports__["default"] = (connect('value')(B));
 }();
 /******/ 	return __webpack_exports__;
 /******/ })()

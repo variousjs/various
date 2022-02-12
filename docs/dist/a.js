@@ -148,22 +148,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var _Store = new _variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Store(),
     createStore = _Store.createStore,
     connect = _Store.connect,
-    dispatch = _Store.dispatch,
-    getStore = _Store.getStore;
+    dispatch = _Store.dispatch;
 
 createStore({
-  a: '9'
+  value: 'a'
 });
 
-var X = /*#__PURE__*/function (_Component) {
-  _inherits(X, _Component);
+var A = /*#__PURE__*/function (_Component) {
+  _inherits(A, _Component);
 
-  var _super = _createSuper(X);
+  var _super = _createSuper(A);
 
-  function X() {
+  function A() {
     var _this;
 
-    _classCallCheck(this, X);
+    _classCallCheck(this, A);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -171,21 +170,16 @@ var X = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
+    _defineProperty(_assertThisInitialized(_this), "state", {
+      dispatchError: '',
+      bValue: ''
+    });
+
     _defineProperty(_assertThisInitialized(_this), "onGetB", function () {
-      try {
-        antd__WEBPACK_IMPORTED_MODULE_1__.message.info(_this.props.$dispatch('b', 'getValue'));
-      } catch (e) {
-        window.console.log(e.message);
-      }
-    });
+      var b = _this.props.$dispatch('b', 'getValue');
 
-    _defineProperty(_assertThisInitialized(_this), "onSetB", function () {
-      _this.props.$dispatch('b', 'updateValue', Math.random().toFixed(2));
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "onPost", function () {
-      _this.props.$postMessage('from a', {
-        a: 1
+      _this.setState({
+        bValue: b
       });
     });
 
@@ -194,66 +188,55 @@ var X = /*#__PURE__*/function (_Component) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
-              return _this.props.$dispatch('store', 'updateUserName', Math.random());
+              _context.prev = 0;
+              _context.next = 3;
+              return _this.props.$dispatch('store', 'no-exist');
 
-            case 2:
-              antd__WEBPACK_IMPORTED_MODULE_1__.message.success('更新完成');
+            case 3:
+              _context.next = 8;
+              break;
 
-              _this.props.$dispatch('store', 'abs');
+            case 5:
+              _context.prev = 5;
+              _context.t0 = _context["catch"](0);
 
-            case 4:
+              _this.setState({
+                dispatchError: _context.t0.message
+              });
+
+            case 8:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, null, [[0, 5]]);
     })));
 
     return _this;
   }
 
-  _createClass(X, [{
+  _createClass(A, [{
     key: "render",
     value: function render() {
-      var _this$props$$store = this.props.$store,
-          user = _this$props$$store.user,
-          number = _this$props$$store.number;
       var _this$props = this.props,
-          a = _this$props.a,
-          _this$props$name = _this$props.name,
-          name = _this$props$name === void 0 ? 'a' : _this$props$name;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-        style: {
-          fontSize: 20
-        }
-      }, name.toUpperCase()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        style: {
-          display: 'flex',
-          flexDirection: 'column'
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u5168\u5C40\u503C\uFF1A", user.name, "/", number), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\u7EC4\u4EF6\u503C:", a), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+          value = _this$props.value,
+          name = _this$props.name,
+          $store = _this$props.$store;
+      var _this$state = this.state,
+          dispatchError = _this$state.dispatchError,
+          bValue = _this$state.bValue;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Store: ", $store.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Store(component): ", value), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Component Props: ", name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Value(b): ", bValue), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Dispatch Error: ", dispatchError), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
         onClick: this.onGetB
-      }, "\u83B7\u53D6 B \u7EC4\u4EF6\u7684\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onPost
-      }, "\u5E7F\u64AD\u6D88\u606F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
-        onClick: this.onSetB
-      }, "\u66F4\u65B0 B \u7EC4\u4EF6\u7684\u503C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+      }, "$dispatch(b)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
         onClick: this.onSetG
-      }, "\u66F4\u65B0\u5168\u5C40\u503C(\u5F02\u6B65)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.ConfigProvider, {
-        locale: antd__WEBPACK_IMPORTED_MODULE_1__.locales.zh_CN
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.DatePicker, null))));
+      }, "$dispatch(global)"));
     }
   }]);
 
-  return X;
+  return A;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
-_defineProperty(X, "getValue", function () {
-  return getStore().a;
-});
-
-_defineProperty(X, "updateValue", /*#__PURE__*/function () {
+_defineProperty(A, "updateValue", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -261,12 +244,12 @@ _defineProperty(X, "updateValue", /*#__PURE__*/function () {
           case 0:
             _context2.next = 2;
             return new Promise(function (r) {
-              return setTimeout(r, 1000);
+              return setTimeout(r, 100);
             });
 
           case 2:
             dispatch({
-              a: value
+              value: value
             }, true);
 
           case 3:
@@ -282,7 +265,7 @@ _defineProperty(X, "updateValue", /*#__PURE__*/function () {
   };
 }());
 
-/* harmony default export */ __webpack_exports__["default"] = (connect('a')(X));
+/* harmony default export */ __webpack_exports__["default"] = (connect('value')(A));
 }();
 /******/ 	return __webpack_exports__;
 /******/ })()
