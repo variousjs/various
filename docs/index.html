@@ -4,97 +4,106 @@
 <meta charset="UTF-8" />
 <title> VariousJS </title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd.min.css" />
+<style>
+.component {
+  background: #fff;
+  padding: 20px;
+  display: inline-block;
+  width: 300px;
+  margin: 0 10px 10px 0;
+  vertical-align: top;
+}
+.component:empty {
+  display: none;
+}
+.title {
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+button {
+  margin: 0 10px 10px 0;
+}
+</style>
 <script>
 var VARIOUS_CONFIG = {
   root: '#root',
   entry: './dist/entry.js',
   dependencies: {
-    'react-router-dom': 'https://cdn.jsdelivr.net/npm/react-router-dom@5.3.0/umd/react-router-dom.min.js',
-    moment: 'https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js',
-    antd: 'https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd-with-locales.min.js',
+    react: './lib/react.development.js',
+    'react-dom': './lib/react-dom.development.js',
+    'react-router-dom': './lib/react-router-dom.min.js',
+    moment: './lib/moment.min.js',
+    antd: './lib/antd-with-locales.min.js',
     moment_zhCN: './zh-cn.js',
-    'rc-table': 'https://baidu.com/666.js',
+    'rc-table': 'http://no-exist/rc-table.js',
   },
   components: {
     a: './dist/a.js',
-    ca: './dist/a.js',
-    store: './dist/a.js',
     b: './dist/b.js',
     c: './dist/c.js',
     d: './dist/d.js',
     e: './dist/e.js',
     f: './dist/f.js',
-    g: 'https://variousjs.github.io/various/dist/m.js',
-    hooks: './dist/hooks.js',
-    mmmmmm: './dist/m.js',
+    g: './dist/g.js',
+    gg: './dist/g.js',
+    h: './dist/h.js',
+    i: './dist/i.js',
+    x: './dist/x.js',
+    z: './dist/z.js',
+
+    store: './dist/a.js',
     empty: './dist/empty.js',
-    w: 'https://www.baidu.com/s.js',
+    link: 'http://no-exist/link.js',
   },
   menu: [
     {
-      label: 'home',
+      label: 'Home',
       icon: 'dashboard',
       path: '/',
     },
     {
-      label: 'next',
-      path: '/next/4',
-      icon: 'user',
+      label: 'Error',
+      icon: 'close-circle',
+      path: '/error',
     },
     {
-      label: 'tttt',
-      path: '/ttt',
-      icon: 'user',
+      label: 'Module',
+      icon: 'appstore',
+      path: '/module',
     },
     {
-      label: 'posts',
-      path: '/posts',
-      icon: 'book',
+      label: 'Dispatch',
+      icon: 'api',
+      path: '/dispatch',
     },
     {
-      label: 'Inspector',
-      path: '/inspector',
-      icon: 'plus',
-    },
-    {
-      label: '404',
-      path: '/404',
-      icon: 'plus',
+      label: 'Message',
+      icon: 'message',
+      path: '/message',
     },
   ],
   routes: [
     {
-      path: ['/posts', '/posts/:id'],
-      type: 'post',
-      components: ['c', 'd', 'empty']
+      path: '/error',
+      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty'],
     },
     {
-      path: '/inspector',
-      components: [['a'], ['mmmmmm.X']],
+      path: '/module',
+      components: ['z.X', 'g', 'g.Y', 'gg'],
+    },
+    {
+      path: '/dispatch',
+      components: ['a', 'b'],
+    },
+    {
+      path: '/message',
+      components: ['c', 'd'],
     },
     {
       path: '/',
-      components: [
-        [
-          ['a'], ['b'], ['ca'], ['store'],
-        ],
-      ],
-    },
-    {
-      path: '/next/:id',
-      components: [
-        [
-          ['switch', 'b', 'e', 'f', 'g.Y'],
-        ],
-      ],
-    },
-    {
-      path: '/ttt',
-      components: [
-        [
-          ['a', 'w', 'mmmmmm.X', 'mmmmmm.Y'],
-        ],
-      ],
+      components: ['i'],
     },
   ],
 }
@@ -102,7 +111,7 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.js"></script>
+<script src="./lib/require.js"></script>
 <script>
 window.requirejs.onError = (e) => {
   console.warn(e)

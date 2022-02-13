@@ -13,6 +13,7 @@ declare module '@variousjs/various' {
   type $preload = (names: string[]) => Promise<void>
   type $postMessage = (name: string, value?: any) => void
   type $getMountedComponents = () => string[]
+  type $isComponentLoaded = (name: string) => boolean
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 
@@ -24,11 +25,12 @@ declare module '@variousjs/various' {
     $preload: $preload,
     $postMessage: $postMessage,
     $getMountedComponents: $getMountedComponents,
+    $isComponentLoaded: $isComponentLoaded,
   }
 
   export interface ErrorProps {
     reload?: () => void,
-    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'ROUTER_ERROR' | 'CONTAINER_ERROR',
+    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
     message?: string,
   }
 

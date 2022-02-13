@@ -1,7 +1,7 @@
 import React, { ComponentType, Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import getDispatch from './dispatch'
-import preload from './preload'
+import { preload, isComponentLoaded } from './preload'
 import {
   connect,
   getStore,
@@ -107,7 +107,7 @@ function componentCreator({
     }
 
     unMountComponent = () => {
-      let mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+      let mountedComponents = this.$getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== name)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
@@ -308,6 +308,7 @@ function componentCreator({
           $preload={preload}
           $postMessage={this.postMessage}
           $getMountedComponents={this.$getMountedComponents}
+          $isComponentLoaded={isComponentLoaded}
         />
       )
     }

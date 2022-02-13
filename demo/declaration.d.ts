@@ -7,7 +7,7 @@ declare module 'antd' {
   export const Button: ComponentType<any>
   export const ConfigProvider: ComponentType<any>
   export const message: { [key: string]: (m: string | string[]) => void }
-  export const DatePicker: ComponentType
+  export const DatePicker: ComponentType<any>
   export const Alert: ComponentType<any>
   export const Spin: ComponentType<any>
   export class Layout extends Component<any> {

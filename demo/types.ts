@@ -10,6 +10,6 @@ export type Config = {
   }[],
   routes: {
     path: string[] | string,
-    components: string[][],
+    components: string[],
   }[],
 }

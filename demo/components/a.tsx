@@ -1,83 +1,55 @@
 import React, { Component } from 'react'
-import {
-  Button, message, ConfigProvider, DatePicker, locales,
-} from 'antd'
-import {
-  ComponentProps, Store, Connect as CT,
-} from '@variousjs/various'
+import { Button } from 'antd'
+import { ComponentProps, Store, Connect as CT } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
-type S = { a: string }
+type S = { value: string }
 type Connect = CT<S>
 
-const {
-  createStore,
-  connect,
-  dispatch,
-  getStore,
-} = new Store<S>()
+const { createStore, connect, dispatch } = new Store<S>()
 
-createStore({ a: '9' })
+createStore({ value: 'a' })
 
-class X extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
-  static getValue = () => getStore().a
-
+class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
   static updateValue = async (value: string) => {
-    await new Promise((r) => setTimeout(r, 1000))
-    dispatch({ a: value }, true)
+    await new Promise((r) => setTimeout(r, 100))
+    dispatch({ value }, true)
+  }
+
+  state = {
+    dispatchError: '',
+    bValue: '',
   }
 
   onGetB = () => {
-    try {
-      message.info(this.props.$dispatch('b', 'getValue') as string)
-    } catch (e) {
-      window.console.log((e as Error).message)
-    }
-  }
-
-  onSetB = () => {
-    this.props.$dispatch('b', 'updateValue', Math.random().toFixed(2))
-  }
-
-  onPost = () => {
-    this.props.$postMessage('from a', { a: 1 })
+    const b = this.props.$dispatch('b', 'getValue')
+    this.setState({ bValue: (b as string) })
   }
 
   onSetG = async () => {
-    await this.props.$dispatch('store', 'updateUserName', Math.random())
-    message.success('更新完成')
-    this.props.$dispatch('store', 'abs')
+    try {
+      await this.props.$dispatch('store', 'no-exist')
+    } catch (e) {
+      this.setState({ dispatchError: (e as Error).message })
+    }
   }
 
   render() {
-    const { user, number } = this.props.$store
-    const { a, name = 'a' } = this.props
+    const { value, name, $store } = this.props
+    const { dispatchError, bValue } = this.state
 
     return (
-      <div>
-        <p style={{ fontSize: 20 }}>{name.toUpperCase()}</p>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <p>
-            全局值：
-            {user.name}
-            /
-            {number}
-          </p>
-          <p>
-            组件值:
-            {a}
-          </p>
-          <Button onClick={this.onGetB}>获取 B 组件的值</Button>
-          <Button onClick={this.onPost}>广播消息</Button>
-          <Button onClick={this.onSetB}>更新 B 组件的值</Button>
-          <Button onClick={this.onSetG}>更新全局值(异步)</Button>
-          <ConfigProvider locale={locales.zh_CN}>
-            <DatePicker />
-          </ConfigProvider>
-        </div>
-      </div>
+      <>
+        <p>Store: {$store.user.name}</p>
+        <p>Store(component): {value}</p>
+        <p>Component Props: {name}</p>
+        <p>Value(b): {bValue}</p>
+        <p>Dispatch Error: {dispatchError}</p>
+        <Button onClick={this.onGetB}>$dispatch(b)</Button>
+        <Button onClick={this.onSetG}>$dispatch(global)</Button>
+      </>
     )
   }
 }
 
-export default connect('a')(X)
+export default connect('value')(A)
