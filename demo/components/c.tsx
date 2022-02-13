@@ -1,40 +1,35 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { Link } from 'react-router-dom'
-import { ComponentProps } from '@variousjs/various'
+import {
+  ComponentProps, Store, Connect, OnMessage,
+} from '@variousjs/various'
 
-export default class extends Component<ComponentProps> {
-  state = {
-    items: [
-      1,
-      2,
-      3,
-      4,
-      5,
-    ],
+type S = { message: string }
+type CT = Connect<S>
+
+const { createStore, connect, dispatch } = new Store<S>()
+
+createStore({ message: '' })
+
+class C extends Component<ComponentProps & CT> {
+  static $onMessage: OnMessage = (message) => {
+    dispatch({ message: `${message.type}|${message.name}` })
   }
 
-  onPreload = async () => {
-    const { $preload } = this.props
-    if ($preload) {
-      await $preload(['mmmmmm'])
-      console.log('preload mmmmmm')
-    }
+  onMsg = () => {
+    this.props.$postMessage('C', 'cm')
   }
 
   render() {
+    const { message } = this.props
+
     return (
       <>
-        {
-      this.state.items.map((item) => (
-        <Link key={item} to={`/posts/${item}`}>
-          /posts/
-          {item}
-        </Link>
-      ))
-      }
-        <Button onClick={this.onPreload}>预加载组件</Button>
+        <p>Message: {message}</p>
+        <Button onClick={this.onMsg}>$postMessage</Button>
       </>
     )
   }
 }
+
+export default connect('message')(C)

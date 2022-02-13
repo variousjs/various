@@ -1,50 +1,21 @@
-import React, { Component } from 'react'
-import { Button } from 'antd'
-import { ComponentProps } from '@variousjs/various'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import React, { FC } from 'react'
+import {
+  ComponentProps, Connect, Store, OnMessage,
+} from '@variousjs/various'
 
-class D extends Component<ComponentProps & RouteComponentProps<{ id: string }>> {
-  private unMount: () => void
+type S = { message: string }
+type CT = Connect<S>
 
-  componentWillUnmount() {
-    if (this.unMount) {
-      this.unMount()
-    }
-  }
+const { createStore, connect, dispatch } = new Store<S>()
 
-  onPortals = () => {
-    try {
-      const { $render } = this.props
-      if ($render) {
-        this.unMount = $render({
-          name: 'switch',
-          url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
-          props: { checked: true },
-          target: document.querySelector('#portals'),
-          onMounted: () => {
-            console.log('ready')
-          },
-        })
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
+createStore({ message: '' })
 
-  render() {
-    const { id } = this.props.match.params
-    return (
-      <>
-        <div id="portals" />
-        <Button onClick={this.onPortals}>加载组件</Button>
-        <input />
-        <p>
-          current:
-          {id}
-        </p>
-      </>
-    )
-  }
+const D: FC<ComponentProps & CT> & { $onMessage: OnMessage } = (props) => (
+  <p>Message: {props.message}</p>
+)
+
+D.$onMessage = (message) => {
+  dispatch({ message: `${message.type}|${message.value || '-'}` })
 }
 
-export default withRouter(D)
+export default connect('message')(D)
