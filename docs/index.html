@@ -31,11 +31,13 @@ var VARIOUS_CONFIG = {
   root: '#root',
   entry: './dist/entry.js',
   dependencies: {
-    'react-router-dom': 'https://cdn.jsdelivr.net/npm/react-router-dom@5.3.0/umd/react-router-dom.min.js',
-    moment: 'https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js',
-    antd: 'https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd-with-locales.min.js',
+    react: './lib/react.development.js',
+    'react-dom': './lib/react-dom.development.js',
+    'react-router-dom': './lib/react-router-dom.min.js',
+    moment: './lib/moment.min.js',
+    antd: './lib/antd-with-locales.min.js',
     moment_zhCN: './zh-cn.js',
-    'rc-table': 'https://baidu.com/666.js',
+    'rc-table': 'http://no-exist/rc-table.js',
   },
   components: {
     a: './dist/a.js',
@@ -47,12 +49,13 @@ var VARIOUS_CONFIG = {
     g: './dist/g.js',
     gg: './dist/g.js',
     h: './dist/h.js',
+    i: './dist/i.js',
     x: './dist/x.js',
     z: './dist/z.js',
 
     store: './dist/a.js',
     empty: './dist/empty.js',
-    link: 'https://www.baidu.com/s.js',
+    link: 'http://no-exist/link.js',
   },
   menu: [
     {
@@ -80,26 +83,6 @@ var VARIOUS_CONFIG = {
       icon: 'message',
       path: '/message',
     },
-    {
-      label: 'next',
-      path: '/next/4',
-      icon: 'user',
-    },
-    {
-      label: 'tttt',
-      path: '/ttt',
-      icon: 'user',
-    },
-    {
-      label: 'posts',
-      path: '/posts',
-      icon: 'book',
-    },
-    {
-      label: 'Inspector',
-      path: '/inspector',
-      icon: 'plus',
-    },
   ],
   routes: [
     {
@@ -119,32 +102,8 @@ var VARIOUS_CONFIG = {
       components: ['c', 'd'],
     },
     {
-      path: ['/posts', '/posts/:id'],
-      components: ['c', 'd', 'empty']
-    },
-    {
-      path: '/inspector',
-      components: [['a'], ['z.X']],
-    },
-    {
       path: '/',
-      components: [],
-    },
-    {
-      path: '/next/:id',
-      components: [
-        [
-          ['switch', 'b', 'e', 'f', 'g.Y'],
-        ],
-      ],
-    },
-    {
-      path: '/ttt',
-      components: [
-        [
-          ['a', 'w', 'z.X', 'z.Y'],
-        ],
-      ],
+      components: ['i'],
     },
   ],
 }
@@ -152,7 +111,7 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.js"></script>
+<script src="./lib/require.js"></script>
 <script>
 window.requirejs.onError = (e) => {
   console.warn(e)

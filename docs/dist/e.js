@@ -1,4 +1,4 @@
-define(["react","rc-table","table"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_rc_table__, __WEBPACK_EXTERNAL_MODULE_table__) { return /******/ (function() { // webpackBootstrap
+define(["react","table","rc-table"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_table__, __WEBPACK_EXTERNAL_MODULE_rc_table__) { return /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -112,10 +112,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var rc_table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-table */ "rc-table");
-/* harmony import */ var rc_table__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(rc_table__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! table */ "table");
-/* harmony import */ var table__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(table__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! table */ "table");
+/* harmony import */ var table__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(table__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var rc_table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rc-table */ "rc-table");
+/* harmony import */ var rc_table__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(rc_table__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -156,8 +156,7 @@ var _default = /*#__PURE__*/function (_Component) {
   _createClass(_default, [{
     key: "render",
     value: function render() {
-      window.console.log('e', this.props);
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((rc_table__WEBPACK_IMPORTED_MODULE_1___default()), null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((table__WEBPACK_IMPORTED_MODULE_2___default()), null));
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((rc_table__WEBPACK_IMPORTED_MODULE_2___default()), null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((table__WEBPACK_IMPORTED_MODULE_1___default()), null));
     }
   }]);
 
