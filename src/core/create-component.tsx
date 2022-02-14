@@ -78,7 +78,7 @@ function componentCreator({
 
     dispatch = currentDispatch.bind(this, name)
 
-    postMessage = getPostMessage(name)
+    postMessage = getPostMessage(nameWidthModule)
 
     componentDidMount() {
       this.setState({ componentExist: window.requirejs.specified(name) })
@@ -108,7 +108,7 @@ function componentCreator({
 
     unMountComponent = () => {
       let mountedComponents = this.$getMountedComponents()
-      mountedComponents = mountedComponents.filter((item) => item !== name)
+      mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
       // eslint-disable-next-line no-param-reassign
@@ -153,8 +153,8 @@ function componentCreator({
         const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
         const actions: Entry['actions'] = {}
 
-        if (!mountedComponents.includes(name)) {
-          mountedComponents.push(name)
+        if (!mountedComponents.includes(nameWidthModule)) {
+          mountedComponents.push(nameWidthModule)
         }
 
         Object
@@ -164,7 +164,7 @@ function componentCreator({
               return
             }
             if (method === '$onMessage') {
-              this.unsubscribe = subscribe(getOnMessage(name, componentNode[method]))
+              this.unsubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
             if (!IGNORE_STATIC_METHODS.includes(method)) {

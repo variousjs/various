@@ -1,4 +1,4 @@
-define(["react","@variousjs/various"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE__variousjs_various__) { return /******/ (function() { // webpackBootstrap
+define(["react","antd","@variousjs/various"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_antd__, __WEBPACK_EXTERNAL_MODULE__variousjs_various__) { return /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -9,6 +9,16 @@ define(["react","@variousjs/various"], function(__WEBPACK_EXTERNAL_MODULE_react_
 /***/ (function(module) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
+
+/***/ }),
+
+/***/ "antd":
+/*!*********************************************!*\
+  !*** external {"root":"antd","amd":"antd"} ***!
+  \*********************************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_antd__;
 
 /***/ }),
 
@@ -97,14 +107,20 @@ var __webpack_exports__ = {};
   !*** ./demo/components/d.tsx ***!
   \*******************************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "dd": function() { return /* binding */ dd; }
+/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @variousjs/various */ "@variousjs/various");
-/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_variousjs_various__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @variousjs/various */ "@variousjs/various");
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_variousjs_various__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
-var _Store = new _variousjs_various__WEBPACK_IMPORTED_MODULE_1__.Store(),
+
+var _Store = new _variousjs_various__WEBPACK_IMPORTED_MODULE_2__.Store(),
     createStore = _Store.createStore,
     connect = _Store.connect,
     dispatch = _Store.dispatch;
@@ -114,7 +130,11 @@ createStore({
 });
 
 var D = function D(props) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Message: ", props.message);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Message: ", props.message), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: function onClick() {
+      props.$postMessage('xyz');
+    }
+  }, "$postMessage"));
 };
 
 D.$onMessage = function (message) {
@@ -123,7 +143,7 @@ D.$onMessage = function (message) {
   });
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (connect('message')(D));
+var dd = connect('message')(D);
 }();
 /******/ 	return __webpack_exports__;
 /******/ })()

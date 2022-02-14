@@ -210,13 +210,13 @@ function componentCreator(_ref) {
 
       _defineProperty(_assertThisInitialized(_this), "dispatch", currentDispatch.bind(_assertThisInitialized(_this), name));
 
-      _defineProperty(_assertThisInitialized(_this), "postMessage", (0,_message__WEBPACK_IMPORTED_MODULE_5__.getPostMessage)(name));
+      _defineProperty(_assertThisInitialized(_this), "postMessage", (0,_message__WEBPACK_IMPORTED_MODULE_5__.getPostMessage)(nameWidthModule));
 
       _defineProperty(_assertThisInitialized(_this), "unMountComponent", function () {
         var mountedComponents = _this.$getMountedComponents();
 
         mountedComponents = mountedComponents.filter(function (item) {
-          return item !== name;
+          return item !== nameWidthModule;
         });
         (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS, mountedComponents), true); // eslint-disable-next-line no-param-reassign
 
@@ -272,8 +272,8 @@ function componentCreator(_ref) {
           var mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
           var actions = {};
 
-          if (!mountedComponents.includes(name)) {
-            mountedComponents.push(name);
+          if (!mountedComponents.includes(nameWidthModule)) {
+            mountedComponents.push(nameWidthModule);
           }
 
           Object.getOwnPropertyNames(componentNode).forEach(function (method) {
@@ -282,7 +282,7 @@ function componentCreator(_ref) {
             }
 
             if (method === '$onMessage') {
-              _this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_4__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_5__.getOnMessage)(name, componentNode[method]));
+              _this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_4__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_5__.getOnMessage)(nameWidthModule, componentNode[method]));
               return;
             }
 

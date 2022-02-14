@@ -99,7 +99,7 @@ var VARIOUS_CONFIG = {
     },
     {
       path: '/message',
-      components: ['c', 'd'],
+      components: ['c', 'd.dd'],
     },
     {
       path: '/',
@@ -112,11 +112,6 @@ var VARIOUS_CONFIG = {
 <body>
 <div id="root"></div>
 <script src="./lib/require.js"></script>
-<script>
-window.requirejs.onError = (e) => {
-  console.warn(e)
-}
-</script>
 <script src="./dist/index.js"></script>
 </body>
 </html>
