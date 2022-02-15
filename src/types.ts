@@ -56,11 +56,6 @@ export interface Various {
 }
 
 declare global {
-  interface Require {
-    s: any,
-  }
-}
-
-declare global {
+  interface Require { s: any }
   interface Window { VARIOUS_CONFIG: Config }
 }

@@ -61,6 +61,7 @@ var Container = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.HashRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wrapper__WEBPACK_IMPORTED_MODULE_2__["default"], this.props, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         className: "component"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        "data-title": "X",
         className: "title"
       }, "X"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(X, {
         $silent: true
@@ -75,6 +76,7 @@ var Container = /*#__PURE__*/function (_Component) {
               key: name,
               className: "component"
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+              "data-title": name,
               className: "title"
             }, name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(C, {
               name: name

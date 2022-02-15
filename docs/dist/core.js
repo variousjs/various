@@ -16,7 +16,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "IGNORE_STATIC_METHODS": function() { return /* binding */ IGNORE_STATIC_METHODS; },
 /* harmony export */   "ERROR_TYPE": function() { return /* binding */ ERROR_TYPE; },
 /* harmony export */   "ROOT_CONTAINER": function() { return /* binding */ ROOT_CONTAINER; },
-/* harmony export */   "RETRY_COUNT": function() { return /* binding */ RETRY_COUNT; }
+/* harmony export */   "RETRY_COUNT": function() { return /* binding */ RETRY_COUNT; },
+/* harmony export */   "ENV": function() { return /* binding */ ENV; }
 /* harmony export */ });
 var DEFAULT_PACKAGES = {
   react: 'https://unpkg.com/react@17.0.2/umd/react.development.js',
@@ -38,6 +39,7 @@ var ERROR_TYPE;
 
 var ROOT_CONTAINER = '#root';
 var RETRY_COUNT = 1;
+var ENV = "development";
 
 /***/ }),
 
@@ -110,6 +112,10 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -246,64 +252,105 @@ function componentCreator(_ref) {
         } catch (e) {// ignore
         }
 
-        window.requirejs([name], function (C) {
-          if (_this.isUnMounted) {
-            return;
-          }
+        window.requirejs([name], /*#__PURE__*/function () {
+          var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(C) {
+            var componentNode, mountedComponents, actions;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    if (!(_config__WEBPACK_IMPORTED_MODULE_6__.ENV !== 'production' && !_this.state.componentExist)) {
+                      _context.next = 3;
+                      break;
+                    }
 
-          if (!C) {
-            _this.setState({
-              errorType: 'INVALID_COMPONENT'
-            });
+                    _context.next = 3;
+                    return new Promise(function (r) {
+                      return setTimeout(r, Math.random() * 1000);
+                    });
 
-            return;
-          }
+                  case 3:
+                    if (!_this.isUnMounted) {
+                      _context.next = 5;
+                      break;
+                    }
 
-          var componentNode = C[module] || C.default || C;
+                    return _context.abrupt("return");
 
-          if (typeof componentNode !== 'function') {
-            _this.setState({
-              errorType: 'INVALID_COMPONENT'
-            });
+                  case 5:
+                    if (C) {
+                      _context.next = 8;
+                      break;
+                    }
 
-            return;
-          }
+                    _this.setState({
+                      errorType: 'INVALID_COMPONENT'
+                    });
 
-          var mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
-          var actions = {};
+                    return _context.abrupt("return");
 
-          if (!mountedComponents.includes(nameWidthModule)) {
-            mountedComponents.push(nameWidthModule);
-          }
+                  case 8:
+                    componentNode = C[module] || C.default || C;
 
-          Object.getOwnPropertyNames(componentNode).forEach(function (method) {
-            if (typeof componentNode[method] !== 'function') {
-              return;
-            }
+                    if (!(typeof componentNode !== 'function')) {
+                      _context.next = 12;
+                      break;
+                    }
 
-            if (method === '$onMessage') {
-              _this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_4__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_5__.getOnMessage)(nameWidthModule, componentNode[method]));
-              return;
-            }
+                    _this.setState({
+                      errorType: 'INVALID_COMPONENT'
+                    });
 
-            if (!_config__WEBPACK_IMPORTED_MODULE_6__.IGNORE_STATIC_METHODS.includes(method)) {
-              actions[method] = componentNode[method];
-            }
-          });
-          componentDispatcher[nameWidthModule] = actions; // eslint-disable-line no-param-reassign
+                    return _context.abrupt("return");
 
-          _this.ComponentNode = componentNode;
+                  case 12:
+                    mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
+                    actions = {};
 
-          _this.setState({
-            componentReady: true
-          }, function () {
-            if (onMounted) {
-              onMounted();
-            } else {
-              (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS, mountedComponents), true);
-            }
-          });
-        }, function (e) {
+                    if (!mountedComponents.includes(nameWidthModule)) {
+                      mountedComponents.push(nameWidthModule);
+                    }
+
+                    Object.getOwnPropertyNames(componentNode).forEach(function (method) {
+                      if (typeof componentNode[method] !== 'function') {
+                        return;
+                      }
+
+                      if (method === '$onMessage') {
+                        _this.unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_4__.subscribe)((0,_message__WEBPACK_IMPORTED_MODULE_5__.getOnMessage)(nameWidthModule, componentNode[method]));
+                        return;
+                      }
+
+                      if (!_config__WEBPACK_IMPORTED_MODULE_6__.IGNORE_STATIC_METHODS.includes(method)) {
+                        actions[method] = componentNode[method];
+                      }
+                    });
+                    componentDispatcher[nameWidthModule] = actions; // eslint-disable-line no-param-reassign
+
+                    _this.ComponentNode = componentNode;
+
+                    _this.setState({
+                      componentReady: true
+                    }, function () {
+                      if (onMounted) {
+                        onMounted();
+                      } else {
+                        (0,_store__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_defineProperty({}, _config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS, mountedComponents), true);
+                      }
+                    });
+
+                  case 19:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee);
+          }));
+
+          return function (_x) {
+            return _ref2.apply(this, arguments);
+          };
+        }(), function (e) {
           window.requirejs.undef(name);
           window.requirejs.config({
             paths: _defineProperty({}, name, "".concat(components[name], "#"))
@@ -343,13 +390,13 @@ function componentCreator(_ref) {
         return (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
       });
 
-      _defineProperty(_assertThisInitialized(_this), "$render", function (_ref2) {
-        var componentName = _ref2.name,
-            url = _ref2.url,
-            target = _ref2.target,
-            props = _ref2.props,
-            componentModule = _ref2.module,
-            onMountedFn = _ref2.onMounted;
+      _defineProperty(_assertThisInitialized(_this), "$render", function (_ref3) {
+        var componentName = _ref3.name,
+            url = _ref3.url,
+            target = _ref3.target,
+            props = _ref3.props,
+            componentModule = _ref3.module,
+            onMountedFn = _ref3.onMounted;
 
         if (url) {
           // if define url, means replace component
@@ -388,7 +435,7 @@ function componentCreator(_ref) {
       key: "componentDidMount",
       value: function componentDidMount() {
         this.setState({
-          componentExist: window.requirejs.specified(name)
+          componentExist: (0,_preload__WEBPACK_IMPORTED_MODULE_3__.isComponentLoaded)(name)
         });
         this.mountComponent();
       }

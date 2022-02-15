@@ -14,6 +14,7 @@ import {
   MOUNTED_COMPONENTS,
   ERROR_TYPE,
   RETRY_COUNT,
+  ENV,
 } from '../config'
 import {
   RequireError,
@@ -81,7 +82,7 @@ function componentCreator({
     postMessage = getPostMessage(nameWidthModule)
 
     componentDidMount() {
-      this.setState({ componentExist: window.requirejs.specified(name) })
+      this.setState({ componentExist: isComponentLoaded(name) })
       this.mountComponent()
     }
 
@@ -133,7 +134,11 @@ function componentCreator({
         // ignore
       }
 
-      window.requirejs([name], (C: RequiredComponent) => {
+      window.requirejs([name], async (C: RequiredComponent) => {
+        if (ENV !== 'production' && !this.state.componentExist) {
+          await new Promise((r) => setTimeout(r, Math.random() * 1000))
+        }
+
         if (this.isUnMounted) {
           return
         }

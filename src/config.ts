@@ -30,3 +30,10 @@ export enum ERROR_TYPE {
 export const ROOT_CONTAINER = '#root'
 
 export const RETRY_COUNT = 1
+
+declare var process : {
+  env: {
+    NODE_ENV: string
+  }
+}
+export const ENV = process.env.NODE_ENV

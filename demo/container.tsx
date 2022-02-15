@@ -14,7 +14,7 @@ class Container extends Component<ContainerProps<Config>> {
       <HashRouter>
         <Wrapper {...this.props}>
           <div className="component">
-            <div className="title">X</div>
+            <div data-title="X" className="title">X</div>
             <X $silent />
           </div>
           <Switch>
@@ -25,7 +25,7 @@ class Container extends Component<ContainerProps<Config>> {
 
                   return (
                     <div key={name} className="component">
-                      <div className="title">{name}</div>
+                      <div data-title={name} className="title">{name}</div>
                       <C name={name} />
                     </div>
                   )
