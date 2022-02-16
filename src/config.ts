@@ -1,3 +1,10 @@
+// eslint-disable-next-line no-var
+declare var process : {
+  env: {
+    NODE_ENV: string,
+  },
+}
+
 export const DEFAULT_PACKAGES = {
   react: 'https://unpkg.com/react@17.0.2/umd/react.development.js',
   'react-dom': 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js',
@@ -31,9 +38,4 @@ export const ROOT_CONTAINER = '#root'
 
 export const RETRY_COUNT = 1
 
-declare var process : {
-  env: {
-    NODE_ENV: string
-  }
-}
 export const ENV = process.env.NODE_ENV
