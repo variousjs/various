@@ -179,7 +179,8 @@ var X = function X(props) {
   }, "$dispatch(global)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: onPost
   }, "$postMessage"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.DatePicker, {
-    defaultValue: moment__WEBPACK_IMPORTED_MODULE_2___default()(),
+    id: "date-picker",
+    defaultValue: moment__WEBPACK_IMPORTED_MODULE_2___default()('2022-02-15'),
     format: "MMMM Do YYYY"
   }));
 };

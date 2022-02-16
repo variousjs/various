@@ -52,7 +52,8 @@ function componentCreator({
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
-  const [name, module = Symbol('module')] = nameWidthModule.split('.')
+  const symbolModule = Symbol('module')
+  const [name, module = symbolModule] = nameWidthModule.split('.')
 
   class R extends Component<{
     $silent?: boolean,
@@ -144,14 +145,19 @@ function componentCreator({
         }
 
         if (!C) {
-          this.setState({ errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Not content', errorType: 'INVALID_COMPONENT' })
           return
         }
 
-        const componentNode = C[module as string] || C.default || C
+        const componentNode = module === symbolModule ? C.default || C : C[module]
+
+        if (!componentNode) {
+          this.setState({ errorMessage: 'Module not defined', errorType: 'INVALID_COMPONENT' })
+          return
+        }
 
         if (typeof componentNode !== 'function') {
-          this.setState({ errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Component cannot be executed', errorType: 'INVALID_COMPONENT' })
           return
         }
 

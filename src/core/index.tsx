@@ -62,7 +62,7 @@ export default (config: Config & Entry) => {
     const [name] = nameWidthSub.split('.')
     if (!components[name]) {
       return () => (
-        <ErrorNode type={ERROR_TYPE.NOT_DEFINED} />
+        <ErrorNode message="Component not defined" type={ERROR_TYPE.NOT_DEFINED} />
       )
     }
     if (COMPONENTS[nameWidthSub]) {

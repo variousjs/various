@@ -28,7 +28,8 @@ const X: FC<ComponentProps<Store>> = (props) => {
       <Button onClick={onSet}>$dispatch(global)</Button>
       <Button onClick={onPost}>$postMessage</Button>
       <DatePicker
-        defaultValue={moment()}
+        id="date-picker"
+        defaultValue={moment('2022-02-15')}
         format="MMMM Do YYYY"
       />
     </>

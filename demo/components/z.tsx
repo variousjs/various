@@ -94,3 +94,5 @@ export const Z: FC<ComponentProps<Store>> = (props) => {
     </div>
   )
 }
+
+export const A = 'a'

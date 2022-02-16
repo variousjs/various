@@ -19,6 +19,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RETRY_COUNT": function() { return /* binding */ RETRY_COUNT; },
 /* harmony export */   "ENV": function() { return /* binding */ ENV; }
 /* harmony export */ });
+// eslint-disable-next-line no-var
 var DEFAULT_PACKAGES = {
   react: 'https://unpkg.com/react@17.0.2/umd/react.development.js',
   'react-dom': 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js'
@@ -177,11 +178,13 @@ function componentCreator(_ref) {
   var components = config.components,
       rest = _objectWithoutProperties(config, _excluded);
 
+  var symbolModule = Symbol('module');
+
   var _nameWidthModule$spli = nameWidthModule.split('.'),
       _nameWidthModule$spli2 = _slicedToArray(_nameWidthModule$spli, 2),
       name = _nameWidthModule$spli2[0],
       _nameWidthModule$spli3 = _nameWidthModule$spli2[1],
-      module = _nameWidthModule$spli3 === void 0 ? Symbol('module') : _nameWidthModule$spli3;
+      module = _nameWidthModule$spli3 === void 0 ? symbolModule : _nameWidthModule$spli3;
 
   var R = /*#__PURE__*/function (_Component) {
     _inherits(R, _Component);
@@ -284,26 +287,41 @@ function componentCreator(_ref) {
                     }
 
                     _this.setState({
+                      errorMessage: 'Not content',
                       errorType: 'INVALID_COMPONENT'
                     });
 
                     return _context.abrupt("return");
 
                   case 8:
-                    componentNode = C[module] || C.default || C;
+                    componentNode = module === symbolModule ? C.default || C : C[module];
 
-                    if (!(typeof componentNode !== 'function')) {
+                    if (componentNode) {
                       _context.next = 12;
                       break;
                     }
 
                     _this.setState({
+                      errorMessage: 'Module not defined',
                       errorType: 'INVALID_COMPONENT'
                     });
 
                     return _context.abrupt("return");
 
                   case 12:
+                    if (!(typeof componentNode !== 'function')) {
+                      _context.next = 15;
+                      break;
+                    }
+
+                    _this.setState({
+                      errorMessage: 'Component cannot be executed',
+                      errorType: 'INVALID_COMPONENT'
+                    });
+
+                    return _context.abrupt("return");
+
+                  case 15:
                     mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
                     actions = {};
 
@@ -339,7 +357,7 @@ function componentCreator(_ref) {
                       }
                     });
 
-                  case 19:
+                  case 22:
                   case "end":
                     return _context.stop();
                 }
@@ -1458,6 +1476,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
     if (!components[name]) {
       return function () {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorNode, {
+          message: "Component not defined",
           type: _config__WEBPACK_IMPORTED_MODULE_5__.ERROR_TYPE.NOT_DEFINED
         });
       };
