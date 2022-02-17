@@ -19,7 +19,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RETRY_COUNT": function() { return /* binding */ RETRY_COUNT; },
 /* harmony export */   "ENV": function() { return /* binding */ ENV; }
 /* harmony export */ });
-// eslint-disable-next-line no-var
 var DEFAULT_PACKAGES = {
   react: 'https://unpkg.com/react@17.0.2/umd/react.development.js',
   'react-dom': 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js'
@@ -262,27 +261,16 @@ function componentCreator(_ref) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
-                    if (!(_config__WEBPACK_IMPORTED_MODULE_6__.ENV !== 'production' && !_this.state.componentExist)) {
-                      _context.next = 3;
-                      break;
-                    }
-
-                    _context.next = 3;
-                    return new Promise(function (r) {
-                      return setTimeout(r, Math.random() * 1000);
-                    });
-
-                  case 3:
                     if (!_this.isUnMounted) {
-                      _context.next = 5;
+                      _context.next = 2;
                       break;
                     }
 
                     return _context.abrupt("return");
 
-                  case 5:
+                  case 2:
                     if (C) {
-                      _context.next = 8;
+                      _context.next = 5;
                       break;
                     }
 
@@ -293,11 +281,11 @@ function componentCreator(_ref) {
 
                     return _context.abrupt("return");
 
-                  case 8:
+                  case 5:
                     componentNode = module === symbolModule ? C.default || C : C[module];
 
                     if (componentNode) {
-                      _context.next = 12;
+                      _context.next = 9;
                       break;
                     }
 
@@ -308,9 +296,9 @@ function componentCreator(_ref) {
 
                     return _context.abrupt("return");
 
-                  case 12:
+                  case 9:
                     if (!(typeof componentNode !== 'function')) {
-                      _context.next = 15;
+                      _context.next = 12;
                       break;
                     }
 
@@ -321,7 +309,7 @@ function componentCreator(_ref) {
 
                     return _context.abrupt("return");
 
-                  case 15:
+                  case 12:
                     mountedComponents = (0,_store__WEBPACK_IMPORTED_MODULE_4__.getStore)()[_config__WEBPACK_IMPORTED_MODULE_6__.MOUNTED_COMPONENTS];
                     actions = {};
 
@@ -357,7 +345,7 @@ function componentCreator(_ref) {
                       }
                     });
 
-                  case 22:
+                  case 19:
                   case "end":
                     return _context.stop();
                 }

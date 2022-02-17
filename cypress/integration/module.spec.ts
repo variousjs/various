@@ -7,7 +7,7 @@ describe('module test', () => {
 
   it('sub module', () => {
     cy.get('[data-title="g"]').next().should('have.text', 'G')
-    cy.get('[data-title="g.Y"]').next().should('have.text', 'G')
+    cy.get('[data-title="z.X"]').next().should('contain.text', 'Rendered(Z)')
     cy.get('[data-title="gg"]').next().should('have.text', 'G')
   })
 
@@ -33,9 +33,9 @@ describe('module test', () => {
   })
 
   it('$getMountedComponents', () => {
-    cy.get('.component-loaded').should('have.length', 4).then(() => {
+    cy.get('.component-loaded').should('have.length', 3).then(() => {
       cy.contains('$getMountedComponents').click()
-      cy.get('#mounted-components').should('have.text', 'g,g.Y,gg,x,z.X')
+      cy.get('#mounted-components').should('have.text', 'g,gg,x,z.X')
     })
   })
 })
