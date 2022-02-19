@@ -4,8 +4,8 @@ import { Store, Config } from '../types'
 
 const X: FC<ComponentProps<Store, Config>> = (props) => (
   <>
-    <p>Store: {props.$store.user.name}</p>
-    <p>Config: {props.$config.menu.map((t) => t.label).join()}</p>
+    <p>Store: <span id="i-store-name">{props.$store.user.name}</span></p>
+    <p>Config: <span id="config-menu">{props.$config.menu.map((t) => t.label).join()}</span></p>
   </>
 )
 

@@ -6,7 +6,7 @@ const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('index.js', 'core.js')
 
 function loader(config: Config) {
-  const { dependencies, components, entry: entryPath } = config || {}
+  const { dependencies, components, entry: entryPath } = config
   const paths = {
     ...DEFAULT_PACKAGES,
     ...dependencies,
@@ -27,16 +27,9 @@ function loader(config: Config) {
     },
   })
 
-  const requires = ['@variousjs/various']
-  if (paths['various-entry']) {
-    requires.push('various-entry')
-  }
-
-  window.requirejs(requires, (various: Various, entry: Entry) => {
+  window.requirejs(['@variousjs/various', 'various-entry'], (various: Various, entry: Entry) => {
     various.default({ ...config, ...entry })
   })
 }
 
-if (window.VARIOUS_CONFIG) {
-  loader(window.VARIOUS_CONFIG)
-}
+loader(window.VARIOUS_CONFIG)

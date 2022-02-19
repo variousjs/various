@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Button } from 'antd'
 import {
   ComponentProps, Connect, Store, OnMessage,
 } from '@variousjs/various'
@@ -11,11 +12,21 @@ const { createStore, connect, dispatch } = new Store<S>()
 createStore({ message: '' })
 
 const D: FC<ComponentProps & CT> & { $onMessage: OnMessage } = (props) => (
-  <p>Message: {props.message}</p>
+  <>
+    <p id="d-m">Message: {props.message}</p>
+    <Button
+      id="d-message"
+      onClick={() => {
+        props.$postMessage('xyz')
+      }}
+    >
+      $postMessage
+    </Button>
+  </>
 )
 
 D.$onMessage = (message) => {
   dispatch({ message: `${message.type}|${message.value || '-'}` })
 }
 
-export default connect('message')(D)
+export const dd = connect('message')(D)

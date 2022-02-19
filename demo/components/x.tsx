@@ -23,12 +23,13 @@ const X: FC<ComponentProps<Store>> = (props) => {
   return (
     <>
       <p>Store: {props.$store.user.name}</p>
-      <p>MountedComponents: {m.join()}</p>
+      <p>MountedComponents: <span id="mounted-components">{m.sort().join()}</span></p>
       <Button onClick={onMounted}>$getMountedComponents</Button>
-      <Button onClick={onSet}>$dispatch(global)</Button>
-      <Button onClick={onPost}>$postMessage</Button>
+      <Button id="x-dispatch-global" onClick={onSet}>$dispatch(global)</Button>
+      <Button id="x-message" onClick={onPost}>$postMessage</Button>
       <DatePicker
-        defaultValue={moment()}
+        id="date-picker"
+        defaultValue={moment('2022-02-15')}
         format="MMMM Do YYYY"
       />
     </>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title> VariousJS </title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@3.26.14/dist/antd.min.css" />
+<link rel="stylesheet" href="./lib/antd.min.css" />
 <style>
 .component {
   background: #fff;
@@ -55,7 +55,7 @@ var VARIOUS_CONFIG = {
 
     store: './dist/a.js',
     empty: './dist/empty.js',
-    link: 'http://no-exist/link.js',
+    link: '/link.js',
   },
   menu: [
     {
@@ -87,11 +87,11 @@ var VARIOUS_CONFIG = {
   routes: [
     {
       path: '/error',
-      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty'],
+      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty', 'z.A'],
     },
     {
       path: '/module',
-      components: ['z.X', 'g', 'g.Y', 'gg'],
+      components: ['z.X', 'g', 'gg'],
     },
     {
       path: '/dispatch',
@@ -99,7 +99,7 @@ var VARIOUS_CONFIG = {
     },
     {
       path: '/message',
-      components: ['c', 'd'],
+      components: ['c', 'd.dd'],
     },
     {
       path: '/',
@@ -112,11 +112,6 @@ var VARIOUS_CONFIG = {
 <body>
 <div id="root"></div>
 <script src="./lib/require.js"></script>
-<script>
-window.requirejs.onError = (e) => {
-  console.warn(e)
-}
-</script>
 <script src="./dist/index.js"></script>
 </body>
 </html>

@@ -3,6 +3,6 @@ import { Spin } from 'antd'
 
 export default function () {
   return (
-    <Spin />
+    <Spin className="component-loading" />
   )
 }

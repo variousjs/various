@@ -51,7 +51,8 @@ function componentCreator({
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
-  const [name, module = Symbol('module')] = nameWidthModule.split('.')
+  const symbolModule = Symbol('module')
+  const [name, module = symbolModule] = nameWidthModule.split('.')
 
   class R extends Component<{
     $silent?: boolean,
@@ -78,10 +79,10 @@ function componentCreator({
 
     dispatch = currentDispatch.bind(this, name)
 
-    postMessage = getPostMessage(name)
+    postMessage = getPostMessage(nameWidthModule)
 
     componentDidMount() {
-      this.setState({ componentExist: window.requirejs.specified(name) })
+      this.setState({ componentExist: isComponentLoaded(name) })
       this.mountComponent()
     }
 
@@ -108,7 +109,7 @@ function componentCreator({
 
     unMountComponent = () => {
       let mountedComponents = this.$getMountedComponents()
-      mountedComponents = mountedComponents.filter((item) => item !== name)
+      mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
       dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
       // eslint-disable-next-line no-param-reassign
@@ -133,28 +134,33 @@ function componentCreator({
         // ignore
       }
 
-      window.requirejs([name], (C: RequiredComponent) => {
+      window.requirejs([name], async (C: RequiredComponent) => {
         if (this.isUnMounted) {
           return
         }
 
         if (!C) {
-          this.setState({ errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Not content', errorType: 'INVALID_COMPONENT' })
           return
         }
 
-        const componentNode = C[module as string] || C.default || C
+        const componentNode = module === symbolModule ? C.default || C : C[module]
+
+        if (!componentNode) {
+          this.setState({ errorMessage: 'Module not defined', errorType: 'INVALID_COMPONENT' })
+          return
+        }
 
         if (typeof componentNode !== 'function') {
-          this.setState({ errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Component cannot be executed', errorType: 'INVALID_COMPONENT' })
           return
         }
 
         const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
         const actions: Entry['actions'] = {}
 
-        if (!mountedComponents.includes(name)) {
-          mountedComponents.push(name)
+        if (!mountedComponents.includes(nameWidthModule)) {
+          mountedComponents.push(nameWidthModule)
         }
 
         Object
@@ -164,7 +170,7 @@ function componentCreator({
               return
             }
             if (method === '$onMessage') {
-              this.unsubscribe = subscribe(getOnMessage(name, componentNode[method]))
+              this.unsubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
             if (!IGNORE_STATIC_METHODS.includes(method)) {
