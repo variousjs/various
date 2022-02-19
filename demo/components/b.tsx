@@ -33,7 +33,7 @@ const B: FC<Connect & ComponentProps> & { getValue: () => string } = (props) => 
       <p>Dispatch Error: {de}</p>
       <Button onClick={setA}>$dispatch(a)</Button>
       <Button onClick={setE}>$dispatch(no-exist)</Button>
-      <Button onClick={setGlobal}>$dispatch(global)</Button>
+      <Button id="b-dispatch-global" onClick={setGlobal}>$dispatch(global)</Button>
     </>
   )
 }

@@ -229,6 +229,7 @@ var B = function B(props) {
   }, "$dispatch(a)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: setE
   }, "$dispatch(no-exist)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    id: "b-dispatch-global",
     onClick: setGlobal
   }, "$dispatch(global)"));
 };

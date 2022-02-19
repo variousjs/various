@@ -13,8 +13,9 @@ createStore({ message: '' })
 
 const D: FC<ComponentProps & CT> & { $onMessage: OnMessage } = (props) => (
   <>
-    <p>Message: {props.message}</p>
+    <p id="d-m">Message: {props.message}</p>
     <Button
+      id="d-message"
       onClick={() => {
         props.$postMessage('xyz')
       }}

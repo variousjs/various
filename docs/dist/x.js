@@ -175,8 +175,10 @@ var X = function X(props) {
   }, m.sort().join())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: onMounted
   }, "$getMountedComponents"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    id: "x-dispatch-global",
     onClick: onSet
   }, "$dispatch(global)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    id: "x-message",
     onClick: onPost
   }, "$postMessage"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.DatePicker, {
     id: "date-picker",

@@ -23,7 +23,7 @@
     "prebuild": "npm run lint",
     "build": "NODE_ENV=production webpack --progress --config webpack/components.js && NODE_ENV=production webpack --config webpack/index.js --progress",
     "postbuild": "cp -R dist/ docs/dist/",
-    "cypress:ci": "cypress run",
+    "cypress:ci": "npm start & cypress run",
     "cypress": "cypress open"
   },
   "repository": {

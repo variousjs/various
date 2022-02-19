@@ -25,8 +25,8 @@ class C extends Component<ComponentProps & CT> {
 
     return (
       <>
-        <p>Message: {message}</p>
-        <Button onClick={this.onMsg}>$postMessage</Button>
+        <p id="c-m">Message: {message}</p>
+        <Button id="c-message" onClick={this.onMsg}>$postMessage</Button>
       </>
     )
   }

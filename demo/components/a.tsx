@@ -44,9 +44,9 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
         <p>Store(component): {value}</p>
         <p>Component Props: {name}</p>
         <p>Value(b): {bValue}</p>
-        <p>Dispatch Error: {dispatchError}</p>
+        <p>Dispatch Error: <span id="a-dispatch-error">{dispatchError}</span></p>
         <Button onClick={this.onGetB}>$dispatch(b)</Button>
-        <Button onClick={this.onSetG}>$dispatch(global)</Button>
+        <Button id="a-dispatch-global" onClick={this.onSetG}>$dispatch(global)</Button>
       </>
     )
   }

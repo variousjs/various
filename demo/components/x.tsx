@@ -25,8 +25,8 @@ const X: FC<ComponentProps<Store>> = (props) => {
       <p>Store: {props.$store.user.name}</p>
       <p>MountedComponents: <span id="mounted-components">{m.sort().join()}</span></p>
       <Button onClick={onMounted}>$getMountedComponents</Button>
-      <Button onClick={onSet}>$dispatch(global)</Button>
-      <Button onClick={onPost}>$postMessage</Button>
+      <Button id="x-dispatch-global" onClick={onSet}>$dispatch(global)</Button>
+      <Button id="x-message" onClick={onPost}>$postMessage</Button>
       <DatePicker
         id="date-picker"
         defaultValue={moment('2022-02-15')}
