@@ -23,6 +23,8 @@ describe('props test', () => {
       .then(() => {
         cy.contains('$dispatch(b)').click()
         cy.contains('Value(b)').should('have.text', 'Value(b): b')
+        cy.contains('$dispatch(b-no-exits)').click()
+        cy.get('#a-dispatch-error').should('have.text', 'action `no-exist` of component `b` is not present')
       })
     cy.get('[data-title="b"]').next().should('have.text', 'Dispatch Error: component `no-exist` is not ready')
     cy.get('[data-title="a"]').then(() => {

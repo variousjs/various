@@ -34,6 +34,14 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
     }
   }
 
+  onDpB = async () => {
+    try {
+      await this.props.$dispatch('b', 'no-exist')
+    } catch (e) {
+      this.setState({ dispatchError: (e as Error).message })
+    }
+  }
+
   render() {
     const { value, name, $store } = this.props
     const { dispatchError, bValue } = this.state
@@ -46,6 +54,7 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
         <p>Value(b): {bValue}</p>
         <p>Dispatch Error: <span id="a-dispatch-error">{dispatchError}</span></p>
         <Button onClick={this.onGetB}>$dispatch(b)</Button>
+        <Button onClick={this.onDpB}>$dispatch(b-no-exits)</Button>
         <Button id="a-dispatch-global" onClick={this.onSetG}>$dispatch(global)</Button>
       </>
     )

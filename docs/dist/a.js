@@ -212,6 +212,35 @@ var A = /*#__PURE__*/function (_Component) {
       }, _callee, null, [[0, 5]]);
     })));
 
+    _defineProperty(_assertThisInitialized(_this), "onDpB", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.prev = 0;
+              _context2.next = 3;
+              return _this.props.$dispatch('b', 'no-exist');
+
+            case 3:
+              _context2.next = 8;
+              break;
+
+            case 5:
+              _context2.prev = 5;
+              _context2.t0 = _context2["catch"](0);
+
+              _this.setState({
+                dispatchError: _context2.t0.message
+              });
+
+            case 8:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, null, [[0, 5]]);
+    })));
+
     return _this;
   }
 
@@ -230,6 +259,8 @@ var A = /*#__PURE__*/function (_Component) {
       }, dispatchError)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
         onClick: this.onGetB
       }, "$dispatch(b)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        onClick: this.onDpB
+      }, "$dispatch(b-no-exits)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_1__.Button, {
         id: "a-dispatch-global",
         onClick: this.onSetG
       }, "$dispatch(global)"));
@@ -240,12 +271,12 @@ var A = /*#__PURE__*/function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 _defineProperty(A, "updateValue", /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(value) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
-            _context2.next = 2;
+            _context3.next = 2;
             return new Promise(function (r) {
               return setTimeout(r, 100);
             });
@@ -257,14 +288,14 @@ _defineProperty(A, "updateValue", /*#__PURE__*/function () {
 
           case 3:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2);
+    }, _callee3);
   }));
 
   return function (_x) {
-    return _ref2.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }());
 
