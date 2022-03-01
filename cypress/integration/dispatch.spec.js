@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('props test', () => {
+describe('dispatch test', () => {
   beforeEach(() => {
     cy.visit('/#/dispatch')
   })

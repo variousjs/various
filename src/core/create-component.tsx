@@ -9,12 +9,7 @@ import {
   subscribe,
 } from './store'
 import { getOnMessage, getPostMessage } from './message'
-import {
-  IGNORE_STATIC_METHODS,
-  MOUNTED_COMPONENTS,
-  ERROR_TYPE,
-  RETRY_COUNT,
-} from '../config'
+import { MOUNTED_COMPONENTS, ERROR_TYPE, RETRY_COUNT } from '../config'
 import {
   RequireError,
   Entry,
@@ -173,9 +168,8 @@ function componentCreator({
               this.unsubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
-            if (!IGNORE_STATIC_METHODS.includes(method)) {
-              actions[method] = componentNode[method]
-            }
+
+            actions[method] = componentNode[method]
           })
 
         componentDispatcher[nameWidthModule] = actions // eslint-disable-line no-param-reassign

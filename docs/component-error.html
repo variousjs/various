@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<script>
+var VARIOUS_CONFIG = {
+  entry: './dist/component-error.js',
+  dependencies: {
+    react: './lib/react.development.js',
+    'react-dom': './lib/react-dom.development.js',
+  },
+  components: {
+    f: './dist/f.js',
+  },
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="./lib/require.js"></script>
+<script src="./dist/index.js"></script>
+</body>
+</html>

@@ -5,6 +5,9 @@ const base = require('./base')
 const { NODE_ENV = 'development' } = process.env
 const components = {
   entry: path.resolve(__dirname, '../demo/entry.ts'),
+  default: path.resolve(__dirname, '../demo/default.ts'),
+  'container-error': path.resolve(__dirname, '../demo/container-error.tsx'),
+  'component-error': path.resolve(__dirname, '../demo/component-error.tsx'),
 }
 
 fs

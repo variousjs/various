@@ -13,17 +13,6 @@ export const MOUNTED_COMPONENTS = Symbol('MOUNTED_COMPONENTS')
 
 export const MESSAGE_KEY = Symbol('MESSAGE_KEY')
 
-export const IGNORE_STATIC_METHODS = [
-  'name',
-  'prototype',
-  'length',
-  'propTypes',
-  'defaultProps',
-  'getDerivedStateFromProps',
-  'contextTypes',
-  'displayName',
-]
-
 export enum ERROR_TYPE {
   LOADING_ERROR = 'LOADING_ERROR',
   DEPENDENCIES_LOADING_ERROR = 'DEPENDENCIES_LOADING_ERROR',
