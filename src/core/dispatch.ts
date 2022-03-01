@@ -5,7 +5,6 @@ type Ctx = {
 }
 
 export default function (
-  dispatch: Connector.dispatch,
   storeDispatcher: Entry['actions'],
   componentDispatcher: { [name: string]: Entry['actions'] },
 ) {
@@ -16,7 +15,7 @@ export default function (
     func: string,
     value: any,
   ) {
-    const currentDispatch = this.props.dispatch || dispatch
+    const currentDispatch = this.props.dispatch
 
     if (name === 'store') {
       if (!storeDispatcher[func]) {

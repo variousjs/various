@@ -18,7 +18,10 @@ describe('module test', () => {
     cy.contains('$render(switch)').click()
     cy.get('#render-z').should('have.text', 'yes')
     cy.get('#render-switch').should('have.text', 'yes')
-    cy.contains('$isComponentLoaded(H)').should('have.length', 1)
+    cy.contains('remove(Z)').should('have.length', 1)
+      .click().then(() => {
+        cy.contains('remove(Z)').should('not.exist')
+      })
     cy.get('#switch').within(() => {
       cy.get('input').should('have.css', 'display', 'none')
     })
@@ -27,9 +30,12 @@ describe('module test', () => {
   it('$preload', () => {
     cy.contains('$preload(H)').click()
     cy.get('#preload-h').should('have.text', 'yes')
-    cy.contains('$render(Z)').click()
-    cy.contains('$isComponentLoaded(H)').click()
-    cy.get('#component-loaded-h').should('have.text', 'yes')
+      .then(() => {
+        cy.window().then((w) => {
+          expect(w.requirejs.specified('h')).to.equal(true)
+          expect(!!w.requirejs.s.contexts._.defined.h).to.equal(true)
+        })
+      })
   })
 
   it('$getMountedComponents', () => {

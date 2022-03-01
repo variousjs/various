@@ -1,7 +1,6 @@
-import React, { Component, FC, useState } from 'react'
+import React, { Component, FC } from 'react'
 import { Button } from 'antd'
 import { ComponentProps } from '@variousjs/various'
-import { Store } from '../types'
 
 export class X extends Component<ComponentProps> {
   private unMountZ: () => void
@@ -23,6 +22,12 @@ export class X extends Component<ComponentProps> {
     }
   }
 
+  removeZ = () => {
+    if (this.unMountZ) {
+      this.unMountZ()
+    }
+  }
+
   onZ = async () => {
     const { $render } = this.props
     if ($render) {
@@ -30,6 +35,9 @@ export class X extends Component<ComponentProps> {
         name: 'z',
         module: 'Z',
         target: document.querySelector('#z'),
+        props: {
+          unMount: this.removeZ,
+        },
         onMounted: () => {
           this.setState({ zReady: true })
         },
@@ -76,23 +84,10 @@ export class X extends Component<ComponentProps> {
   }
 }
 
-export const Z: FC<ComponentProps<Store>> = (props) => {
-  const [l, setL] = useState(false)
-
-  return (
-    <div style={{ borderTop: '1px solid #eee', marginTop: 10, paddingTop: 10 }}>
-      <p>ComponentLoaded(H): <span id="component-loaded-h">{l ? 'yes' : 'no'}</span></p>
-      <Button
-        onClick={() => {
-          if (props.$isComponentLoaded('h')) {
-            setL(true)
-          }
-        }}
-      >
-        $isComponentLoaded(H)
-      </Button>
-    </div>
-  )
-}
+export const Z: FC<{ unMount: () => void }> = (props) => (
+  <div style={{ borderTop: '1px solid #eee', marginTop: 10, paddingTop: 10 }}>
+    <Button onClick={props.unMount}>remove(Z)</Button>
+  </div>
+)
 
 export const A = 'a'

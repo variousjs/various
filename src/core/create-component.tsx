@@ -49,7 +49,7 @@ function componentCreator({
   onMounted,
 }: E) {
   const storeKeys = Object.keys(getStore())
-  const currentDispatch = getDispatch(dispatch, storeDispatcher, componentDispatcher)
+  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
@@ -314,7 +314,6 @@ function componentCreator({
           $preload={preload}
           $postMessage={this.postMessage}
           $getMountedComponents={this.$getMountedComponents}
-          $isComponentLoaded={isComponentLoaded}
         />
       )
     }
