@@ -53,6 +53,8 @@ var VARIOUS_CONFIG = {
     x: './dist/x.js',
     z: './dist/z.js',
 
+    timeout: './dist/timeout.js',
+    'timeout-error': './dist/timeout-error.js',
     store: './dist/a.js',
     empty: './dist/empty.js',
     link: '/link.js',
@@ -87,11 +89,11 @@ var VARIOUS_CONFIG = {
   routes: [
     {
       path: '/error',
-      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty', 'z.A'],
+      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty', 'z.A', 'timeout-error'],
     },
     {
       path: '/module',
-      components: ['z.X', 'g', 'gg'],
+      components: ['z.X', 'g', 'gg', 'timeout', 'timeout-error'],
     },
     {
       path: '/dispatch',

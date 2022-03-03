@@ -26,7 +26,7 @@ class Container extends Component<ContainerProps<Config>> {
                   return (
                     <div key={name} className="component">
                       <div data-title={name} className="title">{name}</div>
-                      <C name={name} />
+                      <C name={name} $silent={name === 'timeout-error'} />
                     </div>
                   )
                 })
