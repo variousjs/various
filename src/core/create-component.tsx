@@ -64,8 +64,6 @@ function componentCreator({
       errorMessage: '',
     }
 
-    private unsubscribe: () => void
-
     private ComponentNode: RequiredComponent | null
 
     private isUnMounted?: boolean
@@ -96,11 +94,10 @@ function componentCreator({
       this.ComponentNode = null
       this.unMountComponent()
       this.isUnMounted = true
-
-      if (this.unsubscribe) {
-        this.unsubscribe()
-      }
+      this.unSubscribe()
     }
+
+    private unSubscribe = () => null as unknown
 
     unMountComponent = () => {
       let mountedComponents = this.$getMountedComponents()
@@ -165,7 +162,7 @@ function componentCreator({
               return
             }
             if (method === '$onMessage') {
-              this.unsubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
+              this.unSubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
 
