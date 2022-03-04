@@ -1,6 +1,6 @@
 {
   "name": "@variousjs/various",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
