@@ -40,7 +40,7 @@ describe('module test', () => {
 
   it('$getMountedComponents', () => {
     cy.get('.component-loaded').should('have.length', 3).then(() => {
-      cy.wait(1100)
+      cy.wait(2500)
       cy.contains('$getMountedComponents').click()
       cy.get('#mounted-components').should('have.text', 'g,gg,timeout,x,z.X')
     })

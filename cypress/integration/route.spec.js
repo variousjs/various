@@ -12,7 +12,7 @@ describe('route test', () => {
           cy.get('[data-title="gg"]').should('exist').then(() => {
             cy.contains('$render(Z)').click().then(() => {
               cy.visit('/#/message')
-              cy.wait(1100)
+              cy.wait(2500)
               cy.contains('Container').should('exist')
               cy.get('[data-title="X"]').should('exist')
               cy.get('[data-title="c"]').should('exist')

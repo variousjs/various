@@ -21,7 +21,7 @@ describe('component error test', () => {
     cy.contains('[INVALID_COMPONENT]:Not content').should('exist')
     cy.contains('[INVALID_COMPONENT]:Component cannot be executed').should('exist')
     cy.contains('[INVALID_COMPONENT]:Module not defined').should('exist')
-    cy.wait(1100)
+    cy.wait(2500)
     cy.get('[data-title="timeout-error"]').next().should('not.exist')
   })
 
