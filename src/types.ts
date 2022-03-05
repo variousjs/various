@@ -1,10 +1,6 @@
 import Nycticorax, { Connect } from 'nycticorax'
 import { ComponentType } from 'react'
-import {
-  ErrorProps,
-  Actions,
-  ContainerProps,
-} from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps } from '@variousjs/various'
 
 export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
 

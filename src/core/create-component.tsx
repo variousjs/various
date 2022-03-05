@@ -9,7 +9,7 @@ import {
   subscribe,
 } from './store'
 import { getOnMessage, getPostMessage } from './message'
-import { MOUNTED_COMPONENTS, ERROR_TYPE, RETRY_COUNT } from '../config'
+import { MOUNTED_COMPONENTS, RETRY_COUNT, ERROR_TYPE } from '../config'
 import {
   RequireError,
   Entry,
@@ -80,7 +80,7 @@ function componentCreator({
     }
 
     componentDidCatch(e: Error) {
-      this.setState({ errorType: 'SCRIPT_ERROR', errorMessage: e.message })
+      this.setState({ errorType: ERROR_TYPE.SCRIPT_ERROR, errorMessage: e.message })
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -110,7 +110,7 @@ function componentCreator({
 
     mountComponent = () => {
       if (name === 'store') {
-        this.setState({ errorType: 'INVALID_COMPONENT', errorMessage: 'Cannot load component named `store`' })
+        this.setState({ errorType: ERROR_TYPE.INVALID_COMPONENT, errorMessage: 'Cannot load component named `store`' })
         return
       }
 
@@ -132,19 +132,19 @@ function componentCreator({
         }
 
         if (!C) {
-          this.setState({ errorMessage: 'Not content', errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Not content', errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
-        const componentNode = module === symbolModule ? C.default || C : C[module]
+        const componentNode = module === symbolModule ? (C.default || C) : C[module]
 
         if (!componentNode) {
-          this.setState({ errorMessage: 'Module not defined', errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Module not defined', errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
         if (typeof componentNode !== 'function') {
-          this.setState({ errorMessage: 'Component cannot be executed', errorType: 'INVALID_COMPONENT' })
+          this.setState({ errorMessage: 'Component cannot be executed', errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
@@ -201,7 +201,8 @@ function componentCreator({
         const [requireModule] = e.requireModules
 
         this.setState({
-          errorType: requireModule === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
+          errorType: requireModule === name
+            ? ERROR_TYPE.LOADING_ERROR : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR,
           errorMessage: e.message,
         })
       })
@@ -275,7 +276,7 @@ function componentCreator({
             <Error
               type={ERROR_TYPE[errorType]}
               message={errorMessage}
-              reload={errorType === 'INVALID_COMPONENT' ? undefined : this.onReload}
+              reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
             />
           )
           : null

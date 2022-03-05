@@ -5,9 +5,9 @@ import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
 import {
   MOUNTED_COMPONENTS,
-  ERROR_TYPE,
   ROOT_CONTAINER,
   MESSAGE_KEY,
+  ERROR_TYPE,
 } from '../config'
 import {
   Entry,
@@ -80,7 +80,7 @@ export default (config: Config & Entry) => {
     }
 
     componentDidCatch(e: Error) {
-      this.setState({ errorType: 'CONTAINER_ERROR', errorMessage: e.message })
+      this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
     }
 
     render() {
