@@ -14,7 +14,7 @@ const configs = [{
   },
   mode: NODE_ENV,
   output: {
-    path: path.resolve(__dirname, '../docs/dist'),
+    path: path.resolve(__dirname, '../demo/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
   },

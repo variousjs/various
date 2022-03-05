@@ -23,5 +23,5 @@
     "stripInternal": true,
     "strictPropertyInitialization": false
   },
-  "exclude": ["dist", "docs"],
+  "exclude": ["dist", "demo"],
 }

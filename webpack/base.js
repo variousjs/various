@@ -55,9 +55,9 @@ const config = {
     port: 2333,
     host: '0.0.0.0',
     static: {
-      directory: path.join(__dirname, '../docs'),
+      directory: path.join(__dirname, '../demo'),
     },
-    watchFiles: ['../docs'],
+    watchFiles: ['../demo'],
   },
   module: {
     rules: [

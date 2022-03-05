@@ -12,7 +12,7 @@
   },
   "nyc": {
     "exclude": [
-      "demo/*"
+      "examples/*"
     ],
     "excludeAfterRemap": true
   },
@@ -21,8 +21,7 @@
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress",
     "prebuild": "npm run lint",
-    "build": "NODE_ENV=production webpack --progress --config webpack/components.js && NODE_ENV=production webpack --config webpack/index.js --progress",
-    "postbuild": "cp -R dist/ docs/dist/",
+    "build": "NODE_ENV=production webpack --config webpack/index.js --progress",
     "cy:run": "cypress run",
     "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
