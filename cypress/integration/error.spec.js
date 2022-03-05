@@ -18,10 +18,10 @@ describe('component error test', () => {
       .should('exist').parent().next()
       .should('have.attr', 'type', 'button')
     cy.contains('[NOT_DEFINED]:Component not defined').should('exist')
-    cy.contains('[INVALID_COMPONENT]:Not content').should('exist')
+    cy.contains('[INVALID_COMPONENT]:No content').should('exist')
     cy.contains('[INVALID_COMPONENT]:Component cannot be executed').should('exist')
     cy.contains('[INVALID_COMPONENT]:Module not defined').should('exist')
-    cy.wait(2500)
+    cy.wait(3500)
     cy.get('[data-title="timeout-error"]').next().should('not.exist')
   })
 

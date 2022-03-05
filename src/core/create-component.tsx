@@ -132,7 +132,7 @@ function componentCreator({
         }
 
         if (!C) {
-          this.setState({ errorMessage: 'Not content', errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.setState({ errorMessage: 'No content', errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
