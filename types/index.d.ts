@@ -1,12 +1,13 @@
 declare module '@variousjs/various' {
   import { ComponentType } from 'react'
+  import { Dispatch } from 'nycticorax'
 
-  type $dispatch = (type: string, method: string, value?: any) => unknown
+  type $dispatch = (type: string, method: string, value?: any) => Promise<any>
   type $render = (params: {
     name: string,
     url?: string,
     module?: string,
-    props?: { [key: string]: any },
+    props?: Record<string, any>,
     target: Element | null,
     onMounted?: () => void,
   }) => () => void
@@ -40,14 +41,7 @@ declare module '@variousjs/various' {
     }>,
   }
 
-  type Store<S> = {
-    getStore: () => S,
-    dispatch: (next: Partial<S>) => void,
-  }
-
-  export type Actions<S = {}> = {
-    [name: string]: (store: Store<S>, ...args: any[]) => unknown,
-  }
+  export type Actions<S = {}> = Record<string, Dispatch<S>>
 
   export type OnMessage = (message: {
     type: string,

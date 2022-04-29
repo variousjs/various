@@ -1,4 +1,4 @@
-import { Connector, Entry } from '../types'
+import { Entry } from '../types'
 
 type Ctx = {
   props: { dispatch: Connector.dispatch },
@@ -6,7 +6,7 @@ type Ctx = {
 
 export default function (
   storeDispatcher: Entry['actions'],
-  componentDispatcher: { [name: string]: Entry['actions'] },
+  componentDispatcher: Record<string, Entry['actions']>,
 ) {
   return function (
     this: Ctx,

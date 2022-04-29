@@ -1,10 +1,10 @@
 import Nycticorax from 'nycticorax'
-import { Connector } from '../types'
+import { Store } from '../types'
 
 export const {
   createStore,
   getStore,
   connect,
-  dispatch,
+  emit,
   subscribe,
-} = new Nycticorax<Connector.Store>()
+} = new Nycticorax<Store>()

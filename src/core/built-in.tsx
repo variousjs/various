@@ -1,11 +1,11 @@
-import React from 'react'
-import { Entry } from '../types'
+import React, { ComponentType } from 'react'
+import { ErrorProps } from '../types'
 
 export const Loader = () => (
   <div>Loading</div>
 )
 
-export const Error: Entry['Error'] = ({ type, message, reload }) => (
+export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
   <>
     <div>{`[${type}]${message}`}</div>
     {

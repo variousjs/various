@@ -1,24 +1,22 @@
 import { OnMessage } from '@variousjs/various'
-import { dispatch, getStore } from './store'
+import { emit, getStore } from './store'
 import { MESSAGE_KEY } from '../config'
-import { Connector } from '../types'
+import { Store } from '../types'
 
-type Keys = (keyof Connector.Store)[]
-
-export const getPostMessage = (type: string) => (name: string, value: any) => dispatch({
+export const getPostMessage = (type: string) => (name: string, value: any) => emit({
   [MESSAGE_KEY]: {
     timestamp: +new Date(),
     type,
     name,
     value,
   },
-}) as void
+})
 
-export const getOnMessage = (type: string, onMessage: OnMessage) => (keys: Keys) => {
+export const getOnMessage = (type: string, onMessage: OnMessage) => (keys: (keyof Store)[]) => {
   if (keys[0] === MESSAGE_KEY) {
-    const { name, value, type: triggerType } = getStore()[MESSAGE_KEY] as Connector.Message
+    const { name, value, type: triggerType } = getStore()[MESSAGE_KEY]
     if (triggerType !== type) {
-      onMessage({ name, value, type: triggerType })
+      onMessage({ name: name!, value, type: triggerType! })
     }
   }
 }

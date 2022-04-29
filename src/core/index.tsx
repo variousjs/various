@@ -9,12 +9,7 @@ import {
   MESSAGE_KEY,
   ERROR_TYPE,
 } from '../config'
-import {
-  Entry,
-  ErrorState,
-  Config,
-  Connector,
-} from '../types'
+import { Entry, ErrorState, Config } from '../types'
 
 export { default as Store } from 'nycticorax'
 
@@ -31,14 +26,14 @@ export default (config: Config & Entry) => {
     Container: ContainerNode = Container,
     ...rest
   } = config
-  const componentDispatcher: { [name: string]: Entry['actions'] } = {}
+  const componentDispatcher: Record<string, Entry['actions']> = {}
   const storeDispatcher = { ...actions }
-  const COMPONENTS: { [key: string]: ComponentType } = {}
+  const COMPONENTS: Record<string, ComponentType> = {}
 
   createStore({
     ...store,
     [MOUNTED_COMPONENTS]: [],
-    [MESSAGE_KEY]: {} as Connector.Message,
+    [MESSAGE_KEY]: {},
   })
 
   const componentCreator = (
@@ -55,7 +50,7 @@ export default (config: Config & Entry) => {
       onMounted,
     })
 
-    return (props: { [key: string]: any }) => (<C {...props} />)
+    return (props: Record<string, any>) => (<C {...props} />)
   }
 
   const $component = (nameWidthSub: string) => {
