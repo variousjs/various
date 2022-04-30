@@ -3,13 +3,8 @@ import { render } from 'react-dom'
 import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
-import {
-  MOUNTED_COMPONENTS,
-  ROOT_CONTAINER,
-  MESSAGE_KEY,
-  ERROR_TYPE,
-} from '../config'
-import { Entry, ErrorState, Config } from '../types'
+import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE } from '../config'
+import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
 export { default as Store } from 'nycticorax'
 
@@ -26,7 +21,7 @@ export default (config: Config & Entry) => {
     Container: ContainerNode = Container,
     ...rest
   } = config
-  const componentDispatcher: Record<string, Entry['actions']> = {}
+  const componentDispatcher: Record<string, ComponentDispatcher> = {}
   const storeDispatcher = { ...actions }
   const COMPONENTS: Record<string, ComponentType> = {}
 

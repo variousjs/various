@@ -12,11 +12,13 @@ import { getOnMessage, getPostMessage } from './message'
 import { MOUNTED_COMPONENTS, RETRY_COUNT, ERROR_TYPE } from '../config'
 import {
   RequireError,
-  Entry,
   ErrorState,
   ComponentProps,
   RequiredComponent,
   Creator,
+  ConnectProps,
+  Actions,
+  Store,
 } from '../types'
 
 function componentCreator({
@@ -35,7 +37,7 @@ function componentCreator({
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
   class R extends Component<
-    { $silent?: boolean, emit: typeof emit, [key: string]: any },
+    ConnectProps & { $silent?: boolean },
     ErrorState & { componentReady: boolean, componentExist?: boolean }
   > {
     state = {
@@ -130,7 +132,7 @@ function componentCreator({
         }
 
         const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
-        const actions: Entry['actions'] = {}
+        const actions: Actions<Store> = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
           mountedComponents.push(nameWidthModule)
@@ -247,8 +249,8 @@ function componentCreator({
         errorType,
         componentExist,
       } = this.state
-      const store: Entry['store'] = {}
-      const componentProps: Entry['store'] = {}
+      const store: Record<string, any> = {}
+      const componentProps: Record<string, any> = {}
       const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (errorType) {

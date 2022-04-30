@@ -1,13 +1,9 @@
 import { ComponentType } from 'react'
-import {
-  ErrorProps,
-  Actions,
-  ContainerProps,
-  ComponentProps,
-} from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps, ComponentProps, OnMessage } from '@variousjs/various'
+import { Connect, Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, MOUNTED_COMPONENTS } from './config'
 
-export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
+export { ComponentProps, ContainerProps, ErrorProps, Actions } from '@variousjs/various'
 
 export interface Store {
   [MESSAGE_KEY]: {
@@ -20,6 +16,10 @@ export interface Store {
   [key: string]: any,
 }
 
+export type ConnectProps = Connect<Store>
+
+export type DispatchType = Dispatch<Store>
+
 export interface Config {
   dependencies?: Record<string, string>,
   components: Record<string, string>,
@@ -27,7 +27,7 @@ export interface Config {
   root?: string,
 }
 
-export interface Entry<S = Record<string, any>, C = {}> {
+export interface Entry<S = Store, C = {}> {
   store: S,
   Error: ComponentType<ErrorProps>,
   Loader: ComponentType,
@@ -35,10 +35,12 @@ export interface Entry<S = Record<string, any>, C = {}> {
   Container: ComponentType<ContainerProps<C>>,
 }
 
+export type ComponentDispatcher = Record<string, Function>
+
 export interface Creator {
   name: string,
-  storeDispatcher: Actions,
-  componentDispatcher: Record<string, Actions>,
+  storeDispatcher: Actions<Store>,
+  componentDispatcher: Record<string, ComponentDispatcher>,
   config: Config,
   Loader: ComponentType,
   Error: ComponentType<ErrorProps>,
@@ -51,9 +53,10 @@ export interface RequireError extends Error {
   originalError: Error,
 }
 
-export type RequiredComponent = ComponentType<ComponentProps> & Actions & {
-  [key: string]: RequiredComponent,
-}
+export type RequiredComponent = ComponentType<ComponentProps>
+  & Actions<Store>
+  & { $onMessage: OnMessage }
+  & { [key: string]: RequiredComponent }
 
 export interface ErrorState {
   errorType?: ErrorProps['type'],
