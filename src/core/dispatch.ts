@@ -37,6 +37,6 @@ export default function (
       throw new Error(`action \`${func}\` of component \`${name}\` is not present`)
     }
 
-    return actions[func](value, dispatcher)
+    return Promise.resolve(actions[func](value, dispatcher))
   }
 }

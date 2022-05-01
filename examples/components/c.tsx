@@ -7,13 +7,13 @@ import {
 type S = { message: string }
 type CT = Connect<S>
 
-const { createStore, connect, dispatch } = new Store<S>()
+const { createStore, connect, emit } = new Store<S>()
 
 createStore({ message: '' })
 
 class C extends Component<ComponentProps & CT> {
   static $onMessage: OnMessage = (message) => {
-    dispatch({ message: `${message.type}|${message.name}` })
+    emit({ message: `${message.type}|${message.name}` })
   }
 
   onMsg = () => {

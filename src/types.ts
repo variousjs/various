@@ -35,7 +35,7 @@ export interface Entry<S = Store, C = {}> {
   Container: ComponentType<ContainerProps<C>>,
 }
 
-export type ComponentDispatcher = Record<string, Function>
+export type ComponentDispatcher = Record<string, (value: any, trigger: string) => Promise<any>>
 
 export interface Creator {
   name: string,

@@ -6,14 +6,15 @@ import { Store as GlobalStore } from '../types'
 type S = { value: string }
 type Connect = CT<S>
 
-const { createStore, connect, dispatch } = new Store<S>()
+const { createStore, connect, emit } = new Store<S>()
 
 createStore({ value: 'a' })
 
 class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
-  static updateValue = async (value: string) => {
+  static updateValue = async (value: string, trigger: string) => {
+    console.log(trigger)
     await new Promise((r) => setTimeout(r, 100))
-    dispatch({ value }, true)
+    emit({ value }, true)
   }
 
   state = {
@@ -21,8 +22,8 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
     bValue: '',
   }
 
-  onGetB = () => {
-    const b = this.props.$dispatch('b', 'getValue')
+  onGetB = async () => {
+    const b = await this.props.$dispatch('b', 'getValue')
     this.setState({ bValue: (b as string) })
   }
 

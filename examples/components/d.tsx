@@ -7,7 +7,7 @@ import {
 type S = { message: string }
 type CT = Connect<S>
 
-const { createStore, connect, dispatch } = new Store<S>()
+const { createStore, connect, emit } = new Store<S>()
 
 createStore({ message: '' })
 
@@ -26,7 +26,7 @@ const D: FC<ComponentProps & CT> & { $onMessage: OnMessage } = (props) => (
 )
 
 D.$onMessage = (message) => {
-  dispatch({ message: `${message.type}|${message.value || '-'}` })
+  emit({ message: `${message.type}|${message.value || '-'}` })
 }
 
 export const dd = connect('message')(D)
