@@ -10,7 +10,7 @@ export default function (
 ) {
   return function (
     this: Ctx,
-    dispatcher: string,
+    trigger: string,
     name: string,
     func: string,
     value: any,
@@ -21,10 +21,7 @@ export default function (
       if (!storeDispatcher[func]) {
         throw new Error(`action \`${func}\` is not present`)
       }
-      return currentDispatch(storeDispatcher[func], {
-        value,
-        componentName: dispatcher,
-      })
+      return currentDispatch(storeDispatcher[func], { value, trigger })
     }
 
     const actions = componentDispatcher[name]
@@ -37,6 +34,6 @@ export default function (
       throw new Error(`action \`${func}\` of component \`${name}\` is not present`)
     }
 
-    return Promise.resolve(actions[func](value, dispatcher))
+    return Promise.resolve(actions[func]({ value, trigger }))
   }
 }

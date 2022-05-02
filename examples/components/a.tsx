@@ -12,7 +12,7 @@ createStore({ value: 'a' })
 
 class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
   static updateValue = async (value: string, trigger: string) => {
-    console.log(trigger)
+    window.console.log(trigger)
     await new Promise((r) => setTimeout(r, 100))
     emit({ value }, true)
   }

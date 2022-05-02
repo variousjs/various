@@ -35,7 +35,9 @@ export interface Entry<S = Store, C = {}> {
   Container: ComponentType<ContainerProps<C>>,
 }
 
-export type ComponentDispatcher = Record<string, (value: any, trigger: string) => Promise<any>>
+export type ComponentDispatcher = Record<string,
+  (params: { value: any, trigger: string }) => Promise<any>
+>
 
 export interface Creator {
   name: string,
@@ -55,6 +57,7 @@ export interface RequireError extends Error {
 
 export type RequiredComponent = ComponentType<ComponentProps>
   & Actions<Store>
+  & ComponentDispatcher
   & { $onMessage: OnMessage }
   & { [key: string]: RequiredComponent }
 

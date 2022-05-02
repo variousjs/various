@@ -17,8 +17,7 @@ import {
   RequiredComponent,
   Creator,
   ConnectProps,
-  Actions,
-  Store,
+  ComponentDispatcher,
 } from '../types'
 
 function componentCreator({
@@ -132,7 +131,7 @@ function componentCreator({
         }
 
         const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
-        const actions: Actions<Store> = {}
+        const actions: ComponentDispatcher = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
           mountedComponents.push(nameWidthModule)
