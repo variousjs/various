@@ -1,38 +1,24 @@
-import React, { ComponentType, Component } from 'react'
+import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import getDispatch from './dispatch'
 import { preload, isComponentLoaded } from './preload'
 import {
   connect,
   getStore,
-  dispatch,
+  emit,
   subscribe,
 } from './store'
 import { getOnMessage, getPostMessage } from './message'
 import { MOUNTED_COMPONENTS, RETRY_COUNT, ERROR_TYPE } from '../config'
 import {
   RequireError,
-  Entry,
   ErrorState,
   ComponentProps,
-  Config,
+  RequiredComponent,
+  Creator,
+  ConnectProps,
+  ComponentDispatcher,
 } from '../types'
-
-interface E {
-  name: string,
-  storeDispatcher: Entry['actions'],
-  componentDispatcher: {
-    [name: string]: Entry['actions'],
-  },
-  config: Config,
-  Loader: Entry['Loader'],
-  Error: Entry['Error'],
-  onMounted?: () => void,
-}
-
-type RequiredComponent = ComponentType<ComponentProps> & Entry['actions'] & {
-   [key: string]: RequiredComponent,
-}
 
 function componentCreator({
   config,
@@ -42,21 +28,17 @@ function componentCreator({
   Loader,
   Error,
   onMounted,
-}: E) {
+}: Creator) {
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
-  class R extends Component<{
-    $silent?: boolean,
-    dispatch: typeof dispatch,
-    [key: string]: unknown,
-  }, ErrorState & {
-    componentReady: boolean,
-    componentExist: boolean | undefined,
-  }> {
+  class R extends Component<
+    ConnectProps & { $silent?: boolean },
+    ErrorState & { componentReady: boolean, componentExist?: boolean }
+  > {
     state = {
       componentExist: undefined,
       componentReady: false,
@@ -102,7 +84,7 @@ function componentCreator({
     unMountComponent = () => {
       let mountedComponents = this.$getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
-      dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+      emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
       // eslint-disable-next-line no-param-reassign
       delete componentDispatcher[nameWidthModule]
@@ -149,7 +131,7 @@ function componentCreator({
         }
 
         const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
-        const actions: Entry['actions'] = {}
+        const actions: ComponentDispatcher = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
           mountedComponents.push(nameWidthModule)
@@ -177,7 +159,7 @@ function componentCreator({
           if (onMounted) {
             onMounted()
           } else {
-            dispatch({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+            emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
           }
         })
       }, (e: RequireError) => {
@@ -256,7 +238,7 @@ function componentCreator({
     render() {
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        dispatch: componentDispatch,
+        emit: componentDispatch,
         $silent,
         ...propsRest
       } = this.props
@@ -266,8 +248,8 @@ function componentCreator({
         errorType,
         componentExist,
       } = this.state
-      const store: Entry['store'] = {}
-      const componentProps: Entry['store'] = {}
+      const store: Record<string, any> = {}
+      const componentProps: Record<string, any> = {}
       const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (errorType) {

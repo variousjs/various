@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
 import {
-  ComponentProps, Store, Connect, OnMessage,
+  ComponentProps, Store, Connect, MessageInvoker,
 } from '@variousjs/various'
 
 type S = { message: string }
 type CT = Connect<S>
 
-const { createStore, connect, dispatch } = new Store<S>()
+const { createStore, connect, emit } = new Store<S>()
 
 createStore({ message: '' })
 
 class C extends Component<ComponentProps & CT> {
-  static $onMessage: OnMessage = (message) => {
-    dispatch({ message: `${message.type}|${message.name}` })
+  static $onMessage: MessageInvoker = (message) => {
+    emit({ message: `${message.type}|${message.name}` })
   }
 
   onMsg = () => {

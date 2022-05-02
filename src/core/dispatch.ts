@@ -1,16 +1,16 @@
-import { Connector, Entry } from '../types'
+import { Actions, ComponentDispatcher, DispatchType, Store } from '../types'
 
 type Ctx = {
-  props: { dispatch: Connector.dispatch },
+  props: { dispatch: (next: DispatchType, params?: any) => Promise<any> },
 }
 
 export default function (
-  storeDispatcher: Entry['actions'],
-  componentDispatcher: { [name: string]: Entry['actions'] },
+  storeDispatcher: Actions<Store>,
+  componentDispatcher: Record<string, ComponentDispatcher>,
 ) {
   return function (
     this: Ctx,
-    dispatcher: string,
+    trigger: string,
     name: string,
     func: string,
     value: any,
@@ -21,7 +21,7 @@ export default function (
       if (!storeDispatcher[func]) {
         throw new Error(`action \`${func}\` is not present`)
       }
-      return currentDispatch(storeDispatcher[func], value, dispatcher)
+      return currentDispatch(storeDispatcher[func], { value, trigger })
     }
 
     const actions = componentDispatcher[name]
@@ -34,6 +34,6 @@ export default function (
       throw new Error(`action \`${func}\` of component \`${name}\` is not present`)
     }
 
-    return actions[func](value, dispatcher)
+    return Promise.resolve(actions[func]({ value, trigger }))
   }
 }

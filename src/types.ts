@@ -1,22 +1,50 @@
-import Nycticorax, { Connect } from 'nycticorax'
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ContainerProps } from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker } from '@variousjs/various'
+import { Connect, Dispatch } from 'nycticorax'
+import { MESSAGE_KEY, MOUNTED_COMPONENTS } from './config'
 
-export { ComponentProps, ContainerProps, ErrorProps } from '@variousjs/various'
+export { ComponentProps, ContainerProps, ErrorProps, Actions } from '@variousjs/various'
+
+export interface Store {
+  [MESSAGE_KEY]: {
+    timestamp?: number,
+    type?: string,
+    name?: string,
+    value?: any,
+  },
+  [MOUNTED_COMPONENTS]: string[],
+  [key: string]: any,
+}
+
+export type ConnectProps = Connect<Store>
+
+export type DispatchType = Dispatch<Store>
 
 export interface Config {
-  dependencies?: { [key: string]: string },
-  components: { [key: string]: string },
+  dependencies?: Record<string, string>,
+  components: Record<string, string>,
   entry?: string,
   root?: string,
 }
 
-export interface Entry<S = { [key: string]: unknown }, C = {}> {
+export interface Entry<S = Store, C = {}> {
   store: S,
   Error: ComponentType<ErrorProps>,
   Loader: ComponentType,
   actions: Actions<S>,
   Container: ComponentType<ContainerProps<C>>,
+}
+
+export type ComponentDispatcher = Record<string, Invoker>
+
+export interface Creator {
+  name: string,
+  storeDispatcher: Actions<Store>,
+  componentDispatcher: Record<string, ComponentDispatcher>,
+  config: Config,
+  Loader: ComponentType,
+  Error: ComponentType<ErrorProps>,
+  onMounted?: () => void,
 }
 
 export interface RequireError extends Error {
@@ -25,22 +53,11 @@ export interface RequireError extends Error {
   originalError: Error,
 }
 
-export namespace Connector {
-  export type Message = {
-    timestamp: number,
-    type: string,
-    name: string,
-    value?: any,
-  }
-  export type Store = {
-    [key: string]: unknown,
-    // message / mountedComponent
-    [key: symbol]: Message | string[],
-  }
-  const ctx = new Nycticorax<Store>()
-  export type dispatch = typeof ctx.dispatch
-  export type connect = ComponentType<Connect<Store>> & { [key: string]: any }
-}
+export type RequiredComponent = ComponentType<ComponentProps>
+  & Actions<Store>
+  & ComponentDispatcher
+  & { $onMessage: MessageInvoker }
+  & { [key: string]: RequiredComponent }
 
 export interface ErrorState {
   errorType?: ErrorProps['type'],

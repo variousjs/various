@@ -3,18 +3,8 @@ import { render } from 'react-dom'
 import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
-import {
-  MOUNTED_COMPONENTS,
-  ROOT_CONTAINER,
-  MESSAGE_KEY,
-  ERROR_TYPE,
-} from '../config'
-import {
-  Entry,
-  ErrorState,
-  Config,
-  Connector,
-} from '../types'
+import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE } from '../config'
+import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
 export { default as Store } from 'nycticorax'
 
@@ -31,14 +21,14 @@ export default (config: Config & Entry) => {
     Container: ContainerNode = Container,
     ...rest
   } = config
-  const componentDispatcher: { [name: string]: Entry['actions'] } = {}
+  const componentDispatcher: Record<string, ComponentDispatcher> = {}
   const storeDispatcher = { ...actions }
-  const COMPONENTS: { [key: string]: ComponentType } = {}
+  const COMPONENTS: Record<string, ComponentType> = {}
 
   createStore({
     ...store,
     [MOUNTED_COMPONENTS]: [],
-    [MESSAGE_KEY]: {} as Connector.Message,
+    [MESSAGE_KEY]: {},
   })
 
   const componentCreator = (
@@ -55,7 +45,7 @@ export default (config: Config & Entry) => {
       onMounted,
     })
 
-    return (props: { [key: string]: any }) => (<C {...props} />)
+    return (props: Record<string, any>) => (<C {...props} />)
   }
 
   const $component = (nameWidthSub: string) => {
