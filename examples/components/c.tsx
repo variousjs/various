@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
 import {
-  ComponentProps, Store, Connect, OnMessage,
+  ComponentProps, Store, Connect, MessageInvoker,
 } from '@variousjs/various'
 
 type S = { message: string }
@@ -12,7 +12,7 @@ const { createStore, connect, emit } = new Store<S>()
 createStore({ message: '' })
 
 class C extends Component<ComponentProps & CT> {
-  static $onMessage: OnMessage = (message) => {
+  static $onMessage: MessageInvoker = (message) => {
     emit({ message: `${message.type}|${message.name}` })
   }
 

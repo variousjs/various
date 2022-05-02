@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, Store, Connect as CT } from '@variousjs/various'
+import { ComponentProps, Store, Connect as CT, Invoker } from '@variousjs/various'
 
 type S = { value: string }
 type Connect = CT<S>
@@ -9,7 +9,7 @@ const { createStore, connect, getStore } = new Store<S>()
 
 createStore({ value: 'b' })
 
-const B: FC<Connect & ComponentProps> & { getValue: () => string } = (props) => {
+const B: FC<Connect & ComponentProps> & { getValue: Invoker } = (props) => {
   const [de, setDe] = useState('')
 
   const setA = async () => {

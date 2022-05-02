@@ -47,7 +47,9 @@ declare module '@variousjs/various' {
 
   export type Actions<S = {}> = Record<string, Dispatch<S>>
 
-  export type OnMessage = (
+  export type MessageInvoker = (
     message: { type: string, name: string, value?: any },
-  ) => void
+  ) => any
+
+  export type Invoker = (params: { trigger: string, value?: any }) => any
 }

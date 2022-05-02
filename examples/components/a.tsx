@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, Store, Connect as CT } from '@variousjs/various'
+import { ComponentProps, Store, Connect as CT, Invoker } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
 type S = { value: string }
@@ -11,7 +11,7 @@ const { createStore, connect, emit } = new Store<S>()
 createStore({ value: 'a' })
 
 class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
-  static updateValue = async (value: string, trigger: string) => {
+  static updateValue: Invoker = async ({ value, trigger }) => {
     window.console.log(trigger)
     await new Promise((r) => setTimeout(r, 100))
     emit({ value }, true)

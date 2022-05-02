@@ -1,5 +1,5 @@
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ContainerProps, ComponentProps, OnMessage } from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker } from '@variousjs/various'
 import { Connect, Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, MOUNTED_COMPONENTS } from './config'
 
@@ -35,9 +35,7 @@ export interface Entry<S = Store, C = {}> {
   Container: ComponentType<ContainerProps<C>>,
 }
 
-export type ComponentDispatcher = Record<string,
-  (params: { value: any, trigger: string }) => Promise<any>
->
+export type ComponentDispatcher = Record<string, Invoker>
 
 export interface Creator {
   name: string,
@@ -58,7 +56,7 @@ export interface RequireError extends Error {
 export type RequiredComponent = ComponentType<ComponentProps>
   & Actions<Store>
   & ComponentDispatcher
-  & { $onMessage: OnMessage }
+  & { $onMessage: MessageInvoker }
   & { [key: string]: RequiredComponent }
 
 export interface ErrorState {

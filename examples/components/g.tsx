@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import { OnMessage } from '@variousjs/various'
+import { MessageInvoker } from '@variousjs/various'
 
-const G: FC & { $onMessage: OnMessage } = () => (
+const G: FC & { $onMessage: MessageInvoker } = () => (
   <div style={{ fontSize: 50, margin: 0 }}>
     G
     <div className="component-loaded" />
