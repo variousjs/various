@@ -4,7 +4,7 @@
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
-    "types"
+    "index.d.ts"
   ],
   "unpkg": "dist/index.js",
   "publishConfig": {
@@ -16,7 +16,7 @@
     ],
     "excludeAfterRemap": true
   },
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "prestart": "mkdir -p demo/dist && cp demo/empty.js demo/dist/empty.js",
