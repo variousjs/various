@@ -8,6 +8,14 @@ const actions: Actions<Store> = {
     user.name = value
     emit({ user })
   },
+
+  async setLocale({ emit }, { value }) {
+    emit({ locale: value })
+  },
+
+  async getLocale({ getStore }) {
+    return getStore().locale
+  },
 }
 
 export default actions
