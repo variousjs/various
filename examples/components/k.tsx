@@ -21,7 +21,7 @@ export class C extends Component<ComponentProps<Store>> {
       <>
         <h3>{$t('title')}</h3>
         <Button onClick={() => $dispatch('store', 'setLocale', 'zh')}>zh</Button>
-        <Button onClick={() => $dispatch('store', 'setLocale', 'en')}>en</Button>
+        <Button id="en" onClick={() => $dispatch('store', 'setLocale', 'en')}>en</Button>
       </>
     )
   }
@@ -38,9 +38,9 @@ const F: FC<ComponentProps> & { $getI18nConfig: Ii8nConfig } = (props) => {
   return (
     <>
       <p>{$t('title', '标题')}</p>
-      <p>{$t('titl', '标题')}</p>
+      <p id="titl">{$t('titl', '标题')}</p>
       <p>{lang}</p>
-      <Button onClick={() => $dispatch('store', 'setLocale', 'zh-CN')}>zh-CN</Button>
+      <Button id="zh-cn" onClick={() => $dispatch('store', 'setLocale', 'zh-CN')}>zh-CN</Button>
       <Button onClick={getLang}>get locale</Button>
     </>
   )

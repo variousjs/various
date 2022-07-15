@@ -7,7 +7,7 @@ describe('props test', () => {
 
   it('props', () => {
     cy.get('#date-picker input').should('have.value', '二月 15日 2022')
-    cy.get('#config-menu').should('have.text', 'Home,Error,Module,Dispatch,Message')
+    cy.get('#config-menu').should('have.text', 'Home,Error,Module,Dispatch,I18n,Message')
     cy.get('#i-store-name').should('have.text', 'humpback')
   })
 
