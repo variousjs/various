@@ -212,7 +212,7 @@ function componentCreator({
 
     $t: ComponentProps['$t'] = (key, defaultText) => {
       if (!this.i18nConfig) {
-        window.console.warn('[i18n] config not exist')
+        window.console.warn(`[${nameWidthModule}][i18n] config not exist`)
         return defaultText
       }
       const { localeKey, resources } = this.i18nConfig
@@ -220,7 +220,7 @@ function componentCreator({
       const resource = resources[locale]
 
       if (!resource) {
-        window.console.warn(`[i18n] locale \`${locale}\` not exist`)
+        window.console.warn(`[${nameWidthModule}][i18n] locale \`${locale}\` not exist`)
         return defaultText
       }
 
@@ -228,7 +228,7 @@ function componentCreator({
         return resource[key]
       }
 
-      window.console.warn(`[i18n] key \`${key}\` not exist`)
+      window.console.warn(`[${nameWidthModule}][i18n] key \`${key}\` not exist`)
       return defaultText
     }
 
