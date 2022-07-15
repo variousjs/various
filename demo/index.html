@@ -50,6 +50,7 @@ var VARIOUS_CONFIG = {
     gg: './dist/g.js',
     h: './dist/h.js',
     i: './dist/i.js',
+    k: './dist/k.js',
     x: './dist/x.js',
     z: './dist/z.js',
 
@@ -81,6 +82,11 @@ var VARIOUS_CONFIG = {
       path: '/dispatch',
     },
     {
+      label: 'I18n',
+      icon: 'copy',
+      path: '/i18n',
+    },
+    {
       label: 'Message',
       icon: 'message',
       path: '/message',
@@ -106,6 +112,10 @@ var VARIOUS_CONFIG = {
     {
       path: '/',
       components: ['i'],
+    },
+    {
+      path: '/i18n',
+      components: ['k.C', 'k.G'],
     },
   ],
 }

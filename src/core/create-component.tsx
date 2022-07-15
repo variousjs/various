@@ -212,12 +212,24 @@ function componentCreator({
 
     $t: ComponentProps['$t'] = (key, defaultText) => {
       if (!this.i18nConfig) {
+        window.console.warn('[i18n] config not exist')
         return defaultText
       }
       const { localeKey, resources } = this.i18nConfig
       const locale = this.props[localeKey] as string
       const resource = resources[locale]
-      return resource[key] || defaultText
+
+      if (!resource) {
+        window.console.warn(`[i18n] locale \`${locale}\` not exist`)
+        return defaultText
+      }
+
+      if (resource[key]) {
+        return resource[key]
+      }
+
+      window.console.warn(`[i18n] key \`${key}\` not exist`)
+      return defaultText
     }
 
     $render: ComponentProps['$render'] = ({
