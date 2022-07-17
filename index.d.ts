@@ -13,6 +13,7 @@ declare module '@variousjs/various' {
   type $preload = (names: string[]) => Promise<void>
   type $postMessage = (name: string, value?: any) => void
   type $getMountedComponents = () => string[]
+  type $t = (key: string, defaultText?: string) => string | undefined
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 
@@ -24,6 +25,7 @@ declare module '@variousjs/various' {
     $preload: $preload,
     $postMessage: $postMessage,
     $getMountedComponents: $getMountedComponents,
+    $t: $t,
   }
 
   export interface ErrorProps {
@@ -52,4 +54,9 @@ declare module '@variousjs/various' {
   ) => any
 
   export type Invoker = (params: { trigger: string, value?: any }) => any
+
+  export type Ii8nConfig = () => {
+    localeKey: string,
+    resources: Record<string, Record<string, string>>,
+  }
 }

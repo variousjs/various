@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
+import { Ii8nConfig } from '@variousjs/various'
 import getDispatch from './dispatch'
 import { preload, isComponentLoaded } from './preload'
 import {
@@ -51,6 +52,8 @@ function componentCreator({
     private isUnMounted?: boolean
 
     private retryCount: number = 0
+
+    private i18nConfig?: ReturnType<Ii8nConfig>
 
     dispatch = currentDispatch.bind(this, name)
 
@@ -147,6 +150,11 @@ function componentCreator({
               this.unSubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
+            if (method === '$getI18nConfig') {
+              const i18nConfig = (componentNode[method] as Ii8nConfig)()
+              this.i18nConfig = i18nConfig
+              return
+            }
 
             actions[method] = componentNode[method]
           })
@@ -201,6 +209,28 @@ function componentCreator({
     }
 
     $getMountedComponents = () => getStore()[MOUNTED_COMPONENTS] as string[]
+
+    $t: ComponentProps['$t'] = (key, defaultText) => {
+      if (!this.i18nConfig) {
+        window.console.warn(`[${nameWidthModule}][i18n] config not exist`)
+        return defaultText
+      }
+      const { localeKey, resources } = this.i18nConfig
+      const locale = this.props[localeKey] as string
+      const resource = resources[locale]
+
+      if (!resource) {
+        window.console.warn(`[${nameWidthModule}][i18n] locale \`${locale}\` not exist`)
+        return defaultText
+      }
+
+      if (resource[key]) {
+        return resource[key]
+      }
+
+      window.console.warn(`[${nameWidthModule}][i18n] key \`${key}\` not exist`)
+      return defaultText
+    }
 
     $render: ComponentProps['$render'] = ({
       name: componentName,
@@ -288,6 +318,7 @@ function componentCreator({
           $preload={preload}
           $postMessage={this.postMessage}
           $getMountedComponents={this.$getMountedComponents}
+          $t={this.$t}
         />
       )
     }

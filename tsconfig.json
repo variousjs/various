@@ -21,6 +21,7 @@
     "sourceMap": true,
     "removeComments": true,
     "stripInternal": true,
+    "resolveJsonModule": true,
     "strictPropertyInitialization": false
   },
   "exclude": ["dist", "demo"],
