@@ -151,7 +151,7 @@ function componentCreator({
               return
             }
             if (method === '$getI18nConfig') {
-              const i18nConfig = componentNode[method]()
+              const i18nConfig = (componentNode[method] as Ii8nConfig)()
               this.i18nConfig = i18nConfig
               return
             }
