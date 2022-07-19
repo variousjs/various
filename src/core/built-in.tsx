@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, useLayoutEffect } from 'react'
+import getConsole from './console'
 import { ErrorProps } from '../types'
 
 export const Loader = () => (
@@ -23,6 +24,15 @@ export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
   </>
 )
 
-export const Container = () => (
-  <div>Container not defined</div>
-)
+export const Container = () => {
+  const warnMessage = 'container not defined'
+
+  useLayoutEffect(() => {
+    const console = getConsole('container')
+    console.warn(warnMessage)
+  }, [])
+
+  return (
+    <div>{warnMessage}</div>
+  )
+}

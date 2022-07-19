@@ -38,7 +38,7 @@ const F: FC<ComponentProps> & { $getI18nConfig: Ii8nConfig } = (props) => {
   return (
     <>
       <p>{$t('title', '标题')}</p>
-      <p id="titl">{$t('titl', '标题')}</p>
+      <p id="titl">{$t('titl')}</p>
       <p>{lang}</p>
       <Button id="zh-cn" onClick={() => $dispatch('store', 'setLocale', 'zh-CN')}>zh-CN</Button>
       <Button onClick={getLang}>get locale</Button>
@@ -61,7 +61,7 @@ export const T: FC<ComponentProps> = (props) => {
 
   return (
     <>
-      <p>{$t('title', '标题')}</p>
+      <p>{$t('title', 'default')}</p>
     </>
   )
 }

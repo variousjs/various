@@ -4,6 +4,7 @@ import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
 import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE } from '../config'
+import getConsole from './console'
 import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
 export { default as Store } from 'nycticorax'
@@ -51,8 +52,12 @@ export default (config: Config & Entry) => {
   const $component = (nameWidthSub: string) => {
     const [name] = nameWidthSub.split('.')
     if (!components[name]) {
+      const console = getConsole(nameWidthSub)
+      const errorMessage = 'component not defined'
+
+      console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
       return () => (
-        <ErrorNode message="Component not defined" type={ERROR_TYPE.NOT_DEFINED} />
+        <ErrorNode message={errorMessage} type={ERROR_TYPE.NOT_DEFINED} />
       )
     }
     if (COMPONENTS[nameWidthSub]) {
@@ -70,6 +75,8 @@ export default (config: Config & Entry) => {
     }
 
     componentDidCatch(e: Error) {
+      const console = getConsole('container')
+      console.error(`[${ERROR_TYPE.CONTAINER_ERROR}] ${e.message}`)
       this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
     }
 
