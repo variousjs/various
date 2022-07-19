@@ -45,7 +45,7 @@ function componentCreator({
 
     private i18nConfig?: ReturnType<Ii8nConfig>
 
-    dispatch = currentDispatch.bind(this, name)
+    dispatch = currentDispatch.bind(this, nameWidthModule)
 
     postMessage = getPostMessage(nameWidthModule)
 

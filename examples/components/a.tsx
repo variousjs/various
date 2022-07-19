@@ -23,7 +23,7 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
   }
 
   onGetB = async () => {
-    const b = await this.props.$dispatch('b', 'getValue')
+    const b = await this.props.$dispatch('b.C', 'getValue')
     this.setState({ bValue: (b as string) })
   }
 
@@ -37,7 +37,7 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
 
   onDpB = async () => {
     try {
-      await this.props.$dispatch('b', 'no-exist')
+      await this.props.$dispatch('b.C', 'no-exist')
     } catch (e) {
       this.setState({ dispatchError: (e as Error).message })
     }

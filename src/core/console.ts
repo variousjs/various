@@ -1,18 +1,18 @@
-const getPrefix = (name: string) => {
+const getPrefix = (name?: string) => {
   const text = `%c${name}`
   const style = 'color:white;background:blue;padding:1px 2px'
   return [text, style]
 }
 
-export default function log(name: string) {
+export default function log(defaultName?: string) {
   const { warn, error } = window.console
 
   return {
-    warn(text: string) {
-      warn(...getPrefix(name), text)
+    warn(text: string, name?: string) {
+      warn(...getPrefix(name || defaultName), text)
     },
-    error(text: string) {
-      error(...getPrefix(name), text)
+    error(text: string, name?: string) {
+      error(...getPrefix(name || defaultName), text)
     },
   }
 }

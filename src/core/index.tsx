@@ -25,6 +25,7 @@ export default (config: Config & Entry) => {
   const componentDispatcher: Record<string, ComponentDispatcher> = {}
   const storeDispatcher = { ...actions }
   const COMPONENTS: Record<string, ComponentType> = {}
+  const console = getConsole()
 
   createStore({
     ...store,
@@ -52,10 +53,9 @@ export default (config: Config & Entry) => {
   const $component = (nameWidthSub: string) => {
     const [name] = nameWidthSub.split('.')
     if (!components[name]) {
-      const console = getConsole(nameWidthSub)
       const errorMessage = 'component not defined'
 
-      console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
+      console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`, nameWidthSub)
       return () => (
         <ErrorNode message={errorMessage} type={ERROR_TYPE.NOT_DEFINED} />
       )
@@ -75,8 +75,7 @@ export default (config: Config & Entry) => {
     }
 
     componentDidCatch(e: Error) {
-      const console = getConsole('container')
-      console.error(`[${ERROR_TYPE.CONTAINER_ERROR}] ${e.message}`)
+      console.error(`[${ERROR_TYPE.CONTAINER_ERROR}] ${e.message}`, 'container')
       this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
     }
 
