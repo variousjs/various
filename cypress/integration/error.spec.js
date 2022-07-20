@@ -33,5 +33,9 @@ describe('component error test', () => {
       cy.contains('[LOADING_ERROR]:Script error for "link"').parent().next().click()
       cy.get('[data-title="link"]').next().should('have.text', 'G')
     })
+
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]').parent().next().click()
+    cy.wait(1000)
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]').should('exist')
   })
 })
