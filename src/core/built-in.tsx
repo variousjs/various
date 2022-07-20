@@ -8,7 +8,7 @@ export const Loader = () => (
 
 export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
   <>
-    <div>{`[${type}]${message}`}</div>
+    <div>{`[${type}] ${message}`}</div>
     {
       reload
         ? (
@@ -25,7 +25,7 @@ export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
 )
 
 export const Container = () => {
-  const warnMessage = 'container not defined'
+  const warnMessage = 'Container not defined'
 
   useLayoutEffect(() => {
     const console = getConsole('container')

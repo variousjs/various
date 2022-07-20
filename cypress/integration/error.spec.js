@@ -7,7 +7,7 @@ describe('component error test', () => {
   })
 
   it('error type', () => {
-    cy.contains('[INVALID_COMPONENT]:Cannot load component named `store`').should('exist')
+    cy.contains('[INVALID_COMPONENT]:cannot load component named `store`').should('exist')
     cy.contains('[LOADING_ERROR]:Script error for "link"')
       .should('exist').parent().next()
       .should('have.attr', 'type', 'button')
@@ -17,10 +17,10 @@ describe('component error test', () => {
     cy.contains('[SCRIPT_ERROR]:noexist is not defined')
       .should('exist').parent().next()
       .should('have.attr', 'type', 'button')
-    cy.contains('[NOT_DEFINED]:Component not defined').should('exist')
-    cy.contains('[INVALID_COMPONENT]:No content').should('exist')
-    cy.contains('[INVALID_COMPONENT]:Component cannot be executed').should('exist')
-    cy.contains('[INVALID_COMPONENT]:Module not defined').should('exist')
+    cy.contains('[NOT_DEFINED]:component not defined').should('exist')
+    cy.contains('[INVALID_COMPONENT]:no content').should('exist')
+    cy.contains('[INVALID_COMPONENT]:module cannot be executed').should('exist')
+    cy.contains('[INVALID_COMPONENT]:module not defined').should('exist')
     cy.wait(3500)
     cy.get('[data-title="timeout-error"]').next().should('not.exist')
   })
