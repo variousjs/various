@@ -6,15 +6,15 @@ export const Loader = () => (
   <div>Loading</div>
 )
 
-export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
+export const Error: ComponentType<ErrorProps> = ({ $type, $message, $reload }) => (
   <>
-    <div>{`[${type}] ${message}`}</div>
+    <div>{`[${$type}] ${$message}`}</div>
     {
-      reload
+      $reload
         ? (
           <button
             type="button"
-            onClick={reload}
+            onClick={$reload}
           >
             Reload
           </button>

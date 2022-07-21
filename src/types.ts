@@ -60,7 +60,7 @@ export type RequiredComponent = ComponentType<ComponentProps>
   & { [key: string]: RequiredComponent }
 
 export interface ErrorState {
-  errorType?: ErrorProps['type'],
+  errorType?: ErrorProps['$type'],
   errorMessage: string,
 }
 

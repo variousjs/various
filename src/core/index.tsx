@@ -57,7 +57,7 @@ export default (config: Config & Entry) => {
 
       console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`, nameWidthSub)
       return () => (
-        <ErrorNode message={errorMessage} type={ERROR_TYPE.NOT_DEFINED} />
+        <ErrorNode $message={errorMessage} $type={ERROR_TYPE.NOT_DEFINED} />
       )
     }
     if (COMPONENTS[nameWidthSub]) {
@@ -85,8 +85,8 @@ export default (config: Config & Entry) => {
       if (errorType) {
         return (
           <ErrorNode
-            type={ERROR_TYPE[errorType]}
-            message={errorMessage}
+            $type={ERROR_TYPE[errorType]}
+            $message={errorMessage}
           />
         )
       }

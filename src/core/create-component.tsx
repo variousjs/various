@@ -278,9 +278,9 @@ function componentCreator({
         return !$silent
           ? (
             <Error
-              type={ERROR_TYPE[errorType]}
-              message={errorMessage}
-              reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
+              $type={ERROR_TYPE[errorType]}
+              $message={errorMessage}
+              $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
             />
           )
           : null
