@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import { Ii8nConfig } from '@variousjs/various'
+import { Ii8n } from '@variousjs/various'
 import getDispatch from './dispatch'
 import getConsole from './console'
 import { preload, isComponentLoaded } from './preload'
@@ -43,7 +43,7 @@ function componentCreator({
 
     private isUnMounted?: boolean
 
-    private i18nConfig?: ReturnType<Ii8nConfig>
+    private i18nConfig?: ReturnType<Ii8n>
 
     dispatch = currentDispatch.bind(this, nameWidthModule)
 
@@ -149,8 +149,8 @@ function componentCreator({
               this.unSubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
-            if (method === '$getI18nConfig') {
-              const i18nConfig = (componentNode[method] as Ii8nConfig)()
+            if (method === '$i18n') {
+              const i18nConfig = (componentNode[method] as Ii8n)()
               this.i18nConfig = i18nConfig
               return
             }
