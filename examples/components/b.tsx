@@ -40,4 +40,4 @@ const B: FC<Connect & ComponentProps> & { getValue: Invoker } = (props) => {
 
 B.getValue = () => getStore().value
 
-export default connect('value')(B)
+export const C = connect('value')(B)

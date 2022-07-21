@@ -29,9 +29,9 @@ declare module '@variousjs/various' {
   }
 
   export interface ErrorProps {
-    reload?: () => void,
-    type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
-    message?: string,
+    $reload?: () => void,
+    $type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
+    $message?: string,
   }
 
   export interface ContainerProps<C = {}> {
@@ -55,7 +55,7 @@ declare module '@variousjs/various' {
 
   export type Invoker = (params: { trigger: string, value?: any }) => any
 
-  export type Ii8nConfig = () => {
+  export type Ii8n = () => {
     localeKey: string,
     resources: Record<string, Record<string, string>>,
   }

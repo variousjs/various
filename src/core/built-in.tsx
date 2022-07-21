@@ -1,19 +1,20 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, useLayoutEffect } from 'react'
+import getConsole from './console'
 import { ErrorProps } from '../types'
 
 export const Loader = () => (
   <div>Loading</div>
 )
 
-export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
+export const Error: ComponentType<ErrorProps> = ({ $type, $message, $reload }) => (
   <>
-    <div>{`[${type}]${message}`}</div>
+    <div>{`[${$type}] ${$message}`}</div>
     {
-      reload
+      $reload
         ? (
           <button
             type="button"
-            onClick={reload}
+            onClick={$reload}
           >
             Reload
           </button>
@@ -23,6 +24,15 @@ export const Error: ComponentType<ErrorProps> = ({ type, message, reload }) => (
   </>
 )
 
-export const Container = () => (
-  <div>Container not defined</div>
-)
+export const Container = () => {
+  const warnMessage = 'Container not defined'
+
+  useLayoutEffect(() => {
+    const console = getConsole('container')
+    console.warn(warnMessage)
+  }, [])
+
+  return (
+    <div>{warnMessage}</div>
+  )
+}

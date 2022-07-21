@@ -1,3 +1,4 @@
+import getConsole from './console'
 import { Actions, ComponentDispatcher, DispatchType, Store } from '../types'
 
 type Ctx = {
@@ -15,11 +16,14 @@ export default function (
     func: string,
     value: any,
   ) {
+    const console = getConsole(trigger)
     const currentDispatch = this.props.dispatch
 
     if (name === 'store') {
       if (!storeDispatcher[func]) {
-        throw new Error(`action \`${func}\` is not present`)
+        const errorMessage = `[dispatch] \`store\` action \`${func}\` is not present`
+        console.error(errorMessage)
+        throw new Error(errorMessage)
       }
       return currentDispatch(storeDispatcher[func], { value, trigger })
     }
@@ -27,11 +31,15 @@ export default function (
     const actions = componentDispatcher[name]
 
     if (!actions) {
-      throw new Error(`component \`${name}\` is not ready`)
+      const errorMessage = `[dispatch] component \`${name}\` is not ready`
+      console.error(errorMessage)
+      throw new Error(errorMessage)
     }
 
     if (!actions[func]) {
-      throw new Error(`action \`${func}\` of component \`${name}\` is not present`)
+      const errorMessage = `[dispatch] \`${name}\` action \`${func}\` is not present`
+      console.error(errorMessage)
+      throw new Error(errorMessage)
     }
 
     return Promise.resolve(actions[func]({ value, trigger }))

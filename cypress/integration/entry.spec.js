@@ -7,7 +7,7 @@ describe('entry test', () => {
 
   it('container error', () => {
     cy.visit('/container-error.html')
-    cy.contains('[CONTAINER_ERROR]entry is not defined').should('exist')
+    cy.contains('[CONTAINER_ERROR] entry is not defined').should('exist')
   })
 
   it('default', () => {
@@ -17,6 +17,6 @@ describe('entry test', () => {
 
   it('component error', () => {
     cy.visit('/component-error.html')
-    cy.contains('[SCRIPT_ERROR]noexist is not defined').should('exist')
+    cy.contains('[SCRIPT_ERROR] noexist is not defined').should('exist')
   })
 })

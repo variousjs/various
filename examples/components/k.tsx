@@ -1,12 +1,12 @@
 import React, { Component, FC, useState } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, Ii8nConfig } from '@variousjs/various'
+import { ComponentProps, Ii8n } from '@variousjs/various'
 import { Store } from '../types'
 import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
 
 export class C extends Component<ComponentProps<Store>> {
-  static $getI18nConfig: Ii8nConfig = () => ({
+  static $i18n: Ii8n = () => ({
     localeKey: 'locale',
     resources: {
       zh: Zh,
@@ -27,7 +27,7 @@ export class C extends Component<ComponentProps<Store>> {
   }
 }
 
-const F: FC<ComponentProps> & { $getI18nConfig: Ii8nConfig } = (props) => {
+const F: FC<ComponentProps> & { $i18n: Ii8n } = (props) => {
   const { $t, $dispatch } = props
   const [lang, setLang] = useState('')
   const getLang = async () => {
@@ -38,7 +38,7 @@ const F: FC<ComponentProps> & { $getI18nConfig: Ii8nConfig } = (props) => {
   return (
     <>
       <p>{$t('title', '标题')}</p>
-      <p id="titl">{$t('titl', '标题')}</p>
+      <p id="titl">{$t('titl')}</p>
       <p>{lang}</p>
       <Button id="zh-cn" onClick={() => $dispatch('store', 'setLocale', 'zh-CN')}>zh-CN</Button>
       <Button onClick={getLang}>get locale</Button>
@@ -46,7 +46,7 @@ const F: FC<ComponentProps> & { $getI18nConfig: Ii8nConfig } = (props) => {
   )
 }
 
-F.$getI18nConfig = () => ({
+F.$i18n = () => ({
   localeKey: 'locale',
   resources: {
     zh: Zh,
@@ -61,7 +61,7 @@ export const T: FC<ComponentProps> = (props) => {
 
   return (
     <>
-      <p>{$t('title', '标题')}</p>
+      <p>{$t('title', 'default')}</p>
     </>
   )
 }

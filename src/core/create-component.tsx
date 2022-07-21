@@ -1,23 +1,14 @@
 import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import { Ii8nConfig } from '@variousjs/various'
+import { Ii8n } from '@variousjs/various'
 import getDispatch from './dispatch'
+import getConsole from './console'
 import { preload, isComponentLoaded } from './preload'
-import {
-  connect,
-  getStore,
-  emit,
-  subscribe,
-} from './store'
+import { connect, getStore, emit, subscribe } from './store'
 import { getOnMessage, getPostMessage } from './message'
-import { MOUNTED_COMPONENTS, RETRY_COUNT, ERROR_TYPE } from '../config'
+import { MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
 import {
-  RequireError,
-  ErrorState,
-  ComponentProps,
-  RequiredComponent,
-  Creator,
-  ConnectProps,
+  RequireError, ErrorState, ComponentProps, RequiredComponent, Creator, ConnectProps,
   ComponentDispatcher,
 } from '../types'
 
@@ -35,6 +26,7 @@ function componentCreator({
   const { components, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
+  const console = getConsole(nameWidthModule)
 
   class R extends Component<
     ConnectProps & { $silent?: boolean },
@@ -51,11 +43,9 @@ function componentCreator({
 
     private isUnMounted?: boolean
 
-    private retryCount: number = 0
+    private i18nConfig?: ReturnType<Ii8n>
 
-    private i18nConfig?: ReturnType<Ii8nConfig>
-
-    dispatch = currentDispatch.bind(this, name)
+    dispatch = currentDispatch.bind(this, nameWidthModule)
 
     postMessage = getPostMessage(nameWidthModule)
 
@@ -65,6 +55,7 @@ function componentCreator({
     }
 
     componentDidCatch(e: Error) {
+      console.error(`[${ERROR_TYPE.SCRIPT_ERROR}] ${e.message}`)
       this.setState({ errorType: ERROR_TYPE.SCRIPT_ERROR, errorMessage: e.message })
       window.requirejs.undef(name)
       window.requirejs.config({
@@ -95,7 +86,9 @@ function componentCreator({
 
     mountComponent = () => {
       if (name === 'store') {
-        this.setState({ errorType: ERROR_TYPE.INVALID_COMPONENT, errorMessage: 'Cannot load component named `store`' })
+        const errorMessage = 'cannot load component named `store`'
+        console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
+        this.setState({ errorType: ERROR_TYPE.INVALID_COMPONENT, errorMessage })
         return
       }
 
@@ -117,19 +110,25 @@ function componentCreator({
         }
 
         if (!C) {
-          this.setState({ errorMessage: 'No content', errorType: ERROR_TYPE.INVALID_COMPONENT })
+          const errorMessage = 'no content'
+          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
+          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
         const componentNode = module === symbolModule ? (C.default || C) : C[module]
 
         if (!componentNode) {
-          this.setState({ errorMessage: 'Module not defined', errorType: ERROR_TYPE.INVALID_COMPONENT })
+          const errorMessage = 'module not defined'
+          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
+          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
         if (typeof componentNode !== 'function') {
-          this.setState({ errorMessage: 'Component cannot be executed', errorType: ERROR_TYPE.INVALID_COMPONENT })
+          const errorMessage = 'module cannot be executed'
+          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
+          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
@@ -150,8 +149,8 @@ function componentCreator({
               this.unSubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
               return
             }
-            if (method === '$getI18nConfig') {
-              const i18nConfig = (componentNode[method] as Ii8nConfig)()
+            if (method === '$i18n') {
+              const i18nConfig = (componentNode[method] as Ii8n)()
               this.i18nConfig = i18nConfig
               return
             }
@@ -182,19 +181,12 @@ function componentCreator({
           return
         }
 
-        if (this.retryCount < RETRY_COUNT) {
-          this.retryCount += 1
-          setTimeout(this.mountComponent, 1000)
-          return
-        }
-
         const [requireModule] = e.requireModules
 
-        this.setState({
-          errorType: requireModule === name
-            ? ERROR_TYPE.LOADING_ERROR : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR,
-          errorMessage: e.message,
-        })
+        const errorType = requireModule === name
+          ? ERROR_TYPE.LOADING_ERROR : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
+        console.error(`[${errorType}] ${e.message}`)
+        this.setState({ errorType, errorMessage: e.message })
       })
     }
 
@@ -212,7 +204,7 @@ function componentCreator({
 
     $t: ComponentProps['$t'] = (key, defaultText) => {
       if (!this.i18nConfig) {
-        window.console.warn(`[${nameWidthModule}][i18n] config not exist`)
+        console.warn('[i18n] config not exist')
         return defaultText
       }
       const { localeKey, resources } = this.i18nConfig
@@ -220,7 +212,7 @@ function componentCreator({
       const resource = resources[locale]
 
       if (!resource) {
-        window.console.warn(`[${nameWidthModule}][i18n] locale \`${locale}\` not exist`)
+        console.warn(`[i18n] locale \`${locale}\` not exist`)
         return defaultText
       }
 
@@ -228,7 +220,7 @@ function componentCreator({
         return resource[key]
       }
 
-      window.console.warn(`[${nameWidthModule}][i18n] key \`${key}\` not exist`)
+      console.warn(`[i18n] key \`${key}\` not exist`)
       return defaultText
     }
 
@@ -286,9 +278,9 @@ function componentCreator({
         return !$silent
           ? (
             <Error
-              type={ERROR_TYPE[errorType]}
-              message={errorMessage}
-              reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
+              $type={ERROR_TYPE[errorType]}
+              $message={errorMessage}
+              $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
             />
           )
           : null
