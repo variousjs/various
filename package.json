@@ -21,7 +21,6 @@
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "prestart": "mkdir -p demo/dist && cp demo/empty.js demo/dist/empty.js",
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress",
-    "start:test": "TEST_ENV=cypress webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress",
     "prebuild": "npm run lint",
     "build": "NODE_ENV=production webpack --config webpack/index.js --progress",
     "cy:run": "cypress run",
