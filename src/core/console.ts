@@ -4,7 +4,7 @@ const getPrefix = (name?: string) => {
   return [text, style]
 }
 
-export default function log(defaultName?: string) {
+export default function (defaultName?: string) {
   const { warn, error } = window.console
 
   return {

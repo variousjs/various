@@ -13,7 +13,7 @@ declare module '@variousjs/various' {
   type $preload = (names: string[]) => Promise<void>
   type $postMessage = (name: string, value?: any) => void
   type $getMountedComponents = () => string[]
-  type $t = (key: string, defaultText?: string) => string | undefined
+  type $t = (key: string, params?: Record<string, string | number>) => string | undefined
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
 
