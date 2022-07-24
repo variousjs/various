@@ -1,3 +1,4 @@
 {
-  "title": "Title"
+  "title": "Title",
+  "hello": "Hello, {name}, {name2}"
 }

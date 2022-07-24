@@ -202,10 +202,10 @@ function componentCreator({
 
     $getMountedComponents = () => getStore()[MOUNTED_COMPONENTS] as string[]
 
-    $t: ComponentProps['$t'] = (key, defaultText) => {
+    $t: ComponentProps['$t'] = (key, params) => {
       if (!this.i18nConfig) {
         console.warn('[i18n] config not exist')
-        return defaultText
+        return key
       }
       const { localeKey, resources } = this.i18nConfig
       const locale = this.props[localeKey] as string
@@ -213,15 +213,29 @@ function componentCreator({
 
       if (!resource) {
         console.warn(`[i18n] locale \`${locale}\` not exist`)
-        return defaultText
+        return key
       }
 
-      if (resource[key]) {
-        return resource[key]
+      if (!resource[key]) {
+        console.warn(`[i18n] key \`${key}\` not exist`)
+        return key
       }
 
-      console.warn(`[i18n] key \`${key}\` not exist`)
-      return defaultText
+      const text = resource[key]
+      if (!params || Object.prototype.toString.call(params) !== '[object Object]') {
+        return text
+      }
+
+      const args = Object.keys(params)
+      if (!args.length) {
+        console.warn(`[i18n] key \`${key}\` parameters empty`)
+        return text
+      }
+
+      return args.reduce((next, arg) => {
+        const regex = new RegExp(`{\\s*${arg}\\s*}`, 'g')
+        return next.replace(regex, params[arg].toString())
+      }, text)
     }
 
     $render: ComponentProps['$render'] = ({
