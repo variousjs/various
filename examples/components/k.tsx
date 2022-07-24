@@ -20,7 +20,7 @@ export class C extends Component<ComponentProps<Store>> {
     return (
       <>
         <h3>{$t('title')}</h3>
-        <h3>{$t('hello', { name: 1, name2: '999' })}</h3>
+        <p>{$t('hello', { name: 1, name2: '999' })}</p>
         <Button onClick={() => $dispatch('store', 'setLocale', 'zh')}>zh</Button>
         <Button id="en" onClick={() => $dispatch('store', 'setLocale', 'en')}>en</Button>
       </>
@@ -62,7 +62,8 @@ export const T: FC<ComponentProps> = (props) => {
 
   return (
     <>
-      <p>{$t('title', {})}</p>
+      {/* @ts-ignore */}
+      <p>{$t('title', [])}</p>
     </>
   )
 }
