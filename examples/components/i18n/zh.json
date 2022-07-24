@@ -1,4 +1,4 @@
 {
   "title": "标题",
-  "hello": "你好，{name}，{name2}"
+  "hello": "你好，{ name}，{name2      }"
 }

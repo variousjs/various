@@ -233,7 +233,7 @@ function componentCreator({
       }
 
       return args.reduce((next, arg) => {
-        const regex = new RegExp(`{${arg}}`, 'g')
+        const regex = new RegExp(`{\\s*${arg}\\s*}`, 'g')
         return next.replace(regex, params[arg].toString())
       }, text)
     }
