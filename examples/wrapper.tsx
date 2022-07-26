@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import {
   Layout, Menu, Icon, Input,
 } from 'antd'
@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { ContainerProps } from '@variousjs/various'
 import { Config } from './types'
 
-const W: FC<ContainerProps<Config>> = (props) => {
+const W: FC<ContainerProps<Config> & { children: ReactNode }> = (props) => {
   const { children, $config } = props
 
   return (
