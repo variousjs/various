@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Ii8n } from '@variousjs/various'
 import getDispatch from './dispatch'
 import getConsole from './console'
@@ -161,14 +161,13 @@ function componentCreator({
         componentDispatcher[nameWidthModule] = actions // eslint-disable-line no-param-reassign
 
         this.ComponentNode = componentNode
+        this.setState({ componentReady: true })
 
-        this.setState({ componentReady: true }, () => {
-          if (onMounted) {
-            onMounted()
-          } else {
-            emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
-          }
-        })
+        if (onMounted) {
+          onMounted()
+        } else {
+          emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+        }
       }, (e: RequireError) => {
         window.requirejs.undef(name)
         window.requirejs.config({
@@ -266,9 +265,10 @@ function componentCreator({
         onMounted: onMountedFn,
       })
       const Fc = (p: { [key: string]: any }) => (<C {...p} />)
+      const Root = createRoot(target as Element)
+      Root.render(<Fc {...props} />)
 
-      render(<Fc {...props} />, target)
-      return () => unmountComponentAtNode(target as Element)
+      return () => Root.unmount()
     }
 
     render() {

@@ -1,6 +1,6 @@
 {
   "name": "@variousjs/various",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
@@ -49,8 +49,8 @@
     "@babel/preset-typescript": "^7.14.5",
     "@babel/runtime-corejs3": "^7.14.8",
     "@cypress/code-coverage": "^3.9.12",
-    "@types/react": "^17.0.27",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.2",
     "@types/requirejs": "^2.1.33",
     "@typescript-eslint/eslint-plugin": "^4.31.0",

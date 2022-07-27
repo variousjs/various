@@ -1,6 +1,6 @@
 export const DEFAULT_PACKAGES = {
-  react: 'https://unpkg.com/react@17.0.2/umd/react.development.js',
-  'react-dom': 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js',
+  react: 'https://unpkg.com/react@18/umd/react.production.min.js',
+  'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
 }
 
 export const MOUNTED_COMPONENTS = Symbol('MOUNTED_COMPONENTS')

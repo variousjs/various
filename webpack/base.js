@@ -11,7 +11,7 @@ const config = {
       root: 'React',
       amd: 'react',
     },
-    'react-dom': {
+    'react-dom/client': {
       root: 'ReactDOM',
       amd: 'react-dom',
     },

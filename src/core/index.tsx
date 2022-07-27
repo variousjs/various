@@ -1,5 +1,5 @@
 import React, { ComponentType, Component } from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
@@ -100,5 +100,5 @@ export default (config: Config & Entry) => {
     }
   }
 
-  render((<R />), document.querySelector(root || ROOT_CONTAINER))
+  createRoot(document.querySelector(root || ROOT_CONTAINER) as Element).render(<R />)
 }
