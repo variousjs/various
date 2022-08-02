@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Ii8n } from '@variousjs/various'
 import getDispatch from './dispatch'
 import getConsole from './console'
-import { preload, isComponentLoaded } from './preload'
+import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe } from './store'
 import { getOnMessage, getPostMessage } from './message'
 import { MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
@@ -76,7 +76,7 @@ function componentCreator({
     private unSubscribe = () => null as unknown
 
     unMountComponent = () => {
-      let mountedComponents = this.$getMountedComponents()
+      let mountedComponents = getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
       emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
 
@@ -199,8 +199,6 @@ function componentCreator({
       })
     }
 
-    $getMountedComponents = () => getStore()[MOUNTED_COMPONENTS] as string[]
-
     $t: ComponentProps['$t'] = (key, params) => {
       if (!this.i18nConfig) {
         console.warn('[i18n] config not exist')
@@ -321,9 +319,7 @@ function componentCreator({
           $dispatch={this.dispatch}
           $store={store}
           $render={onMounted ? undefined : this.$render}
-          $preload={preload}
           $postMessage={this.postMessage}
-          $getMountedComponents={this.$getMountedComponents}
           $t={this.$t}
         />
       )

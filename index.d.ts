@@ -10,9 +10,7 @@ declare module '@variousjs/various' {
     target: Element | null,
     onMounted?: () => void,
   }) => () => void
-  type $preload = (names: string[]) => Promise<void>
   type $postMessage = (name: string, value?: any) => void
-  type $getMountedComponents = () => string[]
   type $t = (key: string, params?: Record<string, string | number>) => string | undefined
 
   export { default as Store, Connect, Dispatch } from 'nycticorax'
@@ -22,9 +20,7 @@ declare module '@variousjs/various' {
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
-    $preload: $preload,
     $postMessage: $postMessage,
-    $getMountedComponents: $getMountedComponents,
     $t: $t,
   }
 
@@ -59,4 +55,8 @@ declare module '@variousjs/various' {
     localeKey: string,
     resources: Record<string, Record<string, string>>,
   }
+
+  export const isComponentLoaded: (name: string) => boolean
+  export const getMountedComponents: () => string[]
+  export const preloadComponents: (names: string[]) => Promise<void>
 }

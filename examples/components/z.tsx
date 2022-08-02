@@ -1,6 +1,6 @@
 import React, { Component, FC } from 'react'
 import { Button } from 'antd'
-import { ComponentProps } from '@variousjs/various'
+import { ComponentProps, preloadComponents } from '@variousjs/various'
 
 export class X extends Component<ComponentProps> {
   private unMountZ: () => void
@@ -61,7 +61,7 @@ export class X extends Component<ComponentProps> {
   }
 
   onH = async () => {
-    await this.props.$preload(['h'])
+    await preloadComponents(['h'])
     this.setState({ hPreloaded: true })
   }
 

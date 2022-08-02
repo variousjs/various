@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Button, DatePicker } from 'antd'
-import { ComponentProps } from '@variousjs/various'
+import { ComponentProps, getMountedComponents } from '@variousjs/various'
 import moment from 'moment'
 import { Store } from '../types'
 
@@ -16,7 +16,7 @@ const X: FC<ComponentProps<Store>> = (props) => {
   }
 
   const onMounted = () => {
-    const res = props.$getMountedComponents()
+    const res = getMountedComponents()
     setM(res)
   }
 
