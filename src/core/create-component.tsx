@@ -104,7 +104,7 @@ function componentCreator({
         // ignore
       }
 
-      window.requirejs([name], async (C: RequiredComponent) => {
+      window.requirejs([name], (C: RequiredComponent) => {
         if (this.isUnMounted) {
           return
         }
