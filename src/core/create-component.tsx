@@ -19,7 +19,8 @@ function componentCreator({
   componentDispatcher,
   Loader,
   Error,
-  onMounted,
+  onMounted = () => null,
+  isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
   const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
@@ -163,11 +164,8 @@ function componentCreator({
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
 
-        if (onMounted) {
-          onMounted()
-        } else {
-          emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
-        }
+        onMounted()
+        emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
       }, (e: RequireError) => {
         window.requirejs.undef(name)
         window.requirejs.config({
@@ -261,6 +259,7 @@ function componentCreator({
         Error,
         config: { ...rest, components },
         onMounted: onMountedFn,
+        isRender: true,
       })
       const Fc = (p: { [key: string]: any }) => (<C {...p} />)
       const Root = createRoot(target as Element)
@@ -318,7 +317,7 @@ function componentCreator({
           $config={rest}
           $dispatch={this.dispatch}
           $store={store}
-          $render={onMounted ? undefined : this.$render}
+          $render={isRender ? undefined : this.$render}
           $postMessage={this.postMessage}
           $t={this.$t}
         />
