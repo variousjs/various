@@ -33,4 +33,8 @@ describe('dispatch test', () => {
       cy.contains('Container').next().should('have.value', 'Container state keeping')
     })
   })
+
+  it('on component ready', () => {
+    cy.contains('Readys:').should('have.text', 'Readys: b.C,x')
+  })
 })

@@ -70,5 +70,6 @@ module.exports = {
     'react/prefer-stateless-function': 0,
     'react/jsx-one-expression-per-line': 0,
     'object-curly-newline': 0,
+    'react/sort-comp': 0,
   },
 }

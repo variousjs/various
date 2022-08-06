@@ -59,4 +59,5 @@ declare module '@variousjs/various' {
   export const isComponentLoaded: (name: string) => boolean
   export const getMountedComponents: () => string[]
   export const preloadComponents: (names: string[]) => Promise<void>
+  export const onComponentMounted: (name: string, callback: () => void) => () => void
 }

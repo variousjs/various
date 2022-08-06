@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, Store, Connect as CT, Invoker } from '@variousjs/various'
+import { ComponentProps, Store, Connect as CT, Invoker, onComponentMounted } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
-type S = { value: string }
+type S = { value: string, readys: string[] }
 type Connect = CT<S>
 
-const { createStore, connect, emit } = new Store<S>()
+const { createStore, connect, emit, getStore } = new Store<S>()
 
-createStore({ value: 'a' })
+createStore({ value: 'a', readys: [] })
 
 class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string }> {
   static updateValue: Invoker = async ({ value, trigger }) => {
@@ -16,6 +16,10 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
     await new Promise((r) => setTimeout(r, 100))
     emit({ value }, true)
   }
+
+  un: Function
+
+  un2: Function
 
   state = {
     dispatchError: '',
@@ -43,8 +47,25 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
     }
   }
 
+  componentDidMount() {
+    this.un = onComponentMounted('b.C', () => {
+      const { readys } = getStore()
+      emit({ readys: readys.concat(['b.C']) }, true)
+    })
+    this.un2 = onComponentMounted('x', () => {
+      const { readys } = getStore()
+      emit({ readys: readys.concat(['x']) }, true)
+    })
+  }
+
+  componentWillUnmount() {
+    this.un()
+    this.un2()
+    emit({ readys: [] }, true)
+  }
+
   render() {
-    const { value, name, $store } = this.props
+    const { value, name, $store, readys } = this.props
     const { dispatchError, bValue } = this.state
 
     return (
@@ -54,6 +75,7 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
         <p>Component Props: {name}</p>
         <p>Value(b): {bValue}</p>
         <p>Dispatch Error: <span id="a-dispatch-error">{dispatchError}</span></p>
+        <p>Readys: {readys.sort().join()}</p>
         <Button onClick={this.onGetB}>$dispatch(b)</Button>
         <Button onClick={this.onDpB}>$dispatch(b-no-exits)</Button>
         <Button id="a-dispatch-global" onClick={this.onSetG}>$dispatch(global)</Button>
@@ -62,4 +84,4 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
   }
 }
 
-export default connect('value')(A)
+export default connect('value', 'readys')(A)

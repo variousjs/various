@@ -8,7 +8,7 @@ import getConsole from './console'
 import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
 export { default as Store } from 'nycticorax'
-export { isComponentLoaded, getMountedComponents, preloadComponents } from './component-helper'
+export { isComponentLoaded, getMountedComponents, preloadComponents, onComponentMounted } from './component-helper'
 
 export default (config: Config & Entry) => {
   const {
