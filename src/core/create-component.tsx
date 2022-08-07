@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Ii8n } from '@variousjs/various'
-import getDispatch from './dispatch'
 import getConsole from './console'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe } from './store'
@@ -12,18 +11,17 @@ import {
   ComponentDispatcher,
 } from '../types'
 
-function componentCreator({
+export default function componentCreator({
   config,
   name: nameWidthModule,
   storeDispatcher,
   componentDispatcher,
   Loader,
-  Error,
+  Error: ErrorNode,
   onMounted = () => null,
   isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
-  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
@@ -46,9 +44,7 @@ function componentCreator({
 
     private i18nConfig?: ReturnType<Ii8n>
 
-    dispatch = currentDispatch.bind(this, nameWidthModule)
-
-    postMessage = getPostMessage(nameWidthModule)
+    private unSubscribe = () => null as unknown
 
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
@@ -73,8 +69,6 @@ function componentCreator({
       this.isUnMounted = true
       this.unSubscribe()
     }
-
-    private unSubscribe = () => null as unknown
 
     unMountComponent = () => {
       let mountedComponents = getMountedComponents()
@@ -133,7 +127,7 @@ function componentCreator({
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
         const actions: ComponentDispatcher = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
@@ -197,6 +191,37 @@ function componentCreator({
       })
     }
 
+    $postMessage = getPostMessage(nameWidthModule)
+
+    $dispatch: ComponentProps['$dispatch'] = (dispatchName, func, value) => {
+      const { dispatch } = this.props
+
+      if (dispatchName === 'store') {
+        if (!storeDispatcher[func]) {
+          const errorMessage = `[dispatch] \`store\` action \`${func}\` is not present`
+          console.error(errorMessage)
+          throw new Error(errorMessage)
+        }
+        return dispatch(storeDispatcher[func], { value, trigger: nameWidthModule })
+      }
+
+      const actions = componentDispatcher[dispatchName]
+
+      if (!actions) {
+        const errorMessage = `[dispatch] component \`${dispatchName}\` is not ready`
+        console.error(errorMessage)
+        throw new Error(errorMessage)
+      }
+
+      if (!actions[func]) {
+        const errorMessage = `[dispatch] \`${dispatchName}\` action \`${func}\` is not present`
+        console.error(errorMessage)
+        throw new Error(errorMessage)
+      }
+
+      return Promise.resolve(actions[func]({ value, trigger: nameWidthModule }))
+    }
+
     $t: ComponentProps['$t'] = (key, params) => {
       if (!this.i18nConfig) {
         console.warn('[i18n] config not exist')
@@ -256,7 +281,7 @@ function componentCreator({
         storeDispatcher,
         componentDispatcher,
         Loader,
-        Error,
+        Error: ErrorNode,
         config: { ...rest, components },
         onMounted: onMountedFn,
         isRender: true,
@@ -288,7 +313,7 @@ function componentCreator({
       if (errorType) {
         return !$silent
           ? (
-            <Error
+            <ErrorNode
               $type={ERROR_TYPE[errorType]}
               $message={errorMessage}
               $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
@@ -315,10 +340,10 @@ function componentCreator({
         <ComponentNode
           {...componentProps}
           $config={rest}
-          $dispatch={this.dispatch}
+          $dispatch={this.$dispatch}
           $store={store}
           $render={isRender ? undefined : this.$render}
-          $postMessage={this.postMessage}
+          $postMessage={this.$postMessage}
           $t={this.$t}
         />
       )
@@ -329,5 +354,3 @@ function componentCreator({
   const [key0, ...keyn] = storeKeys
   return connect(key0, ...keyn)(R)
 }
-
-export default componentCreator
