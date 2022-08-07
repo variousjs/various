@@ -15,6 +15,7 @@ export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS]
 export const onComponentMounted = (name: string, callback: () => void) => {
   if (getMountedComponents().includes(name)) {
     callback()
+    /* istanbul ignore next */
     return () => null
   }
 
