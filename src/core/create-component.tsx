@@ -127,7 +127,7 @@ export default function componentCreator({
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS]
+        const mountedComponents = getMountedComponents()
         const actions: ComponentDispatcher = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
