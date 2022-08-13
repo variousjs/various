@@ -19,11 +19,14 @@ export const onComponentMounted = (name: string, callback: () => void) => {
     return () => null
   }
 
-  const unSubscribe = subscribe(() => {
-    if (getMountedComponents().includes(name)) {
-      unSubscribe()
-      callback()
-    }
+  const unSubscribe = subscribe({
+    [MOUNTED_COMPONENTS](value) {
+      const names = value as string[]
+      if (names.includes(name)) {
+        unSubscribe()
+        callback()
+      }
+    },
   })
 
   return unSubscribe

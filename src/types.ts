@@ -13,7 +13,7 @@ export interface Store {
     value?: any,
   },
   [MOUNTED_COMPONENTS]: string[],
-  [key: string]: any,
+  [key: string | symbol]: any,
 }
 
 export type ConnectProps = Connect<Store>

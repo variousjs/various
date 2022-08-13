@@ -4,11 +4,10 @@ import { Ii8n } from '@variousjs/various'
 import getConsole from './console'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe } from './store'
-import { getOnMessage, getPostMessage } from './message'
-import { MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
+import { MOUNTED_COMPONENTS, ERROR_TYPE, MESSAGE_KEY } from '../config'
 import {
   RequireError, ErrorState, ComponentProps, RequiredComponent, Creator, ConnectProps,
-  ComponentDispatcher,
+  ComponentDispatcher, Store,
 } from '../types'
 
 export default function componentCreator({
@@ -141,7 +140,14 @@ export default function componentCreator({
               return
             }
             if (method === '$onMessage') {
-              this.unSubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
+              this.unSubscribe = subscribe({
+                [MESSAGE_KEY](v) {
+                  const { name: trigger, value, type: triggerType } = v as Store[typeof MESSAGE_KEY]
+                  if (triggerType !== nameWidthModule) {
+                    componentNode[method]({ name: trigger!, value, type: triggerType! })
+                  }
+                },
+              })
               return
             }
             if (method === '$i18n') {
@@ -191,7 +197,14 @@ export default function componentCreator({
       })
     }
 
-    $postMessage = getPostMessage(nameWidthModule)
+    $postMessage = (trigger: string, value: any) => emit({
+      [MESSAGE_KEY]: {
+        timestamp: +new Date(),
+        type: nameWidthModule,
+        name: trigger,
+        value,
+      },
+    })
 
     $dispatch: ComponentProps['$dispatch'] = (dispatchName, func, value) => {
       const { dispatch } = this.props
@@ -296,7 +309,7 @@ export default function componentCreator({
     render() {
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        emit: componentDispatch,
+        emit: componentEmit, dispatch: componentDispatch,
         $silent,
         ...propsRest
       } = this.props
@@ -350,7 +363,5 @@ export default function componentCreator({
     }
   }
 
-  // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
-  const [key0, ...keyn] = storeKeys
-  return connect(key0, ...keyn)(R)
+  return connect(...storeKeys)(R)
 }
