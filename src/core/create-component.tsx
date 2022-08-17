@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Ii8n } from '@variousjs/various'
-import getConsole from './console'
+import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe } from './store'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, MESSAGE_KEY } from '../config'
@@ -24,7 +24,6 @@ export default function componentCreator({
   const { components, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
-  const console = getConsole(nameWidthModule)
 
   class R extends Component<
     ConnectProps & { $silent?: boolean },
@@ -45,14 +44,20 @@ export default function componentCreator({
 
     private unSubscribe = () => null as unknown
 
+    onError = onError
+
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
       this.mountComponent()
     }
 
     componentDidCatch(e: Error) {
-      console.error(`[${ERROR_TYPE.SCRIPT_ERROR}] ${e.message}`)
-      this.setState({ errorType: ERROR_TYPE.SCRIPT_ERROR, errorMessage: e.message })
+      this.onError({
+        name: nameWidthModule,
+        type: 'SCRIPT_ERROR',
+        message: e.message,
+      })
+
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -80,9 +85,11 @@ export default function componentCreator({
 
     mountComponent = () => {
       if (name === 'store') {
-        const errorMessage = 'cannot load component named `store`'
-        console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-        this.setState({ errorType: ERROR_TYPE.INVALID_COMPONENT, errorMessage })
+        this.onError({
+          name: nameWidthModule,
+          type: 'INVALID_COMPONENT',
+          message: 'cannot load component named `store`',
+        })
         return
       }
 
@@ -104,25 +111,31 @@ export default function componentCreator({
         }
 
         if (!C) {
-          const errorMessage = 'no content'
-          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.onError({
+            name: nameWidthModule,
+            type: 'INVALID_COMPONENT',
+            message: 'no content',
+          })
           return
         }
 
         const componentNode = module === symbolModule ? (C.default || C) : C[module]
 
         if (!componentNode) {
-          const errorMessage = 'module not defined'
-          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.onError({
+            name: nameWidthModule,
+            type: 'INVALID_COMPONENT',
+            message: 'module not defined',
+          })
           return
         }
 
         if (typeof componentNode !== 'function') {
-          const errorMessage = 'module cannot be executed'
-          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.onError({
+            name: nameWidthModule,
+            type: 'INVALID_COMPONENT',
+            message: 'module cannot be executed',
+          })
           return
         }
 
@@ -159,7 +172,8 @@ export default function componentCreator({
             actions[method] = componentNode[method]
           })
 
-        componentDispatcher[nameWidthModule] = actions // eslint-disable-line no-param-reassign
+        // eslint-disable-next-line no-param-reassign
+        componentDispatcher[nameWidthModule] = actions
 
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
@@ -180,10 +194,11 @@ export default function componentCreator({
 
         const [requireModule] = e.requireModules
 
-        const errorType = requireModule === name
-          ? ERROR_TYPE.LOADING_ERROR : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
-        console.error(`[${errorType}] ${e.message}`)
-        this.setState({ errorType, errorMessage: e.message })
+        this.onError({
+          name: nameWidthModule,
+          type: requireModule === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
+          message: e.message,
+        })
       })
     }
 
@@ -211,8 +226,12 @@ export default function componentCreator({
 
       if (dispatchName === 'store') {
         if (!storeDispatcher[func]) {
-          const errorMessage = `[dispatch] \`store\` action \`${func}\` is not present`
-          console.error(errorMessage)
+          const errorMessage = `\`store\` action \`${func}\` is not present`
+          onError({
+            name: nameWidthModule,
+            type: 'dispatch',
+            message: errorMessage,
+          })
           throw new Error(errorMessage)
         }
         return dispatch(storeDispatcher[func], { value, trigger: nameWidthModule })
@@ -221,14 +240,22 @@ export default function componentCreator({
       const actions = componentDispatcher[dispatchName]
 
       if (!actions) {
-        const errorMessage = `[dispatch] component \`${dispatchName}\` is not ready`
-        console.error(errorMessage)
+        const errorMessage = `component \`${dispatchName}\` is not ready`
+        onError({
+          name: nameWidthModule,
+          type: 'dispatch',
+          message: errorMessage,
+        })
         throw new Error(errorMessage)
       }
 
       if (!actions[func]) {
-        const errorMessage = `[dispatch] \`${dispatchName}\` action \`${func}\` is not present`
-        console.error(errorMessage)
+        const errorMessage = `\`${dispatchName}\` action \`${func}\` is not present`
+        onError({
+          name: nameWidthModule,
+          type: 'dispatch',
+          message: errorMessage,
+        })
         throw new Error(errorMessage)
       }
 
@@ -237,7 +264,12 @@ export default function componentCreator({
 
     $t: ComponentProps['$t'] = (key, params) => {
       if (!this.i18nConfig) {
-        console.warn('[i18n] config not exist')
+        onError({
+          name: nameWidthModule,
+          type: 'i18n',
+          message: 'config not exist',
+          level: 'warn',
+        })
         return key
       }
       const { localeKey, resources } = this.i18nConfig
@@ -245,12 +277,22 @@ export default function componentCreator({
       const resource = resources[locale]
 
       if (!resource) {
-        console.warn(`[i18n] locale \`${locale}\` not exist`)
+        onError({
+          name: nameWidthModule,
+          type: 'i18n',
+          message: `locale \`${locale}\` not exist`,
+          level: 'warn',
+        })
         return key
       }
 
       if (!resource[key]) {
-        console.warn(`[i18n] key \`${key}\` not exist`)
+        onError({
+          name: nameWidthModule,
+          type: 'i18n',
+          message: `key \`${key}\` not exist`,
+          level: 'warn',
+        })
         return key
       }
 
@@ -261,7 +303,6 @@ export default function componentCreator({
 
       const args = Object.keys(params)
       if (!args.length) {
-        console.warn(`[i18n] key \`${key}\` parameters empty`)
         return text
       }
 

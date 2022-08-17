@@ -4,7 +4,7 @@ import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
 import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE } from '../config'
-import getConsole from './console'
+import onError from './error'
 import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
 export { default as Store } from 'nycticorax'
@@ -26,7 +26,6 @@ export default (config: Config & Entry) => {
   const componentDispatcher: Record<string, ComponentDispatcher> = {}
   const storeDispatcher = { ...actions }
   const COMPONENTS: Record<string, ComponentType> = {}
-  const console = getConsole()
 
   createStore({
     ...store,
@@ -55,8 +54,11 @@ export default (config: Config & Entry) => {
     const [name] = nameWidthSub.split('.')
     if (!components[name]) {
       const errorMessage = 'component not defined'
-
-      console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`, nameWidthSub)
+      onError({
+        name: nameWidthSub,
+        message: errorMessage,
+        type: 'NOT_DEFINED',
+      })
       return () => (
         <ErrorNode $message={errorMessage} $type={ERROR_TYPE.NOT_DEFINED} />
       )
@@ -75,9 +77,14 @@ export default (config: Config & Entry) => {
       errorMessage: '',
     }
 
+    onError = onError
+
     componentDidCatch(e: Error) {
-      console.error(`[${ERROR_TYPE.CONTAINER_ERROR}] ${e.message}`, 'container')
-      this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
+      this.onError({
+        name: 'container',
+        message: e.message,
+        type: 'CONTAINER_ERROR',
+      })
     }
 
     render() {

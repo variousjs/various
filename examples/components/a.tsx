@@ -21,6 +21,8 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
 
   un2: Function
 
+  un3: Function
+
   state = {
     dispatchError: '',
     bValue: '',
@@ -56,11 +58,16 @@ class A extends Component<Connect & ComponentProps<GlobalStore> & { name: string
       const { readys } = getStore()
       emit({ readys: readys.concat(['x']) }, true)
     })
+    this.un3 = onComponentMounted('y', () => {
+      const { readys } = getStore()
+      emit({ readys: readys.concat(['y']) }, true)
+    })
   }
 
   componentWillUnmount() {
     this.un()
     this.un2()
+    this.un3()
     emit({ readys: [] }, true)
   }
 

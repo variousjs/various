@@ -65,6 +65,13 @@ export interface ErrorState {
   errorMessage: string,
 }
 
+export interface ErrorArgs {
+  name: string,
+  message: string,
+  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
+  level?: 'warn' | 'error',
+}
+
 export interface Various {
   default: (config: Config & Entry) => void,
 }

@@ -15,7 +15,7 @@ describe('dispatch test', () => {
     cy.get('[data-title="a"]').next().should('have.text', 'Store: B')
     cy.get('[data-title="X"]').next().should('have.text', 'Store: B')
     cy.get('#a-dispatch-global').click()
-    cy.get('#a-dispatch-error').should('have.text', '[dispatch] `store` action `no-exist` is not present')
+    cy.get('#a-dispatch-error').should('have.text', '`store` action `no-exist` is not present')
   })
 
   it('component', () => {
@@ -24,9 +24,9 @@ describe('dispatch test', () => {
         cy.contains('$dispatch(b)').click()
         cy.contains('Value(b)').should('have.text', 'Value(b): b')
         cy.contains('$dispatch(b-no-exits)').click()
-        cy.get('#a-dispatch-error').should('have.text', '[dispatch] `b.C` action `no-exist` is not present')
+        cy.get('#a-dispatch-error').should('have.text', '`b.C` action `no-exist` is not present')
       })
-    cy.get('[data-title="b.C"]').next().should('have.text', 'Dispatch Error: [dispatch] component `no-exist` is not ready')
+    cy.get('[data-title="b.C"]').next().should('have.text', 'Dispatch Error: component `no-exist` is not ready')
     cy.get('[data-title="a"]').then(() => {
       cy.contains('$dispatch(a)').click()
       cy.contains('Store(component)').should('have.text', 'Store(component): ab')
