@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Ii8n } from '@variousjs/various'
+import { Ii8n, MessageInvoker } from '@variousjs/various'
 import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
-import { connect, getStore, emit, subscribe } from './store'
+import { connect, getStore, emit, subscribe, dispatch } from './store'
 import { MOUNTED_COMPONENTS, ERROR_TYPE, MESSAGE_KEY } from '../config'
 import {
-  RequireError, ErrorState, ComponentProps, RequiredComponent, Creator, ConnectProps,
+  RequireError, ErrorState, ComponentProps, RequiredComponent, Creator,
   ComponentDispatcher, Store,
 } from '../types'
 
@@ -26,7 +26,7 @@ export default function componentCreator({
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
   class R extends Component<
-    ConnectProps & { $silent?: boolean },
+    Store & { $silent?: boolean },
     ErrorState & { componentReady: boolean, componentExist?: boolean }
   > {
     state = {
@@ -157,7 +157,11 @@ export default function componentCreator({
                 [MESSAGE_KEY](v) {
                   const { name: trigger, value, type: triggerType } = v as Store[typeof MESSAGE_KEY]
                   if (triggerType !== nameWidthModule) {
-                    componentNode[method]({ name: trigger!, value, type: triggerType! })
+                    (componentNode[method] as MessageInvoker)({
+                      name: trigger!,
+                      value,
+                      type: triggerType!,
+                    })
                   }
                 },
               })
@@ -222,8 +226,6 @@ export default function componentCreator({
     })
 
     $dispatch: ComponentProps['$dispatch'] = (dispatchName, func, value) => {
-      const { dispatch } = this.props
-
       if (dispatchName === 'store') {
         if (!storeDispatcher[func]) {
           const errorMessage = `\`store\` action \`${func}\` is not present`
@@ -344,22 +346,12 @@ export default function componentCreator({
       const Root = createRoot(target as Element)
       Root.render(<Fc {...props} />)
 
-      return () => Root.unmount()
+      return () => Promise.resolve(() => Root.unmount())
     }
 
     render() {
-      const {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        emit: componentEmit, dispatch: componentDispatch,
-        $silent,
-        ...propsRest
-      } = this.props
-      const {
-        componentReady,
-        errorMessage,
-        errorType,
-        componentExist,
-      } = this.state
+      const { $silent, ...propsRest } = this.props
+      const { componentReady, errorMessage, errorType, componentExist } = this.state
       const store: Record<string, any> = {}
       const componentProps: Record<string, any> = {}
       const ComponentNode = this.ComponentNode as RequiredComponent

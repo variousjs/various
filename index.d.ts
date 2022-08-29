@@ -13,7 +13,7 @@ declare module '@variousjs/various' {
   type $postMessage = (name: string, value?: any) => void
   type $t = (key: string, params?: Record<string, string | number>) => string | undefined
 
-  export { default as Store, Connect, Dispatch } from 'nycticorax'
+  export { default as Store, Dispatch } from 'nycticorax'
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,

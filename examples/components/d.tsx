@@ -1,17 +1,16 @@
 import React, { FC } from 'react'
 import { Button } from 'antd'
 import {
-  ComponentProps, Connect, Store, MessageInvoker,
+  ComponentProps, Store, MessageInvoker,
 } from '@variousjs/various'
 
 type S = { message: string }
-type CT = Connect<S>
 
 const { createStore, connect, emit } = new Store<S>()
 
 createStore({ message: '' })
 
-const D: FC<ComponentProps & CT> & { $onMessage: MessageInvoker } = (props) => (
+const D: FC<ComponentProps & S> & { $onMessage: MessageInvoker } = (props) => (
   <>
     <p id="d-m">Message: {props.message}</p>
     <Button
