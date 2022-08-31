@@ -346,7 +346,7 @@ export default function componentCreator({
       const Root = createRoot(target as Element)
       Root.render(<Fc {...props} />)
 
-      return () => Promise.resolve(() => Root.unmount())
+      return () => setTimeout(() => Root.unmount())
     }
 
     render() {
