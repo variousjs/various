@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n } from '@variousjs/various'
-import { Connect, Dispatch } from 'nycticorax'
+import { Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, MOUNTED_COMPONENTS } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps, Actions } from '@variousjs/various'
@@ -13,10 +13,8 @@ export interface Store {
     value?: any,
   },
   [MOUNTED_COMPONENTS]: string[],
-  [key: string]: any,
+  [key: string | symbol]: any,
 }
-
-export type ConnectProps = Connect<Store>
 
 export type DispatchType = Dispatch<Store>
 
@@ -63,6 +61,13 @@ export type RequiredComponent = ComponentType<ComponentProps>
 export interface ErrorState {
   errorType?: ErrorProps['$type'],
   errorMessage: string,
+}
+
+export interface ErrorArgs {
+  name: string,
+  message: string,
+  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
+  level?: 'warn' | 'error',
 }
 
 export interface Various {

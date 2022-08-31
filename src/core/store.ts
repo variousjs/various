@@ -7,4 +7,5 @@ export const {
   connect,
   emit,
   subscribe,
+  dispatch,
 } = new Nycticorax<Store>()

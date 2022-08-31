@@ -1,6 +1,6 @@
 {
   "name": "@variousjs/various",
-  "version": "1.2.0",
+  "version": "2.1.0",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
@@ -23,7 +23,7 @@
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress",
     "prebuild": "npm run lint",
     "build": "NODE_ENV=production webpack --config webpack/index.js --progress",
-    "cy:run": "cypress run",
+    "cy:run": "rm -rf .nyc_output && cypress run",
     "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
   },
@@ -44,10 +44,11 @@
   "homepage": "https://github.com/variousjs/various#readme",
   "devDependencies": {
     "@babel/core": "^7.18.10",
+    "@babel/plugin-transform-runtime": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@babel/runtime-corejs3": "^7.18.9",
+    "@babel/runtime": "^7.18.9",
     "@cypress/code-coverage": "^3.10.0",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
@@ -57,6 +58,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-loader": "^8.2.5",
     "babel-plugin-istanbul": "^6.1.1",
+    "core-js": "^3.25.0",
     "cypress": "^9.7.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -66,13 +68,13 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "nycticorax": "^4.1.0",
     "start-server-and-test": "^1.14.0",
     "typescript": "^4.4.4",
     "webpack": "^5.74.0",
+    "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3"
   },
-  "dependencies": {
-    "nycticorax": "^3.0.3"
-  }
+  "dependencies": {}
 }

@@ -1,36 +1,32 @@
 import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Ii8n } from '@variousjs/various'
-import getDispatch from './dispatch'
-import getConsole from './console'
+import { Ii8n, MessageInvoker } from '@variousjs/various'
+import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
-import { connect, getStore, emit, subscribe } from './store'
-import { getOnMessage, getPostMessage } from './message'
-import { MOUNTED_COMPONENTS, ERROR_TYPE } from '../config'
+import { connect, getStore, emit, subscribe, dispatch } from './store'
+import { MOUNTED_COMPONENTS, ERROR_TYPE, MESSAGE_KEY } from '../config'
 import {
-  RequireError, ErrorState, ComponentProps, RequiredComponent, Creator, ConnectProps,
-  ComponentDispatcher,
+  RequireError, ErrorState, ComponentProps, RequiredComponent, Creator,
+  ComponentDispatcher, Store,
 } from '../types'
 
-function componentCreator({
+export default function componentCreator({
   config,
   name: nameWidthModule,
   storeDispatcher,
   componentDispatcher,
   Loader,
-  Error,
+  Error: ErrorNode,
   onMounted = () => null,
   isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
-  const currentDispatch = getDispatch(storeDispatcher, componentDispatcher)
   const { components, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
-  const console = getConsole(nameWidthModule)
 
   class R extends Component<
-    ConnectProps & { $silent?: boolean },
+    Store & { $silent?: boolean },
     ErrorState & { componentReady: boolean, componentExist?: boolean }
   > {
     state = {
@@ -46,9 +42,9 @@ function componentCreator({
 
     private i18nConfig?: ReturnType<Ii8n>
 
-    dispatch = currentDispatch.bind(this, nameWidthModule)
+    private unSubscribe = () => null as unknown
 
-    postMessage = getPostMessage(nameWidthModule)
+    onError = onError
 
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
@@ -56,8 +52,12 @@ function componentCreator({
     }
 
     componentDidCatch(e: Error) {
-      console.error(`[${ERROR_TYPE.SCRIPT_ERROR}] ${e.message}`)
-      this.setState({ errorType: ERROR_TYPE.SCRIPT_ERROR, errorMessage: e.message })
+      this.onError({
+        name: nameWidthModule,
+        type: 'SCRIPT_ERROR',
+        message: e.message,
+      })
+
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -74,8 +74,6 @@ function componentCreator({
       this.unSubscribe()
     }
 
-    private unSubscribe = () => null as unknown
-
     unMountComponent = () => {
       let mountedComponents = getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
@@ -87,9 +85,11 @@ function componentCreator({
 
     mountComponent = () => {
       if (name === 'store') {
-        const errorMessage = 'cannot load component named `store`'
-        console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-        this.setState({ errorType: ERROR_TYPE.INVALID_COMPONENT, errorMessage })
+        this.onError({
+          name: nameWidthModule,
+          type: 'INVALID_COMPONENT',
+          message: 'cannot load component named `store`',
+        })
         return
       }
 
@@ -111,29 +111,35 @@ function componentCreator({
         }
 
         if (!C) {
-          const errorMessage = 'no content'
-          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.onError({
+            name: nameWidthModule,
+            type: 'INVALID_COMPONENT',
+            message: 'no content',
+          })
           return
         }
 
         const componentNode = module === symbolModule ? (C.default || C) : C[module]
 
         if (!componentNode) {
-          const errorMessage = 'module not defined'
-          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.onError({
+            name: nameWidthModule,
+            type: 'INVALID_COMPONENT',
+            message: 'module not defined',
+          })
           return
         }
 
         if (typeof componentNode !== 'function') {
-          const errorMessage = 'module cannot be executed'
-          console.error(`[${ERROR_TYPE.INVALID_COMPONENT}] ${errorMessage}`)
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
+          this.onError({
+            name: nameWidthModule,
+            type: 'INVALID_COMPONENT',
+            message: 'module cannot be executed',
+          })
           return
         }
 
-        const mountedComponents = getStore()[MOUNTED_COMPONENTS] as string[]
+        const mountedComponents = getMountedComponents()
         const actions: ComponentDispatcher = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
@@ -147,7 +153,18 @@ function componentCreator({
               return
             }
             if (method === '$onMessage') {
-              this.unSubscribe = subscribe(getOnMessage(nameWidthModule, componentNode[method]))
+              this.unSubscribe = subscribe({
+                [MESSAGE_KEY](v) {
+                  const { name: trigger, value, type: triggerType } = v as Store[typeof MESSAGE_KEY]
+                  if (triggerType !== nameWidthModule) {
+                    (componentNode[method] as MessageInvoker)({
+                      name: trigger!,
+                      value,
+                      type: triggerType!,
+                    })
+                  }
+                },
+              })
               return
             }
             if (method === '$i18n') {
@@ -159,7 +176,8 @@ function componentCreator({
             actions[method] = componentNode[method]
           })
 
-        componentDispatcher[nameWidthModule] = actions // eslint-disable-line no-param-reassign
+        // eslint-disable-next-line no-param-reassign
+        componentDispatcher[nameWidthModule] = actions
 
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
@@ -180,10 +198,11 @@ function componentCreator({
 
         const [requireModule] = e.requireModules
 
-        const errorType = requireModule === name
-          ? ERROR_TYPE.LOADING_ERROR : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
-        console.error(`[${errorType}] ${e.message}`)
-        this.setState({ errorType, errorMessage: e.message })
+        this.onError({
+          name: nameWidthModule,
+          type: requireModule === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
+          message: e.message,
+        })
       })
     }
 
@@ -197,9 +216,62 @@ function componentCreator({
       })
     }
 
+    $postMessage = (trigger: string, value: any) => emit({
+      [MESSAGE_KEY]: {
+        timestamp: +new Date(),
+        type: nameWidthModule,
+        name: trigger,
+        value,
+      },
+    })
+
+    $dispatch: ComponentProps['$dispatch'] = (dispatchName, func, value) => {
+      if (dispatchName === 'store') {
+        if (!storeDispatcher[func]) {
+          const errorMessage = `\`store\` action \`${func}\` is not present`
+          onError({
+            name: nameWidthModule,
+            type: 'dispatch',
+            message: errorMessage,
+          })
+          throw new Error(errorMessage)
+        }
+        return dispatch(storeDispatcher[func], { value, trigger: nameWidthModule })
+      }
+
+      const actions = componentDispatcher[dispatchName]
+
+      if (!actions) {
+        const errorMessage = `component \`${dispatchName}\` is not ready`
+        onError({
+          name: nameWidthModule,
+          type: 'dispatch',
+          message: errorMessage,
+        })
+        throw new Error(errorMessage)
+      }
+
+      if (!actions[func]) {
+        const errorMessage = `\`${dispatchName}\` action \`${func}\` is not present`
+        onError({
+          name: nameWidthModule,
+          type: 'dispatch',
+          message: errorMessage,
+        })
+        throw new Error(errorMessage)
+      }
+
+      return Promise.resolve(actions[func]({ value, trigger: nameWidthModule }))
+    }
+
     $t: ComponentProps['$t'] = (key, params) => {
       if (!this.i18nConfig) {
-        console.warn('[i18n] config not exist')
+        onError({
+          name: nameWidthModule,
+          type: 'i18n',
+          message: 'config not exist',
+          level: 'warn',
+        })
         return key
       }
       const { localeKey, resources } = this.i18nConfig
@@ -207,12 +279,22 @@ function componentCreator({
       const resource = resources[locale]
 
       if (!resource) {
-        console.warn(`[i18n] locale \`${locale}\` not exist`)
+        onError({
+          name: nameWidthModule,
+          type: 'i18n',
+          message: `locale \`${locale}\` not exist`,
+          level: 'warn',
+        })
         return key
       }
 
       if (!resource[key]) {
-        console.warn(`[i18n] key \`${key}\` not exist`)
+        onError({
+          name: nameWidthModule,
+          type: 'i18n',
+          message: `key \`${key}\` not exist`,
+          level: 'warn',
+        })
         return key
       }
 
@@ -223,7 +305,6 @@ function componentCreator({
 
       const args = Object.keys(params)
       if (!args.length) {
-        console.warn(`[i18n] key \`${key}\` parameters empty`)
         return text
       }
 
@@ -256,7 +337,7 @@ function componentCreator({
         storeDispatcher,
         componentDispatcher,
         Loader,
-        Error,
+        Error: ErrorNode,
         config: { ...rest, components },
         onMounted: onMountedFn,
         isRender: true,
@@ -265,22 +346,12 @@ function componentCreator({
       const Root = createRoot(target as Element)
       Root.render(<Fc {...props} />)
 
-      return () => Root.unmount()
+      return () => setTimeout(() => Root.unmount())
     }
 
     render() {
-      const {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        emit: componentDispatch,
-        $silent,
-        ...propsRest
-      } = this.props
-      const {
-        componentReady,
-        errorMessage,
-        errorType,
-        componentExist,
-      } = this.state
+      const { $silent, ...propsRest } = this.props
+      const { componentReady, errorMessage, errorType, componentExist } = this.state
       const store: Record<string, any> = {}
       const componentProps: Record<string, any> = {}
       const ComponentNode = this.ComponentNode as RequiredComponent
@@ -288,7 +359,7 @@ function componentCreator({
       if (errorType) {
         return !$silent
           ? (
-            <Error
+            <ErrorNode
               $type={ERROR_TYPE[errorType]}
               $message={errorMessage}
               $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
@@ -315,19 +386,15 @@ function componentCreator({
         <ComponentNode
           {...componentProps}
           $config={rest}
-          $dispatch={this.dispatch}
+          $dispatch={this.$dispatch}
           $store={store}
           $render={isRender ? undefined : this.$render}
-          $postMessage={this.postMessage}
+          $postMessage={this.$postMessage}
           $t={this.$t}
         />
       )
     }
   }
 
-  // A spread argument must either have a tuple type or be passed to a rest parameter.ts(2556)
-  const [key0, ...keyn] = storeKeys
-  return connect(key0, ...keyn)(R)
+  return connect(...storeKeys)(R)
 }
-
-export default componentCreator

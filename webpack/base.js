@@ -1,7 +1,5 @@
 const path = require('path')
 
-const { NODE_ENV } = process.env
-
 const config = {
   stats: 'minimal',
   target: ['web', 'es5'],
@@ -66,18 +64,6 @@ const config = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            babelrc: NODE_ENV !== 'production',
-            configFile: NODE_ENV !== 'production',
-            presets: [
-              '@babel/preset-typescript',
-              ['@babel/preset-env', {
-                targets: ['defaults'],
-                modules: false,
-              }],
-              '@babel/preset-react',
-            ],
-          },
         },
       },
     ],
