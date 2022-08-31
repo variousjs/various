@@ -1,4 +1,5 @@
 const path = require('path')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
@@ -6,13 +7,10 @@ const { NODE_ENV = 'development' } = process.env
 const configs = [{
   ...base,
   entry: {
-    index: [
-      'core-js-pure/stable',
-      'regenerator-runtime/runtime',
-      path.resolve(__dirname, '../src/index.ts'),
-    ],
+    index: path.resolve(__dirname, '../src/index.ts'),
   },
   mode: NODE_ENV,
+  // plugins: [new BundleAnalyzerPlugin()],
   output: {
     path: path.resolve(__dirname, '../demo/dist'),
     publicPath: '/dist/',
@@ -31,6 +29,7 @@ if (NODE_ENV === 'production') {
       core: path.resolve(__dirname, '../src/core'),
     },
     mode: 'production',
+    plugins: [new BundleAnalyzerPlugin()],
     output: {
       path: path.join(__dirname, '../dist'),
       filename: '[name].js',
