@@ -14,6 +14,7 @@ export default (config: Config & Entry) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
+    mode,
     root,
     components = {},
     store = {},
@@ -43,7 +44,7 @@ export default (config: Config & Entry) => {
       componentDispatcher,
       Loader: LoaderNode,
       Error: ErrorNode,
-      config: { ...rest, components },
+      config: { ...rest, components, mode },
       onMounted,
     })
 
@@ -58,6 +59,7 @@ export default (config: Config & Entry) => {
         name: nameWidthSub,
         message: errorMessage,
         type: 'NOT_DEFINED',
+        mode,
       })
       return () => (
         <ErrorNode $message={errorMessage} $type={ERROR_TYPE.NOT_DEFINED} />
@@ -77,13 +79,14 @@ export default (config: Config & Entry) => {
       errorMessage: '',
     }
 
-    onError = onError
+    private onError = onError
 
     componentDidCatch(e: Error) {
       this.onError({
         name: 'container',
         message: e.message,
         type: 'CONTAINER_ERROR',
+        mode,
       })
     }
 

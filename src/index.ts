@@ -13,7 +13,7 @@ function loader(config: Config) {
     ...components,
     'various-entry': entryPath,
     '@variousjs/various': corePath,
-  } as { [key: string]: string }
+  } as Record<string, string>
 
   Object.keys(paths).forEach((name, i) => {
     paths[name] = `${paths[name]}#${i}`

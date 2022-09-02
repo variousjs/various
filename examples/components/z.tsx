@@ -50,7 +50,7 @@ export class X extends Component<ComponentProps> {
     if ($render) {
       this.unMountSwitch = $render({
         name: 'switch',
-        url: './lib/switch.js',
+        url: 'https://unpkg.com/react-ios-switch@0.1.19/build/bundle.js',
         props: { checked: true },
         target: document.querySelector('#switch'),
         onMounted: () => {

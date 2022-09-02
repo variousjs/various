@@ -7,15 +7,15 @@
 var VARIOUS_CONFIG = {
   entry: './dist/default.js',
   dependencies: {
-    react: './lib/react.development.js',
-    'react-dom': './lib/react-dom.development.js',
+    react: 'https://unpkg.com/react@18/umd/react.development.js',
+    'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
   },
 }
 </script>
 </head>
 <body>
 <div id="root"></div>
-<script src="./lib/require.js"></script>
+<script src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
 <script src="./dist/index.js"></script>
 </body>
 </html>

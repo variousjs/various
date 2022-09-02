@@ -18,12 +18,14 @@ const consoleFn = {
 }
 
 export default function (this: Component<{}, ErrorState> | void, args: ErrorArgs) {
-  const { type, message, name, level } = args
+  const { type, message, name, level, mode } = args
   const prefix = type === 'dispatch' || type === 'i18n'
     ? type
     : ERROR_TYPE[type]
 
-  consoleFn[level || 'error'](name, `[${prefix}] ${message}`)
+  if (mode === 'development') {
+    consoleFn[level || 'error'](name, `[${prefix}] ${message}`)
+  }
 
   if (this) {
     this.setState({ errorType: type as ERROR_TYPE, errorMessage: message })
