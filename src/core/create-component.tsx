@@ -279,7 +279,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: 'config not exist',
-          level: 'warn',
           mode,
         })
         return key
@@ -293,7 +292,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: `locale \`${locale}\` not exist`,
-          level: 'warn',
           mode,
         })
         return key
@@ -304,7 +302,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: `key \`${key}\` not exist`,
-          level: 'warn',
           mode,
         })
         return key

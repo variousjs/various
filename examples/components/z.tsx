@@ -1,16 +1,21 @@
 import React, { Component, FC } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, preloadComponents } from '@variousjs/various'
+import { ComponentProps, preloadComponents, onComponentMounted } from '@variousjs/various'
 
 export class X extends Component<ComponentProps> {
   private unMountZ: () => void
 
   private unMountSwitch: () => void
 
+  un: Function
+
+  un2: Function
+
   state = {
     zReady: false,
     switchReady: false,
     hPreloaded: false,
+    readys: [] as string[],
   }
 
   componentWillUnmount() {
@@ -20,6 +25,19 @@ export class X extends Component<ComponentProps> {
     if (this.unMountSwitch) {
       this.unMountSwitch()
     }
+    this.un()
+    this.un2()
+  }
+
+  componentDidMount() {
+    this.un = onComponentMounted('x', () => {
+      const { readys } = this.state
+      this.setState({ readys: readys.concat(['x']) })
+    })
+    this.un2 = onComponentMounted('switch', () => {
+      const { readys } = this.state
+      this.setState({ readys: readys.concat(['switch']) })
+    })
   }
 
   removeZ = () => {
@@ -66,13 +84,14 @@ export class X extends Component<ComponentProps> {
   }
 
   render() {
-    const { zReady, switchReady, hPreloaded } = this.state
+    const { zReady, switchReady, hPreloaded, readys } = this.state
 
     return (
       <>
         <p>Rendered(Z): <span id="render-z">{zReady ? 'yes' : 'no'}</span></p>
         <p>Rendered(switch): <span id="render-switch">{switchReady ? 'yes' : 'no'}</span></p>
         <p>Preloaded(H): <span id="preload-h">{hPreloaded ? 'yes' : 'no'}</span></p>
+        <p id="readys">readys: {readys.join()}</p>
         <Button onClick={this.onZ}>$render(Z)</Button>
         <Button onClick={this.onSwitch}>$render(switch)</Button>
         <Button onClick={this.onH}>$preload(H)</Button>

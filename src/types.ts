@@ -68,7 +68,6 @@ export interface ErrorArgs {
   name: string,
   message: string,
   type: ErrorProps['$type'] | 'dispatch' | 'i18n',
-  level?: 'warn' | 'error',
   mode?: Config['mode'],
 }
 
