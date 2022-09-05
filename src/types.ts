@@ -23,6 +23,7 @@ export interface Config {
   components: Record<string, string>,
   entry?: string,
   root?: string,
+  mode?: 'development' | 'production',
 }
 
 export interface Entry<S = Store, C = {}> {
@@ -67,7 +68,7 @@ export interface ErrorArgs {
   name: string,
   message: string,
   type: ErrorProps['$type'] | 'dispatch' | 'i18n',
-  level?: 'warn' | 'error',
+  mode?: Config['mode'],
 }
 
 export interface Various {

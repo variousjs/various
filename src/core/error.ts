@@ -8,22 +8,19 @@ const getConsolePrefix = (name?: string) => {
   return [text, style]
 }
 
-const consoleFn = {
-  warn(name: string, text: string) {
-    window.console.warn(...getConsolePrefix(name), text)
-  },
-  error(name: string, text: string) {
-    window.console.error(...getConsolePrefix(name), text)
-  },
+function consoleError(name: string, text: string) {
+  window.console.error(...getConsolePrefix(name), text)
 }
 
 export default function (this: Component<{}, ErrorState> | void, args: ErrorArgs) {
-  const { type, message, name, level } = args
+  const { type, message, name, mode } = args
   const prefix = type === 'dispatch' || type === 'i18n'
     ? type
     : ERROR_TYPE[type]
 
-  consoleFn[level || 'error'](name, `[${prefix}] ${message}`)
+  if (mode === 'development') {
+    consoleError(name, `[${prefix}] ${message}`)
+  }
 
   if (this) {
     this.setState({ errorType: type as ERROR_TYPE, errorMessage: message })

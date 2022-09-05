@@ -12,6 +12,7 @@ describe('module test', () => {
   })
 
   it('$render', () => {
+    cy.get('#readys').should('have.text', 'readys: x')
     cy.get('#render-z').should('have.text', 'no')
     cy.get('#render-switch').should('have.text', 'no')
     cy.contains('$render(Z)').click()
@@ -25,6 +26,7 @@ describe('module test', () => {
     cy.get('#switch').within(() => {
       cy.get('input').should('have.css', 'display', 'none')
     })
+    cy.get('#readys').should('have.text', 'readys: x,switch')
   })
 
   it('$preload', () => {

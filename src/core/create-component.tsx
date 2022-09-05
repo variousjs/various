@@ -21,7 +21,7 @@ export default function componentCreator({
   isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
-  const { components, ...rest } = config
+  const { components, mode, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -44,7 +44,7 @@ export default function componentCreator({
 
     private unSubscribe = () => null as unknown
 
-    onError = onError
+    private onError = onError
 
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
@@ -56,6 +56,7 @@ export default function componentCreator({
         name: nameWidthModule,
         type: 'SCRIPT_ERROR',
         message: e.message,
+        mode,
       })
 
       window.requirejs.undef(name)
@@ -89,6 +90,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'INVALID_COMPONENT',
           message: 'cannot load component named `store`',
+          mode,
         })
         return
       }
@@ -115,6 +117,7 @@ export default function componentCreator({
             name: nameWidthModule,
             type: 'INVALID_COMPONENT',
             message: 'no content',
+            mode,
           })
           return
         }
@@ -126,6 +129,7 @@ export default function componentCreator({
             name: nameWidthModule,
             type: 'INVALID_COMPONENT',
             message: 'module not defined',
+            mode,
           })
           return
         }
@@ -135,6 +139,7 @@ export default function componentCreator({
             name: nameWidthModule,
             type: 'INVALID_COMPONENT',
             message: 'module cannot be executed',
+            mode,
           })
           return
         }
@@ -202,6 +207,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: requireModule === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
           message: e.message,
+          mode,
         })
       })
     }
@@ -233,6 +239,7 @@ export default function componentCreator({
             name: nameWidthModule,
             type: 'dispatch',
             message: errorMessage,
+            mode,
           })
           throw new Error(errorMessage)
         }
@@ -247,6 +254,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'dispatch',
           message: errorMessage,
+          mode,
         })
         throw new Error(errorMessage)
       }
@@ -257,6 +265,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'dispatch',
           message: errorMessage,
+          mode,
         })
         throw new Error(errorMessage)
       }
@@ -270,7 +279,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: 'config not exist',
-          level: 'warn',
+          mode,
         })
         return key
       }
@@ -283,7 +292,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: `locale \`${locale}\` not exist`,
-          level: 'warn',
+          mode,
         })
         return key
       }
@@ -293,7 +302,7 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: `key \`${key}\` not exist`,
-          level: 'warn',
+          mode,
         })
         return key
       }
@@ -338,7 +347,7 @@ export default function componentCreator({
         componentDispatcher,
         Loader,
         Error: ErrorNode,
-        config: { ...rest, components },
+        config: { ...rest, components, mode },
         onMounted: onMountedFn,
         isRender: true,
       })
@@ -385,7 +394,7 @@ export default function componentCreator({
       return (
         <ComponentNode
           {...componentProps}
-          $config={rest}
+          $config={{ ...rest, mode }}
           $dispatch={this.$dispatch}
           $store={store}
           $render={isRender ? undefined : this.$render}
