@@ -16,12 +16,16 @@ describe('module test', () => {
     cy.get('#render-z').should('have.text', 'no')
     cy.get('#render-switch').should('have.text', 'no')
     cy.contains('$render(Z)').click()
+    // repeat render Z
+    cy.contains('$render(Z)').click()
     cy.contains('$render(switch)').click()
     cy.get('#render-z').should('have.text', 'yes')
     cy.get('#render-switch').should('have.text', 'yes')
     cy.contains('remove(Z)').should('have.length', 1)
       .click().then(() => {
         cy.contains('remove(Z)').should('not.exist')
+        cy.contains('$render(Z)').click()
+        cy.get('#render-z').should('have.text', 'yes')
       })
     cy.get('#switch').within(() => {
       cy.get('input').should('have.css', 'display', 'none')

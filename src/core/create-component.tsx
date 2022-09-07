@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, Root } from 'react-dom/client'
 import { Ii8n, MessageInvoker } from '@variousjs/various'
 import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
@@ -45,6 +45,8 @@ export default function componentCreator({
     private unSubscribe = () => null as unknown
 
     private onError = onError
+
+    private renderRoots = {} as Record<string, Root>
 
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
@@ -331,6 +333,8 @@ export default function componentCreator({
       module: componentModule,
       onMounted: onMountedFn,
     }) => {
+      const nameWidthSub = componentModule ? `${componentName}.${componentModule}` : componentName
+
       if (url) {
         // if define url, means replace component
         window.requirejs.undef(componentName)
@@ -342,7 +346,7 @@ export default function componentCreator({
       }
 
       const C = componentCreator({
-        name: componentModule ? `${componentName}.${componentModule}` : componentName,
+        name: nameWidthSub,
         storeDispatcher,
         componentDispatcher,
         Loader,
@@ -351,11 +355,22 @@ export default function componentCreator({
         onMounted: onMountedFn,
         isRender: true,
       })
-      const Fc = (p: { [key: string]: any }) => (<C {...p} />)
-      const Root = createRoot(target as Element)
-      Root.render(<Fc {...props} />)
+      const F = (p: any) => (<C {...p} />)
 
-      return () => setTimeout(() => Root.unmount())
+      let root: Root
+      if (this.renderRoots[nameWidthSub]) {
+        root = this.renderRoots[nameWidthSub]
+      } else {
+        root = createRoot(target as Element)
+        this.renderRoots[nameWidthSub] = root
+      }
+
+      root.render(<F {...props} />)
+
+      return () => setTimeout(() => {
+        root.unmount()
+        delete this.renderRoots[nameWidthSub]
+      })
     }
 
     render() {

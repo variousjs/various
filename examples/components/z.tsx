@@ -43,6 +43,7 @@ export class X extends Component<ComponentProps> {
   removeZ = () => {
     if (this.unMountZ) {
       this.unMountZ()
+      this.setState({ zReady: false })
     }
   }
 
