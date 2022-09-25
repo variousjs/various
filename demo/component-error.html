@@ -7,8 +7,8 @@
 var VARIOUS_CONFIG = {
   entry: './dist/component-error.js',
   dependencies: {
-    react: 'https://unpkg.com/react@18/umd/react.development.js',
-    'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
+    react: './libs/react.production.min.js',
+    'react-dom': './libs/react-dom.production.min.js',
   },
   components: {
     f: './dist/f.js',
@@ -19,7 +19,7 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
+<script src="./libs//require.min.js"></script>
 <script src="./dist/index.js"></script>
 </body>
 </html>

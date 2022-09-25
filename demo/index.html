@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title> VariousJS </title>
-<link rel="stylesheet" href="https://unpkg.com/antd@3.26.20/dist/antd.min.css" />
+<link rel="stylesheet" href="./libs/antd.min.css" />
 <style>
 .component {
   background: #fff;
@@ -31,11 +31,11 @@ var VARIOUS_CONFIG = {
   root: '#root',
   entry: './dist/entry.js',
   dependencies: {
-    react: 'https://unpkg.com/react@18/umd/react.development.js',
-    'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
-    'react-router-dom': 'https://unpkg.com/react-router-dom@5.3.3/umd/react-router-dom.min.js',
-    moment: 'https://unpkg.com/moment@2.29.4/moment.js',
-    antd: 'https://unpkg.com/antd@3.26.20/dist/antd-with-locales.min.js',
+    react: './libs/react.production.min.js',
+    'react-dom': './libs/react-dom.production.min.js',
+    'react-router-dom': './libs/react-router-dom.min.js',
+    moment: './libs/moment.min.js',
+    antd: './libs/antd-with-locales.min.js',
     moment_zhCN: './zh-cn.js',
     'rc-table': 'http://no-exist/rc-table.js',
   },
@@ -124,7 +124,7 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
+<script src="./libs/require.min.js"></script>
 <script src="./dist/index.js"></script>
 </body>
 </html>
