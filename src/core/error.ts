@@ -1,6 +1,6 @@
-import { Component } from 'react'
-import { ERROR_TYPE } from '../config'
-import { ErrorState, ErrorArgs } from '../types'
+import { getStore } from './store'
+import { ERROR_TYPE, ENV } from '../config'
+import { ErrorArgs } from '../types'
 
 const getConsolePrefix = (name?: string) => {
   const text = `%c${name}`
@@ -12,17 +12,13 @@ function consoleError(name: string, text: string) {
   window.console.error(...getConsolePrefix(name), text)
 }
 
-export default function (this: Component<{}, ErrorState> | void, args: ErrorArgs) {
-  const { type, message, name, mode } = args
+export default function (args: ErrorArgs) {
+  const { type, message, name } = args
   const prefix = type === 'dispatch' || type === 'i18n'
     ? type
     : ERROR_TYPE[type]
 
-  if (mode === 'development') {
+  if (getStore()[ENV] === 'development') {
     consoleError(name, `[${prefix}] ${message}`)
-  }
-
-  if (this) {
-    this.setState({ errorType: type as ERROR_TYPE, errorMessage: message })
   }
 }

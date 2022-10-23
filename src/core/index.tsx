@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
-import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE } from '../config'
+import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE, ENV } from '../config'
 import onError from './error'
 import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
@@ -14,7 +14,7 @@ export default (config: Config & Entry) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
-    mode,
+    env,
     root,
     components = {},
     store = {},
@@ -31,6 +31,7 @@ export default (config: Config & Entry) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS]: [],
+    [ENV]: env === 'production' || env === 'development' ? env : 'production',
     [MESSAGE_KEY]: {},
   })
 
@@ -44,7 +45,7 @@ export default (config: Config & Entry) => {
       componentDispatcher,
       Loader: LoaderNode,
       Error: ErrorNode,
-      config: { ...rest, components, mode },
+      config: { ...rest, components, env },
       onMounted,
     })
 
@@ -59,7 +60,6 @@ export default (config: Config & Entry) => {
         name: nameWidthSub,
         message: errorMessage,
         type: 'NOT_DEFINED',
-        mode,
       })
       return () => (
         <ErrorNode $message={errorMessage} $type={ERROR_TYPE.NOT_DEFINED} />
@@ -79,15 +79,13 @@ export default (config: Config & Entry) => {
       errorMessage: '',
     }
 
-    private onError = onError
-
     componentDidCatch(e: Error) {
-      this.onError({
+      onError({
         name: 'container',
         message: e.message,
-        type: 'CONTAINER_ERROR',
-        mode,
+        type: ERROR_TYPE.CONTAINER_ERROR,
       })
+      this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
     }
 
     render() {

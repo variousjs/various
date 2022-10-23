@@ -1,7 +1,7 @@
 import { ComponentType } from 'react'
 import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n } from '@variousjs/various'
 import { Dispatch } from 'nycticorax'
-import { MESSAGE_KEY, MOUNTED_COMPONENTS } from './config'
+import { MESSAGE_KEY, MOUNTED_COMPONENTS, ENV } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps, Actions } from '@variousjs/various'
 
@@ -13,6 +13,7 @@ export interface Store {
     value?: any,
   },
   [MOUNTED_COMPONENTS]: string[],
+  [ENV]: 'development' | 'production',
   [key: string | symbol]: any,
 }
 
@@ -23,7 +24,7 @@ export interface Config {
   components: Record<string, string>,
   entry?: string,
   root?: string,
-  mode?: 'development' | 'production',
+  env?: 'development' | 'production',
 }
 
 export interface Entry<S = Store, C = {}> {
@@ -68,7 +69,6 @@ export interface ErrorArgs {
   name: string,
   message: string,
   type: ErrorProps['$type'] | 'dispatch' | 'i18n',
-  mode?: Config['mode'],
 }
 
 export interface Various {

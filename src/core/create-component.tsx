@@ -21,7 +21,7 @@ export default function componentCreator({
   isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
-  const { components, mode, ...rest } = config
+  const { components, env, ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -44,8 +44,6 @@ export default function componentCreator({
 
     private unSubscribe = () => null as unknown
 
-    private onError = onError
-
     private renderRoots = {} as Record<string, Root>
 
     componentDidMount() {
@@ -54,12 +52,12 @@ export default function componentCreator({
     }
 
     componentDidCatch(e: Error) {
-      this.onError({
+      onError({
         name: nameWidthModule,
-        type: 'SCRIPT_ERROR',
+        type: ERROR_TYPE.SCRIPT_ERROR,
         message: e.message,
-        mode,
       })
+      this.setState({ errorMessage: e.message, errorType: ERROR_TYPE.SCRIPT_ERROR })
 
       window.requirejs.undef(name)
       window.requirejs.config({
@@ -88,12 +86,13 @@ export default function componentCreator({
 
     mountComponent = () => {
       if (name === 'store') {
-        this.onError({
+        const errorMessage = 'cannot load component named `store`'
+        onError({
           name: nameWidthModule,
-          type: 'INVALID_COMPONENT',
-          message: 'cannot load component named `store`',
-          mode,
+          type: ERROR_TYPE.INVALID_COMPONENT,
+          message: errorMessage,
         })
+        this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
         return
       }
 
@@ -115,34 +114,37 @@ export default function componentCreator({
         }
 
         if (!C) {
-          this.onError({
+          const errorMessage = 'no content'
+          onError({
             name: nameWidthModule,
-            type: 'INVALID_COMPONENT',
-            message: 'no content',
-            mode,
+            type: ERROR_TYPE.INVALID_COMPONENT,
+            message: errorMessage,
           })
+          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
         const componentNode = module === symbolModule ? (C.default || C) : C[module]
 
         if (!componentNode) {
-          this.onError({
+          const errorMessage = 'module not defined'
+          onError({
             name: nameWidthModule,
-            type: 'INVALID_COMPONENT',
-            message: 'module not defined',
-            mode,
+            type: ERROR_TYPE.INVALID_COMPONENT,
+            message: errorMessage,
           })
+          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
         if (typeof componentNode !== 'function') {
-          this.onError({
+          const errorMessage = 'module cannot be executed'
+          onError({
             name: nameWidthModule,
-            type: 'INVALID_COMPONENT',
-            message: 'module cannot be executed',
-            mode,
+            type: ERROR_TYPE.INVALID_COMPONENT,
+            message: errorMessage,
           })
+          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
           return
         }
 
@@ -205,12 +207,15 @@ export default function componentCreator({
 
         const [requireModule] = e.requireModules
 
-        this.onError({
+        const errorType = requireModule === name
+          ? ERROR_TYPE.LOADING_ERROR
+          : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
+        onError({
           name: nameWidthModule,
-          type: requireModule === name ? 'LOADING_ERROR' : 'DEPENDENCIES_LOADING_ERROR',
+          type: errorType,
           message: e.message,
-          mode,
         })
+        this.setState({ errorMessage: e.message, errorType })
       })
     }
 
@@ -241,7 +246,6 @@ export default function componentCreator({
             name: nameWidthModule,
             type: 'dispatch',
             message: errorMessage,
-            mode,
           })
           throw new Error(errorMessage)
         }
@@ -256,7 +260,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'dispatch',
           message: errorMessage,
-          mode,
         })
         throw new Error(errorMessage)
       }
@@ -267,7 +270,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'dispatch',
           message: errorMessage,
-          mode,
         })
         throw new Error(errorMessage)
       }
@@ -281,7 +283,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: 'config not exist',
-          mode,
         })
         return key
       }
@@ -294,7 +295,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: `locale \`${locale}\` not exist`,
-          mode,
         })
         return key
       }
@@ -304,7 +304,6 @@ export default function componentCreator({
           name: nameWidthModule,
           type: 'i18n',
           message: `key \`${key}\` not exist`,
-          mode,
         })
         return key
       }
@@ -351,7 +350,7 @@ export default function componentCreator({
         componentDispatcher,
         Loader,
         Error: ErrorNode,
-        config: { ...rest, components, mode },
+        config: { ...rest, components, env },
         onMounted: onMountedFn,
         isRender: true,
       })
@@ -409,7 +408,7 @@ export default function componentCreator({
       return (
         <ComponentNode
           {...componentProps}
-          $config={{ ...rest, mode }}
+          $config={{ ...rest, env }}
           $dispatch={this.$dispatch}
           $store={store}
           $render={isRender ? undefined : this.$render}
