@@ -14,7 +14,7 @@ export default (config: Config & Entry) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
-    env,
+    env = 'production',
     root,
     components = {},
     store = {},
@@ -62,7 +62,13 @@ export default (config: Config & Entry) => {
         type: 'NOT_DEFINED',
       })
       return () => (
-        <ErrorNode $message={errorMessage} $type={ERROR_TYPE.NOT_DEFINED} />
+        <ErrorNode
+          $message={errorMessage}
+          $type={ERROR_TYPE.NOT_DEFINED}
+          $env={env}
+          $store={store}
+          $config={rest}
+        />
       )
     }
     if (COMPONENTS[nameWidthSub]) {
@@ -96,6 +102,9 @@ export default (config: Config & Entry) => {
           <ErrorNode
             $type={ERROR_TYPE[errorType]}
             $message={errorMessage}
+            $env={env}
+            $store={store}
+            $config={rest}
           />
         )
       }

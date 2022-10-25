@@ -21,7 +21,7 @@ export default function componentCreator({
   isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
-  const { components, env, ...rest } = config
+  const { components, env = 'production', ...rest } = config
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -379,6 +379,10 @@ export default function componentCreator({
       const componentProps: Record<string, any> = {}
       const ComponentNode = this.ComponentNode as RequiredComponent
 
+      storeKeys.forEach((key) => {
+        store[key] = this.props[key]
+      })
+
       if (errorType) {
         return !$silent
           ? (
@@ -386,18 +390,19 @@ export default function componentCreator({
               $type={ERROR_TYPE[errorType]}
               $message={errorMessage}
               $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
+              $store={store}
+              $env={env}
+              $config={rest}
             />
           )
           : null
       }
 
       if (!componentReady) {
-        return !$silent && componentExist === false ? (<Loader />) : null
+        return !$silent && componentExist === false
+          ? (<Loader $env={env} $store={store} $config={rest} />)
+          : null
       }
-
-      storeKeys.forEach((key) => {
-        store[key] = this.props[key]
-      })
 
       Object.keys(propsRest).forEach((key) => {
         if (store[key] !== propsRest[key]) {

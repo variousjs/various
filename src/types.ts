@@ -1,9 +1,9 @@
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n } from '@variousjs/various'
+import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n, $env, LoaderProps } from '@variousjs/various'
 import { Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, MOUNTED_COMPONENTS, ENV } from './config'
 
-export { ComponentProps, ContainerProps, ErrorProps, Actions } from '@variousjs/various'
+export { ComponentProps, ContainerProps, ErrorProps, Actions, LoaderProps } from '@variousjs/various'
 
 export interface Store {
   [MESSAGE_KEY]: {
@@ -13,7 +13,7 @@ export interface Store {
     value?: any,
   },
   [MOUNTED_COMPONENTS]: string[],
-  [ENV]: 'development' | 'production',
+  [ENV]: $env,
   [key: string | symbol]: any,
 }
 
@@ -24,13 +24,13 @@ export interface Config {
   components: Record<string, string>,
   entry?: string,
   root?: string,
-  env?: 'development' | 'production',
+  env?: $env,
 }
 
-export interface Entry<S = Store, C = {}> {
+export interface Entry<S = {}, C = {}> {
   store: S,
-  Error: ComponentType<ErrorProps>,
-  Loader: ComponentType,
+  Error: ComponentType<ErrorProps<S, C>>,
+  Loader: ComponentType<LoaderProps<S, C>>,
   actions: Actions<S>,
   Container: ComponentType<ContainerProps<C>>,
 }
@@ -42,7 +42,7 @@ export interface Creator {
   storeDispatcher: Actions<Store>,
   componentDispatcher: Record<string, ComponentDispatcher>,
   config: Config,
-  Loader: ComponentType,
+  Loader: ComponentType<LoaderProps>,
   Error: ComponentType<ErrorProps>,
   onMounted?: () => void,
   isRender?: boolean,

@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react'
-import { ErrorProps } from '../types'
+import { ErrorProps, LoaderProps } from '../types'
 
-export const Loader = () => (
+export const Loader: ComponentType<LoaderProps> = () => (
   <div>Loading</div>
 )
 

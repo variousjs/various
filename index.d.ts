@@ -15,6 +15,8 @@ declare module '@variousjs/various' {
 
   export { default as Store, Dispatch } from 'nycticorax'
 
+  export type $env = 'development' | 'production'
+
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
     $store: Readonly<S>,
@@ -24,10 +26,19 @@ declare module '@variousjs/various' {
     $t: $t,
   }
 
-  export interface ErrorProps {
+  export interface ErrorProps<S = {}, C = {}> {
     $reload?: () => void,
     $type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
     $message?: string,
+    $env: $env,
+    $config: Readonly<C>,
+    $store: Readonly<S>,
+  }
+
+  export interface LoaderProps<S = {}, C = {}> {
+    $env: $env,
+    $config: Readonly<C>,
+    $store: Readonly<S>,
   }
 
   export interface ContainerProps<C = {}> {
