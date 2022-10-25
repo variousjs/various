@@ -18,7 +18,6 @@ export default function componentCreator({
   Loader,
   Error: ErrorNode,
   onMounted = () => null,
-  isRender,
 }: Creator) {
   const storeKeys = Object.keys(getStore())
   const { components, env = 'production', ...rest } = config
@@ -352,7 +351,6 @@ export default function componentCreator({
         Error: ErrorNode,
         config: { ...rest, components, env },
         onMounted: onMountedFn,
-        isRender: true,
       })
       const F = (p: any) => (<C {...p} />)
 
@@ -416,7 +414,7 @@ export default function componentCreator({
           $config={{ ...rest, env }}
           $dispatch={this.$dispatch}
           $store={store}
-          $render={isRender ? undefined : this.$render}
+          $render={this.$render}
           $postMessage={this.$postMessage}
           $t={this.$t}
         />

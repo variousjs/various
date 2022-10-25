@@ -45,7 +45,6 @@ export interface Creator {
   Loader: ComponentType<LoaderProps>,
   Error: ComponentType<ErrorProps>,
   onMounted?: () => void,
-  isRender?: boolean,
 }
 
 export interface RequireError extends Error {
