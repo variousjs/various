@@ -370,6 +370,18 @@ export default function componentCreator({
       })
     }
 
+    $component: ComponentProps['$component'] = (nameWidthSub) => {
+      const C = componentCreator({
+        name: nameWidthSub,
+        storeDispatcher,
+        componentDispatcher,
+        Loader,
+        Error: ErrorNode,
+        config: { ...rest, components, env },
+      })
+      return (props: any) => (<C {...props} />)
+    }
+
     render() {
       const { $silent, ...propsRest } = this.props
       const { componentReady, errorMessage, errorType, componentExist } = this.state
@@ -416,6 +428,7 @@ export default function componentCreator({
           $store={store}
           $render={this.$render}
           $postMessage={this.$postMessage}
+          $component={this.$component}
           $t={this.$t}
         />
       )

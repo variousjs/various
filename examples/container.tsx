@@ -1,20 +1,29 @@
-import React, { Component, ComponentType } from 'react'
+import React, { Component, ComponentType, memo } from 'react'
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import { ContainerProps } from '@variousjs/various'
+import { Button } from 'antd'
 import Wrapper from './wrapper'
 import { Config } from './types'
 
 class Container extends Component<ContainerProps<Config>> {
-  render() {
-    const { $config, $component } = this.props
+  state = {
+    n: 0,
+  }
 
-    const X = $component('x')
+  xx = memo(this.props.$component('x'))
+
+  render() {
+    const { n } = this.state
+    const { $config, $component } = this.props
+    const X = this.xx
 
     return (
       <HashRouter>
         <Wrapper {...this.props}>
           <div className="component">
             <div data-title="X" className="title">X</div>
+            <p>{n}</p>
+            <Button onClick={() => this.setState({ n: n + 1 })}>Set</Button>
             <X $silent />
           </div>
           <Switch>

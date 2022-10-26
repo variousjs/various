@@ -12,6 +12,10 @@ declare module '@variousjs/various' {
   }) => () => void
   type $postMessage = (name: string, value?: any) => void
   type $t = (key: string, params?: Record<string, string | number>) => string | undefined
+  type $component = (name: string) => ComponentType<{
+    $silent?: boolean,
+    [key: string]: any,
+  }>
 
   export { default as Store, Dispatch } from 'nycticorax'
 
@@ -24,6 +28,7 @@ declare module '@variousjs/various' {
     $render?: $render,
     $postMessage: $postMessage,
     $t: $t,
+    $component: $component,
   }
 
   export interface ErrorProps<S = {}, C = {}> {
@@ -43,10 +48,7 @@ declare module '@variousjs/various' {
 
   export interface ContainerProps<C = {}> {
     $config: Readonly<C>,
-    $component: (name: string) => ComponentType<{
-      $silent?: boolean,
-      [key: string]: any,
-    }>,
+    $component: $component,
   }
 
   type Dispatch<T> = (

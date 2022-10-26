@@ -49,7 +49,7 @@ export default (config: Config & Entry) => {
       onMounted,
     })
 
-    return (props: Record<string, any>) => (<C {...props} />)
+    return (props: any) => (<C {...props} />)
   }
 
   const $component = (nameWidthSub: string) => {

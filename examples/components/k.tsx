@@ -1,4 +1,4 @@
-import React, { Component, FC, useState } from 'react'
+import React, { Component, FC, useState, memo } from 'react'
 import { Button } from 'antd'
 import { ComponentProps, Ii8n } from '@variousjs/various'
 import { Store } from '../types'
@@ -14,8 +14,11 @@ export class C extends Component<ComponentProps<Store>> {
     },
   })
 
+  nx = memo(this.props.$component('b.D'))
+
   render() {
     const { $t, $dispatch } = this.props
+    const D = this.nx
 
     return (
       <>
@@ -23,6 +26,7 @@ export class C extends Component<ComponentProps<Store>> {
         <p>{$t('hello', { name: 1, name2: '999' })}</p>
         <Button onClick={() => $dispatch('store', 'setLocale', 'zh')}>zh</Button>
         <Button id="en" onClick={() => $dispatch('store', 'setLocale', 'en')}>en</Button>
+        <D />
       </>
     )
   }
