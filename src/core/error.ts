@@ -1,5 +1,5 @@
 import { getStore } from './store'
-import { ERROR_TYPE, ENV } from '../config'
+import { ERROR_TYPE, ENV_KEY } from '../config'
 import { ErrorArgs } from '../types'
 
 const getConsolePrefix = (name?: string) => {
@@ -18,7 +18,7 @@ export default function (args: ErrorArgs) {
     ? type
     : ERROR_TYPE[type]
 
-  if (getStore()[ENV] === 'development') {
+  if (getStore()[ENV_KEY] === 'development') {
     consoleError(name, `[${prefix}] ${message}`)
   }
 }

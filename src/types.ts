@@ -1,7 +1,7 @@
 import { ComponentType } from 'react'
 import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n, $env, LoaderProps } from '@variousjs/various'
 import { Dispatch } from 'nycticorax'
-import { MESSAGE_KEY, MOUNTED_COMPONENTS, ENV } from './config'
+import { MESSAGE_KEY, COMPONENT_PATHS_KEY, MOUNTED_COMPONENTS_KEY, ENV_KEY, CONFIG_KEY } from './config'
 
 export { ComponentProps, ContainerProps, ErrorProps, Actions, LoaderProps } from '@variousjs/various'
 
@@ -12,8 +12,10 @@ export interface Store {
     name?: string,
     value?: any,
   },
-  [MOUNTED_COMPONENTS]: string[],
-  [ENV]: $env,
+  [MOUNTED_COMPONENTS_KEY]: string[],
+  [ENV_KEY]: $env,
+  [CONFIG_KEY]: Record<string | symbol, any>,
+  [COMPONENT_PATHS_KEY]: Record<string, string>,
   [key: string | symbol]: any,
 }
 

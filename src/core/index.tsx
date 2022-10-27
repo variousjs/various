@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
 import { Loader, Error, Container } from './built-in'
 import createComponent from './create-component'
-import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE, ENV } from '../config'
+import { MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
 import onError from './error'
 import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
@@ -30,8 +30,10 @@ export default (config: Config & Entry) => {
 
   createStore({
     ...store,
-    [MOUNTED_COMPONENTS]: [],
-    [ENV]: env === 'production' || env === 'development' ? env : 'production',
+    [MOUNTED_COMPONENTS_KEY]: [],
+    [ENV_KEY]: env === 'production' || env === 'development' ? env : 'production',
+    [CONFIG_KEY]: rest,
+    [COMPONENT_PATHS_KEY]: components,
     [MESSAGE_KEY]: {},
   })
 
@@ -113,10 +115,11 @@ export default (config: Config & Entry) => {
         <ContainerNode
           $component={$component}
           $config={rest}
+          $env={env}
         />
       )
     }
   }
 
-  createRoot(document.querySelector(root || ROOT_CONTAINER) as Element).render(<R />)
+  createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

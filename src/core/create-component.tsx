@@ -4,7 +4,7 @@ import { Ii8n, MessageInvoker } from '@variousjs/various'
 import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe, dispatch } from './store'
-import { MOUNTED_COMPONENTS, ERROR_TYPE, MESSAGE_KEY } from '../config'
+import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, MESSAGE_KEY } from '../config'
 import {
   RequireError, ErrorState, ComponentProps, RequiredComponent, Creator,
   ComponentDispatcher, Store,
@@ -77,7 +77,7 @@ export default function componentCreator({
     unMountComponent = () => {
       let mountedComponents = getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
-      emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+      emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
 
       // eslint-disable-next-line no-param-reassign
       delete componentDispatcher[nameWidthModule]
@@ -191,7 +191,7 @@ export default function componentCreator({
         this.setState({ componentReady: true })
 
         onMounted()
-        emit({ [MOUNTED_COMPONENTS]: mountedComponents }, true)
+        emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       }, (e: RequireError) => {
         window.requirejs.undef(name)
         window.requirejs.config({
@@ -423,7 +423,8 @@ export default function componentCreator({
       return (
         <ComponentNode
           {...componentProps}
-          $config={{ ...rest, env }}
+          $config={rest}
+          $env={env}
           $dispatch={this.$dispatch}
           $store={store}
           $render={this.$render}

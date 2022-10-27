@@ -23,6 +23,7 @@ declare module '@variousjs/various' {
 
   export interface ComponentProps<S = {}, C = {}> {
     $config: Readonly<C>,
+    $env: $env,
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $render?: $render,
@@ -49,6 +50,7 @@ declare module '@variousjs/various' {
   export interface ContainerProps<C = {}> {
     $config: Readonly<C>,
     $component: $component,
+    $env: $env,
   }
 
   type Dispatch<T> = (

@@ -1,5 +1,5 @@
 import { getStore, subscribe } from './store'
-import { MOUNTED_COMPONENTS } from '../config'
+import { MOUNTED_COMPONENTS_KEY } from '../config'
 
 export const preloadComponents = (names: string[]) => new Promise<void>((resolve, reject) => {
   window.requirejs(names, resolve, reject)
@@ -10,7 +10,7 @@ export const isComponentLoaded = (name: string) => {
   return window.requirejs.specified(m) && !!window.requirejs.s.contexts._.defined[m]
 }
 
-export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS]
+export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
 
 export const onComponentMounted = (name: string, callback: () => void) => {
   if (getMountedComponents().includes(name)) {
@@ -20,7 +20,7 @@ export const onComponentMounted = (name: string, callback: () => void) => {
   }
 
   const unSubscribe = subscribe({
-    [MOUNTED_COMPONENTS](value) {
+    [MOUNTED_COMPONENTS_KEY](value) {
       const names = value as string[]
       if (names.includes(name)) {
         unSubscribe()
