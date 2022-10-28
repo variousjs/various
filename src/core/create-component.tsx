@@ -4,14 +4,13 @@ import { Ii8n, MessageInvoker } from '@variousjs/various'
 import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe, dispatch } from './store'
-import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, MESSAGE_KEY } from '../config'
+import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, MESSAGE_KEY, CONFIG_KEY, ENV_KEY, COMPONENT_PATHS_KEY } from '../config'
 import {
   RequireError, ErrorState, ComponentProps, RequiredComponent, Creator,
   ComponentDispatcher, Store,
 } from '../types'
 
 export default function componentCreator({
-  config,
   name: nameWidthModule,
   storeDispatcher,
   componentDispatcher,
@@ -19,8 +18,11 @@ export default function componentCreator({
   Error: ErrorNode,
   onMounted = () => null,
 }: Creator) {
-  const storeKeys = Object.keys(getStore())
-  const { components, env = 'production', ...rest } = config
+  const globalStore = getStore()
+  const storeKeys = Object.keys(globalStore)
+  const env = globalStore[ENV_KEY]
+  const components = globalStore[COMPONENT_PATHS_KEY]
+  const config = globalStore[CONFIG_KEY]
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -349,7 +351,6 @@ export default function componentCreator({
         componentDispatcher,
         Loader,
         Error: ErrorNode,
-        config: { ...rest, components, env },
         onMounted: onMountedFn,
       })
       const F = (p: any) => (<C {...p} />)
@@ -377,7 +378,6 @@ export default function componentCreator({
         componentDispatcher,
         Loader,
         Error: ErrorNode,
-        config: { ...rest, components, env },
       })
       return (props: any) => (<C {...props} />)
     }
@@ -402,7 +402,7 @@ export default function componentCreator({
               $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
               $store={store}
               $env={env}
-              $config={rest}
+              $config={config}
             />
           )
           : null
@@ -410,7 +410,7 @@ export default function componentCreator({
 
       if (!componentReady) {
         return !$silent && componentExist === false
-          ? (<Loader $env={env} $store={store} $config={rest} />)
+          ? (<Loader $env={env} $store={store} $config={config} />)
           : null
       }
 
@@ -423,7 +423,7 @@ export default function componentCreator({
       return (
         <ComponentNode
           {...componentProps}
-          $config={rest}
+          $config={config}
           $env={env}
           $dispatch={this.$dispatch}
           $store={store}

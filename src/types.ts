@@ -43,7 +43,6 @@ export interface Creator {
   name: string,
   storeDispatcher: Actions<Store>,
   componentDispatcher: Record<string, ComponentDispatcher>,
-  config: Config,
   Loader: ComponentType<LoaderProps>,
   Error: ComponentType<ErrorProps>,
   onMounted?: () => void,

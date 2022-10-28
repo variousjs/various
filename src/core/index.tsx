@@ -47,7 +47,6 @@ export default (config: Config & Entry) => {
       componentDispatcher,
       Loader: LoaderNode,
       Error: ErrorNode,
-      config: { ...rest, components, env },
       onMounted,
     })
 
