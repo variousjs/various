@@ -1,9 +1,10 @@
 import React, { ComponentType, Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
-import { Loader, Error, Container } from './built-in'
+import { Container } from './built-in'
 import createComponent from './create-component'
 import { MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
+import connector from './connector'
 import onError from './error'
 import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
 
@@ -19,14 +20,22 @@ export default (config: Config & Entry) => {
     components = {},
     store = {},
     actions = {},
-    Loader: LoaderNode = Loader,
-    Error: ErrorNode = Error,
+    Loader: LoaderComponent,
+    Error: ErrorComponent,
     Container: ContainerNode = Container,
     ...rest
   } = config
   const componentDispatcher: Record<string, ComponentDispatcher> = {}
   const storeDispatcher = { ...actions }
   const COMPONENTS: Record<string, ComponentType> = {}
+
+  if (LoaderComponent) {
+    connector.setLoaderComponent(LoaderComponent)
+  }
+  if (ErrorComponent) {
+    connector.setErrorComponent(ErrorComponent)
+  }
+  const ErrorNode = connector.getErrorComponent()
 
   createStore({
     ...store,
@@ -45,8 +54,6 @@ export default (config: Config & Entry) => {
       name,
       storeDispatcher,
       componentDispatcher,
-      Loader: LoaderNode,
-      Error: ErrorNode,
       onMounted,
     })
 

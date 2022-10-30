@@ -5,6 +5,7 @@ import onError from './error'
 import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe, dispatch } from './store'
 import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, MESSAGE_KEY, CONFIG_KEY, ENV_KEY, COMPONENT_PATHS_KEY } from '../config'
+import connector from './connector'
 import {
   RequireError, ErrorState, ComponentProps, RequiredComponent, Creator,
   ComponentDispatcher, Store,
@@ -14,8 +15,6 @@ export default function componentCreator({
   name: nameWidthModule,
   storeDispatcher,
   componentDispatcher,
-  Loader,
-  Error: ErrorNode,
   onMounted = () => null,
 }: Creator) {
   const globalStore = getStore()
@@ -23,6 +22,8 @@ export default function componentCreator({
   const env = globalStore[ENV_KEY]
   const components = globalStore[COMPONENT_PATHS_KEY]
   const config = globalStore[CONFIG_KEY]
+  const LoaderNode = connector.getLoaderComponent()
+  const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -349,8 +350,6 @@ export default function componentCreator({
         name: nameWidthSub,
         storeDispatcher,
         componentDispatcher,
-        Loader,
-        Error: ErrorNode,
         onMounted: onMountedFn,
       })
       const F = (p: any) => (<C {...p} />)
@@ -376,8 +375,6 @@ export default function componentCreator({
         name: nameWidthSub,
         storeDispatcher,
         componentDispatcher,
-        Loader,
-        Error: ErrorNode,
       })
       return (props: any) => (<C {...props} />)
     }
@@ -410,7 +407,7 @@ export default function componentCreator({
 
       if (!componentReady) {
         return !$silent && componentExist === false
-          ? (<Loader $env={env} $store={store} $config={config} />)
+          ? (<LoaderNode $env={env} $store={store} $config={config} />)
           : null
       }
 
