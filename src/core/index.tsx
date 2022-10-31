@@ -1,4 +1,4 @@
-import React, { ComponentType, Component } from 'react'
+import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
 import { Container } from './built-in'
@@ -6,7 +6,7 @@ import createComponent from './create-component'
 import { MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
 import connector from './connector'
 import onError from './error'
-import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
+import { Entry, ErrorState, Config } from '../types'
 
 export { default as Store } from 'nycticorax'
 export { isComponentLoaded, getMountedComponents, preloadComponents, onComponentMounted } from './component-helper'
@@ -25,9 +25,8 @@ export default (config: Config & Entry) => {
     Container: ContainerNode = Container,
     ...rest
   } = config
-  const componentDispatcher: Record<string, ComponentDispatcher> = {}
-  const storeDispatcher = { ...actions }
-  const COMPONENTS: Record<string, ComponentType> = {}
+
+  connector.setStoreActions(actions)
 
   if (LoaderComponent) {
     connector.setLoaderComponent(LoaderComponent)
@@ -52,8 +51,6 @@ export default (config: Config & Entry) => {
   ) => {
     const C = createComponent({
       name,
-      storeDispatcher,
-      componentDispatcher,
       onMounted,
     })
 
@@ -79,11 +76,12 @@ export default (config: Config & Entry) => {
         />
       )
     }
-    if (COMPONENTS[nameWidthSub]) {
-      return COMPONENTS[nameWidthSub]
+    const existComponent = connector.getComponent(nameWidthSub)
+    if (existComponent) {
+      return existComponent
     }
     const component = componentCreator(nameWidthSub)
-    COMPONENTS[nameWidthSub] = component
+    connector.setComponent(nameWidthSub, component)
     return component
   }
 

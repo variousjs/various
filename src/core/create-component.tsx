@@ -13,8 +13,6 @@ import {
 
 export default function componentCreator({
   name: nameWidthModule,
-  storeDispatcher,
-  componentDispatcher,
   onMounted = () => null,
 }: Creator) {
   const globalStore = getStore()
@@ -24,6 +22,7 @@ export default function componentCreator({
   const config = globalStore[CONFIG_KEY]
   const LoaderNode = connector.getLoaderComponent()
   const ErrorNode = connector.getErrorComponent()
+  const storeActions = connector.getStoreActions()
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -82,8 +81,7 @@ export default function componentCreator({
       mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
       emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
 
-      // eslint-disable-next-line no-param-reassign
-      delete componentDispatcher[nameWidthModule]
+      connector.deleteComponentActions(nameWidthModule)
     }
 
     mountComponent = () => {
@@ -187,8 +185,7 @@ export default function componentCreator({
             actions[method] = componentNode[method]
           })
 
-        // eslint-disable-next-line no-param-reassign
-        componentDispatcher[nameWidthModule] = actions
+        connector.setComponentActions(nameWidthModule, actions)
 
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
@@ -242,7 +239,7 @@ export default function componentCreator({
 
     $dispatch: ComponentProps['$dispatch'] = (dispatchName, func, value) => {
       if (dispatchName === 'store') {
-        if (!storeDispatcher[func]) {
+        if (!storeActions[func]) {
           const errorMessage = `\`store\` action \`${func}\` is not present`
           onError({
             name: nameWidthModule,
@@ -251,10 +248,10 @@ export default function componentCreator({
           })
           throw new Error(errorMessage)
         }
-        return dispatch(storeDispatcher[func], { value, trigger: nameWidthModule })
+        return dispatch(storeActions[func], { value, trigger: nameWidthModule })
       }
 
-      const actions = componentDispatcher[dispatchName]
+      const actions = connector.getComponentActions(dispatchName)
 
       if (!actions) {
         const errorMessage = `component \`${dispatchName}\` is not ready`
@@ -348,8 +345,6 @@ export default function componentCreator({
 
       const C = componentCreator({
         name: nameWidthSub,
-        storeDispatcher,
-        componentDispatcher,
         onMounted: onMountedFn,
       })
       const F = (p: any) => (<C {...p} />)
@@ -373,8 +368,6 @@ export default function componentCreator({
     $component: ComponentProps['$component'] = (nameWidthSub) => {
       const C = componentCreator({
         name: nameWidthSub,
-        storeDispatcher,
-        componentDispatcher,
       })
       return (props: any) => (<C {...props} />)
     }

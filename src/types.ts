@@ -41,8 +41,6 @@ export type ComponentDispatcher = Record<string, Invoker>
 
 export interface Creator {
   name: string,
-  storeDispatcher: Actions<Store>,
-  componentDispatcher: Record<string, ComponentDispatcher>,
   onMounted?: () => void,
 }
 
