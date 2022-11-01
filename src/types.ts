@@ -37,12 +37,7 @@ export interface Entry<S = {}, C = {}> {
   Container: ComponentType<ContainerProps<C>>,
 }
 
-export type ComponentDispatcher = Record<string, Invoker>
-
-export interface Creator {
-  name: string,
-  onMounted?: () => void,
-}
+export type ComponentActions = Record<string, Invoker>
 
 export interface RequireError extends Error {
   requireType: string,
@@ -52,7 +47,7 @@ export interface RequireError extends Error {
 
 export type RequiredComponent = ComponentType<ComponentProps>
   & Actions<Store>
-  & ComponentDispatcher
+  & ComponentActions
   & { $onMessage: MessageInvoker, $i18n: Ii8n }
   & { [key: string]: RequiredComponent }
 

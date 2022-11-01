@@ -6,15 +6,9 @@ import { isComponentLoaded, getMountedComponents } from './component-helper'
 import { connect, getStore, emit, subscribe, dispatch } from './store'
 import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, MESSAGE_KEY, CONFIG_KEY, ENV_KEY, COMPONENT_PATHS_KEY } from '../config'
 import connector from './connector'
-import {
-  RequireError, ErrorState, ComponentProps, RequiredComponent, Creator,
-  ComponentDispatcher, Store,
-} from '../types'
+import { RequireError, ErrorState, ComponentProps, RequiredComponent, ComponentActions, Store } from '../types'
 
-export default function componentCreator({
-  name: nameWidthModule,
-  onMounted = () => null,
-}: Creator) {
+export default function componentCreator(nameWidthModule: string, onMounted?: () => void) {
   const globalStore = getStore()
   const storeKeys = Object.keys(globalStore)
   const env = globalStore[ENV_KEY]
@@ -149,7 +143,7 @@ export default function componentCreator({
         }
 
         const mountedComponents = getMountedComponents()
-        const actions: ComponentDispatcher = {}
+        const actions: ComponentActions = {}
 
         if (!mountedComponents.includes(nameWidthModule)) {
           mountedComponents.push(nameWidthModule)
@@ -190,7 +184,10 @@ export default function componentCreator({
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
 
-        onMounted()
+        if (onMounted) {
+          onMounted()
+        }
+
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       }, (e: RequireError) => {
         window.requirejs.undef(name)
@@ -343,10 +340,7 @@ export default function componentCreator({
         })
       }
 
-      const C = componentCreator({
-        name: nameWidthSub,
-        onMounted: onMountedFn,
-      })
+      const C = componentCreator(nameWidthSub, onMountedFn)
       const F = (p: any) => (<C {...p} />)
 
       let root: Root
@@ -366,9 +360,7 @@ export default function componentCreator({
     }
 
     $component: ComponentProps['$component'] = (nameWidthSub) => {
-      const C = componentCreator({
-        name: nameWidthSub,
-      })
+      const C = componentCreator(nameWidthSub)
       return (props: any) => (<C {...props} />)
     }
 

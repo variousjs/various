@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
-import { Container } from './built-in'
+import { Container } from './default-component'
 import createComponent from './create-component'
 import { MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
 import connector from './connector'
@@ -49,11 +49,7 @@ export default (config: Config & Entry) => {
     name: string,
     onMounted?: () => void,
   ) => {
-    const C = createComponent({
-      name,
-      onMounted,
-    })
-
+    const C = createComponent(name, onMounted)
     return (props: any) => (<C {...props} />)
   }
 

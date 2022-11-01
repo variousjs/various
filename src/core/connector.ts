@@ -1,7 +1,7 @@
 import { ComponentType } from 'react'
 import { LoaderProps, ErrorProps } from '@variousjs/various'
-import { Loader, Error } from './built-in'
-import { Actions, ComponentDispatcher } from '../types'
+import { Loader, Error } from './default-component'
+import { Actions, ComponentActions } from '../types'
 
 class Connector {
   private loaderComponent: ComponentType<LoaderProps>
@@ -10,7 +10,7 @@ class Connector {
 
   private storeActions: Actions
 
-  private componentActions: Record<string, ComponentDispatcher>
+  private componentActions: Record<string, ComponentActions>
 
   private components: Record<string, ComponentType>
 
@@ -30,7 +30,7 @@ class Connector {
     return this.components[name]
   }
 
-  setComponentActions(name:string, actions: ComponentDispatcher) {
+  setComponentActions(name:string, actions: ComponentActions) {
     this.componentActions[name] = actions
   }
 
