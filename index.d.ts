@@ -29,7 +29,7 @@ declare module '@variousjs/various' {
     $render?: $render,
     $postMessage: $postMessage,
     $t: $t,
-    $component: $component,
+    // $component: $component,
   }
 
   export interface ErrorProps<S = {}, C = {}> {
@@ -61,7 +61,7 @@ declare module '@variousjs/various' {
   export type Actions<S = {}> = Record<string, Dispatch<S>>
 
   export type MessageInvoker = (
-    message: { type: string, name: string, value?: any },
+    message: { event?: string, component?: string, value?: any },
   ) => any
 
   export type Invoker = (params: { trigger: string, value?: any }) => any

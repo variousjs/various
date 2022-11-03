@@ -1,5 +1,5 @@
-import { getStore, subscribe } from './store'
-import { MOUNTED_COMPONENTS_KEY } from '../config'
+import { getStore, subscribe } from '../store'
+import { MOUNTED_COMPONENTS_KEY } from '../../config'
 
 export const preloadComponents = (names: string[]) => new Promise<void>((resolve, reject) => {
   window.requirejs(names, resolve, reject)
@@ -15,7 +15,7 @@ export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
 export const onComponentMounted = (name: string, callback: () => void) => {
   if (getMountedComponents().includes(name)) {
     callback()
-    /* istanbul ignore next */
+    // /* istanbul ignore next */
     return () => null
   }
 

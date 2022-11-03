@@ -1,5 +1,6 @@
 import { ComponentType } from 'react'
-import { LoaderProps, ErrorProps } from '@variousjs/various'
+import { Root } from 'react-dom/client'
+import { LoaderProps, ErrorProps, Ii8n } from '@variousjs/various'
 import { Loader, Error } from './default-component'
 import { Actions, ComponentActions } from '../types'
 
@@ -14,12 +15,38 @@ class Connector {
 
   private components: Record<string, ComponentType>
 
+  private renderRoots: Record<string, Root>
+
+  private i18nConfigs: Record<string, ReturnType<Ii8n>>
+
   constructor() {
     this.loaderComponent = Loader
     this.errorComponent = Error
     this.storeActions = {}
     this.componentActions = {}
     this.components = {}
+    this.renderRoots = {}
+    this.i18nConfigs = {}
+  }
+
+  setI18nConfig(name: string, config: ReturnType<Ii8n>) {
+    this.i18nConfigs[name] = config
+  }
+
+  getI18nConfig(name: string) {
+    return this.i18nConfigs[name]
+  }
+
+  setRenderRoot(name: string, root: Root) {
+    this.renderRoots[name] = root
+  }
+
+  getRenderRoot(name: string) {
+    return this.renderRoots[name]
+  }
+
+  deleteRenderRoot(name: string) {
+    delete this.renderRoots[name]
   }
 
   setComponent(name: string, component: ComponentType) {

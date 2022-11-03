@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import { createRoot, Root } from 'react-dom/client'
 import { Ii8n, MessageInvoker } from '@variousjs/various'
-import onError from './error'
-import { isComponentLoaded, getMountedComponents } from './component-helper'
-import { connect, getStore, emit, subscribe, dispatch } from './store'
-import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, MESSAGE_KEY, CONFIG_KEY, ENV_KEY, COMPONENT_PATHS_KEY } from '../config'
-import connector from './connector'
-import { RequireError, ErrorState, ComponentProps, RequiredComponent, ComponentActions, Store } from '../types'
+import onError from '../error'
+import { isComponentLoaded, getMountedComponents } from './helper'
+import { connect, getStore, emit } from '../store'
+import {
+  MOUNTED_COMPONENTS_KEY, ERROR_TYPE, CONFIG_KEY, ENV_KEY, COMPONENT_PATHS_KEY,
+} from '../../config'
+import connector from '../connector'
+import { getPostMessage, getOnMessage } from './message'
+import getDispatch from './dispatch'
+import getI18n from './i18n'
+import { RequireError, ErrorState, RequiredComponent, ComponentActions, Store } from '../../types'
 
-export default function componentCreator(nameWidthModule: string, onMounted?: () => void) {
+export default function (nameWidthModule: string, onMounted?: () => void) {
   const globalStore = getStore()
   const storeKeys = Object.keys(globalStore)
   const env = globalStore[ENV_KEY]
@@ -16,7 +20,6 @@ export default function componentCreator(nameWidthModule: string, onMounted?: ()
   const config = globalStore[CONFIG_KEY]
   const LoaderNode = connector.getLoaderComponent()
   const ErrorNode = connector.getErrorComponent()
-  const storeActions = connector.getStoreActions()
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
@@ -35,11 +38,7 @@ export default function componentCreator(nameWidthModule: string, onMounted?: ()
 
     private isUnMounted?: boolean
 
-    private i18nConfig?: ReturnType<Ii8n>
-
     private unSubscribe = () => null as unknown
-
-    private renderRoots = {} as Record<string, Root>
 
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
@@ -156,23 +155,15 @@ export default function componentCreator(nameWidthModule: string, onMounted?: ()
               return
             }
             if (method === '$onMessage') {
-              this.unSubscribe = subscribe({
-                [MESSAGE_KEY](v) {
-                  const { name: trigger, value, type: triggerType } = v as Store[typeof MESSAGE_KEY]
-                  if (triggerType !== nameWidthModule) {
-                    (componentNode[method] as MessageInvoker)({
-                      name: trigger!,
-                      value,
-                      type: triggerType!,
-                    })
-                  }
-                },
-              })
+              this.unSubscribe = getOnMessage(
+                nameWidthModule,
+                componentNode[method] as MessageInvoker,
+              )
               return
             }
             if (method === '$i18n') {
               const i18nConfig = (componentNode[method] as Ii8n)()
-              this.i18nConfig = i18nConfig
+              connector.setI18nConfig(nameWidthModule, i18nConfig)
               return
             }
 
@@ -225,144 +216,11 @@ export default function componentCreator(nameWidthModule: string, onMounted?: ()
       })
     }
 
-    $postMessage = (trigger: string, value: any) => emit({
-      [MESSAGE_KEY]: {
-        timestamp: +new Date(),
-        type: nameWidthModule,
-        name: trigger,
-        value,
-      },
-    })
+    $postMessage = getPostMessage(nameWidthModule)
 
-    $dispatch: ComponentProps['$dispatch'] = (dispatchName, func, value) => {
-      if (dispatchName === 'store') {
-        if (!storeActions[func]) {
-          const errorMessage = `\`store\` action \`${func}\` is not present`
-          onError({
-            name: nameWidthModule,
-            type: 'dispatch',
-            message: errorMessage,
-          })
-          throw new Error(errorMessage)
-        }
-        return dispatch(storeActions[func], { value, trigger: nameWidthModule })
-      }
+    $dispatch = getDispatch(nameWidthModule)
 
-      const actions = connector.getComponentActions(dispatchName)
-
-      if (!actions) {
-        const errorMessage = `component \`${dispatchName}\` is not ready`
-        onError({
-          name: nameWidthModule,
-          type: 'dispatch',
-          message: errorMessage,
-        })
-        throw new Error(errorMessage)
-      }
-
-      if (!actions[func]) {
-        const errorMessage = `\`${dispatchName}\` action \`${func}\` is not present`
-        onError({
-          name: nameWidthModule,
-          type: 'dispatch',
-          message: errorMessage,
-        })
-        throw new Error(errorMessage)
-      }
-
-      return Promise.resolve(actions[func]({ value, trigger: nameWidthModule }))
-    }
-
-    $t: ComponentProps['$t'] = (key, params) => {
-      if (!this.i18nConfig) {
-        onError({
-          name: nameWidthModule,
-          type: 'i18n',
-          message: 'config not exist',
-        })
-        return key
-      }
-      const { localeKey, resources } = this.i18nConfig
-      const locale = this.props[localeKey] as string
-      const resource = resources[locale]
-
-      if (!resource) {
-        onError({
-          name: nameWidthModule,
-          type: 'i18n',
-          message: `locale \`${locale}\` not exist`,
-        })
-        return key
-      }
-
-      if (!resource[key]) {
-        onError({
-          name: nameWidthModule,
-          type: 'i18n',
-          message: `key \`${key}\` not exist`,
-        })
-        return key
-      }
-
-      const text = resource[key]
-      if (!params || Object.prototype.toString.call(params) !== '[object Object]') {
-        return text
-      }
-
-      const args = Object.keys(params)
-      if (!args.length) {
-        return text
-      }
-
-      return args.reduce((next, arg) => {
-        const regex = new RegExp(`{\\s*${arg}\\s*}`, 'g')
-        return next.replace(regex, params[arg].toString())
-      }, text)
-    }
-
-    $render: ComponentProps['$render'] = ({
-      name: componentName,
-      url,
-      target,
-      props,
-      module: componentModule,
-      onMounted: onMountedFn,
-    }) => {
-      const nameWidthSub = componentModule ? `${componentName}.${componentModule}` : componentName
-
-      if (url) {
-        // if define url, means replace component
-        window.requirejs.undef(componentName)
-        window.requirejs.config({
-          paths: {
-            [componentName]: `${url}#`,
-          },
-        })
-      }
-
-      const C = componentCreator(nameWidthSub, onMountedFn)
-      const F = (p: any) => (<C {...p} />)
-
-      let root: Root
-      if (this.renderRoots[nameWidthSub]) {
-        root = this.renderRoots[nameWidthSub]
-      } else {
-        root = createRoot(target as Element)
-        this.renderRoots[nameWidthSub] = root
-      }
-
-      root.render(<F {...props} />)
-
-      return () => setTimeout(() => {
-        root.unmount()
-        delete this.renderRoots[nameWidthSub]
-      })
-    }
-
-    $component: ComponentProps['$component'] = (nameWidthSub) => {
-      const C = componentCreator(nameWidthSub)
-      return (props: any) => (<C {...props} />)
-    }
+    $t = getI18n(nameWidthModule)
 
     render() {
       const { $silent, ...propsRest } = this.props
@@ -409,9 +267,7 @@ export default function componentCreator(nameWidthModule: string, onMounted?: ()
           $env={env}
           $dispatch={this.$dispatch}
           $store={store}
-          $render={this.$render}
           $postMessage={this.$postMessage}
-          $component={this.$component}
           $t={this.$t}
         />
       )

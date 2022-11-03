@@ -3,13 +3,13 @@ import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, In
 import { Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, COMPONENT_PATHS_KEY, MOUNTED_COMPONENTS_KEY, ENV_KEY, CONFIG_KEY } from './config'
 
-export { ComponentProps, ContainerProps, ErrorProps, Actions, LoaderProps } from '@variousjs/various'
+export { ComponentProps, ContainerProps, ErrorProps, Actions, LoaderProps, MessageInvoker } from '@variousjs/various'
 
 export interface Store {
   [MESSAGE_KEY]: {
     timestamp?: number,
-    type?: string,
-    name?: string,
+    event?: string,
+    component?: string,
     value?: any,
   },
   [MOUNTED_COMPONENTS_KEY]: string[],
