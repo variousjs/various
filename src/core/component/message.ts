@@ -1,6 +1,7 @@
+import { MessageInvoker } from '@variousjs/various'
 import { emit, subscribe } from '../store'
 import { MESSAGE_KEY } from '../../config'
-import { Store, MessageInvoker } from '../../types'
+import { Store } from '../../types'
 
 export const getPostMessage = (component: string) => (event: string, value: any) => emit({
   [MESSAGE_KEY]: {

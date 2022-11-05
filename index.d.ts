@@ -2,7 +2,17 @@ declare module '@variousjs/various' {
   import { ComponentType } from 'react'
 
   type $dispatch = (type: string, method: string, value?: any) => Promise<any>
-  type $render = (params: {
+  type $postMessage = (name: string, value?: any) => void
+  type $t = (key: string, params?: Record<string, string | number>) => string | undefined
+
+  export type ENV = 'development' | 'production'
+
+  export type CreateComponent = (name: string) => ComponentType<{
+    $silent?: boolean,
+    [key: string]: any,
+  }>
+
+  export type RenderComponent = (params: {
     name: string,
     url?: string,
     module?: string,
@@ -10,47 +20,25 @@ declare module '@variousjs/various' {
     target: Element | null,
     onMounted?: () => void,
   }) => () => void
-  type $postMessage = (name: string, value?: any) => void
-  type $t = (key: string, params?: Record<string, string | number>) => string | undefined
-  type $component = (name: string) => ComponentType<{
-    $silent?: boolean,
-    [key: string]: any,
-  }>
 
   export { default as Store, Dispatch } from 'nycticorax'
 
-  export type $env = 'development' | 'production'
-
-  export interface ComponentProps<S = {}, C = {}> {
-    $config: Readonly<C>,
-    $env: $env,
+  export interface ComponentProps<S = {}> {
     $store: Readonly<S>,
     $dispatch: $dispatch,
-    $render?: $render,
     $postMessage: $postMessage,
     $t: $t,
-    // $component: $component,
   }
 
-  export interface ErrorProps<S = {}, C = {}> {
+  export interface ErrorProps<S = {}> {
     $reload?: () => void,
     $type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
     $message?: string,
-    $env: $env,
-    $config: Readonly<C>,
     $store: Readonly<S>,
   }
 
-  export interface LoaderProps<S = {}, C = {}> {
-    $env: $env,
-    $config: Readonly<C>,
+  export interface LoaderProps<S = {}> {
     $store: Readonly<S>,
-  }
-
-  export interface ContainerProps<C = {}> {
-    $config: Readonly<C>,
-    $component: $component,
-    $env: $env,
   }
 
   type Dispatch<T> = (
@@ -75,4 +63,8 @@ declare module '@variousjs/various' {
   export const getMountedComponents: () => string[]
   export const preloadComponents: (names: string[]) => Promise<void>
   export const onComponentMounted: (name: string, callback: () => void) => () => void
+  export const renderComponent: RenderComponent
+  export const createComponent: CreateComponent
+  export const getEnv: () => ENV
+  export const getConfig: () => Record<string, any>
 }

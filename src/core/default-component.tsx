@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react'
-import { ErrorProps, LoaderProps, ContainerProps } from '../types'
+import { ErrorProps, LoaderProps } from '@variousjs/various'
 
 export const Loader: ComponentType<LoaderProps> = () => (
   <div>Loading</div>
@@ -23,6 +23,6 @@ export const Error: ComponentType<ErrorProps> = ({ $type, $message, $reload }) =
   </>
 )
 
-export const Container: ComponentType<ContainerProps> = () => (
+export const Container: ComponentType = () => (
   <div>Container not defined</div>
 )

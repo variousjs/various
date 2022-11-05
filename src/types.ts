@@ -1,9 +1,7 @@
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n, $env, LoaderProps } from '@variousjs/various'
+import { ErrorProps, Actions, ComponentProps, MessageInvoker, Invoker, Ii8n, LoaderProps, ENV } from '@variousjs/various'
 import { Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, COMPONENT_PATHS_KEY, MOUNTED_COMPONENTS_KEY, ENV_KEY, CONFIG_KEY } from './config'
-
-export { ComponentProps, ContainerProps, ErrorProps, Actions, LoaderProps, MessageInvoker } from '@variousjs/various'
 
 export interface Store {
   [MESSAGE_KEY]: {
@@ -13,7 +11,7 @@ export interface Store {
     value?: any,
   },
   [MOUNTED_COMPONENTS_KEY]: string[],
-  [ENV_KEY]: $env,
+  [ENV_KEY]: ENV,
   [CONFIG_KEY]: Record<string | symbol, any>,
   [COMPONENT_PATHS_KEY]: Record<string, string>,
   [key: string | symbol]: any,
@@ -26,15 +24,15 @@ export interface Config {
   components: Record<string, string>,
   entry?: string,
   root?: string,
-  env?: $env,
+  env?: ENV,
 }
 
-export interface Entry<S = {}, C = {}> {
+export interface Entry<S = {}> {
   store: S,
-  Error: ComponentType<ErrorProps<S, C>>,
-  Loader: ComponentType<LoaderProps<S, C>>,
+  Error: ComponentType<ErrorProps<S>>,
+  Loader: ComponentType<LoaderProps<S>>,
   actions: Actions<S>,
-  Container: ComponentType<ContainerProps<C>>,
+  Container: ComponentType,
 }
 
 export type ComponentActions = Record<string, Invoker>

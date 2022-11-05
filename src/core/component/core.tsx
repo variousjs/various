@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { Ii8n, MessageInvoker } from '@variousjs/various'
-import onError from '../error'
+import { onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
 import { connect, getStore, emit } from '../store'
-import {
-  MOUNTED_COMPONENTS_KEY, ERROR_TYPE, CONFIG_KEY, ENV_KEY, COMPONENT_PATHS_KEY,
-} from '../../config'
+import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, COMPONENT_PATHS_KEY } from '../../config'
 import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
 import getDispatch from './dispatch'
@@ -15,9 +13,7 @@ import { RequireError, ErrorState, RequiredComponent, ComponentActions, Store } 
 export default function (nameWidthModule: string, onMounted?: () => void) {
   const globalStore = getStore()
   const storeKeys = Object.keys(globalStore)
-  const env = globalStore[ENV_KEY]
   const components = globalStore[COMPONENT_PATHS_KEY]
-  const config = globalStore[CONFIG_KEY]
   const LoaderNode = connector.getLoaderComponent()
   const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')
@@ -241,8 +237,6 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
               $message={errorMessage}
               $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
               $store={store}
-              $env={env}
-              $config={config}
             />
           )
           : null
@@ -250,7 +244,7 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
 
       if (!componentReady) {
         return !$silent && componentExist === false
-          ? (<LoaderNode $env={env} $store={store} $config={config} />)
+          ? (<LoaderNode $store={store} />)
           : null
       }
 
@@ -263,8 +257,6 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
       return (
         <ComponentNode
           {...componentProps}
-          $config={config}
-          $env={env}
           $dispatch={this.$dispatch}
           $store={store}
           $postMessage={this.$postMessage}

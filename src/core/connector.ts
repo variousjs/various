@@ -1,8 +1,8 @@
 import { ComponentType } from 'react'
 import { Root } from 'react-dom/client'
-import { LoaderProps, ErrorProps, Ii8n } from '@variousjs/various'
+import { LoaderProps, ErrorProps, Ii8n, Actions } from '@variousjs/various'
 import { Loader, Error } from './default-component'
-import { Actions, ComponentActions } from '../types'
+import { ComponentActions } from '../types'
 
 class Connector {
   private loaderComponent: ComponentType<LoaderProps>

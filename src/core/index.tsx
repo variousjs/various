@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
 import { Container } from './default-component'
-import createComponent from './create-component'
-import { MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
+import {
+  MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY,
+} from '../config'
 import connector from './connector'
-import onError from './error'
+import { onError } from './helper'
 import { Entry, ErrorState, Config } from '../types'
 
 export { default as Store } from 'nycticorax'
-export { isComponentLoaded, getMountedComponents, preloadComponents, onComponentMounted } from './component-helper'
+export * from './component'
+export { getConfig, getEnv } from './helper'
 
 export default (config: Config & Entry) => {
   const {
@@ -45,42 +47,6 @@ export default (config: Config & Entry) => {
     [MESSAGE_KEY]: {},
   })
 
-  const componentCreator = (
-    name: string,
-    onMounted?: () => void,
-  ) => {
-    const C = createComponent(name, onMounted)
-    return (props: any) => (<C {...props} />)
-  }
-
-  const $component = (nameWidthSub: string) => {
-    const [name] = nameWidthSub.split('.')
-    if (!components[name]) {
-      const errorMessage = 'component not defined'
-      onError({
-        name: nameWidthSub,
-        message: errorMessage,
-        type: 'NOT_DEFINED',
-      })
-      return () => (
-        <ErrorNode
-          $message={errorMessage}
-          $type={ERROR_TYPE.NOT_DEFINED}
-          $env={env}
-          $store={store}
-          $config={rest}
-        />
-      )
-    }
-    const existComponent = connector.getComponent(nameWidthSub)
-    if (existComponent) {
-      return existComponent
-    }
-    const component = componentCreator(nameWidthSub)
-    connector.setComponent(nameWidthSub, component)
-    return component
-  }
-
   class R extends Component<{}, ErrorState> {
     state = {
       errorType: undefined,
@@ -104,19 +70,13 @@ export default (config: Config & Entry) => {
           <ErrorNode
             $type={ERROR_TYPE[errorType]}
             $message={errorMessage}
-            $env={env}
             $store={store}
-            $config={rest}
           />
         )
       }
 
       return (
-        <ContainerNode
-          $component={$component}
-          $config={rest}
-          $env={env}
-        />
+        <ContainerNode />
       )
     }
   }

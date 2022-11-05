@@ -1,5 +1,5 @@
 import connector from '../connector'
-import onError from '../error'
+import { onError } from '../helper'
 import { getStore } from '../store'
 
 export default function (componentName: string) {

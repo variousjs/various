@@ -1,10 +1,10 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { ComponentProps } from '../../types'
+import { RenderComponent } from '@variousjs/various'
 import componentCreator from './core'
 import connector from '../connector'
 
-const renderComponent: ComponentProps['$render'] = ({
+const renderComponent: RenderComponent = ({
   name,
   url,
   target,

@@ -1,6 +1,6 @@
 import connector from '../connector'
 import { dispatch } from '../store'
-import onError from '../error'
+import { onError } from '../helper'
 
 export default function (currentComponentName: string) {
   return function (componentName: string, method: string, value: any) {
