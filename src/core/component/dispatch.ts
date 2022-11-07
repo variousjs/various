@@ -16,7 +16,7 @@ export default function (currentComponentName: string) {
         })
         throw new Error(errorMessage)
       }
-      return dispatch(action, { value, trigger: currentComponentName })
+      return dispatch(action, value, currentComponentName)
     }
 
     const componentActions = connector.getComponentActions(componentName)
@@ -43,6 +43,6 @@ export default function (currentComponentName: string) {
       throw new Error(errorMessage)
     }
 
-    return Promise.resolve(componentAction({ value, trigger: currentComponentName }))
+    return Promise.resolve(componentAction(value, currentComponentName))
   }
 }

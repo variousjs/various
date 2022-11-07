@@ -52,7 +52,7 @@ declare module '@variousjs/various' {
     message: { event?: string, component?: string, value?: any },
   ) => any
 
-  export type Invoker = (params: { trigger: string, value?: any }) => any
+  export type Invoker = (value: any, trigger: string) => any
 
   export type Ii8n = () => {
     localeKey: string,

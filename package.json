@@ -76,6 +76,6 @@
     "webpack-dev-server": "^4.9.3"
   },
   "dependencies": {
-    "nycticorax": "^4.1.0"
+    "nycticorax": "^4.1.2"
   }
 }
