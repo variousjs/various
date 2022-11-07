@@ -5,14 +5,11 @@ declare module '@variousjs/various' {
   type $postMessage = (name: string, value?: any) => void
   type $t = (key: string, params?: Record<string, string | number>) => string | undefined
 
-  export type ENV = 'development' | 'production'
-
-  export type CreateComponent = (name: string) => ComponentType<{
+  type CreateComponent = (name: string) => ComponentType<{
     $silent?: boolean,
     [key: string]: any,
   }>
-
-  export type RenderComponent = (params: {
+  type RenderComponent = (params: {
     name: string,
     url?: string,
     module?: string,
@@ -20,6 +17,8 @@ declare module '@variousjs/various' {
     target: Element | null,
     onMounted?: () => void,
   }) => () => void
+
+  export type ENV = 'development' | 'production'
 
   export { default as Store, Dispatch } from 'nycticorax'
 
@@ -43,7 +42,8 @@ declare module '@variousjs/various' {
 
   type Dispatch<T> = (
     nycticorax: { getStore: () => T, emit: (next: Partial<T>) => void },
-    params: { value?: any, trigger: string },
+    value: any,
+    trigger: string,
   ) => Promise<any>
 
   export type Actions<S = {}> = Record<string, Dispatch<S>>

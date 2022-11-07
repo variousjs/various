@@ -3,7 +3,6 @@ import { Alert, Button } from 'antd'
 import { ErrorProps } from '@variousjs/various'
 
 const errorComponent: FC<ErrorProps> = (props) => {
-  console.log(props)
   const { $reload, $type, $message } = props
   return (
     <>

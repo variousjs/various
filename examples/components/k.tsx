@@ -1,6 +1,6 @@
 import React, { Component, FC, useState, memo } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, Ii8n } from '@variousjs/various'
+import { ComponentProps, Ii8n, createComponent } from '@variousjs/various'
 import { Store } from '../types'
 import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
@@ -14,7 +14,7 @@ export class C extends Component<ComponentProps<Store>> {
     },
   })
 
-  nx = memo(this.props.$component('b.D'))
+  nx = memo(createComponent('b.D'))
 
   render() {
     const { $t, $dispatch } = this.props

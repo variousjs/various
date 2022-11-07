@@ -25,7 +25,7 @@ const D: FC<ComponentProps & S> & { $onMessage: MessageInvoker } = (props) => (
 )
 
 D.$onMessage = (message) => {
-  emit({ message: `${message.type}|${message.value || '-'}` })
+  emit({ message: `${message.component}|${message.value || '-'}` })
 }
 
 export const dd = connect('message')(D)

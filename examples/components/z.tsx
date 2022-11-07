@@ -1,6 +1,6 @@
 import React, { Component, FC } from 'react'
 import { Button } from 'antd'
-import { ComponentProps, preloadComponents, onComponentMounted } from '@variousjs/various'
+import { ComponentProps, preloadComponents, onComponentMounted, renderComponent } from '@variousjs/various'
 
 export class X extends Component<ComponentProps> {
   private unMountZ: () => void
@@ -48,35 +48,29 @@ export class X extends Component<ComponentProps> {
   }
 
   onZ = async () => {
-    const { $render } = this.props
-    if ($render) {
-      this.unMountZ = $render({
-        name: 'z',
-        module: 'Z',
-        target: document.querySelector('#z'),
-        props: {
-          unMount: this.removeZ,
-        },
-        onMounted: () => {
-          this.setState({ zReady: true })
-        },
-      })
-    }
+    this.unMountZ = renderComponent({
+      name: 'z',
+      module: 'Z',
+      target: document.querySelector('#z'),
+      props: {
+        unMount: this.removeZ,
+      },
+      onMounted: () => {
+        this.setState({ zReady: true })
+      },
+    })
   }
 
   onSwitch = async () => {
-    const { $render } = this.props
-    if ($render) {
-      this.unMountSwitch = $render({
-        name: 'switch',
-        url: './libs/switch.min.js',
-        props: { checked: true },
-        target: document.querySelector('#switch'),
-        onMounted: () => {
-          this.setState({ switchReady: true })
-        },
-      })
-    }
+    this.unMountSwitch = renderComponent({
+      name: 'switch',
+      url: './libs/switch.min.js',
+      props: { checked: true },
+      target: document.querySelector('#switch'),
+      onMounted: () => {
+        this.setState({ switchReady: true })
+      },
+    })
   }
 
   onH = async () => {

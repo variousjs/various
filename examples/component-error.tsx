@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import { ContainerProps } from '@variousjs/various'
+import { createComponent } from '@variousjs/various'
 
-export const Container: FC<ContainerProps> = ({ $component }) => {
-  const X = $component('f')
+export const Container: FC = () => {
+  const X = createComponent('f')
   return (<X />)
 }

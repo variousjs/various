@@ -10,7 +10,7 @@ const { createStore, connect, emit } = new Store<S>()
 createStore({ value: 'a' })
 
 class A extends Component<S & ComponentProps<GlobalStore> & { name: string }> {
-  static updateValue: Invoker = async ({ value, trigger }) => {
+  static updateValue: Invoker = async (value, trigger) => {
     window.console.log(trigger)
     await new Promise((r) => setTimeout(r, 100))
     emit({ value }, true)

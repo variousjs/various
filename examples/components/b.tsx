@@ -1,6 +1,6 @@
 import React, { FC, useState, useMemo } from 'react'
 import { Button, Input } from 'antd'
-import { ComponentProps, Store, Invoker } from '@variousjs/various'
+import { ComponentProps, Store, Invoker, createComponent } from '@variousjs/various'
 import { Store as GlobalStore } from '../types'
 
 type S = { value: string }
@@ -28,7 +28,7 @@ const B: FC<S & ComponentProps> & { getValue: Invoker } = (props) => {
     }
   }
 
-  const D = useMemo(() => props.$component('b.D'), [])
+  const D = useMemo(() => createComponent('b.D'), [])
 
   return (
     <>

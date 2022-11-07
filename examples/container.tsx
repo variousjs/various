@@ -1,20 +1,20 @@
 import React, { Component, ComponentType, memo } from 'react'
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import { ContainerProps } from '@variousjs/various'
+import { getConfig, createComponent } from '@variousjs/various'
 import { Button } from 'antd'
 import Wrapper from './wrapper'
 import { Config } from './types'
 
-class Container extends Component<ContainerProps<Config>> {
+class Container extends Component {
   state = {
     n: 0,
   }
 
-  xx = memo(this.props.$component('x'))
+  xx = memo(createComponent('x'))
 
   render() {
     const { n } = this.state
-    const { $config, $component } = this.props
+    const $config = getConfig() as Config
     const X = this.xx
 
     return (
@@ -30,7 +30,7 @@ class Container extends Component<ContainerProps<Config>> {
             {
               $config.routes.map(({ path, components }) => {
                 const component = () => components.map((name) => {
-                  const C = $component(name)
+                  const C = createComponent(name)
 
                   return (
                     <div key={name} className="component">

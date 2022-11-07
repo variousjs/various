@@ -12,7 +12,7 @@ createStore({ message: '' })
 
 class C extends Component<ComponentProps & S> {
   static $onMessage: MessageInvoker = (message) => {
-    emit({ message: `${message.type}|${message.name}` })
+    emit({ message: `${message.component}|${message.event}` })
   }
 
   onMsg = () => {
