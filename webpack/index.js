@@ -12,7 +12,7 @@ const configs = [{
   mode: NODE_ENV,
   // plugins: [new BundleAnalyzerPlugin()],
   output: {
-    path: path.resolve(__dirname, '../demo/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
   },

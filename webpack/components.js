@@ -28,7 +28,7 @@ const config = {
   mode: NODE_ENV,
   entry: components,
   output: {
-    path: path.resolve(__dirname, '../demo/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
     libraryTarget: 'amd',

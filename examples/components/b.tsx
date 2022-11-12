@@ -50,7 +50,7 @@ export const C = connect('value')(B)
 export const D:FC<ComponentProps<GlobalStore>> = (props) => (
   <div>
     <h2>D</h2>
-    <p>{props.$store.user.name}</p>
+    <p>{props.$store.locale}</p>
     <Input />
   </div>
 )

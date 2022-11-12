@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
 import { Alert, Button } from 'antd'
 import { ErrorProps } from '@variousjs/various'
+import { Store } from './types'
 
-const errorComponent: FC<ErrorProps> = (props) => {
+const errorComponent: FC<ErrorProps<Store>> = (props) => {
   const { $reload, $type, $message } = props
   return (
     <>

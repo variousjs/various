@@ -1,6 +1,4 @@
 export default {
-  user: {
-    name: 'humpback',
-  },
   locale: 'zh',
+  loaderClassName: 'loader-class',
 }

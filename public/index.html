@@ -60,7 +60,18 @@ var VARIOUS_CONFIG = {
     store: './dist/a.js',
     empty: './dist/empty.js',
     link: '/link.js',
+
+    dispatch: './dist/dispatch.js',
   },
+  pages: [
+    {
+      label: 'Dispatch',
+      icon: 'api',
+      component: 'dispatch',
+      path: '/dispatch',
+      components: ['a', 'b.C'],
+    }
+  ],
   menu: [
     {
       label: 'Home',

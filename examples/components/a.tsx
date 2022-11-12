@@ -48,7 +48,7 @@ class A extends Component<S & ComponentProps<GlobalStore> & { name: string }> {
 
     return (
       <>
-        <p>Store: {$store.user.name}</p>
+        <p>Store: {$store.loaderClassName}</p>
         <p>Store(component): {value}</p>
         <p>Component Props: {name}</p>
         <p>Value(b): {bValue}</p>

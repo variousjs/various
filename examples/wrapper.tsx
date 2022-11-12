@@ -1,7 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import {
-  Layout, Menu, Icon, Input,
-} from 'antd'
+import { Layout, Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import { getConfig } from '@variousjs/various'
 import { Config } from './types'
@@ -43,10 +41,6 @@ const W: FC<{ children: ReactNode }> = (props) => {
       </Layout.Sider>
       <Layout>
         <Layout.Content style={{ padding: '20px 10px 20px 20px' }}>
-          <div className="component">
-            <div className="title">Container</div>
-            <Input style={{ width: 200 }} defaultValue="Container state keeping" />
-          </div>
           {children}
           <div style={{ height: 10 }} />
         </Layout.Content>
