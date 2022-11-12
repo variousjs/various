@@ -12,7 +12,7 @@
   },
   "nyc": {
     "exclude": [
-      "examples/*"
+      "test/*"
     ],
     "excludeAfterRemap": true
   },
