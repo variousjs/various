@@ -7,11 +7,12 @@
 <style>
 .component {
   background: #fff;
-  padding: 20px;
-  display: inline-block;
+  padding: 10px;
   width: 300px;
   margin: 0 10px 10px 0;
+  display: inline-block;
   vertical-align: top;
+  border-radius: 4px;
 }
 .component:empty {
   display: none;
@@ -41,8 +42,6 @@ var VARIOUS_CONFIG = {
   },
   env: 'development',
   components: {
-    a: './dist/a.js',
-    b: './dist/b.js',
     c: './dist/c.js',
     d: './dist/d.js',
     e: './dist/e.js',
@@ -61,7 +60,10 @@ var VARIOUS_CONFIG = {
     empty: './dist/empty.js',
     link: '/link.js',
 
+    global: './dist/global.js',
     dispatch: './dist/dispatch.js',
+    'dispatch-a': './dist/dispatch-a.js',
+    'dispatch-b': './dist/dispatch-b.js',
   },
   pages: [
     {
@@ -69,7 +71,7 @@ var VARIOUS_CONFIG = {
       icon: 'api',
       component: 'dispatch',
       path: '/dispatch',
-      components: ['a', 'b.C'],
+      components: ['dispatch-a', 'dispatch-b'],
     }
   ],
   menu: [

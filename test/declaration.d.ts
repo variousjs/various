@@ -20,6 +20,9 @@ declare module 'antd' {
   export class Menu extends Component<any> {
     static Item: ComponentType<any>
   }
+  export class Descriptions extends Component<any> {
+    static Item: ComponentType<any>
+  }
   export const Icon: ComponentType<any>
   export const Badge: ComponentType<any>
   export const Tag: ComponentType<any>

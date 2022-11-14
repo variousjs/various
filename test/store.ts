@@ -1,4 +1,5 @@
 export default {
   locale: 'zh',
-  loaderClassName: 'loader-class',
+  loader: 'loader',
+  name: 'humpback',
 }
