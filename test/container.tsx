@@ -5,11 +5,7 @@ import { Layout, Menu, Icon } from 'antd'
 import { Config } from './types'
 
 class Container extends Component {
-  pages = (getConfig() as Config).pages.reduce((prev, current) => {
-    // eslint-disable-next-line no-param-reassign
-    prev[current.component] = memo(createComponent(current.component))
-    return prev
-  }, {} as Record<string, ReturnType<typeof createComponent>>)
+  page = memo(createComponent('page'))
 
   global = memo(createComponent('global'))
 
@@ -25,7 +21,7 @@ class Container extends Component {
             <Menu
               mode="inline"
               theme="dark"
-              selectedKeys={['/dispatch']}
+              defaultSelectedKeys={[window.location.hash.split('#')[1]]}
             >
               {
             $config.pages.map((item) => {
@@ -50,14 +46,14 @@ class Container extends Component {
               <Switch>
                 {
                   $config.pages.map(({ path, component }) => {
-                    const P = this.pages[component]
+                    const P = this.page
 
                     return (
                       <Route
                         key={path}
                         exact
                         path={path}
-                        component={P}
+                        component={() => <P type={component} />}
                       />
                     )
                   })

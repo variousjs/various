@@ -31,3 +31,14 @@ export const onComponentMounted = (name: string, callback: () => void) => {
 
   return unSubscribe
 }
+
+export const isPropsKeyDuplicate = (props?: Record<string, any>) => {
+  const propsKeys = Object.keys(props || {})
+  const storeKeys = Object.keys(getStore())
+  for (let i = 0; i < propsKeys.length; i += 1) {
+    if (storeKeys.includes(propsKeys[i])) {
+      return true
+    }
+  }
+  return false
+}

@@ -1,10 +1,12 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { RenderComponent } from '@variousjs/various'
+import { renderComponent as rc } from '@variousjs/various'
 import componentCreator from './core'
 import connector from '../connector'
+import { isPropsKeyDuplicate } from './helper'
+import { onError } from '../helper'
 
-const renderComponent: RenderComponent = ({
+const renderComponent: typeof rc = ({
   name,
   url,
   target,
@@ -25,7 +27,6 @@ const renderComponent: RenderComponent = ({
   }
 
   const C = componentCreator(nameWidthSub, onMounted)
-  const F = (p: any) => (<C {...p} />)
 
   let root: Root
   if (connector.getRenderRoot(nameWidthSub)) {
@@ -35,7 +36,11 @@ const renderComponent: RenderComponent = ({
     connector.setRenderRoot(nameWidthSub, root)
   }
 
-  root.render(<F {...props} />)
+  if (isPropsKeyDuplicate(props)) {
+    onError({ type: 'component', name, message: 'props key duplicate with store' })
+  }
+
+  root.render(<C {...props} />)
 
   return () => setTimeout(() => {
     root.unmount()

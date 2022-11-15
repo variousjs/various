@@ -18,7 +18,7 @@ export const getEnv = () => getStore()[ENV_KEY]
 
 export const onError = (args: ErrorArgs) => {
   const { type, message, name } = args
-  const prefix = type === 'dispatch' || type === 'i18n'
+  const prefix = type === 'dispatch' || type === 'i18n' || type === 'component'
     ? type
     : ERROR_TYPE[type]
 

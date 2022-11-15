@@ -50,7 +50,6 @@ var VARIOUS_CONFIG = {
     gg: './dist/g.js',
     h: './dist/h.js',
     i: './dist/i.js',
-    k: './dist/k.js',
     x: './dist/x.js',
     z: './dist/z.js',
 
@@ -61,9 +60,12 @@ var VARIOUS_CONFIG = {
     link: '/link.js',
 
     global: './dist/global.js',
-    dispatch: './dist/dispatch.js',
+    page: './dist/page.js',
     'dispatch-a': './dist/dispatch-a.js',
     'dispatch-b': './dist/dispatch-b.js',
+    'i18n-c': './dist/i18n-c.js',
+    'i18n-d': './dist/i18n-d.js',
+    'i18n-e': './dist/i18n-e.js',
   },
   pages: [
     {
@@ -72,7 +74,14 @@ var VARIOUS_CONFIG = {
       component: 'dispatch',
       path: '/dispatch',
       components: ['dispatch-a', 'dispatch-b'],
-    }
+    },
+    {
+      label: 'I18n',
+      icon: 'copy',
+      component: 'i18n',
+      path: '/i18n',
+      components: ['i18n-c', 'i18n-d', 'i18n-e'],
+    },
   ],
   menu: [
     {

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { ComponentProps } from '@variousjs/various'
 import { getPageComponents } from '../helper'
 
-export default class extends Component<ComponentProps> {
-  components = getPageComponents('dispatch')
+export default class extends Component<ComponentProps & { type: string }> {
+  components = getPageComponents(this.props.type)
 
   render() {
     return (

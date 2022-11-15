@@ -57,7 +57,7 @@ export interface ErrorState {
 export interface ErrorArgs {
   name: string,
   message: string,
-  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
+  type: ErrorProps['$type'] | 'dispatch' | 'i18n' | 'component',
 }
 
 export interface Various {
