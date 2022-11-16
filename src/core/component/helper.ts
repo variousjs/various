@@ -15,7 +15,7 @@ export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
 export const onComponentMounted = (name: string[] | string, callback: () => void) => {
   const nextName = typeof name === 'string' ? [name] : name
 
-  if (nextName.some((n) => getMountedComponents().includes(n))) {
+  if (nextName.every((n) => getMountedComponents().includes(n))) {
     callback()
     return () => null
   }
@@ -23,7 +23,7 @@ export const onComponentMounted = (name: string[] | string, callback: () => void
   const unSubscribe = subscribe({
     [MOUNTED_COMPONENTS_KEY](value) {
       const names = value as string[]
-      if (nextName.some((n) => names.includes(n))) {
+      if (nextName.every((n) => names.includes(n))) {
         unSubscribe()
         callback()
       }
