@@ -42,20 +42,10 @@ var VARIOUS_CONFIG = {
   },
   env: 'development',
   components: {
-    e: './dist/e.js',
-    f: './dist/f.js',
-    g: './dist/g.js',
-    gg: './dist/g.js',
-    h: './dist/h.js',
-    i: './dist/i.js',
     x: './dist/x.js',
     z: './dist/z.js',
 
-    timeout: './dist/timeout.js',
     'timeout-error': './dist/timeout-error.js',
-    store: './dist/a.js',
-    empty: './dist/empty.js',
-    link: '/link.js',
 
     global: './dist/global.js',
     page: './dist/page.js',
@@ -66,6 +56,13 @@ var VARIOUS_CONFIG = {
     'i18n-e': './dist/i18n-e.js',
     'message-f': './dist/message-f.js',
     'message-g': './dist/message-g.js',
+    'create-h': './dist/create-h.js',
+    'create-i': './dist/create-i.js',
+    'create-j': './dist/create-j.js',
+    'create-jj': './dist/create-j.js',
+    'create-path-error': '/path-error.js',
+    'create-empty-content': './dist/empty.js',
+    'create-timeout': './dist/create-timeout.js',
   },
   pages: [
     {
@@ -89,63 +86,12 @@ var VARIOUS_CONFIG = {
       path: '/message',
       components: ['message-f', 'message-g'],
     },
-  ],
-  menu: [
     {
-      label: 'Home',
-      icon: 'dashboard',
-      path: '/',
-    },
-    {
-      label: 'Error',
-      icon: 'close-circle',
-      path: '/error',
-    },
-    {
-      label: 'Module',
+      label: 'CreateComponent',
       icon: 'appstore',
-      path: '/module',
-    },
-    {
-      label: 'Dispatch',
-      icon: 'api',
-      path: '/dispatch',
-    },
-    {
-      label: 'I18n',
-      icon: 'copy',
-      path: '/i18n',
-    },
-    {
-      label: 'Message',
-      icon: 'message',
-      path: '/message',
-    },
-  ],
-  routes: [
-    {
-      path: '/error',
-      components: ['store', 'link', 'e', 'f', 'z.Y', 'no-exist', 'empty', 'z.A', 'timeout-error'],
-    },
-    {
-      path: '/module',
-      components: ['z.X', 'g', 'gg', 'timeout', 'timeout-error'],
-    },
-    {
-      path: '/dispatch',
-      components: ['a', 'b.C'],
-    },
-    {
-      path: '/message',
-      components: ['c', 'd.dd'],
-    },
-    {
-      path: '/',
-      components: ['i'],
-    },
-    {
-      path: '/i18n',
-      components: ['k.C', 'k.G', 'k.T'],
+      component: 'create',
+      path: '/create',
+      components: ['create-h', 'create-i', 'create-jj', 'store', 'no-defined', 'empty', 'create-path-error', 'create-empty-content', 'create-j', 'create-j.j', 'create-j.k', 'create-j.no-exist', 'create-timeout'],
     },
   ],
 }

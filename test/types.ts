@@ -10,13 +10,4 @@ export type Config = {
     path: string,
     components: string[],
   }[],
-  menu: {
-    label: string,
-    icon: string,
-    path: string,
-  }[],
-  routes: {
-    path: string[] | string,
-    components: string[],
-  }[],
 }

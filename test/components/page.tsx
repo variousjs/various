@@ -14,6 +14,11 @@ export default class extends Component<ComponentProps & { type: string }> {
 
             return (
               <div className="component">
+                {
+                  this.props.type === 'create'
+                    ? <h3>{name}</h3>
+                    : null
+                }
                 <C />
               </div>
             )
