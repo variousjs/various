@@ -42,8 +42,6 @@ var VARIOUS_CONFIG = {
   },
   env: 'development',
   components: {
-    c: './dist/c.js',
-    d: './dist/d.js',
     e: './dist/e.js',
     f: './dist/f.js',
     g: './dist/g.js',
@@ -66,6 +64,8 @@ var VARIOUS_CONFIG = {
     'i18n-c': './dist/i18n-c.js',
     'i18n-d': './dist/i18n-d.js',
     'i18n-e': './dist/i18n-e.js',
+    'message-f': './dist/message-f.js',
+    'message-g': './dist/message-g.js',
   },
   pages: [
     {
@@ -81,6 +81,13 @@ var VARIOUS_CONFIG = {
       component: 'i18n',
       path: '/i18n',
       components: ['i18n-c', 'i18n-d', 'i18n-e'],
+    },
+    {
+      label: 'PostMessage',
+      icon: 'message',
+      component: 'message',
+      path: '/message',
+      components: ['message-f', 'message-g'],
     },
   ],
   menu: [
