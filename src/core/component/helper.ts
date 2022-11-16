@@ -12,17 +12,18 @@ export const isComponentLoaded = (name: string) => {
 
 export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
 
-export const onComponentMounted = (name: string, callback: () => void) => {
-  if (getMountedComponents().includes(name)) {
+export const onComponentMounted = (name: string[] | string, callback: () => void) => {
+  const nextName = typeof name === 'string' ? [name] : name
+
+  if (nextName.some((n) => getMountedComponents().includes(n))) {
     callback()
-    // /* istanbul ignore next */
     return () => null
   }
 
   const unSubscribe = subscribe({
     [MOUNTED_COMPONENTS_KEY](value) {
       const names = value as string[]
-      if (names.includes(name)) {
+      if (nextName.some((n) => names.includes(n))) {
         unSubscribe()
         callback()
       }
