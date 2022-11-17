@@ -17,12 +17,6 @@
 .component:empty {
   display: none;
 }
-.title {
-  font-size: 16px;
-  color: #000;
-  margin-bottom: 10px;
-  font-weight: 500;
-}
 button {
   margin: 0 10px 10px 0;
 }
@@ -42,11 +36,6 @@ var VARIOUS_CONFIG = {
   },
   env: 'development',
   components: {
-    x: './dist/x.js',
-    z: './dist/z.js',
-
-    'timeout-error': './dist/timeout-error.js',
-
     global: './dist/global.js',
     page: './dist/page.js',
     'dispatch-a': './dist/dispatch-a.js',
@@ -63,6 +52,8 @@ var VARIOUS_CONFIG = {
     'create-path-error': '/path-error.js',
     'create-empty-content': './dist/empty.js',
     'create-timeout': './dist/create-timeout.js',
+    'render-k': './dist/render-k.js',
+    'render-l': './dist/render-l.js',
   },
   pages: [
     {
@@ -92,6 +83,13 @@ var VARIOUS_CONFIG = {
       component: 'create',
       path: '/create',
       components: ['create-h', 'create-i', 'create-jj', 'store', 'no-defined', 'empty', 'create-path-error', 'create-empty-content', 'create-j', 'create-j.j', 'create-j.k', 'create-j.no-exist', 'create-timeout'],
+    },
+    {
+      label: 'RenderComponent',
+      icon: 'dashboard',
+      component: 'render',
+      path: '/render',
+      components: ['render-k'],
     },
   ],
 }
