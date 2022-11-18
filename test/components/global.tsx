@@ -1,15 +1,27 @@
-import React from 'react'
-import { Descriptions, DatePicker } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Descriptions, DatePicker, Button } from 'antd'
 import moment from 'moment'
-import { ComponentProps, getEnv, getConfig } from '@variousjs/various'
+import { useLocation } from 'react-router-dom'
+import { onComponentMounted, ComponentProps, getEnv, getConfig, getMountedComponents } from '@variousjs/various'
 import { Store, Config } from '../types'
 
 export default (props: ComponentProps<Store>) => {
   const config = getConfig() as Config
+  const [mounteds, setMounteds] = useState<string[]>([])
+  const [show, setShow] = useState(false)
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    setShow(false)
+    const un = onComponentMounted('render-k', () => {
+      setShow(true)
+    })
+    return un
+  }, [pathname])
 
   return (
-    <div className="component">
-      <Descriptions column={2} size="small" layout="vertical" bordered>
+    <div style={{ width: 610 }} className="component">
+      <Descriptions column={3} size="small" layout="vertical" bordered>
         <Descriptions.Item label="Store">
           <span data-name="global-name">{props.$store.name}</span>
         </Descriptions.Item>
@@ -26,11 +38,51 @@ export default (props: ComponentProps<Store>) => {
           />
         </Descriptions.Item>
 
-        <Descriptions.Item span={2} label="Config">
+        <Descriptions.Item span={3} label="Config">
           <div data-name="global-name">
             {config.pages.map((t) => t.component).join(', ')}
           </div>
         </Descriptions.Item>
+
+        {show ? (
+          <>
+            <Descriptions.Item span={3} label="Mounted Components">
+              <div data-name="global-name">
+                {mounteds.join(', ') || '-'}
+              </div>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="IsMounted">
+              <div data-name="global-name">
+                -
+              </div>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="On Mounted">
+              <div data-name="global-name">
+                -
+              </div>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="On multi component Mounted">
+              <div data-name="global-name">
+                -
+              </div>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Actions">
+              <Button
+                onClick={() => {
+                  setMounteds(getMountedComponents())
+                }}
+                size="small"
+                type="primary"
+              >
+                MountedComponents
+              </Button>
+            </Descriptions.Item>
+          </>
+        ) : null}
       </Descriptions>
     </div>
   )

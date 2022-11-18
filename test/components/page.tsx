@@ -19,7 +19,7 @@ export default class extends Component<ComponentProps & { type: string }> {
                     ? <h3>{name}</h3>
                     : null
                 }
-                <C />
+                <C $silent={name === 'create-slient'} />
               </div>
             )
           })
