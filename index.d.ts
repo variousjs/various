@@ -62,7 +62,7 @@ declare module '@variousjs/various' {
   export const isComponentLoaded: (name: string) => boolean
   export const getMountedComponents: () => string[]
   export const preloadComponents: (names: string[]) => Promise<void>
-  export const onComponentMounted: (name: string, callback: () => void) => () => void
+  export const onComponentMounted: (name: string | string[], callback: () => void) => () => void
   export const renderComponent: RenderComponent
   export const createComponent: CreateComponent
   export const getEnv: () => ENV

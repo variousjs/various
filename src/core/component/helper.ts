@@ -1,3 +1,4 @@
+import { onComponentMounted as OnComponentMounted } from '@variousjs/various'
 import { getStore, subscribe } from '../store'
 import { MOUNTED_COMPONENTS_KEY } from '../../config'
 
@@ -12,7 +13,7 @@ export const isComponentLoaded = (name: string) => {
 
 export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
 
-export const onComponentMounted = (name: string[] | string, callback: () => void) => {
+export const onComponentMounted: typeof OnComponentMounted = (name, callback) => {
   const nextName = typeof name === 'string' ? [name] : name
 
   if (nextName.every((n) => getMountedComponents().includes(n))) {
