@@ -9,6 +9,9 @@ export default () => {
   const unMount = useRef<() => void>(() => null)
 
   const onPreload = async () => {
+    if (isComponentLoaded('helper-n')) {
+      setPreLoaded(true)
+    }
     await preloadComponents(['helper-n'])
     if (isComponentLoaded('helper-n')) {
       setPreLoaded(true)
