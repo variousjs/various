@@ -36,7 +36,7 @@ var VARIOUS_CONFIG = {
   },
   env: 'development',
   components: {
-    global: './dist/global.js',
+    config: './dist/config.js',
     page: './dist/page.js',
     'dispatch-a': './dist/dispatch-a.js',
     'dispatch-b': './dist/dispatch-b.js',
@@ -58,6 +58,13 @@ var VARIOUS_CONFIG = {
     'helper-n': './dist/helper-n.js',
   },
   pages: [
+  {
+      label: 'Config',
+      icon: 'sliders',
+      component: 'config',
+      path: '/',
+      components: [],
+    },
     {
       label: 'Dispatch',
       icon: 'api',

@@ -7,11 +7,11 @@ import { Config } from './types'
 class Container extends Component {
   page = memo(createComponent('page'))
 
-  global = memo(createComponent('global'))
+  config = memo(createComponent('config'))
 
   render() {
     const $config = getConfig() as Config
-    const G = this.global
+    const C = this.config
 
     return (
       <HashRouter>
@@ -42,7 +42,7 @@ class Container extends Component {
           </Layout.Sider>
           <Layout>
             <Layout.Content style={{ padding: '20px 10px 20px 20px' }}>
-              <G />
+              <C />
               <Switch>
                 {
                   $config.pages.map(({ path, component }) => {

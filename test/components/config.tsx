@@ -11,11 +11,11 @@ export default (props: ComponentProps<Store>) => {
     <div style={{ width: 610 }} className="component">
       <Descriptions column={3} size="small" layout="vertical" bordered>
         <Descriptions.Item label="Store">
-          <span data-name="global-name">{props.$store.name}</span>
+          <span data-store="name">{props.$store.name}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="ENV">
-          <span data-name="global-name">{getEnv()}</span>
+          <span data-env="env">{getEnv()}</span>
         </Descriptions.Item>
 
         <Descriptions.Item span={2} label="Moment I18n">
@@ -27,7 +27,7 @@ export default (props: ComponentProps<Store>) => {
         </Descriptions.Item>
 
         <Descriptions.Item span={3} label="Config">
-          <div data-name="global-name">
+          <div data-config="pages">
             {config.pages.map((t) => t.component).join(', ')}
           </div>
         </Descriptions.Item>
