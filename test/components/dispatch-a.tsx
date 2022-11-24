@@ -7,7 +7,7 @@ type S = { value: string, trigger: string }
 
 const { createStore, connect, emit } = new Store<S>()
 
-createStore({ value: 'a', trigger: '' })
+createStore({ value: '', trigger: '' })
 
 class A extends Component<S & ComponentProps<GlobalStore>> {
   static updateValue: Invoker = async (value, trigger) => {
@@ -47,30 +47,30 @@ class A extends Component<S & ComponentProps<GlobalStore>> {
 
     return (
       <Descriptions column={2} size="small" title="A" layout="vertical" bordered>
-        <Descriptions.Item label="Global Name">
-          <span data-name="global-name">{$store.name}</span>
+        <Descriptions.Item label="Store">
+          <span data-a="store-name">{$store.name}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="A Value">
-          <span data-name="a-value">{value}</span>
+          <span data-a="value">{value || '-'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Trigger">
-          <span data-name="trigger">{trigger || '-'}</span>
+          <span data-a="trigger">{trigger || '-'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="B Value">
-          <span data-name="b-value">{bValue || '-'}</span>
+          <span data-a="b-value">{bValue || '-'}</span>
         </Descriptions.Item>
 
-        <Descriptions.Item span={2} label="A Error">
-          <span data-name="a-error">{dispatchError || '-'}</span>
+        <Descriptions.Item span={2} label="Error">
+          <span data-a="error">{dispatchError || '-'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Actions">
-          <Button type="primary" size="small" onClick={this.onGetB}>B Value</Button>
-          <Button type="primary" size="small" onClick={this.onDpB}>B Nonexist</Button>
-          <Button type="primary" size="small" onClick={this.onSetG}>Store Nonexist</Button>
+          <Button data-a="action-b" type="primary" size="small" onClick={this.onGetB}>B Value</Button>
+          <Button data-a="action-b-nonexist" type="primary" size="small" onClick={this.onDpB}>B Nonexist</Button>
+          <Button data-a="action-store-nonexist" type="primary" size="small" onClick={this.onSetG}>Store Nonexist</Button>
         </Descriptions.Item>
       </Descriptions>
     )
