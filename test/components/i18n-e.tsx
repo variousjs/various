@@ -8,7 +8,7 @@ const T: FC<ComponentProps> = (props) => {
   return (
     <Descriptions column={2} size="small" title="E" layout="vertical" bordered>
       <Descriptions.Item label="Title">
-        <span data-name="i18n-title">
+        <span data-e="title">
           {/* @ts-ignore */}
           {$t('title', [])}
         </span>
