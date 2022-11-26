@@ -18,24 +18,20 @@ class F extends Component<ComponentProps & S> {
   }
 
   render() {
-    const { component, event, value } = this.props
+    const { component, event } = this.props
 
     return (
       <Descriptions column={2} size="small" title="F" layout="vertical" bordered>
         <Descriptions.Item label="Component">
-          <span data-name="i18n-title">{component || '-'}</span>
+          <span data-f="component">{component || '-'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Event">
-          <span data-name="i18n-title">{event || '-'}</span>
-        </Descriptions.Item>
-
-        <Descriptions.Item span={2} label="Value">
-          <span data-name="i18n-title">{value || '-'}</span>
+          <span data-f="event">{event || '-'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Actions">
-          <Button type="primary" size="small" onClick={this.onMsg}>Post Message</Button>
+          <Button data-f="action" type="primary" size="small" onClick={this.onMsg}>Send</Button>
         </Descriptions.Item>
       </Descriptions>
     )
