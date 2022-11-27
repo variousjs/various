@@ -11,6 +11,14 @@ export default class extends Component<ComponentProps & { type: string }> {
         {
           Object.keys(this.components).map((name) => {
             const C = this.components[name]
+            const props = {} as Record<string, any>
+
+            if (name === 'create-slient') {
+              props.$slient = true
+            }
+            if (name === 'helper-m') {
+              props.locale = 'zh'
+            }
 
             return (
               <div className="component">
@@ -19,7 +27,7 @@ export default class extends Component<ComponentProps & { type: string }> {
                     ? <h3>{name}</h3>
                     : null
                 }
-                <C $silent={name === 'create-slient'} />
+                <C {...props} />
               </div>
             )
           })

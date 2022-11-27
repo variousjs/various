@@ -21,7 +21,7 @@ export default () => {
   useEffect(() => () => unMount.current(), [])
 
   useEffect(() => {
-    const un = onComponentMounted('global', () => {
+    const un = onComponentMounted('config', () => {
       setShowRender(true)
     })
     return un
@@ -37,19 +37,19 @@ export default () => {
   return (
     <Descriptions column={3} size="small" title="M" layout="vertical" bordered>
       <Descriptions.Item label="N">
-        <div id="n">
+        <div data-m="n" id="n">
           -
         </div>
       </Descriptions.Item>
 
       <Descriptions.Item label="N Loaded">
-        <div data-name="global-name">
+        <div data-m="loaded">
           {isLoaded ? 'true' : 'false'}
         </div>
       </Descriptions.Item>
 
       <Descriptions.Item label="Preloaded">
-        <div data-name="global-name">
+        <div data-m="preloaded">
           {preLoaded ? 'true' : 'false'}
         </div>
       </Descriptions.Item>
@@ -58,6 +58,7 @@ export default () => {
         {
           showRender ? (
             <Button
+              data-m="action-render"
               onClick={() => {
                 unMount.current = renderComponent({
                   name: 'helper-m',
@@ -72,10 +73,10 @@ export default () => {
             </Button>
           ) : null
         }
-        <Button onClick={onPreload} size="small" type="primary">Preload</Button>
+        <Button data-m="action-preload" onClick={onPreload} size="small" type="primary">Preload</Button>
       </Descriptions.Item>
     </Descriptions>
   )
 }
 
-export const N = () => 'N'
+export const N = () => <div>N</div>
