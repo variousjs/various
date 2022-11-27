@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
-describe('module test', () => {
+describe('render component', () => {
   beforeEach(() => {
-    cy.visit('/#/module')
+    cy.visit('/#/render')
   })
 
   it('sub module', () => {

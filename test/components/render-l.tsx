@@ -15,6 +15,7 @@ export const L = () => {
 
       <Descriptions.Item label="Actions">
         <Button
+          data-l="action-render"
           size="small"
           type="primary"
           onClick={() => {
@@ -28,6 +29,7 @@ export const L = () => {
           Render
         </Button>
         <Button
+          data-l="action-unmount"
           size="small"
           type="primary"
           onClick={() => {

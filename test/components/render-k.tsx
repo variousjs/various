@@ -33,7 +33,7 @@ export default class extends Component {
     return (
       <Descriptions column={1} size="small" title="K" layout="vertical" bordered>
         <Descriptions.Item label="L Ready">
-          <span>{this.state.ready ? 'true' : 'false'}</span>
+          <span data-k="ready">{this.state.ready ? 'true' : 'false'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="L">
@@ -41,7 +41,7 @@ export default class extends Component {
         </Descriptions.Item>
 
         <Descriptions.Item label="Actions">
-          <Button size="small" type="primary" onClick={this.onMount}>Render</Button>
+          <Button data-k="action" size="small" type="primary" onClick={this.onMount}>Render</Button>
         </Descriptions.Item>
       </Descriptions>
     )
