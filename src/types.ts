@@ -25,6 +25,7 @@ export interface Config {
   entry?: string,
   root?: string,
   env?: ENV,
+  timeout?: number,
 }
 
 export interface Entry<S = {}> {
