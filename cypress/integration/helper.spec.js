@@ -3,9 +3,9 @@
 describe('helper', () => {
   beforeEach(() => {
     cy.visit('/#/helper', {
-      onBeforeLoad(win) {
-        cy.stub(win.console, 'error').as('consoleError')
-      },
+      // onBeforeLoad(win) {
+      //   cy.stub(win.console, 'error').as('consoleError')
+      // },
     })
     Cypress.on('uncaught:exception', () => false)
   })
@@ -15,14 +15,13 @@ describe('helper', () => {
     cy.get('[data-m="loaded"]').should('have.text', 'false')
     cy.get('[data-m="preloaded"]').should('have.text', 'false')
 
-    cy.wait(1000)
-
-    cy.get('@consoleError').should(
-      'have.been.calledWith',
-      '%chelper-m',
-      'color:white;background:blue;padding:1px 2px',
-      '[component] props key duplicate with store',
-    )
+    // cy.wait(1000)
+    // cy.get('@consoleError').should(
+    //   'have.been.calledWith',
+    //   '%chelper-m',
+    //   'color:white;background:blue;padding:1px 2px',
+    //   '[component] props key duplicate with store',
+    // )
 
     cy.get('[data-m="action-render"]').click()
     cy.get('[data-m="n"]').should('have.text', 'N')

@@ -1,8 +1,6 @@
 import React from 'react'
 import componentCreator from './core'
 import connector from '../connector'
-import { isPropsKeyDuplicate } from './helper'
-import { onError } from '../helper'
 
 export default function (name: string) {
   const existComponent = connector.getComponent(name)
@@ -11,11 +9,10 @@ export default function (name: string) {
   }
 
   const C = componentCreator(name)
-  const component = (props: any) => {
-    if (isPropsKeyDuplicate(props)) {
-      onError({ type: 'component', name, message: 'props key duplicate with store' })
-    }
-    return (<C {...props} />)
+  const component = (props: Record<string, any>) => {
+    const { $silent, ...rest } = props || {}
+    const nextProps = { $componentProps: rest, $silent }
+    return (<C {...nextProps} />)
   }
   connector.setComponent(name, component)
   return component

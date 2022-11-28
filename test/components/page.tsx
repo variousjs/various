@@ -16,9 +16,6 @@ export default class extends Component<ComponentProps & { type: string }> {
             if (name === 'create-slient') {
               props.$silent = true
             }
-            if (name === 'helper-m') {
-              props.locale = 'zh'
-            }
 
             return (
               <div className="component">

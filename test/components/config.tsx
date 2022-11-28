@@ -4,7 +4,7 @@ import moment from 'moment'
 import { ComponentProps, getEnv, getConfig } from '@variousjs/various'
 import { Store, Config } from '../types'
 
-export default (props: ComponentProps<Store>) => {
+export default (props: ComponentProps<Store> & { locale: string }) => {
   const config = getConfig() as Config
 
   return (
@@ -26,7 +26,13 @@ export default (props: ComponentProps<Store>) => {
           />
         </Descriptions.Item>
 
-        <Descriptions.Item span={3} label="Config">
+        <Descriptions.Item span={1} label="Props">
+          <div data-config="props">
+            {props.locale}
+          </div>
+        </Descriptions.Item>
+
+        <Descriptions.Item span={2} label="Config">
           <div data-config="pages">
             {config.pages.map((t) => t.component).join(', ')}
           </div>

@@ -42,7 +42,7 @@ class Container extends Component {
           </Layout.Sider>
           <Layout>
             <Layout.Content style={{ padding: '20px 10px 20px 20px' }}>
-              <C />
+              <C locale="Locale" />
               <Switch>
                 {
                   $config.pages.map(({ path, component }) => {

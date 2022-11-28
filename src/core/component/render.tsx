@@ -3,8 +3,6 @@ import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
 import componentCreator from './core'
 import connector from '../connector'
-import { isPropsKeyDuplicate } from './helper'
-import { onError } from '../helper'
 
 const renderComponent: typeof rc = ({
   name,
@@ -36,11 +34,10 @@ const renderComponent: typeof rc = ({
     connector.setRenderRoot(nameWidthSub, root)
   }
 
-  if (isPropsKeyDuplicate(props)) {
-    onError({ type: 'component', name, message: 'props key duplicate with store' })
-  }
+  const { $silent, ...rest } = props || {}
+  const nextProps = { $componentProps: rest, $silent }
 
-  root.render(<C {...props} />)
+  root.render(<C {...nextProps} />)
 
   return () => setTimeout(() => {
     root.unmount()

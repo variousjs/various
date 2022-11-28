@@ -20,7 +20,7 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
   const [name, module = symbolModule] = nameWidthModule.split('.')
 
   class R extends Component<
-    Store & { $silent?: boolean },
+    Store & { $silent?: boolean, $componentProps: any },
     ErrorState & { componentReady: boolean, componentExist?: boolean }
   > {
     state = {
@@ -219,10 +219,9 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
     $t = getI18n(nameWidthModule)
 
     render() {
-      const { $silent, ...propsRest } = this.props
+      const { $silent, $componentProps } = this.props
       const { componentReady, errorMessage, errorType, componentExist } = this.state
       const store: Record<string, any> = {}
-      const componentProps: Record<string, any> = {}
       const ComponentNode = this.ComponentNode as RequiredComponent
 
       storeKeys.forEach((key) => {
@@ -248,15 +247,9 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
           : null
       }
 
-      Object.keys(propsRest).forEach((key) => {
-        if (store[key] !== propsRest[key]) {
-          componentProps[key] = propsRest[key]
-        }
-      })
-
       return (
         <ComponentNode
-          {...componentProps}
+          {...$componentProps}
           $dispatch={this.$dispatch}
           $store={store}
           $postMessage={this.$postMessage}

@@ -10,6 +10,7 @@ describe('config', () => {
 
     cy.get('[data-store="name"]').should('have.text', 'humpback')
     cy.get('[data-env="env"]').should('have.text', 'development')
+    cy.get('[data-config="props"]').should('have.text', 'Locale')
     cy.get('#date-picker input').should('have.value', '二月 15日 2022')
     cy.get('[data-config="pages"]').should('have.text', 'config, dispatch, i18n, message, create, render, helper')
   })
