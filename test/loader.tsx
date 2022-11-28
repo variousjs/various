@@ -5,6 +5,6 @@ import { Store } from './types'
 
 export default function (props: LoaderProps<Store>) {
   return (
-    <Spin className={props.$store.loaderClassName} />
+    <Spin className={props.$store.loader} />
   )
 }
