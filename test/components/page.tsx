@@ -14,7 +14,7 @@ export default class extends Component<ComponentProps & { type: string }> {
             const props = {} as Record<string, any>
 
             if (name === 'create-slient') {
-              props.$slient = true
+              props.$silent = true
             }
             if (name === 'helper-m') {
               props.locale = 'zh'
