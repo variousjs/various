@@ -34,6 +34,13 @@ export default () => {
     return un
   }, [])
 
+  useEffect(() => {
+    const un = onComponentMounted(['no-exist'], () => {
+      window.console.log('never')
+    })
+    return un
+  }, [])
+
   return (
     <Descriptions column={3} size="small" title="M" layout="vertical" bordered>
       <Descriptions.Item label="N">

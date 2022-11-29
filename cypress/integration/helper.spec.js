@@ -29,5 +29,8 @@ describe('helper', () => {
 
     cy.get('[data-m="action-preload"]').click()
     cy.get('[data-m="preloaded"]').should('have.text', 'true')
+
+    cy.visit('/#/')
+    cy.wait(1000)
   })
 })

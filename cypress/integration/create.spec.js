@@ -80,4 +80,12 @@ describe('create component', () => {
     cy.contains('[DEPENDENCIES_LOADING_ERROR]:Script error for "rc-table", needed by: create-h')
       .should('exist')
   })
+
+  it('unmounted', () => {
+    cy.wait(2000)
+    cy.visit('/#/')
+    cy.visit('/#/create')
+    cy.visit('/#/')
+    cy.wait(2000)
+  })
 })

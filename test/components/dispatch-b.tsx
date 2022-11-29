@@ -16,6 +16,14 @@ const B: FC<S & ComponentProps<GlobalStore>> & { getValue: Invoker } = (props) =
     await props.$dispatch('dispatch-a', 'updateValue', 'b')
   }
 
+  const setAN = async () => {
+    try {
+      await props.$dispatch('dispatch-a', 'nonexist')
+    } catch (e) {
+      setDe((e as Error).message)
+    }
+  }
+
   const setGlobal = async () => {
     await props.$dispatch('store', 'setName', 'various')
   }
@@ -38,6 +46,7 @@ const B: FC<S & ComponentProps<GlobalStore>> & { getValue: Invoker } = (props) =
         <Button data-b="action-a" type="primary" size="small" onClick={setA}>A Value</Button>
         <Button data-b="action-nonexist" type="primary" size="small" onClick={setE}>Nonexist</Button>
         <Button data-b="action-store" type="primary" size="small" onClick={setGlobal}>Store</Button>
+        <Button data-b="action-a-nonexist" type="primary" size="small" onClick={setAN}>A Nonexist</Button>
       </Descriptions.Item>
     </Descriptions>
   )

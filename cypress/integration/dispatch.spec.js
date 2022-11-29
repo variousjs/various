@@ -39,6 +39,9 @@ describe('dispatch', () => {
       cy.get('[data-b="action-store"]').click()
       cy.get('[data-a="store-name"]').should('have.text', 'various')
       cy.get('[data-store="name"]').should('have.text', 'various')
+
+      cy.get('[data-b="action-a-nonexist"]').click()
+      cy.get('[data-b="error"]').should('have.text', '`dispatch-a` action `nonexist` is not present')
     })
   })
 })

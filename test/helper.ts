@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { memo } from 'react'
 import { getConfig, createComponent } from '@variousjs/various'
 import { Config } from './types'
@@ -9,9 +10,12 @@ export const getPageComponents = (type: string) => {
   if (!page) {
     return {}
   }
-  return page.components.reduce((prev, current) => {
-    // eslint-disable-next-line no-param-reassign
-    prev[current] = memo(createComponent(current))
+  return page.components.reduce((prev, current, index) => {
+    if (prev[current]) {
+      prev[`${current}${index}`] = memo(createComponent(current))
+    } else {
+      prev[current] = memo(createComponent(current))
+    }
     return prev
   }, {} as Record<string, ReturnType<typeof createComponent>>)
 }
