@@ -17,7 +17,7 @@ export default (config: Config & Entry) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
-    env = 'production',
+    env,
     root,
     components = {},
     store = {},
