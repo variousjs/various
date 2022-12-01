@@ -4,17 +4,17 @@ const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
 const components = {
-  entry: path.resolve(__dirname, '../examples/entry.ts'),
-  default: path.resolve(__dirname, '../examples/default.ts'),
-  'container-error': path.resolve(__dirname, '../examples/container-error.tsx'),
-  'component-error': path.resolve(__dirname, '../examples/component-error.tsx'),
+  entry: path.resolve(__dirname, '../test/entry.ts'),
+  default: path.resolve(__dirname, '../test/default.ts'),
+  'container-error': path.resolve(__dirname, '../test/container-error.tsx'),
+  'component-error': path.resolve(__dirname, '../test/component-error.tsx'),
 }
 
 fs
-  .readdirSync(path.resolve(__dirname, '../examples/components'))
+  .readdirSync(path.resolve(__dirname, '../test/components'))
   .filter((name) => name.includes('.tsx'))
   .forEach((name) => {
-    components[name.split('.tsx')[0]] = path.resolve(__dirname, '../examples/components', name)
+    components[name.split('.tsx')[0]] = path.resolve(__dirname, '../test/components', name)
   })
 
 if (NODE_ENV === 'development') {
@@ -28,7 +28,7 @@ const config = {
   mode: NODE_ENV,
   entry: components,
   output: {
-    path: path.resolve(__dirname, '../demo/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
     libraryTarget: 'amd',

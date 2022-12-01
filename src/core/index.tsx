@@ -1,77 +1,51 @@
-import React, { ComponentType, Component } from 'react'
+import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
-import { Loader, Error, Container } from './built-in'
-import createComponent from './create-component'
-import { MOUNTED_COMPONENTS, ROOT_CONTAINER, MESSAGE_KEY, ERROR_TYPE } from '../config'
-import onError from './error'
-import { Entry, ErrorState, Config, ComponentDispatcher } from '../types'
+import { Container } from './default-component'
+import {
+  MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY,
+} from '../config'
+import connector from './connector'
+import { onError } from './helper'
+import { Entry, ErrorState, Config } from '../types'
 
 export { default as Store } from 'nycticorax'
-export { isComponentLoaded, getMountedComponents, preloadComponents, onComponentMounted } from './component-helper'
+export * from './component'
+export { getConfig, getEnv } from './helper'
 
 export default (config: Config & Entry) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
-    mode,
+    env,
     root,
     components = {},
     store = {},
     actions = {},
-    Loader: LoaderNode = Loader,
-    Error: ErrorNode = Error,
+    Loader: LoaderComponent,
+    Error: ErrorComponent,
     Container: ContainerNode = Container,
     ...rest
   } = config
-  const componentDispatcher: Record<string, ComponentDispatcher> = {}
-  const storeDispatcher = { ...actions }
-  const COMPONENTS: Record<string, ComponentType> = {}
+
+  connector.setStoreActions(actions)
+
+  if (LoaderComponent) {
+    connector.setLoaderComponent(LoaderComponent)
+  }
+  if (ErrorComponent) {
+    connector.setErrorComponent(ErrorComponent)
+  }
+  const ErrorNode = connector.getErrorComponent()
 
   createStore({
     ...store,
-    [MOUNTED_COMPONENTS]: [],
+    [MOUNTED_COMPONENTS_KEY]: [],
+    [ENV_KEY]: env === 'production' || env === 'development' ? env : 'production',
+    [CONFIG_KEY]: rest,
+    [COMPONENT_PATHS_KEY]: components,
     [MESSAGE_KEY]: {},
   })
-
-  const componentCreator = (
-    name: string,
-    onMounted?: () => void,
-  ) => {
-    const C = createComponent({
-      name,
-      storeDispatcher,
-      componentDispatcher,
-      Loader: LoaderNode,
-      Error: ErrorNode,
-      config: { ...rest, components, mode },
-      onMounted,
-    })
-
-    return (props: Record<string, any>) => (<C {...props} />)
-  }
-
-  const $component = (nameWidthSub: string) => {
-    const [name] = nameWidthSub.split('.')
-    if (!components[name]) {
-      const errorMessage = 'component not defined'
-      onError({
-        name: nameWidthSub,
-        message: errorMessage,
-        type: 'NOT_DEFINED',
-        mode,
-      })
-      return () => (
-        <ErrorNode $message={errorMessage} $type={ERROR_TYPE.NOT_DEFINED} />
-      )
-    }
-    if (COMPONENTS[nameWidthSub]) {
-      return COMPONENTS[nameWidthSub]
-    }
-    const component = componentCreator(nameWidthSub)
-    COMPONENTS[nameWidthSub] = component
-    return component
-  }
 
   class R extends Component<{}, ErrorState> {
     state = {
@@ -79,15 +53,13 @@ export default (config: Config & Entry) => {
       errorMessage: '',
     }
 
-    private onError = onError
-
     componentDidCatch(e: Error) {
-      this.onError({
+      onError({
         name: 'container',
         message: e.message,
-        type: 'CONTAINER_ERROR',
-        mode,
+        type: ERROR_TYPE.CONTAINER_ERROR,
       })
+      this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
     }
 
     render() {
@@ -98,18 +70,16 @@ export default (config: Config & Entry) => {
           <ErrorNode
             $type={ERROR_TYPE[errorType]}
             $message={errorMessage}
+            $store={store}
           />
         )
       }
 
       return (
-        <ContainerNode
-          $component={$component}
-          $config={rest}
-        />
+        <ContainerNode />
       )
     }
   }
 
-  createRoot(document.querySelector(root || ROOT_CONTAINER) as Element).render(<R />)
+  createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

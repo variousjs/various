@@ -3,9 +3,15 @@ export const DEFAULT_PACKAGES = {
   'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
 }
 
-export const MOUNTED_COMPONENTS = Symbol('MOUNTED_COMPONENTS')
+export const MOUNTED_COMPONENTS_KEY = Symbol('MOUNTED_COMPONENTS')
 
-export const MESSAGE_KEY = Symbol('MESSAGE_KEY')
+export const MESSAGE_KEY = Symbol('MESSAGE')
+
+export const ENV_KEY = Symbol('ENV')
+
+export const CONFIG_KEY = Symbol('CONFIG')
+
+export const COMPONENT_PATHS_KEY = Symbol('COMPONENT_PATHS')
 
 export enum ERROR_TYPE {
   LOADING_ERROR = 'LOADING_ERROR',
@@ -16,4 +22,4 @@ export enum ERROR_TYPE {
   CONTAINER_ERROR = 'CONTAINER_ERROR',
 }
 
-export const ROOT_CONTAINER = '#root'
+export const ROOT = '#root'

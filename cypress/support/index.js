@@ -6,8 +6,7 @@ beforeEach(() => {
       req.on('response', (res) => {
         res.delay = 2000
       })
-    }
-    if (/.*\/[a-z]\.js/.test(req.url)) {
+    } else if (/.*\/*\.js/.test(req.url)) {
       req.on('response', (res) => {
         res.delay = Math.random() * 500
       })

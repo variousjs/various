@@ -1,18 +1,19 @@
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ContainerProps, ComponentProps, MessageInvoker, Invoker, Ii8n } from '@variousjs/various'
+import { ErrorProps, Actions, ComponentProps, MessageInvoker, Invoker, Ii8n, LoaderProps, ENV } from '@variousjs/various'
 import { Dispatch } from 'nycticorax'
-import { MESSAGE_KEY, MOUNTED_COMPONENTS } from './config'
-
-export { ComponentProps, ContainerProps, ErrorProps, Actions } from '@variousjs/various'
+import { MESSAGE_KEY, COMPONENT_PATHS_KEY, MOUNTED_COMPONENTS_KEY, ENV_KEY, CONFIG_KEY } from './config'
 
 export interface Store {
   [MESSAGE_KEY]: {
     timestamp?: number,
-    type?: string,
-    name?: string,
+    event?: string,
+    component?: string,
     value?: any,
   },
-  [MOUNTED_COMPONENTS]: string[],
+  [MOUNTED_COMPONENTS_KEY]: string[],
+  [ENV_KEY]: ENV,
+  [CONFIG_KEY]: Record<string | symbol, any>,
+  [COMPONENT_PATHS_KEY]: Record<string, string>,
   [key: string | symbol]: any,
 }
 
@@ -23,29 +24,19 @@ export interface Config {
   components: Record<string, string>,
   entry?: string,
   root?: string,
-  mode?: 'development' | 'production',
+  env?: ENV,
+  timeout?: number,
 }
 
-export interface Entry<S = Store, C = {}> {
+export interface Entry<S = {}> {
   store: S,
-  Error: ComponentType<ErrorProps>,
-  Loader: ComponentType,
+  Error: ComponentType<ErrorProps<S>>,
+  Loader: ComponentType<LoaderProps<S>>,
   actions: Actions<S>,
-  Container: ComponentType<ContainerProps<C>>,
+  Container: ComponentType,
 }
 
-export type ComponentDispatcher = Record<string, Invoker>
-
-export interface Creator {
-  name: string,
-  storeDispatcher: Actions<Store>,
-  componentDispatcher: Record<string, ComponentDispatcher>,
-  config: Config,
-  Loader: ComponentType,
-  Error: ComponentType<ErrorProps>,
-  onMounted?: () => void,
-  isRender?: boolean,
-}
+export type ComponentActions = Record<string, Invoker>
 
 export interface RequireError extends Error {
   requireType: string,
@@ -55,7 +46,7 @@ export interface RequireError extends Error {
 
 export type RequiredComponent = ComponentType<ComponentProps>
   & Actions<Store>
-  & ComponentDispatcher
+  & ComponentActions
   & { $onMessage: MessageInvoker, $i18n: Ii8n }
   & { [key: string]: RequiredComponent }
 
@@ -67,8 +58,7 @@ export interface ErrorState {
 export interface ErrorArgs {
   name: string,
   message: string,
-  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
-  mode?: Config['mode'],
+  type: ErrorProps['$type'] | 'dispatch' | 'i18n' | 'component',
 }
 
 export interface Various {

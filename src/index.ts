@@ -6,7 +6,7 @@ const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('index.js', 'core.js')
 
 function loader(config: Config) {
-  const { dependencies, components, entry: entryPath } = config
+  const { dependencies, components, entry: entryPath, timeout } = config
   const paths = {
     ...DEFAULT_PACKAGES,
     ...dependencies,
@@ -21,7 +21,7 @@ function loader(config: Config) {
 
   window.requirejs.config({
     paths,
-    waitSeconds: 20,
+    waitSeconds: timeout || 10,
     onNodeCreated(node) {
       node.setAttribute('crossorigin', 'anonymous')
     },

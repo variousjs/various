@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<script>
+var VARIOUS_CONFIG = {
+  env: 'production',
+  entry: './dist/container-error.js',
+  dependencies: {
+    react: './libs/react.production.min.js',
+    'react-dom': './libs/react-dom.production.min.js',
+  },
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="./libs//require.min.js"></script>
+<script src="./dist/index.js"></script>
+</body>
+</html>
