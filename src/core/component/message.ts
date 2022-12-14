@@ -3,7 +3,7 @@ import { emit, subscribe } from '../store'
 import { MESSAGE_KEY } from '../../config'
 import { Store } from '../../types'
 
-export const getPostMessage = (component: string) => (event: string, value: any) => emit({
+export const getPostMessage = (component: string) => (event: string, value?: any) => emit({
   [MESSAGE_KEY]: {
     timestamp: +new Date(),
     component,

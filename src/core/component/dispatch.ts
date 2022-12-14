@@ -3,7 +3,7 @@ import { dispatch } from '../store'
 import { onError } from '../helper'
 
 export default function (currentComponentName: string) {
-  return function (componentName: string, method: string, value: any) {
+  return function (componentName: string, method: string, value?: any) {
     if (componentName === 'store') {
       const storeActions = connector.getStoreActions()
       const action = storeActions[method]

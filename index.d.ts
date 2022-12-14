@@ -1,9 +1,9 @@
 declare module '@variousjs/various' {
   import { ComponentType } from 'react'
 
-  type $dispatch = (type: string, method: string, value?: any) => Promise<any>
-  type $postMessage = (name: string, value?: any) => void
-  type $t = (key: string, params?: Record<string, string | number>) => string | undefined
+  type $dispatch = (name: string, method: string, value?: any) => Promise<any>
+  type $postMessage = (event: string, value?: any) => void
+  type $t = (key: string, params?: Record<string, string | number>) => string
 
   type CreateComponent = (name: string) => ComponentType<{
     $silent?: boolean,
