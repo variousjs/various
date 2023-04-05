@@ -41,7 +41,7 @@ export default (config: Config & Entry) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS_KEY]: [],
-    [ENV_KEY]: env === 'production' || env === 'development' ? env : 'production',
+    [ENV_KEY]: (env === 'production' || env === 'development') ? env : 'production',
     [CONFIG_KEY]: rest,
     [COMPONENT_PATHS_KEY]: components,
     [MESSAGE_KEY]: {},
