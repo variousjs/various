@@ -20,7 +20,9 @@ declare module '@variousjs/various' {
 
   export type ENV = 'development' | 'production'
 
-  export { default as Store, Dispatch } from 'nycticorax'
+  // Deprecated next major version
+  export { default as Store } from 'nycticorax'
+  export { default as Nycticorax, Dispatch } from 'nycticorax'
 
   export interface ComponentProps<S = {}> {
     $store: Readonly<S>,
@@ -67,4 +69,8 @@ declare module '@variousjs/various' {
   export const createComponent: CreateComponent
   export const getEnv: () => ENV
   export const getConfig: () => Record<string, any>
+
+  export const getStore: () => Record<string, any>
+  export const createDispatch: (name: string) => $dispatch
+  export const createPostMessage: (name: string) => $postMessage
 }

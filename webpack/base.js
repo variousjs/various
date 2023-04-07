@@ -42,6 +42,11 @@ const config = {
       root: 'moment_zhCN',
       amd: 'moment_zhCN',
     },
+
+    helper: {
+      root: 'helper',
+      amd: 'helper',
+    },
   },
   devtool: 'source-map',
   resolve: {

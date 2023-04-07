@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Descriptions } from 'antd'
 import { ComponentProps, Ii8n } from '@variousjs/various'
+import { setEn } from 'helper'
 import { Store } from '../types'
 import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
@@ -15,7 +16,7 @@ export default class C extends Component<ComponentProps<Store>> {
   })
 
   render() {
-    const { $t, $dispatch } = this.props
+    const { $t } = this.props
 
     return (
       <Descriptions column={2} size="small" title="C" layout="vertical" bordered>
@@ -30,7 +31,7 @@ export default class C extends Component<ComponentProps<Store>> {
         </Descriptions.Item>
 
         <Descriptions.Item label="Actions">
-          <Button data-c="action-set" type="primary" size="small" onClick={() => $dispatch('store', 'setLocale', 'en')}>en</Button>
+          <Button data-c="action-set" type="primary" size="small" onClick={setEn}>en</Button>
         </Descriptions.Item>
       </Descriptions>
     )

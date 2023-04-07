@@ -51,3 +51,9 @@ declare module 'table' {
   const A: ComponentType
   export default A
 }
+
+declare module 'helper' {
+  export const getName: () => string
+  export const setEn: () => Promise<void>
+  export const sendAbc: () => void
+}

@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Button, Descriptions } from 'antd'
 import { ComponentProps, Store, MessageInvoker } from '@variousjs/various'
+import { sendAbc } from 'helper'
 
 type S = { component: string, event: string, value: any }
 
@@ -25,6 +26,9 @@ const G: FC<ComponentProps & S> & { $onMessage: MessageInvoker } = (props) => (
     <Descriptions.Item label="Actions">
       <Button data-g="action" type="primary" size="small" onClick={() => props.$postMessage('xyz')}>
         Send
+      </Button>
+      <Button data-g="action-abc" type="primary" size="small" onClick={sendAbc}>
+        SendABC
       </Button>
     </Descriptions.Item>
   </Descriptions>
