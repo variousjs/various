@@ -20,7 +20,7 @@ export default (props: ComponentProps<Store> & { locale: string }) => {
         </Descriptions.Item>
 
         <Descriptions.Item label="Name">
-          <span data-env="env">{getName()}</span>
+          <span data-helper="name">{getName()}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Moment I18n">

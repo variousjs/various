@@ -31,6 +31,10 @@ describe('helper', () => {
     cy.get('[data-m="preloaded"]').should('have.text', 'true')
 
     cy.visit('/#/')
+    cy.wait(500)
+    cy.visit('/#/helper')
+    cy.wait(500)
+    cy.visit('/#/')
     cy.wait(1000)
   })
 })
