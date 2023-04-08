@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Ii8n, MessageInvoker } from '@variousjs/various'
 import { onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
-import { connect, getStore, emit } from '../store'
+import { connect, getStore, emit, getUserStore } from '../store'
 import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, COMPONENT_PATHS_KEY } from '../../config'
 import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
@@ -221,12 +221,8 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
     render() {
       const { $silent, $componentProps } = this.props
       const { componentReady, errorMessage, errorType, componentExist } = this.state
-      const store: Record<string, any> = {}
+      const store = getUserStore()
       const ComponentNode = this.ComponentNode as RequiredComponent
-
-      storeKeys.forEach((key) => {
-        store[key] = this.props[key]
-      })
 
       if (errorType) {
         return !$silent

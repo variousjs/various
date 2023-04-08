@@ -9,7 +9,14 @@ import connector from './connector'
 import { onError } from './helper'
 import { Entry, ErrorState, Config } from '../types'
 
+export { getUserStore as getStore } from './store'
+export { default as createDispatch } from './component/dispatch'
+export { getPostMessage as createPostMessage } from './component/message'
+
+// Deprecated next major version
 export { default as Store } from 'nycticorax'
+export { default as Nycticorax } from 'nycticorax'
+
 export * from './component'
 export { getConfig, getEnv } from './helper'
 
@@ -41,7 +48,7 @@ export default (config: Config & Entry) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS_KEY]: [],
-    [ENV_KEY]: env === 'production' || env === 'development' ? env : 'production',
+    [ENV_KEY]: (env === 'production' || env === 'development') ? env : 'production',
     [CONFIG_KEY]: rest,
     [COMPONENT_PATHS_KEY]: components,
     [MESSAGE_KEY]: {},

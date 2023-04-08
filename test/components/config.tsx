@@ -2,6 +2,7 @@ import React from 'react'
 import { Descriptions, DatePicker } from 'antd'
 import moment from 'moment'
 import { ComponentProps, getEnv, getConfig } from '@variousjs/various'
+import { getName } from 'helper'
 import { Store, Config } from '../types'
 
 export default (props: ComponentProps<Store> & { locale: string }) => {
@@ -18,7 +19,11 @@ export default (props: ComponentProps<Store> & { locale: string }) => {
           <span data-env="env">{getEnv()}</span>
         </Descriptions.Item>
 
-        <Descriptions.Item span={2} label="Moment I18n">
+        <Descriptions.Item label="Name">
+          <span data-helper="name">{getName()}</span>
+        </Descriptions.Item>
+
+        <Descriptions.Item label="Moment I18n">
           <DatePicker
             id="date-picker"
             defaultValue={moment('2022-02-15')}
