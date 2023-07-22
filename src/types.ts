@@ -1,5 +1,5 @@
 import { ComponentType } from 'react'
-import { ErrorProps, Actions, ComponentProps, MessageInvoker, Invoker, Ii8n, LoaderProps, ENV } from '@variousjs/various'
+import { ErrorProps, Actions, ComponentProps, MessageInvoker, Invoker, I18n, LoaderProps, ENV } from '@variousjs/various'
 import { Dispatch } from 'nycticorax'
 import { MESSAGE_KEY, COMPONENT_PATHS_KEY, MOUNTED_COMPONENTS_KEY, ENV_KEY, CONFIG_KEY } from './config'
 
@@ -47,7 +47,7 @@ export interface RequireError extends Error {
 export type RequiredComponent = ComponentType<ComponentProps>
   & Actions<Store>
   & ComponentActions
-  & { $onMessage: MessageInvoker, $i18n: Ii8n }
+  & { $onMessage: MessageInvoker, $i18n: I18n }
   & { [key: string]: RequiredComponent }
 
 export interface ErrorState {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Ii8n, MessageInvoker } from '@variousjs/various'
+import { I18n, MessageInvoker } from '@variousjs/various'
 import { onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
 import { connect, getStore, emit, getUserStore } from '../store'
@@ -158,7 +158,7 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
               return
             }
             if (method === '$i18n') {
-              const i18nConfig = (componentNode[method] as Ii8n)()
+              const i18nConfig = (componentNode[method] as I18n)()
               connector.setI18nConfig(nameWidthModule, i18nConfig)
               return
             }

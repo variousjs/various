@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 import { Root } from 'react-dom/client'
-import { LoaderProps, ErrorProps, Ii8n, Actions } from '@variousjs/various'
+import { LoaderProps, ErrorProps, I18n, Actions } from '@variousjs/various'
 import { Loader, Error } from './default-component'
 import { ComponentActions } from '../types'
 
@@ -17,7 +17,7 @@ class Connector {
 
   private renderRoots: Record<string, Root>
 
-  private i18nConfigs: Record<string, ReturnType<Ii8n>>
+  private i18nConfigs: Record<string, ReturnType<I18n>>
 
   constructor() {
     this.loaderComponent = Loader
@@ -29,7 +29,7 @@ class Connector {
     this.i18nConfigs = {}
   }
 
-  setI18nConfig(name: string, config: ReturnType<Ii8n>) {
+  setI18nConfig(name: string, config: ReturnType<I18n>) {
     this.i18nConfigs[name] = config
   }
 

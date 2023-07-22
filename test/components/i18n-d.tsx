@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, Ii8n } from '@variousjs/various'
+import { ComponentProps, I18n } from '@variousjs/various'
 import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
 
-const F: FC<ComponentProps> & { $i18n: Ii8n } = (props) => {
+const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
   const { $t, $dispatch } = props
   const [lang, setLang] = useState('')
   const getLang = async () => {
@@ -18,7 +18,7 @@ const F: FC<ComponentProps> & { $i18n: Ii8n } = (props) => {
         <span data-d="title">{$t('title', {})}</span>
       </Descriptions.Item>
 
-      <Descriptions.Item label="Ii8n Nonexist">
+      <Descriptions.Item label="I18n Nonexist">
         <span data-d="titl">{$t('titl')}</span>
       </Descriptions.Item>
 

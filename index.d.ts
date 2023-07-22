@@ -56,7 +56,7 @@ declare module '@variousjs/various' {
 
   export type Invoker = (value: any, trigger: string) => any
 
-  export type Ii8n = () => {
+  export type I18n = () => {
     localeKey: string,
     resources: Record<string, Record<string, string>>,
   }
