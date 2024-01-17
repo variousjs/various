@@ -1,12 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2016",
-    "types": [
-      "requirejs",
-    ],
-    "typeRoots": [
-      "./types"
-    ],
     "moduleResolution": "node",
     "jsx": "react",
     "strict": true,
