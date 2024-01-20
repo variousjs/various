@@ -11,7 +11,7 @@ export const isComponentLoaded = (name: string) => {
   return window.requirejs.specified(m) && !!window.requirejs.s.contexts._.defined[m]
 }
 
-export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
+export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
 export const onComponentMounted: typeof OnComponentMounted = (name, callback) => {
   const nextName = typeof name === 'string' ? [name] : name
