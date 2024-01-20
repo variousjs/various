@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, ComponentType } from 'react'
 import { I18n, MessageInvoker } from '@variousjs/various'
 import { onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
@@ -254,6 +254,8 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
       )
     }
   }
+
+  (R as ComponentType<any>).displayName = nameWidthModule
 
   return connect(...storeKeys)(R)
 }

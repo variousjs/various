@@ -14,6 +14,7 @@ export default function (name: string) {
     const nextProps = { $componentProps: rest, $silent }
     return (<C {...nextProps} />)
   }
+  component.displayName = 'various-creator'
   connector.setComponent(name, component)
   return component
 }
