@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from './store'
 import { Container } from './default-component'
@@ -7,20 +7,18 @@ import {
 } from '../config'
 import connector from './connector'
 import { onError } from './helper'
-import { Entry, ErrorState, Config } from '../types'
+import { Entry, ErrorState, Config, Store } from '../types'
 
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
 export { getPostMessage as createPostMessage } from './component/message'
 
-// Deprecated next major version
-export { default as Store } from 'nycticorax'
 export { default as Nycticorax } from 'nycticorax'
 
 export * from './component'
 export { getConfig, getEnv } from './helper'
 
-export default (config: Config & Entry) => {
+export default (config: Config & Entry<Store>) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     dependencies, entry,
@@ -87,6 +85,8 @@ export default (config: Config & Entry) => {
       )
     }
   }
+
+  (R as ComponentType).displayName = 'various-container'
 
   createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

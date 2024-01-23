@@ -1,15 +1,15 @@
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, Store, Invoker } from '@variousjs/various'
-import { Store as GlobalStore } from '../types'
+import { ComponentNode, Nycticorax } from '@variousjs/various'
+import { Store } from '../types'
 
 type S = { value: string }
 
-const { createStore, connect, getStore } = new Store<S>()
+const { createStore, connect, getStore } = new Nycticorax<S>()
 
 createStore({ value: 'b' })
 
-const B: FC<S & ComponentProps<GlobalStore>> & { getValue: Invoker } = (props) => {
+const B = ((props) => {
   const [de, setDe] = useState('')
 
   const setA = async () => {
@@ -50,8 +50,8 @@ const B: FC<S & ComponentProps<GlobalStore>> & { getValue: Invoker } = (props) =
       </Descriptions.Item>
     </Descriptions>
   )
-}
+}) as ComponentNode<Store, S>
 
-B.getValue = () => getStore().value
+B.getValue = () => getStore('value')
 
 export default connect('value')(B)

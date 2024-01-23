@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { ErrorProps } from '@variousjs/various'
+import React from 'react'
+import { ErrorNode } from '@variousjs/various'
 import { Store } from './types'
 
-const errorComponent: FC<ErrorProps<Store>> = (props) => {
+const errorComponent: ErrorNode<Store> = (props) => {
   const { $reload, $type, $message } = props
   return (
     <>

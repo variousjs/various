@@ -1,15 +1,15 @@
 import { ComponentType } from 'react'
 import { Root } from 'react-dom/client'
-import { LoaderProps, ErrorProps, I18n, Actions } from '@variousjs/various'
+import { LoaderNode, ErrorNode, StaticProps, Actions } from '@variousjs/various'
 import { Loader, Error } from './default-component'
-import { ComponentActions } from '../types'
+import { ComponentActions, Store } from '../types'
 
 class Connector {
-  private loaderComponent: ComponentType<LoaderProps>
+  private loaderComponent: LoaderNode<Store>
 
-  private errorComponent: ComponentType<ErrorProps>
+  private errorComponent: ErrorNode<Store>
 
-  private storeActions: Actions
+  private storeActions: Actions<Store>
 
   private componentActions: Record<string, ComponentActions>
 
@@ -17,7 +17,7 @@ class Connector {
 
   private renderRoots: Record<string, Root>
 
-  private i18nConfigs: Record<string, ReturnType<I18n>>
+  private i18nConfigs: Record<string, ReturnType<StaticProps['$i18n']>>
 
   constructor() {
     this.loaderComponent = Loader
@@ -29,7 +29,7 @@ class Connector {
     this.i18nConfigs = {}
   }
 
-  setI18nConfig(name: string, config: ReturnType<I18n>) {
+  setI18nConfig(name: string, config: ReturnType<StaticProps['$i18n']>) {
     this.i18nConfigs[name] = config
   }
 
@@ -69,7 +69,7 @@ class Connector {
     return this.componentActions[name]
   }
 
-  setStoreActions(actions: Actions) {
+  setStoreActions(actions: Actions<Store>) {
     this.storeActions = actions
   }
 
@@ -77,7 +77,7 @@ class Connector {
     return this.storeActions
   }
 
-  setLoaderComponent(loaderComponent: ComponentType<LoaderProps>) {
+  setLoaderComponent(loaderComponent: LoaderNode) {
     this.loaderComponent = loaderComponent
   }
 
@@ -85,7 +85,7 @@ class Connector {
     return this.loaderComponent
   }
 
-  setErrorComponent(errorComponent: ComponentType<ErrorProps>) {
+  setErrorComponent(errorComponent: ErrorNode) {
     this.errorComponent = errorComponent
   }
 

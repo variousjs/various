@@ -1,6 +1,11 @@
 import { DEFAULT_PACKAGES } from './config'
 import { Entry, Various, Config } from './types'
 
+declare global {
+  interface Require { s: any }
+  interface Window { VARIOUS_CONFIG: Config }
+}
+
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('index.js', 'core.js')

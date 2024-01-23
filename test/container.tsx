@@ -4,14 +4,13 @@ import { getConfig, createComponent } from '@variousjs/various'
 import { Layout, Menu, Icon } from 'antd'
 import { Config } from './types'
 
+const C = createComponent('config')
+
 class Container extends Component {
   page = memo(createComponent('page'))
 
-  config = memo(createComponent('config'))
-
   render() {
     const $config = getConfig() as Config
-    const C = this.config
 
     return (
       <HashRouter>

@@ -1,11 +1,11 @@
 import React, { ComponentType } from 'react'
-import { ErrorProps, LoaderProps } from '@variousjs/various'
+import { ErrorNode, LoaderNode } from '@variousjs/various'
 
-export const Loader: ComponentType<LoaderProps> = () => (
+export const Loader: LoaderNode = () => (
   <div>Loading</div>
 )
 
-export const Error: ComponentType<ErrorProps> = ({ $type, $message, $reload }) => (
+export const Error: ErrorNode = ({ $type, $message, $reload }) => (
   <>
     <div>{`[${$type}] ${$message}`}</div>
     {

@@ -1,5 +1,5 @@
 import React, { Component, ComponentType } from 'react'
-import { I18n, MessageInvoker } from '@variousjs/various'
+import { StaticProps } from '@variousjs/various'
 import { onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
 import { connect, getStore, emit, getUserStore } from '../store'
@@ -153,12 +153,12 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
             if (method === '$onMessage') {
               this.unSubscribe = getOnMessage(
                 nameWidthModule,
-                componentNode[method] as MessageInvoker,
+                componentNode[method] as StaticProps['$onMessage'],
               )
               return
             }
             if (method === '$i18n') {
-              const i18nConfig = (componentNode[method] as I18n)()
+              const i18nConfig = (componentNode[method] as StaticProps['$i18n'])()
               connector.setI18nConfig(nameWidthModule, i18nConfig)
               return
             }

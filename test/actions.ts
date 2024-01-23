@@ -11,7 +11,7 @@ const actions: Actions<Store> = {
   },
 
   async getLocale({ getStore }) {
-    return getStore().locale
+    return getStore('locale')
   },
 }
 
