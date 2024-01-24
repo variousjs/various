@@ -9,28 +9,24 @@ import {
   I18n,
   ErrorProps,
   Entry,
+  Message,
 } from '@variousjs/various'
 import { Dispatch as DispatchType } from 'nycticorax'
 import {
   MESSAGE_KEY,
-  COMPONENT_PATHS_KEY,
+  DEPENDENCIES_KEY,
   MOUNTED_COMPONENTS_KEY,
   ENV_KEY,
   CONFIG_KEY,
 } from './config'
 
 export interface Store {
-  [MESSAGE_KEY]: {
-    timestamp?: number,
-    event?: string,
-    component?: string,
-    value?: any,
-  },
+  [MESSAGE_KEY]: null | (Message & { timestamp: number }),
   [MOUNTED_COMPONENTS_KEY]: string[],
   [ENV_KEY]: ENV,
   [CONFIG_KEY]: Record<string | symbol, any>,
-  [COMPONENT_PATHS_KEY]: Record<string, string>,
-  [key: string | symbol]: any,
+  [DEPENDENCIES_KEY]: Record<string, string>,
+  [key: string]: any,
 }
 
 export type Dispatch = DispatchType<Store>

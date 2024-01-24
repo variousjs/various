@@ -1,6 +1,11 @@
 import { ComponentType } from 'react'
 import { Root } from 'react-dom/client'
-import { LoaderNode, ErrorNode, StaticProps, Actions } from '@variousjs/various'
+import {
+  LoaderNode,
+  ErrorNode,
+  I18n,
+  Actions,
+} from '@variousjs/various'
 import { Loader, Error } from './default-component'
 import { ComponentActions, Store } from '../types'
 
@@ -17,7 +22,7 @@ class Connector {
 
   private renderRoots: Record<string, Root>
 
-  private i18nConfigs: Record<string, ReturnType<StaticProps['$i18n']>>
+  private i18nConfigs: Record<string, ReturnType<I18n>>
 
   constructor() {
     this.loaderComponent = Loader
@@ -29,7 +34,7 @@ class Connector {
     this.i18nConfigs = {}
   }
 
-  setI18nConfig(name: string, config: ReturnType<StaticProps['$i18n']>) {
+  setI18nConfig(name: string, config: ReturnType<I18n>) {
     this.i18nConfigs[name] = config
   }
 
@@ -77,7 +82,7 @@ class Connector {
     return this.storeActions
   }
 
-  setLoaderComponent(loaderComponent: LoaderNode) {
+  setLoaderComponent(loaderComponent: LoaderNode<Store>) {
     this.loaderComponent = loaderComponent
   }
 
@@ -85,7 +90,7 @@ class Connector {
     return this.loaderComponent
   }
 
-  setErrorComponent(errorComponent: ErrorNode) {
+  setErrorComponent(errorComponent: ErrorNode<Store>) {
     this.errorComponent = errorComponent
   }
 

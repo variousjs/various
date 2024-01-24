@@ -16,7 +16,7 @@ export default function (componentName: string) {
     }
 
     const { localeKey, resources } = i18nConfig
-    const locale = getStore()[localeKey] as string
+    const locale = getStore(localeKey) as string
     const resource = resources[locale]
 
     if (!resource) {

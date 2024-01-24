@@ -1,11 +1,12 @@
-import React, { ComponentType } from 'react'
+import React from 'react'
 import { ErrorNode, LoaderNode } from '@variousjs/various'
+import { Store } from '../types'
 
-export const Loader: LoaderNode = () => (
+export const Loader: LoaderNode<Store> = () => (
   <div>Loading</div>
 )
 
-export const Error: ErrorNode = ({ $type, $message, $reload }) => (
+export const Error: ErrorNode<Store> = ({ $type, $message, $reload }) => (
   <>
     <div>{`[${$type}] ${$message}`}</div>
     {
@@ -21,8 +22,4 @@ export const Error: ErrorNode = ({ $type, $message, $reload }) => (
         : null
     }
   </>
-)
-
-export const Container: ComponentType = () => (
-  <div>Container not defined</div>
 )

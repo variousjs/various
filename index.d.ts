@@ -87,7 +87,7 @@ declare module '@variousjs/various' {
 
   export interface Config {
     dependencies: Record<string, string>,
-    entry?: string,
+    entry: string,
     root?: string,
     env?: ENV,
     timeout?: number,

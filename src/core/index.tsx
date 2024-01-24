@@ -1,13 +1,19 @@
 import React, { Component, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Entry, Config } from '@variousjs/various'
 import { createStore } from './store'
-import { Container } from './default-component'
 import {
-  MOUNTED_COMPONENTS_KEY, COMPONENT_PATHS_KEY, ROOT, MESSAGE_KEY, ERROR_TYPE, ENV_KEY, CONFIG_KEY,
+  MOUNTED_COMPONENTS_KEY,
+  DEPENDENCIES_KEY,
+  ROOT,
+  MESSAGE_KEY,
+  ERROR_TYPE,
+  ENV_KEY,
+  CONFIG_KEY,
 } from '../config'
 import connector from './connector'
 import { onError } from './helper'
-import { Entry, ErrorState, Config, Store } from '../types'
+import { ErrorState, Store } from '../types'
 
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
@@ -21,15 +27,15 @@ export { getConfig, getEnv } from './helper'
 export default (config: Config & Entry<Store>) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    dependencies, entry,
+    entry,
+    dependencies,
     env,
     root,
-    components = {},
     store = {},
     actions = {},
     Loader: LoaderComponent,
     Error: ErrorComponent,
-    Container: ContainerNode = Container,
+    Container: ContainerComponent,
     ...rest
   } = config
 
@@ -48,8 +54,8 @@ export default (config: Config & Entry<Store>) => {
     [MOUNTED_COMPONENTS_KEY]: [],
     [ENV_KEY]: (env === 'production' || env === 'development') ? env : 'production',
     [CONFIG_KEY]: rest,
-    [COMPONENT_PATHS_KEY]: components,
-    [MESSAGE_KEY]: {},
+    [DEPENDENCIES_KEY]: dependencies,
+    [MESSAGE_KEY]: null,
   })
 
   class R extends Component<{}, ErrorState> {
@@ -75,13 +81,13 @@ export default (config: Config & Entry<Store>) => {
           <ErrorNode
             $type={ERROR_TYPE[errorType]}
             $message={errorMessage}
-            $store={store}
+            $store={store as Store}
           />
         )
       }
 
       return (
-        <ContainerNode />
+        <ContainerComponent />
       )
     }
   }
