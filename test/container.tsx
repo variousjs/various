@@ -1,5 +1,10 @@
 import React, { Component, memo } from 'react'
-import { HashRouter, Switch, Route, Link } from 'react-router-dom'
+import {
+  HashRouter,
+  Switch,
+  Route,
+  Link,
+} from 'react-router-dom'
 import { getConfig, createComponent } from '@variousjs/various'
 import { Layout, Menu, Icon } from 'antd'
 import { Config } from './types'

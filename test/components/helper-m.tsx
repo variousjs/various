@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Descriptions, Button } from 'antd'
-import { onComponentMounted, renderComponent, preloadComponents, isComponentLoaded } from '@variousjs/various'
+import {
+  onComponentMounted,
+  renderComponent,
+  preloadComponents,
+  isComponentLoaded,
+} from '@variousjs/various'
 
 export default () => {
   const [showRender, setShowRender] = useState(false)

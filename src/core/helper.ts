@@ -12,7 +12,9 @@ function consoleError(name: string, text: string) {
   window.console.error(...getConsolePrefix(name), text)
 }
 
-export const getConfig = () => getStore(CONFIG_KEY)
+export function getConfig<C extends object = {}>() {
+  return getStore(CONFIG_KEY) as C
+}
 
 export const getEnv = () => getStore(ENV_KEY)
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, StaticProps } from '@variousjs/various'
+import { ComponentProps, I18n } from '@variousjs/various'
 import { setEn } from 'helper'
 import { Store } from '../types'
 import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
 
 export default class C extends Component<ComponentProps<Store>> {
-  static $i18n: StaticProps['$i18n'] = () => ({
+  static $i18n: I18n = () => ({
     localeKey: 'locale',
     resources: {
       zh: Zh,

@@ -100,9 +100,9 @@ declare module '@variousjs/various' {
   export const renderComponent: RenderComponent
   export const createComponent: CreateComponent
   export const getEnv: () => ENV
-  export const getConfig: () => Record<string, any>
+  export function getConfig<C extends object = {}>(): C
 
-  export const getStore: () => Record<string, any>
+  export function getStore<S extends object = {}>(): S
   export const createDispatch: (name: string) => $dispatch
   export const createPostMessage: (name: string) => $postMessage
 }

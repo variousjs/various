@@ -6,7 +6,7 @@ import { getName } from 'helper'
 import { Store, Config } from '../types'
 
 export default (props: ComponentProps<Store> & { locale: string }) => {
-  const config = getConfig() as Config
+  const config = getConfig<Config>()
 
   return (
     <div style={{ width: 610 }} className="component">

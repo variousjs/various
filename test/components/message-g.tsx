@@ -1,15 +1,15 @@
 import React, { FC } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, Store, MessageInvoker } from '@variousjs/various'
+import { ComponentProps, Nycticorax, OnMessage } from '@variousjs/various'
 import { sendAbc } from 'helper'
 
 type S = { component: string, event: string, value: any }
 
-const { createStore, connect, emit } = new Store<S>()
+const { createStore, connect, emit } = new Nycticorax<S>()
 
 createStore({ component: '', event: '', value: undefined })
 
-const G: FC<ComponentProps & S> & { $onMessage: MessageInvoker } = (props) => (
+const G: FC<ComponentProps & S> & { $onMessage: OnMessage } = (props) => (
   <Descriptions column={2} size="small" title="G" layout="vertical" bordered>
     <Descriptions.Item label="Component">
       <span data-g="component">{props.component || '-'}</span>
