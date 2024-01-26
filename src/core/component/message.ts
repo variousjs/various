@@ -1,8 +1,8 @@
-import { OnMessage, Message } from '@variousjs/various'
+import { OnMessage, Message, createPostMessage as cpm } from '@variousjs/various'
 import { emit, subscribe } from '../store'
 import { MESSAGE_KEY } from '../../config'
 
-export const getPostMessage = (component: string) => (event: string, value?: any) => emit({
+export const getPostMessage: typeof cpm = (component) => (event, value) => emit({
   [MESSAGE_KEY]: {
     timestamp: +new Date(),
     component,

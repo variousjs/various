@@ -5,7 +5,7 @@ declare module '@variousjs/various' {
 
   type $dispatch = (name: string, method: string, value?: any) => Promise<any>
   type $postMessage = (event: string, value?: any) => void
-  type $t = (key: string, params?: Record<string, string | number>) => string
+  export type Intl = (key: string, params?: Record<string, string | number>) => string
 
   type RenderComponent = (params: {
     name: string,
@@ -42,7 +42,7 @@ declare module '@variousjs/various' {
     $store: Readonly<S>,
     $dispatch: $dispatch,
     $postMessage: $postMessage,
-    $t: $t,
+    $t: Intl,
   } & P
 
   export type ComponentNode<

@@ -1,9 +1,10 @@
+import { Intl } from '@variousjs/various'
 import connector from '../connector'
 import { onError } from '../helper'
 import { getStore } from '../store'
 
 export default function (componentName: string) {
-  return function (key: string, params?: Record<string, string | number>) {
+  return function (key, params) {
     const i18nConfig = connector.getI18nConfig(componentName)
 
     if (!i18nConfig) {
@@ -53,5 +54,5 @@ export default function (componentName: string) {
       const regex = new RegExp(`{\\s*${arg}\\s*}`, 'g')
       return next.replace(regex, params[arg].toString())
     }, text)
-  }
+  } as Intl
 }

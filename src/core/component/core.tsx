@@ -27,7 +27,6 @@ export default function (
   onMounted?: () => void,
 ) {
   const storeKeys = (watchKeys || Object.keys(getStore()))
-  const dependencies = getStore(DEPENDENCIES_KEY) || window.VARIOUS_CONFIG.dependencies
   const LoaderNode = connector.getLoaderComponent()
   const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')
@@ -50,6 +49,8 @@ export default function (
 
     private unSubscribe = () => null as unknown
 
+    private getDependencies = () => getStore(DEPENDENCIES_KEY)
+
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
       this.mountComponent()
@@ -63,6 +64,7 @@ export default function (
       })
       this.setState({ errorMessage: e.message, errorType: ERROR_TYPE.SCRIPT_ERROR })
 
+      const dependencies = this.getDependencies()
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
@@ -191,6 +193,7 @@ export default function (
 
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       }, (e: RequireError) => {
+        const dependencies = this.getDependencies()
         window.requirejs.undef(name)
         window.requirejs.config({
           paths: {

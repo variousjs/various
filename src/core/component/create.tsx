@@ -1,8 +1,9 @@
 import React from 'react'
+import { createComponent as cc } from '@variousjs/various'
 import componentCreator from './core'
 import connector from '../connector'
 
-export default function<T extends object = {}> (name: string, storeKeys?: (keyof T)[]) {
+const createComponent: typeof cc = (name, storeKeys) => {
   const existComponent = connector.getComponent(name)
   if (existComponent) {
     return existComponent
@@ -18,3 +19,5 @@ export default function<T extends object = {}> (name: string, storeKeys?: (keyof
   connector.setComponent(name, component)
   return component
 }
+
+export default createComponent
