@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom'
 import { getConfig, createComponent } from '@variousjs/various'
 import { Layout, Menu, Icon } from 'antd'
-import { Config } from './types'
+import { Config, Store } from './types'
 
-const C = createComponent('config')
+const C = createComponent<Store>('config', ['name'])
 
 class Container extends Component {
   page = memo(createComponent('page'))

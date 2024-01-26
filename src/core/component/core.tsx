@@ -21,9 +21,13 @@ import {
   Store,
 } from '../../types'
 
-export default function (nameWidthModule: string, onMounted?: () => void) {
-  const storeKeys = Object.keys(getStore())
-  const dependencies = getStore(DEPENDENCIES_KEY)
+export default function (
+  nameWidthModule: string,
+  watchKeys?: string[],
+  onMounted?: () => void,
+) {
+  const storeKeys = (watchKeys || Object.keys(getStore()))
+  const dependencies = getStore(DEPENDENCIES_KEY) || window.VARIOUS_CONFIG.dependencies
   const LoaderNode = connector.getLoaderComponent()
   const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')

@@ -24,7 +24,7 @@ const renderComponent: typeof rc = ({
     })
   }
 
-  const C = componentCreator(nameWidthSub, onMounted)
+  const C = componentCreator(nameWidthSub, undefined, onMounted)
 
   let root: Root
   if (connector.getRenderRoot(nameWidthSub)) {

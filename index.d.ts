@@ -7,10 +7,6 @@ declare module '@variousjs/various' {
   type $postMessage = (event: string, value?: any) => void
   type $t = (key: string, params?: Record<string, string | number>) => string
 
-  type CreateComponent = (name: string) => ComponentType<{
-    $silent?: boolean,
-    [key: string]: any,
-  }>
   type RenderComponent = (params: {
     name: string,
     url?: string,
@@ -93,16 +89,23 @@ declare module '@variousjs/various' {
     timeout?: number,
   }
 
+  export function createComponent<S extends object = {}> (
+    name: string, storeKeys?: (keyof S)[]
+  ): ComponentType<{
+    $silent?: boolean,
+    [key: string]: any,
+  }>
+  export const renderComponent: RenderComponent
+
   export const isComponentLoaded: (name: string) => boolean
   export const getMountedComponents: () => string[]
   export const preloadComponents: (names: string[]) => Promise<void>
   export const onComponentMounted: (name: string | string[], callback: () => void) => () => void
-  export const renderComponent: RenderComponent
-  export const createComponent: CreateComponent
+
   export const getEnv: () => ENV
   export function getConfig<C extends object = {}>(): C
-
   export function getStore<S extends object = {}>(): S
+
   export const createDispatch: (name: string) => $dispatch
   export const createPostMessage: (name: string) => $postMessage
 }
