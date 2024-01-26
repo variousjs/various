@@ -11,7 +11,6 @@ import {
   Entry,
   Message,
 } from '@variousjs/various'
-import { Dispatch as DispatchType } from 'nycticorax'
 import {
   MESSAGE_KEY,
   DEPENDENCIES_KEY,
@@ -28,8 +27,6 @@ export interface Store {
   [DEPENDENCIES_KEY]: Record<string, string>,
   [key: string]: any,
 }
-
-export type Dispatch = DispatchType<Store>
 
 export type ComponentActions = Record<string, Invoker>
 
