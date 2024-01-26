@@ -13,6 +13,7 @@ import {
 } from '../config'
 import connector from './connector'
 import { onError } from './helper'
+import { Container as ContainerNode } from './default-component'
 import { ErrorState, Store } from '../types'
 
 export { getUserStore as getStore } from './store'
@@ -35,7 +36,7 @@ export default (config: Config & Entry<Store>) => {
     actions = {},
     Loader: LoaderComponent,
     Error: ErrorComponent,
-    Container: ContainerComponent,
+    Container: ContainerComponent = ContainerNode,
     ...rest
   } = config
 

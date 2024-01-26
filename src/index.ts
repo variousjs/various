@@ -1,6 +1,6 @@
 import { Entry, Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
-import { Various } from './types'
+import { Various, EntryWithDefault } from './types'
 
 declare global {
   interface Require { s: any }
@@ -32,9 +32,13 @@ function loader(config: Config) {
     },
   })
 
-  window.requirejs(['@variousjs/various', 'VARIOUS_ENTRY'], (various: Various, entry: Entry) => {
-    various.default({ ...config, ...entry })
-  })
+  window.requirejs(
+    ['@variousjs/various', 'VARIOUS_ENTRY'],
+    (various: Various, entry: { default: Entry | EntryWithDefault }) => {
+      const entryCtx = (entry.default || entry) as Entry
+      various.default({ ...config, ...entryCtx })
+    },
+  )
 }
 
 loader(window.VARIOUS_CONFIG)

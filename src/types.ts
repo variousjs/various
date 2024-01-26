@@ -56,3 +56,5 @@ export interface ErrorType {
 export interface Various {
   default: (config: Config & Entry) => void,
 }
+
+export type EntryWithDefault = { default: Entry }
