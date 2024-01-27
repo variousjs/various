@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, Store, Invoker } from '@variousjs/various'
-import { Store as GlobalStore } from '../types'
+import { ComponentProps, Nycticorax, Invoker } from '@variousjs/various'
+import { Store } from '../types'
 
 type S = { value: string, trigger: string }
 
-const { createStore, connect, emit } = new Store<S>()
+const { createStore, connect, emit } = new Nycticorax<S>()
 
 createStore({ value: '', trigger: '' })
 
-class A extends Component<S & ComponentProps<GlobalStore>> {
+class A extends Component<ComponentProps<Store, S>> {
   static updateValue: Invoker = async (value, trigger) => {
     await new Promise((r) => setTimeout(r, 100))
     emit({ value, trigger }, true)

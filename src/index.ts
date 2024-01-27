@@ -1,19 +1,24 @@
+import { Entry, Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
-import { Entry, Various, Config } from './types'
+import { Various, EntryWithDefault } from './types'
+
+declare global {
+  interface Require { s: any }
+  interface Window { VARIOUS_CONFIG: Config }
+}
 
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('index.js', 'core.js')
 
 function loader(config: Config) {
-  const { dependencies, components, entry: entryPath, timeout } = config
-  const paths = {
+  const { dependencies, entry: entryPath, timeout } = config
+  const paths: Config['dependencies'] = {
     ...DEFAULT_PACKAGES,
     ...dependencies,
-    ...components,
-    'various-entry': entryPath,
+    VARIOUS_ENTRY: entryPath,
     '@variousjs/various': corePath,
-  } as Record<string, string>
+  }
 
   Object.keys(paths).forEach((name, i) => {
     paths[name] = `${paths[name]}#${i}`
@@ -27,9 +32,13 @@ function loader(config: Config) {
     },
   })
 
-  window.requirejs(['@variousjs/various', 'various-entry'], (various: Various, entry: Entry) => {
-    various.default({ ...config, ...entry })
-  })
+  window.requirejs(
+    ['@variousjs/various', 'VARIOUS_ENTRY'],
+    (various: Various, entry: { default: Entry | EntryWithDefault }) => {
+      const entryCtx = (entry.default || entry) as Entry
+      various.default({ ...config, ...entryCtx })
+    },
+  )
 }
 
 loader(window.VARIOUS_CONFIG)

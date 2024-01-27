@@ -1,19 +1,32 @@
-import React, { Component } from 'react'
-import { I18n, MessageInvoker } from '@variousjs/various'
+import React, { Component, ComponentType } from 'react'
+import { I18n, OnMessage } from '@variousjs/various'
 import { onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
-import { connect, getStore, emit, getUserStore } from '../store'
-import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, COMPONENT_PATHS_KEY } from '../../config'
+import {
+  connect,
+  getStore,
+  emit,
+  getUserStore,
+} from '../store'
+import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, DEPENDENCIES_KEY } from '../../config'
 import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
 import getDispatch from './dispatch'
 import getI18n from './i18n'
-import { RequireError, ErrorState, RequiredComponent, ComponentActions, Store } from '../../types'
+import {
+  RequireError,
+  ErrorState,
+  RequiredComponent,
+  ComponentActions,
+  Store,
+} from '../../types'
 
-export default function (nameWidthModule: string, onMounted?: () => void) {
-  const globalStore = getStore()
-  const storeKeys = Object.keys(globalStore)
-  const components = globalStore[COMPONENT_PATHS_KEY]
+export default function (
+  nameWidthModule: string,
+  watchKeys?: string[],
+  onMounted?: () => void,
+) {
+  const storeKeys = (watchKeys || Object.keys(getStore()))
   const LoaderNode = connector.getLoaderComponent()
   const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')
@@ -36,6 +49,8 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
 
     private unSubscribe = () => null as unknown
 
+    private getDependencies = () => getStore(DEPENDENCIES_KEY)
+
     componentDidMount() {
       this.setState({ componentExist: isComponentLoaded(name) })
       this.mountComponent()
@@ -49,10 +64,11 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
       })
       this.setState({ errorMessage: e.message, errorType: ERROR_TYPE.SCRIPT_ERROR })
 
+      const dependencies = this.getDependencies()
       window.requirejs.undef(name)
       window.requirejs.config({
         paths: {
-          [name]: `${components[name]}#`,
+          [name]: `${dependencies[name]}#`,
         },
       })
       this.unMountComponent()
@@ -153,7 +169,7 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
             if (method === '$onMessage') {
               this.unSubscribe = getOnMessage(
                 nameWidthModule,
-                componentNode[method] as MessageInvoker,
+                componentNode[method] as OnMessage,
               )
               return
             }
@@ -177,10 +193,11 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
 
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       }, (e: RequireError) => {
+        const dependencies = this.getDependencies()
         window.requirejs.undef(name)
         window.requirejs.config({
           paths: {
-            [name]: `${components[name]}#`,
+            [name]: `${dependencies[name]}#`,
           },
         })
 
@@ -193,12 +210,14 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
         const errorType = requireModule === name
           ? ERROR_TYPE.LOADING_ERROR
           : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
+        const message = `load \`${requireModule}\` error${errorType === ERROR_TYPE.LOADING_ERROR ? '' : `, needed by \`${nameWidthModule}\``}`
+
         onError({
           name: nameWidthModule,
           type: errorType,
-          message: e.message,
+          message,
         })
-        this.setState({ errorMessage: e.message, errorType })
+        this.setState({ errorMessage: message, errorType })
       })
     }
 
@@ -220,7 +239,9 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
 
     render() {
       const { $silent, $componentProps } = this.props
-      const { componentReady, errorMessage, errorType, componentExist } = this.state
+      const {
+        componentReady, errorMessage, errorType, componentExist,
+      } = this.state
       const store = getUserStore()
       const ComponentNode = this.ComponentNode as RequiredComponent
 
@@ -231,7 +252,7 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
               $type={ERROR_TYPE[errorType]}
               $message={errorMessage}
               $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
-              $store={store}
+              $store={store as Store}
             />
           )
           : null
@@ -239,7 +260,7 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
 
       if (!componentReady) {
         return !$silent && componentExist === false
-          ? (<LoaderNode $store={store} />)
+          ? (<LoaderNode $store={store as Store} />)
           : null
       }
 
@@ -254,6 +275,8 @@ export default function (nameWidthModule: string, onMounted?: () => void) {
       )
     }
   }
+
+  (R as ComponentType<any>).displayName = nameWidthModule
 
   return connect(...storeKeys)(R)
 }

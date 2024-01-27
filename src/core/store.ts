@@ -10,7 +10,7 @@ export const {
   dispatch,
 } = new Nycticorax<Store>()
 
-export const getUserStore = () => {
+export function getUserStore<S extends object = {}>() {
   const globalStore = getStore()
   const keys = Object.keys(globalStore)
   const store: Record<string, any> = {}
@@ -19,5 +19,5 @@ export const getUserStore = () => {
     store[key] = globalStore[key]
   })
 
-  return store
+  return store as S
 }

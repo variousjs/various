@@ -11,7 +11,7 @@ export const ENV_KEY = Symbol('ENV')
 
 export const CONFIG_KEY = Symbol('CONFIG')
 
-export const COMPONENT_PATHS_KEY = Symbol('COMPONENT_PATHS')
+export const DEPENDENCIES_KEY = Symbol('DEPENDENCIES')
 
 export enum ERROR_TYPE {
   LOADING_ERROR = 'LOADING_ERROR',

@@ -13,7 +13,7 @@ describe('create component', () => {
   })
 
   it('error', () => {
-    cy.contains('[DEPENDENCIES_LOADING_ERROR]:Script error for "rc-table", needed by: create-h')
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
       .should('exist')
       .next()
       .should('have.text', '刷新')
@@ -28,12 +28,12 @@ describe('create component', () => {
       .next()
       .should('not.exist')
 
-    cy.contains('[LOADING_ERROR]:Script error for "no-defined')
+    cy.contains('[LOADING_ERROR]:load `no-defined` error')
       .should('exist')
       .next()
       .should('have.text', '刷新')
 
-    cy.contains('[LOADING_ERROR]:Script error for "create-path-error"')
+    cy.contains('[LOADING_ERROR]:load `create-path-error` error')
       .should('exist')
       .next()
       .should('have.text', '刷新')
@@ -61,7 +61,7 @@ describe('create component', () => {
     cy.contains('create-timeout')
       .should('exist')
       .next()
-      .should('contain.text', '[LOADING_ERROR]:Load timeout for modules: create-timeout')
+      .should('contain.text', '[LOADING_ERROR]:load `create-timeout` error')
   })
 
   it('reload', () => {
@@ -73,11 +73,11 @@ describe('create component', () => {
       cy.contains('create-i').next().should('have.text', 'G')
     })
 
-    cy.contains('[DEPENDENCIES_LOADING_ERROR]:Script error for "rc-table", needed by: create-h')
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
       .next()
       .click()
     cy.wait(1000)
-    cy.contains('[DEPENDENCIES_LOADING_ERROR]:Script error for "rc-table", needed by: create-h')
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
       .should('exist')
   })
 })

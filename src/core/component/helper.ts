@@ -1,19 +1,23 @@
-import { onComponentMounted as OnComponentMounted } from '@variousjs/various'
+import {
+  onComponentMounted as ocm,
+  isComponentLoaded as ic,
+  preloadComponents as pc,
+} from '@variousjs/various'
 import { getStore, subscribe } from '../store'
 import { MOUNTED_COMPONENTS_KEY } from '../../config'
 
-export const preloadComponents = (names: string[]) => new Promise<void>((resolve, reject) => {
+export const preloadComponents: typeof pc = (names) => new Promise<void>((resolve, reject) => {
   window.requirejs(names, resolve, reject)
 })
 
-export const isComponentLoaded = (name: string) => {
+export const isComponentLoaded: typeof ic = (name) => {
   const [m] = name.split('.')
   return window.requirejs.specified(m) && !!window.requirejs.s.contexts._.defined[m]
 }
 
-export const getMountedComponents = () => getStore()[MOUNTED_COMPONENTS_KEY]
+export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
-export const onComponentMounted: typeof OnComponentMounted = (name, callback) => {
+export const onComponentMounted: typeof ocm = (name, callback) => {
   const nextName = typeof name === 'string' ? [name] : name
 
   if (nextName.every((n) => getMountedComponents().includes(n))) {

@@ -1,9 +1,8 @@
-import { MessageInvoker } from '@variousjs/various'
+import { OnMessage, Message, createPostMessage as cpm } from '@variousjs/various'
 import { emit, subscribe } from '../store'
 import { MESSAGE_KEY } from '../../config'
-import { Store } from '../../types'
 
-export const getPostMessage = (component: string) => (event: string, value?: any) => emit({
+export const getPostMessage: typeof cpm = (component) => (event, value) => emit({
   [MESSAGE_KEY]: {
     timestamp: +new Date(),
     component,
@@ -12,9 +11,9 @@ export const getPostMessage = (component: string) => (event: string, value?: any
   },
 })
 
-export const getOnMessage = (componentName: string, onMessage: MessageInvoker) => subscribe({
+export const getOnMessage = (componentName: string, onMessage: OnMessage) => subscribe({
   [MESSAGE_KEY](v) {
-    const { component, value, event } = v as Store[typeof MESSAGE_KEY]
+    const { component, value, event } = v as Message
     if (component !== componentName) {
       onMessage({ event, value, component })
     }

@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, Store, MessageInvoker } from '@variousjs/various'
+import { ComponentProps, Nycticorax, OnMessage } from '@variousjs/various'
 
 type S = { component: string, event: string, value: any }
 
-const { createStore, connect, emit } = new Store<S>()
+const { createStore, connect, emit } = new Nycticorax<S>()
 
 createStore({ component: '', event: '', value: undefined })
 
 class F extends Component<ComponentProps & S> {
-  static $onMessage: MessageInvoker = (message) => {
+  static $onMessage: OnMessage = (message) => {
     emit(message)
   }
 

@@ -4,7 +4,7 @@ import { getConfig, createComponent } from '@variousjs/various'
 import { Config } from './types'
 
 export const getPageComponents = (type: string) => {
-  const config = getConfig() as Config
+  const config = getConfig<Config>()
   const page = config.pages.find((p) => p.component === type)
 
   if (!page) {

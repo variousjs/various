@@ -1,14 +1,14 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Descriptions } from 'antd'
-import { ComponentProps, Store, MessageInvoker } from '@variousjs/various'
+import { ComponentNode, Nycticorax } from '@variousjs/various'
 
 type S = { component: string, event: string, value: any }
 
-const { createStore, connect, emit } = new Store<S>()
+const { createStore, connect, emit } = new Nycticorax<S>()
 
 createStore({ component: '', event: '', value: undefined })
 
-const G: FC<ComponentProps & S> & { $onMessage: MessageInvoker } = (props) => (
+const G = ((props) => (
   <Descriptions column={2} size="small" title="GG" layout="vertical" bordered>
     <Descriptions.Item label="Component">
       <span data-gg="component">{props.component || '-'}</span>
@@ -22,7 +22,7 @@ const G: FC<ComponentProps & S> & { $onMessage: MessageInvoker } = (props) => (
       <span data-gg="value">{props.value?.to || '-'}</span>
     </Descriptions.Item>
   </Descriptions>
-)
+)) as ComponentNode<{}, S>
 
 G.$onMessage = (message) => {
   emit(message)
