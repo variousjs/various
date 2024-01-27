@@ -20,7 +20,7 @@
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "prestart": "mkdir -p public/dist && cp public/empty.js public/dist/empty.js",
-    "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress",
+    "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress --no-client-overlay",
     "prebuild": "npm run lint",
     "build": "NODE_ENV=production webpack --config webpack/index.js --progress",
     "cy:run": "rm -rf .nyc_output && cypress run",
