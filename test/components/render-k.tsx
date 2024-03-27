@@ -9,7 +9,7 @@ export default class extends Component {
     ready: false,
   }
 
-  omponentWillUnmount() {
+  componentWillUnmount() {
     if (this.unMount) {
       this.unMount()
     }

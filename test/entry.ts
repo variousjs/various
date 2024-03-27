@@ -19,6 +19,14 @@ const entry: Entry<typeof store> = {
   Loader,
   Error,
   actions,
+  middlewares: {
+    performance(e) {
+      console.log(e)
+    },
+    error(e) {
+      console.log(e)
+    },
+  },
 }
 
 export default entry

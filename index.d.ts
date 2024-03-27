@@ -50,9 +50,10 @@ declare module '@variousjs/various' {
     P extends object = {}
   > = FC<ComponentProps<S, P>> & StaticProps
 
+  export type ErrorType = 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR'
   export interface ErrorProps<S extends object = {}> {
     $reload?: () => void,
-    $type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
+    $type: ErrorType,
     $message?: string,
     $store: Readonly<S>,
   }
@@ -73,12 +74,30 @@ declare module '@variousjs/various' {
 
   export type Actions<S extends object = {}> = Record<string, Dispatch<S>>
 
+  interface PerformanceArgs {
+    component: string,
+    loadStart: number,
+    loadEnd: number,
+    duration: number,
+  }
+  interface ErrorArgs {
+    component: string,
+    errorType: ErrorType | 'dispatch' | 'i18n',
+    errorMessage: string,
+  }
+  export type PerformanceEvent = (e: PerformanceArgs) => void
+  export type ErrorEvent = (e: ErrorArgs) => void
+
   export interface Entry<S extends object = {}> {
     store?: readonly S,
     Error?: ErrorNode<S>,
     Loader?: LoaderNode<S>,
     actions?: Actions<S>,
     Container: ComponentType,
+    middlewares?: {
+      performance?: PerformanceEvent,
+      error?: ErrorEvent,
+    },
   }
 
   export interface Config {

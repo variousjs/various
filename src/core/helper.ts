@@ -1,4 +1,5 @@
 import { getStore } from './store'
+import connector from './connector'
 import { ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
 import { ErrorType } from '../types'
 
@@ -20,9 +21,17 @@ export const getEnv = () => getStore(ENV_KEY)
 
 export const onError = (args: ErrorType) => {
   const { type, message, name } = args
-  const prefix = type === 'dispatch' || type === 'i18n' || type === 'component'
+  const prefix = type === 'dispatch' || type === 'i18n'
     ? type
     : ERROR_TYPE[type]
+
+  const middlewares = connector.getMiddlewares()
+
+  middlewares?.error?.({
+    component: name,
+    errorType: prefix,
+    errorMessage: message,
+  })
 
   if (getEnv() === 'development') {
     consoleError(name, `[${prefix}] ${message}`)

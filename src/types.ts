@@ -50,7 +50,7 @@ export interface ErrorState {
 export interface ErrorType {
   name: string,
   message: string,
-  type: ErrorProps['$type'] | 'dispatch' | 'i18n' | 'component',
+  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
 }
 
 export interface Various {

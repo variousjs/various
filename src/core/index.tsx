@@ -37,8 +37,13 @@ export default (config: Config & Entry<Store>) => {
     Loader: LoaderComponent,
     Error: ErrorComponent,
     Container: ContainerComponent = ContainerNode,
+    middlewares,
     ...rest
   } = config
+
+  if (middlewares) {
+    connector.setMiddlewares(middlewares)
+  }
 
   connector.setStoreActions(actions)
 

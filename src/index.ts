@@ -32,10 +32,21 @@ function loader(config: Config) {
     },
   })
 
+  const loadStart = +new Date()
+
   window.requirejs(
     ['@variousjs/various', 'VARIOUS_ENTRY'],
     (various: Various, entry: { default: Entry | EntryWithDefault }) => {
       const entryCtx = (entry.default || entry) as Entry
+      const loadEnd = +new Date()
+
+      entryCtx.middlewares?.performance?.({
+        component: 'entry',
+        loadStart,
+        loadEnd,
+        duration: loadEnd - loadStart,
+      })
+
       various.default({ ...config, ...entryCtx })
     },
   )
