@@ -35,7 +35,7 @@ function loader(config: Config) {
   const loadStart = +new Date()
 
   window.requirejs(
-    ['@variousjs/various', 'VARIOUS_ENTRY'],
+    ['@variousjs/various', 'VARIOUS_ENTRY', 'react', 'react-dom'],
     (various: Various, entry: { default: Entry | EntryWithDefault }) => {
       const entryCtx = (entry.default || entry) as Entry
       const loadEnd = +new Date()
