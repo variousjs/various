@@ -74,6 +74,17 @@ declare module '@variousjs/various' {
 
   export type Actions<S extends object = {}> = Record<string, Dispatch<S>>
 
+  interface MessageArgs {
+    component: string,
+    event: string,
+    value?: any,
+  }
+  interface DispatchArgs {
+    component: string,
+    trigger: string,
+    method: string,
+    value?: any,
+  }
   interface PerformanceArgs {
     component: string,
     loadStart: number,
@@ -85,6 +96,8 @@ declare module '@variousjs/various' {
     errorType: ErrorType | 'dispatch' | 'i18n',
     errorMessage: string,
   }
+  export type MessageEvent = (e: MessageArgs) => Promise<false | Omit<MessageArgs, 'component'>>
+  export type DispatchEvent = (e: DispatchArgs) => Promise<false | Omit<DispatchArgs, 'trigger'>>
   export type PerformanceEvent = (e: PerformanceArgs) => void
   export type ErrorEvent = (e: ErrorArgs) => void
 
@@ -97,6 +110,8 @@ declare module '@variousjs/various' {
     middlewares?: {
       performance?: PerformanceEvent,
       error?: ErrorEvent,
+      message?: MessageEvent,
+      dispatch?: DispatchEvent,
     },
   }
 

@@ -20,11 +20,22 @@ const entry: Entry<typeof store> = {
   Error,
   actions,
   middlewares: {
-    performance(e) {
-      console.log(e)
+    // performance(e) {
+    //   console.log(e)
+    // },
+    // error(e) {
+    //   console.log(e)
+    // },
+    async message(e) {
+      if (e.component === 'message-f') {
+        return false
+      }
+      await new Promise((r) => setTimeout(r, 1000))
+      return { ...e, event: '!!!' }
     },
-    error(e) {
+    async dispatch(e) {
       console.log(e)
+      return false
     },
   },
 }
