@@ -121,6 +121,7 @@ declare module '@variousjs/various' {
     root?: string,
     env?: ENV,
     timeout?: number,
+    earlyParallelComponents?: string[],
   }
 
   export function createComponent<S extends object = {}> (

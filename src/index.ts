@@ -12,13 +12,21 @@ const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('index.js', 'core.js')
 
 function loader(config: Config) {
-  const { dependencies, entry: entryPath, timeout } = config
+  const {
+    dependencies,
+    entry: entryPath,
+    timeout,
+    earlyParallelComponents = [],
+  } = config
   const paths: Config['dependencies'] = {
     ...DEFAULT_PACKAGES,
     ...dependencies,
     VARIOUS_ENTRY: entryPath,
     '@variousjs/various': corePath,
   }
+  const dependencieNames = Object.keys(dependencies)
+  const parallels = earlyParallelComponents
+    .filter((name) => dependencieNames.includes(name))
 
   Object.keys(paths).forEach((name, i) => {
     paths[name] = `${paths[name]}#${i}`
@@ -35,7 +43,13 @@ function loader(config: Config) {
   const loadStart = +new Date()
 
   window.requirejs(
-    ['@variousjs/various', 'VARIOUS_ENTRY', 'react', 'react-dom'],
+    [
+      '@variousjs/various',
+      'VARIOUS_ENTRY',
+      'react',
+      'react-dom',
+      ...parallels,
+    ],
     (various: Various, entry: { default: Entry | EntryWithDefault }) => {
       const entryCtx = (entry.default || entry) as Entry
       const loadEnd = +new Date()
