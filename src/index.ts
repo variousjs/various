@@ -22,8 +22,12 @@ function loader(config: Config) {
     ...DEFAULT_PACKAGES,
     ...dependencies,
     VARIOUS_ENTRY: entryPath,
-    '@variousjs/various': corePath,
   }
+
+  if (corePath) {
+    paths['@variousjs/various'] = corePath
+  }
+
   const dependencieNames = Object.keys(dependencies)
   const parallels = earlyParallelComponents
     .filter((name) => dependencieNames.includes(name))
