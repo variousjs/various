@@ -20,9 +20,9 @@ const entry: Entry<typeof store> = {
   Error,
   actions,
   middlewares: {
-    // performance(e) {
-    //   console.log(e)
-    // },
+    performance(e) {
+      console.log(e)
+    },
     // error(e) {
     //   console.log(e)
     // },

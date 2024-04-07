@@ -128,6 +128,7 @@ export default function (
           loadStart,
           loadEnd,
           duration: loadEnd - loadStart,
+          beenLoaded: this.state.componentExist!,
         })
 
         if (!C) {

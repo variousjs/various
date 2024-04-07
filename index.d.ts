@@ -90,6 +90,7 @@ declare module '@variousjs/various' {
     loadStart: number,
     loadEnd: number,
     duration: number,
+    beenLoaded: boolean,
   }
   interface ErrorArgs {
     component: string,
