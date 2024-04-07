@@ -20,9 +20,11 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
       consoleWarn(componentName, '[dispatch] blocked by middleware')
       return Promise.resolve()
     }
-    name = check.component
-    method = check.method
-    value = check.value
+    if (check !== true) {
+      name = check.component
+      method = check.method
+      value = check.value
+    }
   }
 
   if (name === 'store') {

@@ -58,7 +58,7 @@ function loader(config: Config) {
       const entryCtx = (entry.default || entry) as Entry
       const loadEnd = +new Date()
 
-      entryCtx.middlewares?.performance?.({
+      entryCtx.middlewares?.load?.({
         component: 'VARIOUS_ENTRY',
         loadStart,
         loadEnd,

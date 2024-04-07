@@ -20,7 +20,7 @@ const entry: Entry<typeof store> = {
   Error,
   actions,
   middlewares: {
-    performance(e) {
+    load(e) {
       console.log(e)
     },
     // error(e) {
@@ -34,8 +34,9 @@ const entry: Entry<typeof store> = {
       return { ...e, event: '!!!' }
     },
     async dispatch(e) {
+      await new Promise((r) => setTimeout(r, 1000))
       console.log(e)
-      return false
+      return true
     },
   },
 }

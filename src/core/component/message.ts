@@ -16,7 +16,9 @@ export const getPostMessage: typeof cpm = (component) => async (event, value) =>
       return
     }
 
-    next = { ...next, ...check }
+    if (check !== true) {
+      next = { ...next, ...check }
+    }
   }
 
   emit({

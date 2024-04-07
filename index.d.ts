@@ -74,33 +74,35 @@ declare module '@variousjs/various' {
 
   export type Actions<S extends object = {}> = Record<string, Dispatch<S>>
 
-  interface MessageArgs {
+  interface MessageEventArgs {
     component: string,
     event: string,
     value?: any,
   }
-  interface DispatchArgs {
+  type MessageEventRes = boolean | Omit<MessageEventArgs, 'component'>
+  interface DispatchEventArgs {
     component: string,
     trigger: string,
     method: string,
     value?: any,
   }
-  interface PerformanceArgs {
+  type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
+  interface LoadEventArgs {
     component: string,
     loadStart: number,
     loadEnd: number,
     duration: number,
     beenLoaded: boolean,
   }
-  interface ErrorArgs {
+  interface ErrorEventArgs {
     component: string,
     errorType: ErrorType | 'dispatch' | 'i18n',
     errorMessage: string,
   }
-  export type MessageEvent = (e: MessageArgs) => Promise<false | Omit<MessageArgs, 'component'>>
-  export type DispatchEvent = (e: DispatchArgs) => Promise<false | Omit<DispatchArgs, 'trigger'>>
-  export type PerformanceEvent = (e: PerformanceArgs) => void
-  export type ErrorEvent = (e: ErrorArgs) => void
+  export type MessageEvent = (e: MessageEventArgs) => Promise<MessageEventRes> | MessageEventRes
+  export type DispatchEvent = (e: DispatchEventArgs) => Promise<DispatchEventRes> | DispatchEventRes
+  export type LoadEvent = (e: LoadEventArgs) => void
+  export type ErrorEvent = (e: ErrorEventArgs) => void
 
   export interface Entry<S extends object = {}> {
     store?: readonly S,
@@ -109,7 +111,7 @@ declare module '@variousjs/various' {
     actions?: Actions<S>,
     Container: ComponentType,
     middlewares?: {
-      performance?: PerformanceEvent,
+      load?: LoadEvent,
       error?: ErrorEvent,
       message?: MessageEvent,
       dispatch?: DispatchEvent,
