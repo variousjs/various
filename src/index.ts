@@ -1,3 +1,4 @@
+import '@variousjs/requirejs'
 import { Entry, Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
 import { Various, EntryWithDefault } from './types'
