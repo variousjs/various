@@ -1,6 +1,6 @@
 import React, { Component, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Entry, Config } from '@variousjs/various'
+import { App, Config } from '@variousjs/various'
 import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
@@ -25,10 +25,8 @@ export { default as Nycticorax } from 'nycticorax'
 export * from './component'
 export { getConfig, getEnv } from './helper'
 
-export default (config: Config & Entry<Store>) => {
+export default (config: Config & App<Store>) => {
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    entry,
     dependencies,
     env,
     root,

@@ -1,7 +1,7 @@
 import '@variousjs/requirejs'
-import { Entry, Config } from '@variousjs/various'
+import { App, Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES } from './config'
-import { Various, EntryWithDefault } from './types'
+import { Various, AppWithDefault } from './types'
 
 declare global {
   interface Require { s: any }
@@ -15,14 +15,12 @@ const corePath = src.replace('index.js', 'core.js')
 function loader(config: Config) {
   const {
     dependencies,
-    entry: entryPath,
     timeout,
     earlyParallelComponents = [],
   } = config
   const paths: Config['dependencies'] = {
     ...DEFAULT_PACKAGES,
     ...dependencies,
-    VARIOUS_ENTRY: entryPath,
   }
 
   if (corePath) {
@@ -50,24 +48,24 @@ function loader(config: Config) {
   window.requirejs(
     [
       '@variousjs/various',
-      'VARIOUS_ENTRY',
+      'app',
       'react',
       'react-dom',
       ...parallels,
     ],
-    (various: Various, entry: { default: Entry | EntryWithDefault }) => {
-      const entryCtx = (entry.default || entry) as Entry
+    (various: Various, entry: { default: App | AppWithDefault }) => {
+      const app = (entry.default || entry) as App
       const loadEnd = +new Date()
 
-      entryCtx.middlewares?.load?.({
-        component: 'VARIOUS_ENTRY',
+      app.middlewares?.load?.({
+        component: 'app',
         loadStart,
         loadEnd,
         duration: loadEnd - loadStart,
         beenLoaded: false,
       })
 
-      various.default({ ...config, ...entryCtx })
+      various.default({ ...config, ...app })
     },
   )
 }

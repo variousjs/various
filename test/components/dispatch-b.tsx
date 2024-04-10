@@ -25,7 +25,7 @@ const B = ((props) => {
   }
 
   const setGlobal = async () => {
-    await props.$dispatch('store', 'setName', 'various')
+    await props.$dispatch('app', 'setName', 'various')
   }
 
   const setE = async () => {

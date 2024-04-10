@@ -5,7 +5,7 @@ import {
   ErrorNode,
   I18n,
   Actions,
-  Entry,
+  App,
 } from '@variousjs/various'
 import { Loader, Error } from './default-component'
 import { ComponentActions, Store } from '../types'
@@ -25,7 +25,7 @@ class Connector {
 
   private i18nConfigs: Record<string, ReturnType<I18n>>
 
-  private middlewares: Entry['middlewares']
+  private middlewares: App['middlewares']
 
   constructor() {
     this.loaderComponent = Loader
@@ -38,7 +38,7 @@ class Connector {
     this.middlewares = {}
   }
 
-  setMiddlewares(m: Entry['middlewares']) {
+  setMiddlewares(m: App['middlewares']) {
     this.middlewares = m
   }
 

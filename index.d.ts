@@ -75,27 +75,27 @@ declare module '@variousjs/various' {
   export type Actions<S extends object = {}> = Record<string, Dispatch<S>>
 
   interface MessageEventArgs {
-    component: string,
+    trigger: string,
     event: string,
     value?: any,
   }
-  type MessageEventRes = boolean | Omit<MessageEventArgs, 'component'>
+  type MessageEventRes = boolean | Omit<MessageEventArgs, 'trigger'>
   interface DispatchEventArgs {
-    component: string,
+    target: string,
     trigger: string,
     method: string,
     value?: any,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
   interface LoadEventArgs {
-    component: string,
+    name: string,
     loadStart: number,
     loadEnd: number,
     duration: number,
     beenLoaded: boolean,
   }
   interface ErrorEventArgs {
-    component: string,
+    name: string,
     errorType: ErrorType | 'dispatch' | 'i18n',
     errorMessage: string,
   }
@@ -104,7 +104,7 @@ declare module '@variousjs/various' {
   export type LoadEvent = (e: LoadEventArgs) => void
   export type ErrorEvent = (e: ErrorEventArgs) => void
 
-  export interface Entry<S extends object = {}> {
+  export interface App<S extends object = {}> {
     store?: readonly S,
     Error?: ErrorNode<S>,
     Loader?: LoaderNode<S>,
@@ -119,8 +119,11 @@ declare module '@variousjs/various' {
   }
 
   export interface Config {
-    dependencies: Record<string, string>,
-    entry: string,
+    dependencies: {
+      app: string,
+      '@variousjs/various'?: string,
+      [x: string]: string,
+    },
     root?: string,
     env?: ENV,
     timeout?: number,

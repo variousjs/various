@@ -91,17 +91,6 @@ export default function (
     }
 
     mountComponent = () => {
-      if (name === 'store') {
-        const errorMessage = 'cannot load component named `store`'
-        onError({
-          name: nameWidthModule,
-          type: ERROR_TYPE.INVALID_COMPONENT,
-          message: errorMessage,
-        })
-        this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
-        return
-      }
-
       try {
         const { registry, urlFetched } = window.requirejs.s.contexts._
         Object.keys(registry).forEach((key) => {
