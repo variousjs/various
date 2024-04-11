@@ -20,11 +20,8 @@ function loader(config: Config) {
   } = config
   const paths: Config['dependencies'] = {
     ...DEFAULT_PACKAGES,
+    '@variousjs/various': corePath,
     ...dependencies,
-  }
-
-  if (corePath) {
-    paths['@variousjs/various'] = corePath
   }
 
   const dependencieNames = Object.keys(dependencies)
