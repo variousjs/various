@@ -11,7 +11,7 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
 
   if (middlewares?.dispatch) {
     const check = await middlewares.dispatch({
-      component: name,
+      target: name,
       method,
       value,
       trigger: componentName,
@@ -21,7 +21,7 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
       return Promise.resolve()
     }
     if (check !== true) {
-      name = check.component
+      name = check.target
       method = check.method
       value = check.value
     }

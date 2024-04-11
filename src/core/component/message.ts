@@ -6,7 +6,7 @@ import { MESSAGE_KEY } from '../../config'
 
 export const getPostMessage: typeof cpm = (component) => async (event, value) => {
   const middlewares = connector.getMiddlewares()
-  let next = { component, event, value }
+  let next = { trigger: component, event, value }
 
   if (middlewares?.message) {
     const check = await middlewares.message(next)

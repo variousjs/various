@@ -27,7 +27,7 @@ const entry: App<typeof store> = {
     //   console.log(e)
     // },
     async message(e) {
-      if (e.component === 'message-f') {
+      if (e.trigger === 'message-f') {
         return false
       }
       await new Promise((r) => setTimeout(r, 1000))

@@ -10,7 +10,7 @@ declare global {
 
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
-const corePath = src.replace('index.js', 'core.js')
+const corePath = src.replace('loader.js', 'index.js')
 
 function loader(config: Config) {
   const {
@@ -58,7 +58,7 @@ function loader(config: Config) {
       const loadEnd = +new Date()
 
       app.middlewares?.load?.({
-        component: 'app',
+        name: 'app',
         loadStart,
         loadEnd,
         duration: loadEnd - loadStart,

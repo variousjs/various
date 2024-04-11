@@ -113,7 +113,7 @@ export default function (
         const loadEnd = +new Date()
 
         middlewares?.load?.({
-          component: nameWidthModule,
+          name: nameWidthModule,
           loadStart,
           loadEnd,
           duration: loadEnd - loadStart,

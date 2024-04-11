@@ -22,7 +22,7 @@
     "prestart": "mkdir -p public/dist && cp public/empty.js public/dist/empty.js",
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress --no-client-overlay",
     "prebuild": "npm run lint",
-    "build": "NODE_ENV=production webpack --config webpack/index.js --progress",
+    "build": "rm -rf dist && NODE_ENV=production webpack --config webpack/index.js --progress",
     "cy:run": "rm -rf .nyc_output && cypress run",
     "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
