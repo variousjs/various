@@ -72,9 +72,9 @@ export default (config: Config & App<Store>) => {
       onError({
         name: 'container',
         message: e.message,
-        type: ERROR_TYPE.CONTAINER_ERROR,
+        type: ERROR_TYPE.APP_ERROR,
       })
-      this.setState({ errorType: ERROR_TYPE.CONTAINER_ERROR, errorMessage: e.message })
+      this.setState({ errorType: ERROR_TYPE.APP_ERROR, errorMessage: e.message })
     }
 
     render() {

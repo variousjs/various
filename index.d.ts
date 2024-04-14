@@ -50,7 +50,7 @@ declare module '@variousjs/various' {
     P extends object = {}
   > = FC<ComponentProps<S, P>> & StaticProps
 
-  export type ErrorType = 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR'
+  export type ErrorType = 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'APP_ERROR'
   export interface ErrorProps<S extends object = {}> {
     $reload?: () => void,
     $type: ErrorType,

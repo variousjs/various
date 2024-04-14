@@ -1,6 +1,6 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-import { DEFAULT_PACKAGES } from './config'
+import { DEFAULT_PACKAGES, ERROR_TYPE } from './config'
 import { Various, AppWithDefault } from './types'
 
 declare global {
@@ -63,6 +63,10 @@ function loader(config: Config) {
       })
 
       various.default({ ...config, ...app })
+    },
+    (error: Error) => {
+      window.console.error(error)
+      window.document.write(`[${ERROR_TYPE.APP_ERROR}] ${error.message}`)
     },
   )
 }

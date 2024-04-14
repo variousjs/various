@@ -17,12 +17,12 @@ describe('config', () => {
 
   it('container error', () => {
     cy.visit('/container-error.html')
-    cy.contains('[CONTAINER_ERROR] entry is not defined').should('exist')
+    cy.contains('[APP_ERROR] variable is not defined').should('exist')
   })
 
   it('default', () => {
     cy.visit('/default.html')
-    cy.contains('Container not defined').should('exist')
+    cy.contains('App Container not defined').should('exist')
   })
 
   it('component error', () => {
