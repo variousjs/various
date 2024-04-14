@@ -8,8 +8,8 @@ export const getPostMessage: typeof cpm = (component) => async (event, value) =>
   const middlewares = connector.getMiddlewares()
   let next = { trigger: component, event, value }
 
-  if (middlewares?.message) {
-    const check = await middlewares.message(next)
+  if (middlewares?.onMessage) {
+    const check = await middlewares.onMessage(next)
 
     if (check === false) {
       consoleWarn(component, '[message] blocked by middleware')

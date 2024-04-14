@@ -54,7 +54,7 @@ function loader(config: Config) {
       const app = (entry.default || entry) as App
       const loadEnd = +new Date()
 
-      app.middlewares?.load?.({
+      app.middlewares?.onLoad?.({
         name: 'app',
         loadStart,
         loadEnd,

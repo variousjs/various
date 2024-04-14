@@ -111,10 +111,10 @@ declare module '@variousjs/various' {
     actions?: Actions<S>,
     Container: ComponentType,
     middlewares?: {
-      load?: LoadEvent,
-      error?: ErrorEvent,
-      message?: MessageEvent,
-      dispatch?: DispatchEvent,
+      onLoad?: LoadEvent,
+      onError?: ErrorEvent,
+      onMessage?: MessageEvent,
+      onDispatch?: DispatchEvent,
     },
   }
 

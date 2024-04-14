@@ -20,20 +20,19 @@ const entry: App<typeof store> = {
   Error,
   actions,
   middlewares: {
-    load(e) {
+    onLoad(e) {
       console.log(e)
     },
     // error(e) {
     //   console.log(e)
     // },
-    async message(e) {
+    onMessage(e) {
       if (e.trigger === 'message-f') {
         return false
       }
-      await new Promise((r) => setTimeout(r, 1000))
       return { ...e, event: '!!!' }
     },
-    async dispatch(e) {
+    async onDispatch(e) {
       await new Promise((r) => setTimeout(r, 1000))
       console.log(e)
       return true

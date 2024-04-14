@@ -9,8 +9,8 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
   let method = m
   let value = v
 
-  if (middlewares?.dispatch) {
-    const check = await middlewares.dispatch({
+  if (middlewares?.onDispatch) {
+    const check = await middlewares.onDispatch({
       target: name,
       method,
       value,

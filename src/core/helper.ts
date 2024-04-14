@@ -35,7 +35,7 @@ export const onError = (args: ErrorType) => {
 
   const middlewares = connector.getMiddlewares()
 
-  middlewares?.error?.({
+  middlewares?.onError?.({
     name,
     errorType: prefix,
     errorMessage: message,
