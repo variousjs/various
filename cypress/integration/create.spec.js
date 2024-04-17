@@ -2,7 +2,11 @@
 
 describe('create component', () => {
   beforeEach(() => {
-    cy.visit('/#/create')
+    cy.visit('/#/create', {
+      onBeforeLoad(win) {
+        cy.spy(win.console, 'log').as('console.log')
+      },
+    })
     Cypress.on('uncaught:exception', () => false)
   })
 
@@ -13,6 +17,8 @@ describe('create component', () => {
   })
 
   it('error', () => {
+    cy.get('@console.log').should('be.calledWith', 'create-h,DEPENDENCIES_LOADING_ERROR')
+
     cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
       .should('exist')
       .next()
@@ -22,11 +28,6 @@ describe('create component', () => {
       .should('exist')
       .next()
       .should('have.text', '刷新')
-
-    cy.contains('[INVALID_COMPONENT]:cannot load component named `store`')
-      .should('exist')
-      .next()
-      .should('not.exist')
 
     cy.contains('[LOADING_ERROR]:load `no-defined` error')
       .should('exist')

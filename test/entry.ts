@@ -23,18 +23,20 @@ const entry: App<typeof store> = {
     onLoad(e) {
       window.console.log(`${e.name},${e.beenLoaded}`)
     },
-    // error(e) {
-    //   console.log(e)
-    // },
+    onError(e) {
+      window.console.log(`${e.name},${e.errorType}`)
+    },
     onMessage(e) {
       if (e.trigger === 'message-f') {
-        return false
+        return { ...e, value: { to: 'changed by middleware' } }
       }
-      return { ...e, event: '!!!' }
+      return true
     },
     async onDispatch(e) {
-      await new Promise((r) => setTimeout(r, 1000))
-      console.log(e)
+      if (e.method === 'updateValue') {
+        await new Promise((r) => setTimeout(r, 100))
+        return { ...e, value: 'changed by middleware' }
+      }
       return true
     },
   },

@@ -31,7 +31,7 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
     const storeActions = connector.getStoreActions()
     const action = storeActions[method]
     if (!action) {
-      const errorMessage = `app action \`${method}\` is not present`
+      const errorMessage = `\`app\` action \`${method}\` is not present`
       onError({
         name: componentName,
         type: 'dispatch',
