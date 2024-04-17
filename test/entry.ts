@@ -21,7 +21,7 @@ const entry: App<typeof store> = {
   actions,
   middlewares: {
     onLoad(e) {
-      console.log(e)
+      window.console.log(`${e.name},${e.beenLoaded}`)
     },
     // error(e) {
     //   console.log(e)

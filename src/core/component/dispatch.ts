@@ -39,17 +39,7 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
       })
       throw new Error(errorMessage)
     }
-    try {
-      const res = await dispatch(action, value, componentName)
-      return res
-    } catch (e) {
-      onError({
-        name: 'app',
-        type: 'dispatch',
-        message: (e as Error).message,
-      })
-      throw e
-    }
+    return dispatch(action, value, componentName)
   }
 
   const componentActions = connector.getComponentActions(name)
@@ -76,17 +66,7 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
     throw new Error(errorMessage)
   }
 
-  try {
-    const res = await Promise.resolve(componentAction(value, componentName))
-    return res
-  } catch (e) {
-    onError({
-      name,
-      type: 'dispatch',
-      message: (e as Error).message,
-    })
-    throw e
-  }
+  return Promise.resolve(componentAction(value, componentName))
 }
 
 export default createDispatch

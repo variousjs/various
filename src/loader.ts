@@ -66,7 +66,7 @@ function loader(config: Config) {
     },
     (error: Error) => {
       window.console.error(error)
-      window.document.write(`[${ERROR_TYPE.APP_ERROR}] ${error.message}`)
+      document.body.innerHTML = `[${ERROR_TYPE.APP_ERROR}] ${error.message}`
     },
   )
 }
