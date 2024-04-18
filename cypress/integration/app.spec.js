@@ -36,4 +36,9 @@ describe('config', () => {
     cy.visit('/component-error.html')
     cy.contains('[SCRIPT_ERROR] noexist is not defined').should('exist')
   })
+
+  it('store error', () => {
+    cy.visit('/store-error.html')
+    cy.contains('[APP_ERROR] b is not defined').should('exist')
+  })
 })

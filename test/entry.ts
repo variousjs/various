@@ -27,6 +27,10 @@ const entry: App<typeof store> = {
       window.console.log(`${e.name},${e.errorType}`)
     },
     onMessage(e) {
+      if (e.event === 'block') {
+        window.console.warn('block')
+        return false
+      }
       if (e.trigger === 'message-f') {
         return { ...e, value: { to: 'changed by middleware' } }
       }
@@ -36,6 +40,10 @@ const entry: App<typeof store> = {
       if (e.method === 'updateValue') {
         await new Promise((r) => setTimeout(r, 100))
         return { ...e, value: 'changed by middleware' }
+      }
+      if (e.method === 'block') {
+        window.console.warn('block')
+        return false
       }
       return true
     },

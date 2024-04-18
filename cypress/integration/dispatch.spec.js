@@ -2,7 +2,11 @@
 
 describe('dispatch', () => {
   beforeEach(() => {
-    cy.visit('/#/dispatch')
+    cy.visit('/#/dispatch', {
+      onBeforeLoad(win) {
+        cy.spy(win.console, 'warn').as('console.warn')
+      },
+    })
     Cypress.on('uncaught:exception', () => false)
   })
 
@@ -42,6 +46,9 @@ describe('dispatch', () => {
 
       cy.get('[data-b="action-a-nonexist"]').click()
       cy.get('[data-b="error"]').should('have.text', '`dispatch-a` action `nonexist` is not present')
+
+      cy.get('[data-b="action-a-block"]').click()
+      cy.get('@console.warn').should('be.calledWith', 'block')
     })
   })
 })
