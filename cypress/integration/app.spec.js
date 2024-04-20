@@ -41,4 +41,22 @@ describe('config', () => {
     cy.visit('/store-error.html')
     cy.contains('[APP_ERROR] b is not defined').should('exist')
   })
+
+  it('production env', () => {
+    cy.visit('/production.html', {
+      onBeforeLoad(win) {
+        cy.spy(win.console, 'warn').as('console.warn')
+      },
+    })
+
+    cy.get('[data-b="action-a-block"]').click()
+    cy.get('@console.warn').should('be.calledWith', 'block')
+  })
+
+  it('middlewares', () => {
+    cy.visit('/middlewares.html')
+    cy.get('[data-a="action-b"]').click()
+    cy.get('[data-f="block"]').click()
+    cy.wait(300)
+  })
 })
