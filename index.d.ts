@@ -50,9 +50,10 @@ declare module '@variousjs/various' {
     P extends object = {}
   > = FC<ComponentProps<S, P>> & StaticProps
 
+  export type ErrorType = 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'APP_ERROR'
   export interface ErrorProps<S extends object = {}> {
     $reload?: () => void,
-    $type: 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'CONTAINER_ERROR',
+    $type: ErrorType,
     $message?: string,
     $store: Readonly<S>,
   }
@@ -73,20 +74,60 @@ declare module '@variousjs/various' {
 
   export type Actions<S extends object = {}> = Record<string, Dispatch<S>>
 
-  export interface Entry<S extends object = {}> {
+  interface MessageEventArgs {
+    trigger: string,
+    event: string,
+    value?: any,
+  }
+  type MessageEventRes = boolean | Omit<MessageEventArgs, 'trigger'>
+  interface DispatchEventArgs {
+    target: string,
+    trigger: string,
+    method: string,
+    value?: any,
+  }
+  type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
+  interface LoadEventArgs {
+    name: string,
+    loadStart: number,
+    loadEnd: number,
+    duration: number,
+    beenLoaded: boolean,
+  }
+  interface ErrorEventArgs {
+    name: string,
+    errorType: ErrorType | 'dispatch' | 'i18n',
+    errorMessage: string,
+  }
+  export type MessageEvent = (e: MessageEventArgs) => Promise<MessageEventRes> | MessageEventRes
+  export type DispatchEvent = (e: DispatchEventArgs) => Promise<DispatchEventRes> | DispatchEventRes
+  export type LoadEvent = (e: LoadEventArgs) => void
+  export type ErrorEvent = (e: ErrorEventArgs) => void
+
+  export interface App<S extends object = {}> {
     store?: readonly S,
     Error?: ErrorNode<S>,
     Loader?: LoaderNode<S>,
     actions?: Actions<S>,
     Container: ComponentType,
+    middlewares?: {
+      onLoad?: LoadEvent,
+      onError?: ErrorEvent,
+      onMessage?: MessageEvent,
+      onDispatch?: DispatchEvent,
+    },
   }
 
   export interface Config {
-    dependencies: Record<string, string>,
-    entry: string,
+    dependencies: {
+      app: string,
+      '@variousjs/various'?: string,
+      [x: string]: string,
+    },
     root?: string,
     env?: ENV,
     timeout?: number,
+    earlyParallelComponents?: string[],
   }
 
   export function createComponent<S extends object = {}> (

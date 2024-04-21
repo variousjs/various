@@ -17,6 +17,10 @@ class F extends Component<ComponentProps & S> {
     this.props.$postMessage('c-event', { to: 'c' })
   }
 
+  onBlock = () => {
+    this.props.$postMessage('block')
+  }
+
   render() {
     const { component, event } = this.props
 
@@ -32,6 +36,7 @@ class F extends Component<ComponentProps & S> {
 
         <Descriptions.Item label="Actions">
           <Button data-f="action" type="primary" size="small" onClick={this.onMsg}>Send</Button>
+          <Button data-f="block" type="primary" size="small" onClick={this.onBlock}>Block</Button>
         </Descriptions.Item>
       </Descriptions>
     )

@@ -8,7 +8,7 @@ import {
   OnMessage,
   I18n,
   ErrorProps,
-  Entry,
+  App,
   Message,
 } from '@variousjs/various'
 import {
@@ -50,11 +50,11 @@ export interface ErrorState {
 export interface ErrorType {
   name: string,
   message: string,
-  type: ErrorProps['$type'] | 'dispatch' | 'i18n' | 'component',
+  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
 }
 
 export interface Various {
-  default: (config: Config & Entry) => void,
+  default: (config: Config & App) => void,
 }
 
-export type EntryWithDefault = { default: Entry }
+export type AppWithDefault = { default: App }

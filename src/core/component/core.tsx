@@ -31,6 +31,7 @@ export default function (
   const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
+  const middlewares = connector.getMiddlewares()
 
   class R extends Component<
     Store & { $silent?: boolean, $componentProps: any },
@@ -90,17 +91,6 @@ export default function (
     }
 
     mountComponent = () => {
-      if (name === 'store') {
-        const errorMessage = 'cannot load component named `store`'
-        onError({
-          name: nameWidthModule,
-          type: ERROR_TYPE.INVALID_COMPONENT,
-          message: errorMessage,
-        })
-        this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
-        return
-      }
-
       try {
         const { registry, urlFetched } = window.requirejs.s.contexts._
         Object.keys(registry).forEach((key) => {
@@ -113,10 +103,22 @@ export default function (
         // ignore
       }
 
+      const loadStart = +new Date()
+
       window.requirejs([name], (C: RequiredComponent) => {
         if (this.isUnMounted) {
           return
         }
+
+        const loadEnd = +new Date()
+
+        middlewares?.onLoad?.({
+          name: nameWidthModule,
+          loadStart,
+          loadEnd,
+          duration: loadEnd - loadStart,
+          beenLoaded: this.state.componentExist!,
+        })
 
         if (!C) {
           const errorMessage = 'no content'

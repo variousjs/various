@@ -20,7 +20,7 @@ fs
 components.helper = path.resolve(__dirname, '../test/components/helper.ts')
 
 if (NODE_ENV === 'development') {
-  components.core = path.resolve(__dirname, '../src/core')
+  components.index = path.resolve(__dirname, '../src/core')
 }
 
 const config = {

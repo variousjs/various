@@ -1,6 +1,9 @@
 import { getStore } from './store'
+import connector from './connector'
 import { ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
 import { ErrorType } from '../types'
+
+export const getEnv = () => getStore(ENV_KEY)
 
 const getConsolePrefix = (name?: string) => {
   const text = `%c${name}`
@@ -9,22 +12,34 @@ const getConsolePrefix = (name?: string) => {
 }
 
 function consoleError(name: string, text: string) {
-  window.console.error(...getConsolePrefix(name), text)
+  if (getEnv() === 'development') {
+    window.console.error(...getConsolePrefix(name), text)
+  }
+}
+
+export function consoleWarn(name: string, text: string) {
+  if (getEnv() === 'development') {
+    window.console.warn(...getConsolePrefix(name), text)
+  }
 }
 
 export function getConfig<C extends object = {}>() {
   return getStore(CONFIG_KEY) as C
 }
 
-export const getEnv = () => getStore(ENV_KEY)
-
 export const onError = (args: ErrorType) => {
   const { type, message, name } = args
-  const prefix = type === 'dispatch' || type === 'i18n' || type === 'component'
+  const prefix = type === 'dispatch' || type === 'i18n'
     ? type
     : ERROR_TYPE[type]
 
-  if (getEnv() === 'development') {
-    consoleError(name, `[${prefix}] ${message}`)
-  }
+  const middlewares = connector.getMiddlewares()
+
+  middlewares?.onError?.({
+    name,
+    errorType: prefix,
+    errorMessage: message,
+  })
+
+  consoleError(name, `[${prefix}] ${message}`)
 }

@@ -7,7 +7,7 @@ const { NODE_ENV = 'development' } = process.env
 const configs = [{
   ...base,
   entry: {
-    index: path.resolve(__dirname, '../src/index.ts'),
+    loader: path.resolve(__dirname, '../src/loader.ts'),
   },
   mode: NODE_ENV,
   // plugins: [new BundleAnalyzerPlugin()],
@@ -26,7 +26,7 @@ if (NODE_ENV === 'production') {
   configs.push({
     ...base,
     entry: {
-      core: path.resolve(__dirname, '../src/core'),
+      index: path.resolve(__dirname, '../src/core'),
     },
     mode: 'production',
     plugins: [new BundleAnalyzerPlugin()],

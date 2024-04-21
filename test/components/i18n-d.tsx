@@ -8,7 +8,7 @@ const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
   const { $t, $dispatch } = props
   const [lang, setLang] = useState('')
   const getLang = async () => {
-    const current: string = await $dispatch('store', 'getLocale')
+    const current: string = await $dispatch('app', 'getLocale')
     setLang(current)
   }
 
@@ -27,7 +27,7 @@ const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
       </Descriptions.Item>
 
       <Descriptions.Item label="Actions">
-        <Button data-d="action-set" type="primary" size="small" onClick={() => $dispatch('store', 'setLocale', 'zh-CN')}>zh-CN</Button>
+        <Button data-d="action-set" type="primary" size="small" onClick={() => $dispatch('app', 'setLocale', 'zh-CN')}>zh-CN</Button>
         <Button data-d="action-get" type="primary" size="small" onClick={getLang}>Get Locale</Button>
       </Descriptions.Item>
     </Descriptions>

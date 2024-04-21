@@ -25,5 +25,5 @@ export const Error: ErrorNode<Store> = ({ $type, $message, $reload }) => (
 )
 
 export const Container: ComponentType = () => (
-  <div>Container not defined</div>
+  <div>App Container is not defined</div>
 )

@@ -5,8 +5,8 @@
 <title> VariousJS </title>
 <script>
 var VARIOUS_CONFIG = {
-  entry: './dist/component-error.js',
   dependencies: {
+    app: './dist/component-error.js',
     react: './libs/react.production.min.js',
     'react-dom': './libs/react-dom.production.min.js',
     f: './dist/create-i.js',
@@ -17,7 +17,6 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="./libs//require.min.js"></script>
-<script src="./dist/index.js"></script>
+<script src="./dist/loader.js"></script>
 </body>
 </html>

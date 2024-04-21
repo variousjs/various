@@ -2,7 +2,11 @@
 
 describe('dispatch', () => {
   beforeEach(() => {
-    cy.visit('/#/dispatch')
+    cy.visit('/#/dispatch', {
+      onBeforeLoad(win) {
+        cy.spy(win.console, 'warn').as('console.warn')
+      },
+    })
     Cypress.on('uncaught:exception', () => false)
   })
 
@@ -21,7 +25,7 @@ describe('dispatch', () => {
       cy.get('[data-a="error"]').should('have.text', 'component `b.C` is not ready')
 
       cy.get('[data-a="action-store-nonexist"]').click()
-      cy.get('[data-a="error"]').should('have.text', '`store` action `no-exist` is not present')
+      cy.get('[data-a="error"]').should('have.text', '`app` action `no-exist` is not present')
     })
   })
 
@@ -30,7 +34,7 @@ describe('dispatch', () => {
 
     cy.get('[data-a="error"]').then(() => {
       cy.get('[data-b="action-a"]').click()
-      cy.get('[data-a="value"]').should('have.text', 'b')
+      cy.get('[data-a="value"]').should('have.text', 'changed by middleware')
       cy.get('[data-a="trigger"]').should('have.text', 'dispatch-b')
 
       cy.get('[data-b="action-nonexist"]').click()
@@ -42,6 +46,9 @@ describe('dispatch', () => {
 
       cy.get('[data-b="action-a-nonexist"]').click()
       cy.get('[data-b="error"]').should('have.text', '`dispatch-a` action `nonexist` is not present')
+
+      cy.get('[data-b="action-a-block"]').click()
+      cy.get('@console.warn').should('be.calledWith', 'block')
     })
   })
 })

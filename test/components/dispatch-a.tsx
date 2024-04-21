@@ -27,7 +27,7 @@ class A extends Component<ComponentProps<Store, S>> {
 
   onSetG = async () => {
     try {
-      await this.props.$dispatch('store', 'no-exist')
+      await this.props.$dispatch('app', 'no-exist')
     } catch (e) {
       this.setState({ dispatchError: (e as Error).message })
     }

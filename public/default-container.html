@@ -6,8 +6,8 @@
 <script>
 var VARIOUS_CONFIG = {
   env: 'pro',
-  entry: './dist/default.js',
   dependencies: {
+    app: './dist/default.js',
     react: './libs/react.production.min.js',
     'react-dom': './libs/react-dom.production.min.js',
   },
@@ -16,7 +16,6 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="./libs//require.min.js"></script>
-<script src="./dist/index.js"></script>
+<script src="./dist/loader.js"></script>
 </body>
 </html>

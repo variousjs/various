@@ -25,8 +25,9 @@ button {
 var VARIOUS_CONFIG = {
   timeout: 1.5,
   root: '#root',
-  entry: './dist/entry.js',
+  earlyParallelComponents: ['config', 'helper-n', 'helper', 'page'],
   dependencies: {
+    app: './dist/entry.js',
     react: './libs/react.production.min.js',
     'react-dom': './libs/react-dom.production.min.js',
     'react-router-dom': './libs/react-router-dom.min.js',
@@ -61,7 +62,7 @@ var VARIOUS_CONFIG = {
   env: 'development',
   pages: [
     {
-      label: 'Config',
+      label: 'App',
       icon: 'sliders',
       component: 'config',
       path: '/',
@@ -93,7 +94,7 @@ var VARIOUS_CONFIG = {
       icon: 'appstore',
       component: 'create',
       path: '/create',
-      components: ['create-h', 'create-i', 'create-jj', 'store', 'no-defined', 'create-path-error', 'create-empty-content', 'create-j', 'create-j.j', 'create-j.k', 'create-j.no-exist', 'create-timeout', 'create-slient'],
+      components: ['create-h', 'create-i', 'create-jj', 'no-defined', 'create-path-error', 'create-empty-content', 'create-j', 'create-j.j', 'create-j.k', 'create-j.no-exist', 'create-timeout', 'create-slient'],
     },
     {
       label: 'RenderComponent',
@@ -115,7 +116,6 @@ var VARIOUS_CONFIG = {
 </head>
 <body>
 <div id="root"></div>
-<script src="./libs/require.min.js"></script>
-<script src="./dist/index.js"></script>
+<script src="./dist/loader.js"></script>
 </body>
 </html>
