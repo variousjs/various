@@ -27,8 +27,6 @@ export default function (
   onMounted?: () => void,
 ) {
   const storeKeys = (watchKeys || Object.keys(getStore()))
-  const LoaderNode = connector.getLoaderComponent()
-  const ErrorNode = connector.getErrorComponent()
   const symbolModule = Symbol('module')
   const [name, module = symbolModule] = nameWidthModule.split('.')
   const middlewares = connector.getMiddlewares()
@@ -240,6 +238,8 @@ export default function (
     $t = getI18n(nameWidthModule)
 
     render() {
+      const ErrorNode = connector.getErrorComponent()
+      const LoaderNode = connector.getLoaderComponent()
       const { $silent, $componentProps } = this.props
       const {
         componentReady, errorMessage, errorType, componentExist,
