@@ -44,10 +44,15 @@ describe('create component', () => {
       .next()
       .should('not.exist')
 
-    cy.contains('[INVALID_COMPONENT]:module cannot be executed')
+    cy.contains('create-j.k')
       .should('exist')
       .next()
-      .should('not.exist')
+      .should('have.text', '[INVALID_COMPONENT]:not a valid React component')
+
+    cy.contains('create-j.l')
+      .should('exist')
+      .next()
+      .should('have.text', '[INVALID_COMPONENT]:not a valid React component')
 
     cy.contains('[INVALID_COMPONENT]:module not defined')
       .should('exist')

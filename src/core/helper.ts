@@ -1,7 +1,7 @@
 import { getStore } from './store'
 import connector from './connector'
 import { ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
-import { ErrorType } from '../types'
+import { ErrorType, RequiredComponent } from '../types'
 
 export const getEnv = () => getStore(ENV_KEY)
 
@@ -43,3 +43,9 @@ export const onError = (args: ErrorType) => {
 
   consoleError(name, `[${prefix}] ${message}`)
 }
+
+export const isReactComponent = (component: RequiredComponent) => (
+  !!component.prototype?.isReactComponent) || (
+  typeof component === 'function'
+    && String(component).includes('createElement(')
+)

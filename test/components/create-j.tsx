@@ -7,3 +7,5 @@ export default () => (
 export const j = () => (<div>j</div>)
 
 export const k = 'k'
+
+export const l = () => 'l'

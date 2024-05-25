@@ -1,6 +1,6 @@
 import React, { Component, ComponentType } from 'react'
 import { I18n, OnMessage } from '@variousjs/various'
-import { onError } from '../helper'
+import { isReactComponent, onError } from '../helper'
 import { isComponentLoaded, getMountedComponents } from './helper'
 import {
   connect,
@@ -142,8 +142,8 @@ export default function (
           return
         }
 
-        if (typeof componentNode !== 'function') {
-          const errorMessage = 'module cannot be executed'
+        if (!isReactComponent(componentNode)) {
+          const errorMessage = 'not a valid React component'
           onError({
             name: nameWidthModule,
             type: ERROR_TYPE.INVALID_COMPONENT,
