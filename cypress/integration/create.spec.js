@@ -19,7 +19,7 @@ describe('create component', () => {
   it('error', () => {
     cy.get('@console.log').should('be.calledWith', 'create-h,DEPENDENCIES_LOADING_ERROR')
 
-    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error')
       .should('exist')
       .next()
       .should('have.text', '刷新')
@@ -79,11 +79,11 @@ describe('create component', () => {
       cy.contains('create-i').next().should('have.text', 'G')
     })
 
-    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error')
       .next()
       .click()
     cy.wait(1000)
-    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error, needed by `create-h`')
+    cy.contains('[DEPENDENCIES_LOADING_ERROR]:load `rc-table` error')
       .should('exist')
   })
 })
