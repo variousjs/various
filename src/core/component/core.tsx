@@ -210,7 +210,7 @@ export default function (
         const errorType = requireModule === name
           ? ERROR_TYPE.LOADING_ERROR
           : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
-        const message = `load \`${requireModule}\` error${errorType === ERROR_TYPE.LOADING_ERROR ? '' : `, needed by \`${nameWidthModule}\``}`
+        const message = `load \`${requireModule}\` error: ${e.message}`
 
         onError({
           name: nameWidthModule,
