@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
+import { resetModuleConfig } from './helper'
 import componentCreator from './core'
 import connector from '../connector'
 
@@ -16,12 +17,7 @@ const renderComponent: typeof rc = ({
 
   if (url) {
     // if define url, means replace component
-    window.requirejs.undef(name)
-    window.requirejs.config({
-      paths: {
-        [name]: `${url}#`,
-      },
-    })
+    resetModuleConfig(name, url)
   }
 
   const C = componentCreator(nameWidthSub, undefined, onMounted)

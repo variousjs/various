@@ -28,8 +28,8 @@ function loader(config: Config) {
   const parallels = earlyParallelComponents
     .filter((name) => dependencieNames.includes(name))
 
-  Object.keys(paths).forEach((name, i) => {
-    paths[name] = `${paths[name]}#${i}`
+  Object.keys(paths).forEach((name) => {
+    paths[name] = `${paths[name]}#${name}`
   })
 
   window.requirejs.config({

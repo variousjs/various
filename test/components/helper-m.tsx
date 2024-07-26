@@ -4,7 +4,8 @@ import {
   onComponentMounted,
   renderComponent,
   preloadComponents,
-  isComponentLoaded,
+  isModuleLoaded,
+  createModule,
 } from '@variousjs/various'
 
 export default () => {
@@ -14,13 +15,18 @@ export default () => {
   const unMount = useRef<() => void>(() => null)
 
   const onPreload = async () => {
-    if (isComponentLoaded('helper-n')) {
+    if (isModuleLoaded('helper-n')) {
       setPreLoaded(true)
     }
     await preloadComponents(['helper-n'])
-    if (isComponentLoaded('helper-n')) {
+    if (isModuleLoaded('helper-n')) {
       setPreLoaded(true)
     }
+  }
+
+  const onCreate = async () => {
+    const j = await createModule('create-jjj')
+    console.log(j)
   }
 
   useEffect(() => () => unMount.current(), [])
@@ -86,6 +92,7 @@ export default () => {
           ) : null
         }
         <Button data-m="action-preload" onClick={onPreload} size="small" type="primary">Preload</Button>
+        <Button data-m="action-create" onClick={onCreate} size="small" type="primary">CreateModule</Button>
       </Descriptions.Item>
     </Descriptions>
   )

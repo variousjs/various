@@ -136,9 +136,10 @@ declare module '@variousjs/various' {
     $silent?: boolean,
     [key: string]: any,
   }>
+  export function createModule<T = unknown> (name: string): Promise<T>
   export const renderComponent: RenderComponent
 
-  export const isComponentLoaded: (name: string) => boolean
+  export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => string[]
   export const preloadComponents: (names: string[]) => Promise<void>
   export const onComponentMounted: (name: string | string[], callback: () => void) => () => void

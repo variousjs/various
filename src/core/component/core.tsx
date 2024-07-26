@@ -1,7 +1,8 @@
+/* eslint-disable no-throw-literal */
 import React, { Component, ComponentType } from 'react'
 import { I18n, OnMessage } from '@variousjs/various'
 import { isReactComponent, onError } from '../helper'
-import { isComponentLoaded, getMountedComponents } from './helper'
+import { isModuleLoaded, getMountedComponents, resetModuleConfig } from './helper'
 import {
   connect,
   getStore,
@@ -13,8 +14,8 @@ import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
 import getDispatch from './dispatch'
 import getI18n from './i18n'
+import createModule from './module'
 import {
-  RequireError,
   ErrorState,
   RequiredComponent,
   ComponentActions,
@@ -27,9 +28,7 @@ export default function (
   onMounted?: () => void,
 ) {
   const storeKeys = (watchKeys || Object.keys(getStore()))
-  const symbolModule = Symbol('module')
-  const [name, module = symbolModule] = nameWidthModule.split('.')
-  const middlewares = connector.getMiddlewares()
+  const [name] = nameWidthModule.split('.')
 
   class R extends Component<
     Store & { $silent?: boolean, $componentProps: any },
@@ -51,25 +50,21 @@ export default function (
     private getDependencies = () => getStore(DEPENDENCIES_KEY)
 
     componentDidMount() {
-      this.setState({ componentExist: isComponentLoaded(name) })
+      this.setState({ componentExist: isModuleLoaded(name) })
       this.mountComponent()
     }
 
     componentDidCatch(e: Error) {
+      const dependencies = this.getDependencies()
+
       onError({
         name: nameWidthModule,
         type: ERROR_TYPE.SCRIPT_ERROR,
         message: e.message,
       })
-      this.setState({ errorMessage: e.message, errorType: ERROR_TYPE.SCRIPT_ERROR })
 
-      const dependencies = this.getDependencies()
-      window.requirejs.undef(name)
-      window.requirejs.config({
-        paths: {
-          [name]: `${dependencies[name]}#`,
-        },
-      })
+      this.setState({ errorMessage: e.message, errorType: ERROR_TYPE.SCRIPT_ERROR })
+      resetModuleConfig(name, dependencies[name])
       this.unMountComponent()
     }
 
@@ -84,73 +79,22 @@ export default function (
       let mountedComponents = getMountedComponents()
       mountedComponents = mountedComponents.filter((item) => item !== nameWidthModule)
       emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
-
       connector.deleteComponentActions(nameWidthModule)
     }
 
-    mountComponent = () => {
+    mountComponent = async () => {
       try {
-        const { registry, urlFetched } = window.requirejs.s.contexts._
-        Object.keys(registry).forEach((key) => {
-          if (registry[key].error) {
-            delete urlFetched[registry[key].map.url]
-            delete registry[key]
-          }
-        })
-      } catch (e) {
-        // ignore
-      }
+        const componentNode = await createModule<RequiredComponent>(nameWidthModule)
 
-      const loadStart = +new Date()
-
-      window.requirejs([name], (C: RequiredComponent) => {
         if (this.isUnMounted) {
           return
         }
 
-        const loadEnd = +new Date()
-
-        middlewares?.onLoad?.({
-          name: nameWidthModule,
-          loadStart,
-          loadEnd,
-          duration: loadEnd - loadStart,
-          beenLoaded: this.state.componentExist!,
-        })
-
-        if (!C) {
-          const errorMessage = 'no content'
-          onError({
-            name: nameWidthModule,
-            type: ERROR_TYPE.INVALID_COMPONENT,
-            message: errorMessage,
-          })
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
-          return
-        }
-
-        const componentNode = module === symbolModule ? (C.default || C) : C[module]
-
-        if (!componentNode) {
-          const errorMessage = 'module not defined'
-          onError({
-            name: nameWidthModule,
-            type: ERROR_TYPE.INVALID_COMPONENT,
-            message: errorMessage,
-          })
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
-          return
-        }
-
         if (!isReactComponent(componentNode)) {
-          const errorMessage = 'not a valid React component'
-          onError({
-            name: nameWidthModule,
-            type: ERROR_TYPE.INVALID_COMPONENT,
-            message: errorMessage,
-          })
-          this.setState({ errorMessage, errorType: ERROR_TYPE.INVALID_COMPONENT })
-          return
+          throw {
+            errorMessage: 'not a valid React component',
+            errorType: ERROR_TYPE.INVALID_COMPONENT,
+          }
         }
 
         const mountedComponents = getMountedComponents()
@@ -192,33 +136,20 @@ export default function (
         }
 
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
-      }, (e: RequireError) => {
-        const dependencies = this.getDependencies()
-        window.requirejs.undef(name)
-        window.requirejs.config({
-          paths: {
-            [name]: `${dependencies[name]}#`,
-          },
-        })
+      } catch (e) {
+        const errorInfo = e as ErrorState
 
         if (this.isUnMounted) {
           return
         }
 
-        const [requireModule] = e.requireModules
-
-        const errorType = requireModule === name
-          ? ERROR_TYPE.LOADING_ERROR
-          : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
-        const message = `load \`${requireModule}\` error: ${e.message}`
-
         onError({
           name: nameWidthModule,
-          type: errorType,
-          message,
+          type: errorInfo.errorType!,
+          message: errorInfo.errorMessage,
         })
-        this.setState({ errorMessage: message, errorType })
-      })
+        this.setState(errorInfo)
+      }
     }
 
     onReload = () => {

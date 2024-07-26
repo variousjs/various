@@ -1,6 +1,6 @@
 import {
   onComponentMounted as ocm,
-  isComponentLoaded as ic,
+  isModuleLoaded as im,
   preloadComponents as pc,
 } from '@variousjs/various'
 import { getStore, subscribe } from '../store'
@@ -10,7 +10,7 @@ export const preloadComponents: typeof pc = (names) => new Promise<void>((resolv
   window.requirejs(names, resolve, reject)
 })
 
-export const isComponentLoaded: typeof ic = (name) => {
+export const isModuleLoaded: typeof im = (name) => {
   const [m] = name.split('.')
   return window.requirejs.specified(m) && !!window.requirejs.s.contexts._.defined[m]
 }
@@ -36,4 +36,13 @@ export const onComponentMounted: typeof ocm = (name, callback) => {
   })
 
   return unSubscribe
+}
+
+export const resetModuleConfig = (name: string, url: string) => {
+  window.requirejs.undef(name)
+  window.requirejs.config({
+    paths: {
+      [name]: `${url}#${name}`,
+    },
+  })
 }
