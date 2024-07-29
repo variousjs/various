@@ -16,7 +16,7 @@ export default class extends Component {
   }
 
   onMount = () => {
-    this.unMount = renderComponent({
+    this.unMount = renderComponent<{ text: string }>({
       name: 'render-l',
       module: 'L',
       target: document.querySelector('#ll'),

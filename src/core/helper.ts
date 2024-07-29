@@ -3,6 +3,8 @@ import connector from './connector'
 import { ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
 import { ErrorType, RequiredComponent } from '../types'
 
+export const getNameWithModule = (name: string, module?: string) => (module ? `${name}.${module}` : name)
+
 export const getEnv = () => getStore(ENV_KEY)
 
 const getConsolePrefix = (name?: string) => {
@@ -28,7 +30,13 @@ export function getConfig<C extends object = {}>() {
 }
 
 export const onError = (args: ErrorType) => {
-  const { type, message, name } = args
+  const {
+    type,
+    message,
+    name,
+    module,
+  } = args
+  const nameWithModule = getNameWithModule(name, module)
   const prefix = type === 'dispatch' || type === 'i18n'
     ? type
     : ERROR_TYPE[type]
@@ -36,12 +44,12 @@ export const onError = (args: ErrorType) => {
   const middlewares = connector.getMiddlewares()
 
   middlewares?.onError?.({
-    name,
+    name: nameWithModule,
     errorType: prefix,
     errorMessage: message,
   })
 
-  consoleError(name, `[${prefix}] ${message}`)
+  consoleError(nameWithModule, `[${prefix}] ${message}`)
 }
 
 export const isReactComponent = (component: RequiredComponent) => (

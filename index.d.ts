@@ -3,18 +3,15 @@ declare module '@variousjs/various' {
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
+  export interface ComponentDefaultProps {
+    $silent?: boolean,
+  }
+
+  type ObjectAny = Record<string, any>
+
   type $dispatch = (name: string, method: string, value?: any) => Promise<any>
   type $postMessage = (event: string, value?: any) => void
   export type Intl = (key: string, params?: Record<string, string | number>) => string
-
-  type RenderComponent = (params: {
-    name: string,
-    url?: string,
-    module?: string,
-    props?: Record<string, any>,
-    target: Element | null,
-    onMounted?: () => void,
-  }) => () => void
 
   export type ENV = 'development' | 'production'
 
@@ -130,14 +127,32 @@ declare module '@variousjs/various' {
     earlyParallelComponents?: string[],
   }
 
-  export function createComponent<S extends object = {}> (
-    name: string, storeKeys?: (keyof S)[]
-  ): ComponentType<{
-    $silent?: boolean,
-    [key: string]: any,
-  }>
-  export function createModule<T = unknown> (name: string): Promise<T>
-  export const renderComponent: RenderComponent
+  export function createComponent<
+    S extends object = ObjectAny,
+    P extends object = ObjectAny
+  >(
+    config: {
+      name: string,
+      module?: string,
+      url?: string,
+    },
+    storeKeys?: (keyof S)[],
+  ): ComponentType<ComponentDefaultProps & P>
+
+  export function createModule<T = unknown> (params: {
+    name: string,
+    module?: string,
+    url?: string,
+  }): Promise<T>
+
+  export function renderComponent<P extends object = ObjectAny>(params: {
+    name: string,
+    module?: string,
+    url?: string,
+    props?: P & ComponentDefaultProps,
+    target: Element | null,
+    onMounted?: () => void,
+  }): () => void
 
   export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => string[]

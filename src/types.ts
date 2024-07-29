@@ -49,6 +49,7 @@ export interface ErrorState {
 
 export interface ErrorType {
   name: string,
+  module?: string,
   message: string,
   type: ErrorProps['$type'] | 'dispatch' | 'i18n',
 }

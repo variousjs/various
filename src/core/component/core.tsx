@@ -1,7 +1,7 @@
 /* eslint-disable no-throw-literal */
 import React, { Component, ComponentType } from 'react'
-import { I18n, OnMessage } from '@variousjs/various'
-import { isReactComponent, onError } from '../helper'
+import { I18n, OnMessage, ComponentDefaultProps } from '@variousjs/various'
+import { isReactComponent, onError, getNameWithModule } from '../helper'
 import { isModuleLoaded, getMountedComponents, resetModuleConfig } from './helper'
 import {
   connect,
@@ -22,16 +22,25 @@ import {
   Store,
 } from '../../types'
 
-export default function (
-  nameWidthModule: string,
+function createComponent<P extends object>(config: {
+  name: string,
+  module?: string,
+  url?: string,
   watchKeys?: string[],
   onMounted?: () => void,
-) {
+}) {
+  const {
+    name,
+    module,
+    url,
+    watchKeys,
+    onMounted,
+  } = config
   const storeKeys = (watchKeys || Object.keys(getStore()))
-  const [name] = nameWidthModule.split('.')
+  const nameWidthModule = getNameWithModule(name, module)
 
   class R extends Component<
-    Store & { $silent?: boolean, $componentProps: any },
+    Store & { $silent?: boolean, $componentProps: P & ComponentDefaultProps },
     ErrorState & { componentReady: boolean, componentExist?: boolean }
   > {
     state = {
@@ -58,7 +67,8 @@ export default function (
       const dependencies = this.getDependencies()
 
       onError({
-        name: nameWidthModule,
+        name,
+        module,
         type: ERROR_TYPE.SCRIPT_ERROR,
         message: e.message,
       })
@@ -84,7 +94,11 @@ export default function (
 
     mountComponent = async () => {
       try {
-        const componentNode = await createModule<RequiredComponent>(nameWidthModule)
+        const componentNode = await createModule<RequiredComponent>({
+          name,
+          module,
+          url,
+        })
 
         if (this.isUnMounted) {
           return
@@ -144,7 +158,8 @@ export default function (
         }
 
         onError({
-          name: nameWidthModule,
+          name,
+          module,
           type: errorInfo.errorType!,
           message: errorInfo.errorMessage,
         })
@@ -213,3 +228,5 @@ export default function (
 
   return connect(...storeKeys)(R)
 }
+
+export default createComponent

@@ -5,10 +5,12 @@ import { ERROR_TYPE, DEPENDENCIES_KEY } from '../../config'
 import { getStore } from '../store'
 import connector from '../connector'
 import { isModuleLoaded, resetModuleConfig } from './helper'
+import { getNameWithModule } from '../helper'
 
-function createModule<T = unknown>(nameWidthModule: string) {
+const createModule: typeof cm = (config) => {
   const middlewares = connector.getMiddlewares()
-  const [name, module] = nameWidthModule.split('.')
+  const { name, module, url } = config
+  const nameWidthModule = getNameWithModule(name, module)
   const loadStart = +new Date()
 
   try {
@@ -23,7 +25,11 @@ function createModule<T = unknown>(nameWidthModule: string) {
     // ignore
   }
 
-  return new Promise<T>((resolve, reject) => {
+  if (url) {
+    resetModuleConfig(name, url)
+  }
+
+  return new Promise<any>((resolve, reject) => {
     window.requirejs([name], (C: RequiredComponent) => {
       const loadEnd = +new Date()
 
@@ -32,7 +38,7 @@ function createModule<T = unknown>(nameWidthModule: string) {
         loadStart,
         loadEnd,
         duration: loadEnd - loadStart,
-        beenLoaded: isModuleLoaded(nameWidthModule),
+        beenLoaded: isModuleLoaded(name),
       })
 
       if (!C) {
@@ -51,7 +57,7 @@ function createModule<T = unknown>(nameWidthModule: string) {
         })
       }
 
-      resolve(actualModule as T)
+      resolve(actualModule)
     }, (e: RequireError) => {
       const dependencies = getStore(DEPENDENCIES_KEY)
       const [requireModule] = e.requireModules
@@ -60,10 +66,10 @@ function createModule<T = unknown>(nameWidthModule: string) {
         : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
       const errorMessage = `load \`${requireModule}\` error: ${e.message}`
 
-      resetModuleConfig(name, dependencies[name])
+      resetModuleConfig(name, url || dependencies[name])
       reject({ errorType, errorMessage })
     })
   })
 }
 
-export default createModule as typeof cm
+export default createModule

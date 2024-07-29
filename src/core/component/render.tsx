@@ -2,32 +2,37 @@ import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
 import { resetModuleConfig } from './helper'
+import { getNameWithModule } from '../helper'
 import componentCreator from './core'
 import connector from '../connector'
 
 const renderComponent: typeof rc = ({
   name,
+  module,
   url,
   target,
   props,
-  module,
   onMounted,
 }) => {
-  const nameWidthSub = module ? `${name}.${module}` : name
+  const nameWidthModule = getNameWithModule(name, module)
 
   if (url) {
-    // if define url, means replace component
     resetModuleConfig(name, url)
   }
 
-  const C = componentCreator(nameWidthSub, undefined, onMounted)
+  const C = componentCreator({
+    name,
+    module,
+    url,
+    onMounted,
+  })
 
   let root: Root
-  if (connector.getRenderRoot(nameWidthSub)) {
-    root = connector.getRenderRoot(nameWidthSub)
+  if (connector.getRenderRoot(nameWidthModule)) {
+    root = connector.getRenderRoot(nameWidthModule)
   } else {
     root = createRoot(target as Element)
-    connector.setRenderRoot(nameWidthSub, root)
+    connector.setRenderRoot(nameWidthModule, root)
   }
 
   const { $silent, ...rest } = props || {}
@@ -37,7 +42,7 @@ const renderComponent: typeof rc = ({
 
   return () => setTimeout(() => {
     root.unmount()
-    connector.deleteRenderRoot(nameWidthSub)
+    connector.deleteRenderRoot(nameWidthModule)
   })
 }
 
