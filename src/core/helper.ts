@@ -1,7 +1,58 @@
-import { getStore } from './store'
+import {
+  onComponentMounted as ocm,
+  isModuleLoaded as im,
+  preloadModules as pm,
+} from '@variousjs/various'
+import { getStore, subscribe } from './store'
 import connector from './connector'
-import { ERROR_TYPE, ENV_KEY, CONFIG_KEY } from '../config'
+import {
+  ERROR_TYPE,
+  ENV_KEY,
+  CONFIG_KEY,
+  MOUNTED_COMPONENTS_KEY,
+} from '../config'
 import { ErrorType, RequiredComponent } from '../types'
+
+export const preloadModules: typeof pm = (names) => new Promise<void>((resolve, reject) => {
+  window.requirejs(names, resolve, reject)
+})
+
+export const isModuleLoaded: typeof im = (name) => {
+  const [m] = name.split('.')
+  return window.requirejs.specified(m) && !!window.requirejs.s.contexts._.defined[m]
+}
+
+export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
+
+export const onComponentMounted: typeof ocm = (name, callback) => {
+  const nextName = typeof name === 'string' ? [name] : name
+
+  if (nextName.every((n) => getMountedComponents().includes(n))) {
+    callback()
+    return () => null
+  }
+
+  const unSubscribe = subscribe({
+    [MOUNTED_COMPONENTS_KEY](value) {
+      const names = value as string[]
+      if (nextName.every((n) => names.includes(n))) {
+        unSubscribe()
+        callback()
+      }
+    },
+  })
+
+  return unSubscribe
+}
+
+export const resetModuleConfig = (name: string, url: string) => {
+  window.requirejs.undef(name)
+  window.requirejs.config({
+    paths: {
+      [name]: `${url}#${name}`,
+    },
+  })
+}
 
 export const getNameWithModule = (name: string, module?: string) => (module ? `${name}.${module}` : name)
 

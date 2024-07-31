@@ -1,8 +1,8 @@
 import React from 'react'
 import { createComponent as cc } from '@variousjs/various'
-import componentCreator from './core'
-import connector from '../connector'
-import { getNameWithModule } from '../helper'
+import createReactComponent from './component'
+import connector from './connector'
+import { getNameWithModule } from './helper'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   const { name, module, url } = config
@@ -13,7 +13,7 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
     return existComponent
   }
 
-  const C = componentCreator({
+  const C = createReactComponent({
     name,
     module,
     url,

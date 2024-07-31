@@ -1,8 +1,13 @@
 /* eslint-disable no-throw-literal */
 import React, { Component, ComponentType } from 'react'
 import { I18n, OnMessage, ComponentDefaultProps } from '@variousjs/various'
-import { isReactComponent, onError, getNameWithModule } from '../helper'
-import { isModuleLoaded, getMountedComponents, resetModuleConfig } from './helper'
+import {
+  isReactComponent,
+  onError,
+  getNameWithModule,
+  getMountedComponents,
+  resetModuleConfig,
+} from '../helper'
 import {
   connect,
   getStore,
@@ -14,7 +19,7 @@ import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
 import getDispatch from './dispatch'
 import getI18n from './i18n'
-import createModule from './module'
+import createModule from '../create-module'
 import {
   ErrorState,
   RequiredComponent,
@@ -22,7 +27,7 @@ import {
   Store,
 } from '../../types'
 
-function createComponent<P extends object>(config: {
+function createReactComponent<P extends object>(config: {
   name: string,
   module?: string,
   url?: string,
@@ -59,7 +64,7 @@ function createComponent<P extends object>(config: {
     private getDependencies = () => getStore(DEPENDENCIES_KEY)
 
     componentDidMount() {
-      this.setState({ componentExist: isModuleLoaded(name) })
+      this.setState({ componentExist: !!connector.getComponent(nameWidthModule) })
       this.mountComponent()
     }
 
@@ -229,4 +234,4 @@ function createComponent<P extends object>(config: {
   return connect(...storeKeys)(R)
 }
 
-export default createComponent
+export default createReactComponent

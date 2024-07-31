@@ -156,7 +156,7 @@ declare module '@variousjs/various' {
 
   export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => string[]
-  export const preloadComponents: (names: string[]) => Promise<void>
+  export const preloadModules: (names: string[]) => Promise<void>
   export const onComponentMounted: (name: string | string[], callback: () => void) => () => void
 
   export const getEnv: () => ENV

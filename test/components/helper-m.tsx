@@ -3,7 +3,7 @@ import { Descriptions, Button } from 'antd'
 import {
   onComponentMounted,
   renderComponent,
-  preloadComponents,
+  preloadModules,
   isModuleLoaded,
   createModule,
 } from '@variousjs/various'
@@ -18,14 +18,14 @@ export default () => {
     if (isModuleLoaded('helper-n')) {
       setPreLoaded(true)
     }
-    await preloadComponents(['helper-n'])
+    await preloadModules(['helper-n'])
     if (isModuleLoaded('helper-n')) {
       setPreLoaded(true)
     }
   }
 
   const onCreate = async () => {
-    const j = await createModule('create-jjj')
+    const j = await createModule({ name: 'create-jjj' })
     console.log(j)
   }
 

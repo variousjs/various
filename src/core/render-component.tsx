@@ -1,10 +1,9 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
-import { resetModuleConfig } from './helper'
-import { getNameWithModule } from '../helper'
-import componentCreator from './core'
-import connector from '../connector'
+import { resetModuleConfig, getNameWithModule } from './helper'
+import componentCreator from './component'
+import connector from './connector'
 
 const renderComponent: typeof rc = ({
   name,

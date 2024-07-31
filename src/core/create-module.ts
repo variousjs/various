@@ -1,29 +1,16 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { createModule as cm } from '@variousjs/various'
-import { RequireError, RequiredComponent } from '../../types'
-import { ERROR_TYPE, DEPENDENCIES_KEY } from '../../config'
-import { getStore } from '../store'
-import connector from '../connector'
-import { isModuleLoaded, resetModuleConfig } from './helper'
-import { getNameWithModule } from '../helper'
+import { RequireError, RequiredComponent } from '../types'
+import { ERROR_TYPE, DEPENDENCIES_KEY } from '../config'
+import { getStore } from './store'
+import connector from './connector'
+import { isModuleLoaded, resetModuleConfig, getNameWithModule } from './helper'
 
 const createModule: typeof cm = (config) => {
   const middlewares = connector.getMiddlewares()
   const { name, module, url } = config
   const nameWidthModule = getNameWithModule(name, module)
   const loadStart = +new Date()
-
-  try {
-    const { registry, urlFetched } = window.requirejs.s.contexts._
-    Object.keys(registry).forEach((key) => {
-      if (registry[key].error) {
-        delete urlFetched[registry[key].map.url]
-        delete registry[key]
-      }
-    })
-  } catch (e) {
-    // ignore
-  }
 
   if (url) {
     resetModuleConfig(name, url)

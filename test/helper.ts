@@ -12,9 +12,9 @@ export const getPageComponents = (type: string) => {
   }
   return page.components.reduce((prev, current, index) => {
     if (prev[current]) {
-      prev[`${current}${index}`] = memo(createComponent(current))
+      prev[`${current}${index}`] = memo(createComponent({ name: current }))
     } else {
-      prev[current] = memo(createComponent(current))
+      prev[current] = memo(createComponent({ name: current }))
     }
     return prev
   }, {} as Record<string, ReturnType<typeof createComponent>>)

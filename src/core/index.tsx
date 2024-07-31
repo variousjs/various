@@ -16,14 +16,24 @@ import { onError } from './helper'
 import { Container as ContainerNode } from './default-component'
 import { ErrorState, Store } from '../types'
 
+export { default as Nycticorax } from 'nycticorax'
+
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
 export { getPostMessage as createPostMessage } from './component/message'
 
-export { default as Nycticorax } from 'nycticorax'
+export {
+  getConfig,
+  getEnv,
+  preloadModules,
+  isModuleLoaded,
+  getMountedComponents,
+  onComponentMounted,
+} from './helper'
 
-export * from './component'
-export { getConfig, getEnv } from './helper'
+export { default as createModule } from './create-module'
+export { default as createComponent } from './create-component'
+export { default as renderComponent } from './render-component'
 
 export default (config: Config & App<Store>) => {
   const {
