@@ -157,6 +157,9 @@ function createReactComponent<P extends object>(config: {
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         const errorInfo = e as ErrorState
+        const dependencies = getStore(DEPENDENCIES_KEY)
+
+        resetModuleConfig(name, url || dependencies[name])
 
         if (this.isUnMounted) {
           return
@@ -204,7 +207,9 @@ function createReactComponent<P extends object>(config: {
             <ErrorNode
               $type={ERROR_TYPE[errorType]}
               $message={errorMessage}
-              $reload={errorType === ERROR_TYPE.INVALID_COMPONENT ? undefined : this.onReload}
+              $reload={[
+                ERROR_TYPE.NOT_DEFINED,
+              ].includes(errorType) ? undefined : this.onReload}
               $store={store as Store}
             />
           )

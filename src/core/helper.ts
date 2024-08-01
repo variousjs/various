@@ -49,7 +49,7 @@ export const resetModuleConfig = (name: string, url: string) => {
   window.requirejs.undef(name)
   window.requirejs.config({
     paths: {
-      [name]: `${url}#${name}`,
+      [name]: `${url}?${+new Date()}`,
     },
   })
 }

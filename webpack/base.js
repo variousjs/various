@@ -12,6 +12,7 @@ const config = {
 
     'antd',
     'rc-table',
+    'rc-table2',
     'table',
     'moment',
     'moment_zhCN',
