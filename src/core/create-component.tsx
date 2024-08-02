@@ -27,7 +27,7 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   }
 
   component.displayName = 'various-creator'
-  connector.setComponent(name, component)
+  connector.setComponent(nameWithModule, component)
   return component
 }
 

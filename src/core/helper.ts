@@ -10,8 +10,11 @@ import {
   ENV_KEY,
   CONFIG_KEY,
   MOUNTED_COMPONENTS_KEY,
+  DEPENDENCIES_KEY,
 } from '../config'
 import { ErrorType, RequiredComponent } from '../types'
+
+const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
 export const preloadModules: typeof pm = (names) => new Promise<void>((resolve, reject) => {
   window.requirejs(names, resolve, reject)
@@ -45,12 +48,33 @@ export const onComponentMounted: typeof ocm = (name, callback) => {
   return unSubscribe
 }
 
-export const resetModuleConfig = (name: string, url: string) => {
+export const resetModuleConfig = (name: string, url?: string) => {
+  const dependencies = getStore(DEPENDENCIES_KEY)
+
+  // ignore multiple custom module url
+  if (url && window.requirejs.defined(name)) {
+    return
+  }
+
+  let path = getUrlHash(dependencies[name])
+
+  // custom module url, but module loaded error
+  if (url) {
+    path = `${url}#${name}`
+
+    try {
+      const { registry } = window.requirejs.s.contexts._
+      if (registry[name].error) {
+        path = getUrlHash(url)
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   window.requirejs.undef(name)
   window.requirejs.config({
-    paths: {
-      [name]: `${url}?${+new Date()}`,
-    },
+    paths: { [name]: path },
   })
 }
 

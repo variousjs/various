@@ -14,7 +14,7 @@ import {
   emit,
   getUserStore,
 } from '../store'
-import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE, DEPENDENCIES_KEY } from '../../config'
+import { MOUNTED_COMPONENTS_KEY, ERROR_TYPE } from '../../config'
 import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
 import getDispatch from './dispatch'
@@ -61,16 +61,12 @@ function createReactComponent<P extends object>(config: {
 
     private unSubscribe = () => null as unknown
 
-    private getDependencies = () => getStore(DEPENDENCIES_KEY)
-
     componentDidMount() {
       this.setState({ componentExist: !!connector.getComponent(nameWidthModule) })
       this.mountComponent()
     }
 
     componentDidCatch(e: Error) {
-      const dependencies = this.getDependencies()
-
       onError({
         name,
         module,
@@ -79,7 +75,7 @@ function createReactComponent<P extends object>(config: {
       })
 
       this.setState({ errorMessage: e.message, errorType: ERROR_TYPE.SCRIPT_ERROR })
-      resetModuleConfig(name, dependencies[name])
+      resetModuleConfig(name)
       this.unMountComponent()
     }
 
@@ -157,9 +153,6 @@ function createReactComponent<P extends object>(config: {
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         const errorInfo = e as ErrorState
-        const dependencies = getStore(DEPENDENCIES_KEY)
-
-        resetModuleConfig(name, url || dependencies[name])
 
         if (this.isUnMounted) {
           return

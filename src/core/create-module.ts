@@ -38,7 +38,7 @@ const createModule: typeof cm = (config) => {
       })
 
       if (!C) {
-        resetModuleConfig(name, url || dependencies[name])
+        resetModuleConfig(name)
         reject({
           errorMessage: 'module no content',
           errorType: ERROR_TYPE.INVALID_COMPONENT,
@@ -49,7 +49,7 @@ const createModule: typeof cm = (config) => {
       const actualModule = !module ? (C.default || C) : C[module]
 
       if (!actualModule) {
-        resetModuleConfig(name, url || dependencies[name])
+        resetModuleConfig(name)
         reject({
           errorMessage: 'submodule not defined',
           errorType: ERROR_TYPE.INVALID_COMPONENT,
@@ -83,13 +83,15 @@ const createModule: typeof cm = (config) => {
             }
           })
 
-          resetModuleConfig(requireModule, dependencies[requireModule])
+          resetModuleConfig(requireModule)
         } catch (err) {
         // ignore
         }
       }
 
-      resetModuleConfig(name, url || dependencies[name])
+      if (!url) {
+        resetModuleConfig(name)
+      }
       reject({ errorType, errorMessage })
     })
   })

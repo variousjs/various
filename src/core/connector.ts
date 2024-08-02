@@ -19,7 +19,7 @@ class Connector {
 
   private componentActions: Record<string, ComponentActions>
 
-  private components: Record<string, ComponentType>
+  private components: Record<string, ComponentType<any>>
 
   private renderRoots: Record<string, Root>
 
