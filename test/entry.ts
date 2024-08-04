@@ -14,12 +14,12 @@ if (window.location.hash === '') {
 }
 
 const middlewares: App['middlewares'] = {
-  // onLoad(e) {
-  //   window.console.log(`${e.name},${e.beenLoaded}`)
-  // },
-  // onError(e) {
-  //   window.console.log(`${e.name},${e.errorType}`)
-  // },
+  onLoad(e) {
+    window.console.log(`${e.name},${e.beenLoaded}`)
+  },
+  onError(e) {
+    window.console.log(`${e.name},${e.errorType}`)
+  },
   onMessage(e) {
     if (e.event === 'block') {
       window.console.warn('block')

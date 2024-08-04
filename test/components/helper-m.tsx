@@ -12,6 +12,7 @@ export default () => {
   const [showRender, setShowRender] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const [preLoaded, setPreLoaded] = useState(false)
+  const [createValue, setCreateValue] = useState('-')
   const unMount = useRef<() => void>(() => null)
 
   const onPreload = async () => {
@@ -25,8 +26,8 @@ export default () => {
   }
 
   const onCreate = async () => {
-    const j = await createModule({ name: 'create-jjj' })
-    console.log(j)
+    const j = await createModule<string>({ name: 'create-j', module: 'k' })
+    setCreateValue(j)
   }
 
   useEffect(() => () => unMount.current(), [])
@@ -69,6 +70,12 @@ export default () => {
       <Descriptions.Item label="Preloaded">
         <div data-m="preloaded">
           {preLoaded ? 'true' : 'false'}
+        </div>
+      </Descriptions.Item>
+
+      <Descriptions.Item label="Preloaded">
+        <div data-m="createModule">
+          {createValue}
         </div>
       </Descriptions.Item>
 
