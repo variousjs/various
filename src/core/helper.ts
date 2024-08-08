@@ -2,6 +2,8 @@ import {
   onComponentMounted as ocm,
   isModuleLoaded as im,
   preloadModules as pm,
+  VariousError as ve,
+  ErrorType as et,
 } from '@variousjs/various'
 import { getStore, subscribe } from './store'
 import connector from './connector'
@@ -132,3 +134,18 @@ export const isReactComponent = (component: RequiredComponent) => (
   typeof component === 'function'
     && String(component).includes('createElement(')
 )
+
+export class VariousError extends Error implements ve {
+  type: et
+
+  originalError: Error
+
+  module: string
+
+  constructor(module: string, type: et, originalError: Error) {
+    super(originalError.message)
+    this.type = type
+    this.originalError = originalError
+    this.module = module
+  }
+}

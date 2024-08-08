@@ -47,7 +47,8 @@ declare module '@variousjs/various' {
     P extends object = {}
   > = FC<ComponentProps<S, P>> & StaticProps
 
-  export type ErrorType = 'LOADING_ERROR' | 'DEPENDENCIES_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'APP_ERROR'
+  export type ErrorType = 'LOADING_ERROR' | 'SUBMODULE_LOADING_ERROR' | 'NOT_DEFINED' | 'INVALID_COMPONENT' | 'SCRIPT_ERROR' | 'APP_ERROR' | 'INVALID_MODULE' | 'SUBMODULE_NOT_DEFINED' | 'SUBMODULE_SCRIPT_ERROR'
+
   export interface ErrorProps<S extends object = {}> {
     $reload?: () => void,
     $type: ErrorType,
@@ -125,6 +126,12 @@ declare module '@variousjs/various' {
     env?: ENV,
     timeout?: number,
     earlyParallelComponents?: string[],
+  }
+
+  export interface VariousError extends Error {
+    type: ErrorType,
+    originalError: Error,
+    module: string,
   }
 
   export function createComponent<

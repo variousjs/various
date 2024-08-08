@@ -6,6 +6,7 @@ import {
   preloadModules,
   isModuleLoaded,
   createModule,
+  VariousError,
 } from '@variousjs/various'
 
 export default () => {
@@ -26,8 +27,13 @@ export default () => {
   }
 
   const onCreate = async () => {
-    const j = await createModule<string>({ name: 'create-j', module: 'k' })
-    setCreateValue(j)
+    try {
+      const j = await createModule<string>({ name: 'create-h' })
+      setCreateValue(j)
+    } catch (e) {
+      const error = e as VariousError
+      console.log(error.originalError, error.type)
+    }
   }
 
   useEffect(() => () => unMount.current(), [])

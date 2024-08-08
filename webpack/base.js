@@ -17,6 +17,8 @@ const config = {
     'moment',
     'moment_zhCN',
     'helper',
+    'module-error',
+    'module-error2',
   ],
   devtool: 'source-map',
   resolve: {

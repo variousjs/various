@@ -1,10 +1,15 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { createModule as cm } from '@variousjs/various'
 import { RequireError, RequiredComponent } from '../types'
-import { ERROR_TYPE, DEPENDENCIES_KEY } from '../config'
+import { DEPENDENCIES_KEY } from '../config'
 import { getStore } from './store'
 import connector from './connector'
-import { isModuleLoaded, resetModuleConfig, getNameWithModule } from './helper'
+import {
+  isModuleLoaded,
+  resetModuleConfig,
+  getNameWithModule,
+  VariousError,
+} from './helper'
 
 const createModule: typeof cm = (config) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
@@ -19,10 +24,11 @@ const createModule: typeof cm = (config) => {
 
   return new Promise<any>((resolve, reject) => {
     if (!url && !dependencies[name]) {
-      reject({
-        errorMessage: 'module not defined',
-        errorType: ERROR_TYPE.NOT_DEFINED,
-      })
+      reject(new VariousError(
+        name,
+        'NOT_DEFINED',
+        new Error(`Script error for "${name}", module not defined`),
+      ))
       return
     }
 
@@ -39,60 +45,49 @@ const createModule: typeof cm = (config) => {
 
       if (!C) {
         resetModuleConfig(name)
-        reject({
-          errorMessage: 'module no content',
-          errorType: ERROR_TYPE.INVALID_COMPONENT,
-        })
+        reject(new VariousError(
+          name,
+          'INVALID_MODULE',
+          new Error(`Script error for "${name}", module not content`),
+        ))
         return
       }
 
-      const actualModule = !module ? (C.default || C) : C[module]
+      const defaultModule = 'default' in C ? C.default : C
+      const actualModule = !module ? defaultModule : C[module]
 
-      if (!actualModule) {
+      if (!actualModule && module) {
         resetModuleConfig(name)
-        reject({
-          errorMessage: 'submodule not defined',
-          errorType: ERROR_TYPE.INVALID_COMPONENT,
-        })
+        reject(new VariousError(
+          name,
+          'SUBMODULE_NOT_DEFINED',
+          new Error(`Script error for "${name}", submodule "${module}" not defined`),
+        ))
         return
       }
 
       resolve(actualModule)
     }, (e: RequireError) => {
       const [requireModule] = e.requireModules
-      const errorType = requireModule === name
-        ? ERROR_TYPE.LOADING_ERROR
-        : ERROR_TYPE.DEPENDENCIES_LOADING_ERROR
-      const errorMessage = `load \`${requireModule}\` error: ${e.message}`
 
-      if (errorType === ERROR_TYPE.DEPENDENCIES_LOADING_ERROR) {
-        if (!dependencies[requireModule]) {
-          reject({
-            errorMessage: `submodule \`${requireModule}\` not defined`,
-            errorType: ERROR_TYPE.NOT_DEFINED,
-          })
-          return
-        }
+      resetModuleConfig(name, url)
+      resetModuleConfig(requireModule)
 
-        try {
-          const { registry, urlFetched } = window.requirejs.s.contexts._
-          Object.keys(registry).forEach((key) => {
-            if (registry[key].error) {
-              delete urlFetched[registry[key].map.url]
-              delete registry[key]
-            }
-          })
+      let errorType: VariousError['type'] = 'LOADING_ERROR'
 
-          resetModuleConfig(requireModule)
-        } catch (err) {
-        // ignore
-        }
+      if (requireModule !== name) {
+        errorType = 'SUBMODULE_LOADING_ERROR'
       }
 
-      if (!url) {
-        resetModuleConfig(name)
+      if (!dependencies[requireModule]) {
+        errorType = 'SUBMODULE_NOT_DEFINED'
       }
-      reject({ errorType, errorMessage })
+
+      if (!e.message.includes('https://requirejs.org/docs/errors.html')) {
+        errorType = requireModule === name ? 'SCRIPT_ERROR' : 'SUBMODULE_SCRIPT_ERROR'
+      }
+
+      reject(new VariousError(requireModule, errorType, e))
     })
   })
 }

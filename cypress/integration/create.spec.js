@@ -29,17 +29,17 @@ describe('create component', () => {
       .next()
       .should('have.text', '刷新')
 
-    cy.contains('[LOADING_ERROR]:load `no-defined` error')
+    cy.contains('[NOT_DEFINED]:module not defined')
       .should('exist')
       .next()
-      .should('have.text', '刷新')
+      .should('not.exist')
 
     cy.contains('[LOADING_ERROR]:load `create-path-error` error')
       .should('exist')
       .next()
       .should('have.text', '刷新')
 
-    cy.contains('[INVALID_COMPONENT]:no content')
+    cy.contains('[INVALID_COMPONENT]:module no content')
       .should('exist')
       .next()
       .should('not.exist')
