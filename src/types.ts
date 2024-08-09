@@ -1,15 +1,15 @@
 import { ComponentType } from 'react'
 import {
-  Actions,
   ComponentProps,
   Invoker,
   ENV,
   Config,
   OnMessage,
   I18n,
-  ErrorProps,
   App,
   Message,
+  Dispatch,
+  ComponentDefaultProps,
 } from '@variousjs/various'
 import {
   MESSAGE_KEY,
@@ -28,6 +28,8 @@ export interface Store {
   [key: string]: any,
 }
 
+export type Actions<S extends object> = Record<string, Dispatch<S>>
+
 export type ComponentActions = Record<string, Invoker>
 
 export interface RequireError extends Error {
@@ -42,16 +44,14 @@ export type RequiredComponent = ComponentType<ComponentProps>
   & { $onMessage: OnMessage, $i18n: I18n }
   & { [key: string]: RequiredComponent }
 
-export interface ErrorState {
-  errorType?: ErrorProps['$type'],
-  errorMessage: string,
+export interface CreateComponentState {
+  isError: boolean,
+  componentReady: boolean,
+  componentExist: boolean,
 }
 
-export interface ErrorType {
-  name: string,
-  module?: string,
-  message: string,
-  type: ErrorProps['$type'] | 'dispatch' | 'i18n',
+export interface CreateComponentProps<P extends object> extends Store {
+  $componentProps: P & ComponentDefaultProps,
 }
 
 export interface Various {

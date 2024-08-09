@@ -1,7 +1,7 @@
 import { createDispatch as cd } from '@variousjs/various'
 import connector from '../connector'
 import { dispatch } from '../store'
-import { onError, consoleWarn } from '../helper'
+import { onError, consoleWarn, VariousError } from '../helper'
 
 const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
   const middlewares = connector.getMiddlewares()
@@ -17,7 +17,7 @@ const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
       trigger: componentName,
     })
     if (check === false) {
-      consoleWarn(componentName, '[dispatch] blocked by middleware')
+      consoleWarn('[dispatch] blocked by middleware', componentName)
       return Promise.resolve()
     }
     if (check !== true) {

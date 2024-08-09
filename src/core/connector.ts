@@ -4,11 +4,10 @@ import {
   LoaderNode,
   ErrorNode,
   I18n,
-  Actions,
   App,
 } from '@variousjs/various'
 import { Loader, Error } from './default-component'
-import { ComponentActions, Store } from '../types'
+import { ComponentActions, Store, Actions } from '../types'
 
 class Connector {
   private loaderComponent: LoaderNode<Store>

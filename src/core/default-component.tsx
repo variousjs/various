@@ -6,9 +6,9 @@ export const Loader: LoaderNode<Store> = () => (
   <div>Loading</div>
 )
 
-export const Error: ErrorNode<Store> = ({ $type, $message, $reload }) => (
+export const Error: ErrorNode<Store> = ({ $error, $reload }) => (
   <>
-    <div>{`[${$type}] ${$message}`}</div>
+    <div>{`[${$error.type}] ${$error.message}`}</div>
     {
       $reload
         ? (
