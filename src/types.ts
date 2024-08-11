@@ -1,15 +1,15 @@
 import { ComponentType } from 'react'
 import {
   ComponentProps,
-  Invoker,
+  PublicAction,
   ENV,
   Config,
   OnMessage,
   I18n,
   App,
-  Message,
   Dispatch,
   ComponentDefaultProps,
+  ModuleDefined,
 } from '@variousjs/various'
 import {
   MESSAGE_KEY,
@@ -20,8 +20,8 @@ import {
 } from './config'
 
 export interface Store {
-  [MESSAGE_KEY]: null | (Message & { timestamp: number }),
-  [MOUNTED_COMPONENTS_KEY]: string[],
+  [MESSAGE_KEY]: null | (Parameters<OnMessage>[0] & { timestamp: number }),
+  [MOUNTED_COMPONENTS_KEY]: ModuleDefined[],
   [ENV_KEY]: ENV,
   [CONFIG_KEY]: Record<string | symbol, any>,
   [DEPENDENCIES_KEY]: Record<string, string>,
@@ -30,7 +30,7 @@ export interface Store {
 
 export type Actions<S extends object> = Record<string, Dispatch<S>>
 
-export type ComponentActions = Record<string, Invoker>
+export type PublicActions = Record<string, PublicAction>
 
 export interface RequireError extends Error {
   requireType: string,
@@ -40,7 +40,7 @@ export interface RequireError extends Error {
 
 export type RequiredComponent = ComponentType<ComponentProps>
   & Actions<Store>
-  & ComponentActions
+  & PublicActions
   & { $onMessage: OnMessage, $i18n: I18n }
   & { [key: string]: RequiredComponent }
 

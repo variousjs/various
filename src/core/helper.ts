@@ -1,9 +1,10 @@
 import {
   onComponentMounted as ocm,
-  isModuleLoaded as im,
-  preloadModules as pm,
+  isPackageLoaded as ip,
+  preloadPackages as pp,
   VariousError as ve,
   ErrorType as et,
+  ModuleDefined,
 } from '@variousjs/various'
 import { getStore, subscribe } from './store'
 import connector from './connector'
@@ -17,29 +18,31 @@ import { RequiredComponent } from '../types'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-export const preloadModules: typeof pm = (names) => new Promise<void>((resolve, reject) => {
+export const preloadPackages: typeof pp = (name) => new Promise<void>((resolve, reject) => {
+  const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
 })
 
-export const isModuleLoaded: typeof im = (name) => {
-  const [m] = name.split('.')
-  return window.requirejs.specified(m) && !!window.requirejs.s.contexts._.defined[m]
-}
+export const isPackageLoaded: typeof ip = (name) => window.requirejs.specified(name)
+  && !!window.requirejs.s.contexts._.defined[name]
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
-export const onComponentMounted: typeof ocm = (name, callback) => {
-  const nextName = typeof name === 'string' ? [name] : name
+const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
+  .some((c) => c.name === module.name && c.module === module.module)
 
-  if (nextName.every((n) => getMountedComponents().includes(n))) {
+export const onComponentMounted: typeof ocm = (module, callback) => {
+  const modules = Array.isArray(module) ? module : [module]
+
+  if (modules.every((m) => hasModule(getMountedComponents(), m))) {
     callback()
     return () => null
   }
 
   const unSubscribe = subscribe({
     [MOUNTED_COMPONENTS_KEY](value) {
-      const names = value as string[]
-      if (nextName.every((n) => names.includes(n))) {
+      const mountedModules = value as ModuleDefined[]
+      if (modules.every((n) => hasModule(mountedModules, n))) {
         unSubscribe()
         callback()
       }
@@ -78,7 +81,10 @@ export const resetModuleConfig = (name: string, url?: string) => {
     paths: { [name]: path },
   })
 }
-const getNameWithModule = (name: string, module?: string) => (module ? `${name}.${module}` : name)
+export const getNameWithModule = (moduleDefined: ModuleDefined) => {
+  const { name, module } = moduleDefined
+  return module ? `${name}.${module}` : name
+}
 
 export const getEnv = () => getStore(ENV_KEY)
 
@@ -88,15 +94,15 @@ const getConsolePrefix = (name: string) => {
   return [text, style]
 }
 
-function consoleError(e: Error, name: string, module?: string) {
-  const nameWithModule = getNameWithModule(name, module)
+function consoleError(moduleDefined: ModuleDefined, e: Error) {
+  const nameWithModule = getNameWithModule(moduleDefined)
   if (getEnv() === 'development') {
     window.console.error(...getConsolePrefix(nameWithModule), e)
   }
 }
 
-export function consoleWarn(text: string, name: string, module?: string) {
-  const nameWithModule = getNameWithModule(name, module)
+export function consoleWarn(moduleDefined: ModuleDefined, text: string) {
+  const nameWithModule = getNameWithModule(moduleDefined)
   if (getEnv() === 'development') {
     window.console.warn(...getConsolePrefix(nameWithModule), text)
   }
@@ -111,7 +117,7 @@ export const onError = (e: VariousError) => {
   const { name, module, originalError } = e
 
   middlewares?.onError?.(e)
-  consoleError(originalError, name, module)
+  consoleError({ name, module }, originalError)
 }
 
 export const isReactComponent = (component: RequiredComponent) => (
@@ -125,13 +131,13 @@ export class VariousError extends Error implements ve {
 
   originalError: Error
 
-  module: string
+  module?: string
 
   name: string
 
   constructor(data: {
     name: string,
-    module: string,
+    module?: string,
     type: et,
     originalError: Error,
   }) {

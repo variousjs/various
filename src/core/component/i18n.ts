@@ -1,18 +1,18 @@
-import { Intl } from '@variousjs/various'
+import { Intl, ModuleDefined } from '@variousjs/various'
 import connector from '../connector'
-import { onError } from '../helper'
+import { VariousError, onError } from '../helper'
 import { getStore } from '../store'
 
-export default function (componentName: string) {
+export default function (moduleDefined: ModuleDefined) {
   return function (key, params) {
-    const i18nConfig = connector.getI18nConfig(componentName)
+    const i18nConfig = connector.getI18nConfig(moduleDefined)
 
     if (!i18nConfig) {
-      onError({
-        name: componentName,
-        type: 'i18n',
-        message: 'config not exist',
-      })
+      onError(new VariousError({
+        ...moduleDefined,
+        type: 'I18N',
+        originalError: new Error('config not exist'),
+      }))
       return key
     }
 
@@ -21,20 +21,20 @@ export default function (componentName: string) {
     const resource = resources[locale]
 
     if (!resource) {
-      onError({
-        name: componentName,
-        type: 'i18n',
-        message: `locale \`${locale}\` not exist`,
-      })
+      onError(new VariousError({
+        ...moduleDefined,
+        type: 'I18N',
+        originalError: new Error(`locale resource \`${locale}\` not exist`),
+      }))
       return key
     }
 
     if (!resource[key]) {
-      onError({
-        name: componentName,
-        type: 'i18n',
-        message: `key \`${key}\` not exist`,
-      })
+      onError(new VariousError({
+        ...moduleDefined,
+        type: 'I18N',
+        originalError: new Error(`locale key \`${key}\` not exist`),
+      }))
       return key
     }
 

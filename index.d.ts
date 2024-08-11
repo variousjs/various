@@ -29,14 +29,15 @@ declare module '@variousjs/various' {
 
   type ObjectAny = Record<string, any>
 
-  interface ModuleDefined { name: string, module?: string }
-  interface Message { event: string, info: any, trigger: ModuleDefined }
+  export interface ModuleDefined { name: string, module?: string }
+
+  interface Message { event: string, value: any, trigger: ModuleDefined }
 
   type $dispatch = (args: ModuleDefined & {
     method: string,
-    value?: any,
+    value: any,
   }) => Promise<any>
-  type $postMessage = (event: string, value?: any) => void
+  type $postMessage = (event: string, value: any) => void
 
   export type Intl = (key: string, params?: Record<string, string | number>) => string
 
@@ -161,9 +162,9 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => void
 
-  export const isModuleLoaded: (name: string) => boolean
-  export const getMountedComponents: () => string[]
-  export const preloadModules: (names: string[]) => Promise<void>
+  export const isPackageLoaded: (name: string) => boolean
+  export const getMountedComponents: () => ModuleDefined[]
+  export const preloadPackages: (name: string | string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
   ) => () => void
