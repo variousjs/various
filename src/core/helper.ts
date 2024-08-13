@@ -1,6 +1,6 @@
 import {
   onComponentMounted as ocm,
-  isPackageLoaded as ip,
+  isModuleLoaded as im,
   preloadPackages as pp,
   VariousError as ve,
   ErrorType as et,
@@ -23,12 +23,15 @@ export const preloadPackages: typeof pp = (name) => new Promise<void>((resolve, 
   window.requirejs(names, resolve, reject)
 })
 
-export const isPackageLoaded: typeof ip = (name) => window.requirejs.specified(name)
+export const isModuleLoaded: typeof im = (moduleDefined) => {
+  const { name } = moduleDefined
+  return window.requirejs.specified(name)
   && !!window.requirejs.s.contexts._.defined[name]
+}
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
-const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
+export const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
   .some((c) => c.name === module.name && c.module === module.module)
 
 export const onComponentMounted: typeof ocm = (module, callback) => {

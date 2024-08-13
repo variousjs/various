@@ -21,7 +21,7 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
       trigger: moduleDefined,
     })
     if (check === false) {
-      consoleWarn('[dispatch] blocked by middleware', moduleDefined.name, moduleDefined.module)
+      consoleWarn(moduleDefined, '[dispatch] blocked by middleware')
       return Promise.resolve()
     }
     if (check !== true) {

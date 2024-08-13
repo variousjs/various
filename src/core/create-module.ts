@@ -4,18 +4,12 @@ import { RequireError, RequiredComponent } from '../types'
 import { DEPENDENCIES_KEY } from '../config'
 import { getStore } from './store'
 import connector from './connector'
-import {
-  isModuleLoaded,
-  resetModuleConfig,
-  getNameWithModule,
-  VariousError,
-} from './helper'
+import { isModuleLoaded, resetModuleConfig, VariousError } from './helper'
 
 const createModule: typeof cm = (config) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const middlewares = connector.getMiddlewares()
   const { name, module, url } = config
-  const nameWidthModule = getNameWithModule(name, module)
   const loadStart = +new Date()
 
   if (url) {
@@ -24,11 +18,12 @@ const createModule: typeof cm = (config) => {
 
   return new Promise<any>((resolve, reject) => {
     if (!url && !dependencies[name]) {
-      reject(new VariousError(
+      reject(new VariousError({
         name,
-        'NOT_DEFINED',
-        new Error(`Script error for "${name}", module not defined`),
-      ))
+        module,
+        type: 'NOT_DEFINED',
+        originalError: new Error(`Script error for "${name}", module not defined`),
+      }))
       return
     }
 
@@ -36,20 +31,21 @@ const createModule: typeof cm = (config) => {
       const loadEnd = +new Date()
 
       middlewares?.onLoad?.({
-        name: nameWidthModule,
+        name,
+        module,
         loadStart,
         loadEnd,
-        duration: loadEnd - loadStart,
-        beenLoaded: isModuleLoaded(name),
+        beenLoaded: isModuleLoaded({ name, module }),
       })
 
       if (!C) {
         resetModuleConfig(name)
-        reject(new VariousError(
+        reject(new VariousError({
           name,
-          'INVALID_MODULE',
-          new Error(`Script error for "${name}", module not content`),
-        ))
+          module,
+          type: 'INVALID_MODULE',
+          originalError: new Error(`Script error for "${name}", module not content`),
+        }))
         return
       }
 
@@ -58,11 +54,12 @@ const createModule: typeof cm = (config) => {
 
       if (!actualModule && module) {
         resetModuleConfig(name)
-        reject(new VariousError(
+        reject(new VariousError({
           name,
-          'SUBMODULE_NOT_DEFINED',
-          new Error(`Script error for "${name}", submodule "${module}" not defined`),
-        ))
+          module,
+          type: 'SUBMODULE_NOT_DEFINED',
+          originalError: new Error(`Script error for "${name}", submodule "${module}" not defined`),
+        }))
         return
       }
 
@@ -87,7 +84,12 @@ const createModule: typeof cm = (config) => {
         errorType = requireModule === name ? 'SCRIPT_ERROR' : 'SUBMODULE_SCRIPT_ERROR'
       }
 
-      reject(new VariousError(requireModule, errorType, e))
+      reject(new VariousError({
+        name,
+        module: requireModule === name ? undefined : requireModule,
+        type: errorType,
+        originalError: e,
+      }))
     })
   })
 }

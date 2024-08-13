@@ -162,7 +162,7 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => void
 
-  export const isPackageLoaded: (name: string) => boolean
+  export const isModuleLoaded: (moduleDefined: ModuleDefined) => boolean
   export const getMountedComponents: () => ModuleDefined[]
   export const preloadPackages: (name: string | string[]) => Promise<void>
   export const onComponentMounted: (
