@@ -2,13 +2,11 @@ import React from 'react'
 import { createComponent as cc } from '@variousjs/various'
 import createReactComponent from './component'
 import connector from './connector'
-import { getNameWithModule } from './helper'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   const { name, module, url } = config
-  const nameWithModule = getNameWithModule(name, module)
 
-  const existComponent = connector.getComponent(nameWithModule)
+  const existComponent = connector.getComponent({ name, module })
   if (existComponent) {
     return existComponent
   }
@@ -27,7 +25,7 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   }
 
   component.displayName = 'various-creator'
-  connector.setComponent(nameWithModule, component)
+  connector.setComponent({ name, module }, component)
   return component
 }
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
-import { getNameWithModule } from './helper'
 import componentCreator from './component'
 import connector from './connector'
 
@@ -13,9 +12,7 @@ const renderComponent: typeof rc = ({
   props,
   onMounted,
 }) => {
-  const nameWithModule = getNameWithModule(name, module)
-
-  let C = connector.getComponent(nameWithModule)
+  let C = connector.getComponent({ name, module })
   if (!C) {
     C = componentCreator({
       name,
@@ -23,15 +20,15 @@ const renderComponent: typeof rc = ({
       url,
       onMounted,
     })
-    connector.setComponent(nameWithModule, C)
+    connector.setComponent({ name, module }, C)
   }
 
   let root: Root
-  if (connector.getRenderRoot(nameWithModule)) {
-    root = connector.getRenderRoot(nameWithModule)
+  if (connector.getRenderRoot({ name, module })) {
+    root = connector.getRenderRoot({ name, module })
   } else {
     root = createRoot(target as Element)
-    connector.setRenderRoot(nameWithModule, root)
+    connector.setRenderRoot({ name, module }, root)
   }
 
   const { $silent, ...rest } = props || {}
@@ -41,7 +38,7 @@ const renderComponent: typeof rc = ({
 
   return () => setTimeout(() => {
     root.unmount()
-    connector.deleteRenderRoot(nameWithModule)
+    connector.deleteRenderRoot({ name, module })
   })
 }
 
