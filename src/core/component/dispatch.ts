@@ -9,14 +9,14 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
   let {
     name,
     module,
-    method,
+    action,
     value,
   } = params
 
   if (middlewares?.onDispatch) {
     const check = await middlewares.onDispatch({
       target: { name, module },
-      method,
+      action,
       value,
       trigger: moduleDefined,
     })
@@ -27,16 +27,16 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
     if (check !== true) {
       name = check.target.name
       module = check.target.module
-      method = check.method
+      action = check.action
       value = check.value
     }
   }
 
   if (name === 'app') {
     const storeActions = connector.getStoreActions()
-    const action = storeActions[method]
-    if (!action) {
-      const errorMessage = `\`${method}\` is not present`
+    const storeAction = storeActions[action]
+    if (!storeAction) {
+      const errorMessage = `\`${action}\` is not present`
       const error = new VariousError({
         ...moduleDefined,
         type: 'DISPATCH',
@@ -45,7 +45,7 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
       onError(error)
       throw error
     }
-    return dispatch(action, value, moduleDefined)
+    return dispatch(storeAction, value, moduleDefined)
   }
 
   const componentActions = connector.getComponentActions({ name, module })
@@ -61,10 +61,10 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
     throw error
   }
 
-  const componentAction = componentActions[method]
+  const componentAction = componentActions[action]
 
   if (!componentAction) {
-    const errorMessage = `\`${method}\` is not present`
+    const errorMessage = `\`${action}\` is not present`
     const error = new VariousError({
       ...moduleDefined,
       type: 'DISPATCH',

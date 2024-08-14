@@ -3,7 +3,7 @@ import { Descriptions, Button } from 'antd'
 import {
   onComponentMounted,
   renderComponent,
-  preloadModules,
+  preloadPackages,
   isModuleLoaded,
   createModule,
   VariousError,
@@ -17,11 +17,11 @@ export default () => {
   const unMount = useRef<() => void>(() => null)
 
   const onPreload = async () => {
-    if (isModuleLoaded('helper-n')) {
+    if (isModuleLoaded({ name: 'helper-n' })) {
       setPreLoaded(true)
     }
-    await preloadModules(['helper-n'])
-    if (isModuleLoaded('helper-n')) {
+    await preloadPackages(['helper-n'])
+    if (isModuleLoaded({ name: 'helper-n' })) {
       setPreLoaded(true)
     }
   }
@@ -39,21 +39,21 @@ export default () => {
   useEffect(() => () => unMount.current(), [])
 
   useEffect(() => {
-    const un = onComponentMounted('config', () => {
+    const un = onComponentMounted({ name: 'config' }, () => {
       setShowRender(true)
     })
     return un
   }, [])
 
   useEffect(() => {
-    const un = onComponentMounted(['helper-m.N'], () => {
+    const un = onComponentMounted([{ name: 'helper-m', module: 'N' }], () => {
       setIsLoaded(true)
     })
     return un
   }, [])
 
   useEffect(() => {
-    const un = onComponentMounted(['no-exist'], () => {
+    const un = onComponentMounted([{ name: 'no-exist' }], () => {
       window.console.log('never')
     })
     return un

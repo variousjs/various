@@ -18,7 +18,7 @@ class F extends Component<ComponentProps & S> {
   }
 
   onBlock = () => {
-    this.props.$postMessage('block')
+    this.props.$postMessage('block', undefined)
   }
 
   render() {

@@ -13,31 +13,51 @@ const B = ((props) => {
   const [de, setDe] = useState('')
 
   const setA = async () => {
-    await props.$dispatch('dispatch-a', 'updateValue', 'b')
+    await props.$dispatch({
+      name: 'dispatch-a',
+      action: 'updateValue',
+      value: 'b',
+    })
   }
 
   const setAN = async () => {
     try {
-      await props.$dispatch('dispatch-a', 'nonexist')
+      await props.$dispatch({
+        name: 'dispatch-a',
+        action: 'nonexist',
+        value: undefined,
+      })
     } catch (e) {
       setDe((e as Error).message)
     }
   }
 
   const setGlobal = async () => {
-    await props.$dispatch('app', 'setName', 'various')
+    await props.$dispatch({
+      name: 'app',
+      action: 'setName',
+      value: 'various',
+    })
   }
 
   const setE = async () => {
     try {
-      await props.$dispatch('no-exist', 'some method')
+      await props.$dispatch({
+        name: 'no-exist',
+        action: 'some method',
+        value: undefined,
+      })
     } catch (e) {
       setDe((e as Error).message)
     }
   }
 
   const setBlock = () => {
-    props.$dispatch('dispatch-a', 'block')
+    props.$dispatch({
+      name: 'dispatch-a',
+      action: 'block',
+      value: undefined,
+    })
   }
 
   return (

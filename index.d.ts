@@ -34,7 +34,7 @@ declare module '@variousjs/various' {
   interface Message { event: string, value: any, trigger: ModuleDefined }
 
   type $dispatch = (args: ModuleDefined & {
-    method: string,
+    action: string,
     value: any,
   }) => Promise<any>
   type $postMessage = (event: string, value: any) => void
@@ -102,7 +102,7 @@ declare module '@variousjs/various' {
   interface DispatchEventArgs {
     target: ModuleDefined,
     trigger: ModuleDefined,
-    method: string,
+    action: string,
     value: any,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
