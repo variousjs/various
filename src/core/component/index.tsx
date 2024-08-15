@@ -96,7 +96,7 @@ function createReactComponent<P extends object>(config: {
     unMountComponent = () => {
       let mountedComponents = getMountedComponents()
       mountedComponents = mountedComponents
-        .filter((item) => item.name !== name && item.module !== module)
+        .filter((item) => item.name !== name || item.module !== module)
       emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       connector.deleteComponentActions({ name, module })
     }

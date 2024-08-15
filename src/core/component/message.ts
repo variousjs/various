@@ -34,7 +34,7 @@ export const getPostMessage: typeof cpm = (moduleDefined) => async (event, value
 export const getOnMessage = (moduleDefined: ModuleDefined, onMessage: OnMessage) => subscribe({
   [MESSAGE_KEY](v) {
     const { trigger, value, event } = v as Parameters<OnMessage>[0]
-    if (moduleDefined.name !== trigger.name && moduleDefined.module !== trigger.module) {
+    if (moduleDefined.name !== trigger.name || moduleDefined.module !== trigger.module) {
       onMessage({ event, value, trigger })
     }
   },

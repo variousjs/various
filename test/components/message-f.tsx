@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Button, Descriptions } from 'antd'
 import { ComponentProps, Nycticorax, OnMessage } from '@variousjs/various'
 
-type S = { component: string, event: string, value: any }
+type S = Parameters<OnMessage>[0]
 
 const { createStore, connect, emit } = new Nycticorax<S>()
 
-createStore({ component: '', event: '', value: undefined })
+createStore({ trigger: { name: '', module: '' }, event: '', value: undefined })
 
 class F extends Component<ComponentProps & S> {
   static $onMessage: OnMessage = (message) => {
@@ -22,12 +22,12 @@ class F extends Component<ComponentProps & S> {
   }
 
   render() {
-    const { component, event } = this.props
+    const { trigger, event } = this.props
 
     return (
       <Descriptions column={2} size="small" title="F" layout="vertical" bordered>
         <Descriptions.Item label="Component">
-          <span data-f="component">{component || '-'}</span>
+          <span data-f="component">{Object.values(trigger).join('.') || '-'}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Event">
@@ -43,4 +43,4 @@ class F extends Component<ComponentProps & S> {
   }
 }
 
-export default connect('component', 'event', 'value')(F)
+export default connect('trigger', 'event', 'value')(F)
