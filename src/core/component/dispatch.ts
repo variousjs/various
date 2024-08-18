@@ -36,7 +36,7 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
     const storeActions = connector.getStoreActions()
     const storeAction = storeActions[action]
     if (!storeAction) {
-      const errorMessage = `\`${action}\` is not present`
+      const errorMessage = `Action "${action}" is not present`
       const error = new VariousError({
         ...moduleDefined,
         type: 'DISPATCH',
@@ -51,7 +51,7 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
   const componentActions = connector.getComponentActions({ name, module })
 
   if (!componentActions) {
-    const errorMessage = 'component is not ready'
+    const errorMessage = 'Component is not ready'
     const error = new VariousError({
       ...moduleDefined,
       type: 'DISPATCH',
@@ -64,7 +64,7 @@ const createDispatch: typeof cd = (moduleDefined) => async function (params) {
   const componentAction = componentActions[action]
 
   if (!componentAction) {
-    const errorMessage = `\`${action}\` is not present`
+    const errorMessage = `Action "${action}" is not present`
     const error = new VariousError({
       ...moduleDefined,
       type: 'DISPATCH',

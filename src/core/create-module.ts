@@ -22,7 +22,7 @@ const createModule: typeof cm = (config) => {
         name,
         module,
         type: 'NOT_DEFINED',
-        originalError: new Error(`Script error for "${name}", module not defined`),
+        originalError: new Error(`Module "${name}" not defined`),
       }))
       return
     }
@@ -44,7 +44,7 @@ const createModule: typeof cm = (config) => {
           name,
           module,
           type: 'INVALID_MODULE',
-          originalError: new Error(`Script error for "${name}", module not content`),
+          originalError: new Error(`Module "${name}" not content`),
         }))
         return
       }
@@ -58,7 +58,7 @@ const createModule: typeof cm = (config) => {
           name,
           module,
           type: 'SUBMODULE_NOT_DEFINED',
-          originalError: new Error(`Script error for "${name}", submodule "${module}" not defined`),
+          originalError: new Error(`Submodule "${module}" not defined`),
         }))
         return
       }
