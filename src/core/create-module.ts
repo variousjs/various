@@ -1,4 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
 import { createModule as cm } from '@variousjs/various'
 import { RequireError, RequiredComponent } from '../types'
 import { DEPENDENCIES_KEY } from '../config'

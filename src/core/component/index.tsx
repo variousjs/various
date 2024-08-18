@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 import React, { Component, ComponentType } from 'react'
 import { I18n, OnMessage, VariousError as ve } from '@variousjs/various'
 import {
