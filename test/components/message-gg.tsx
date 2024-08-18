@@ -1,17 +1,19 @@
 import React from 'react'
 import { Descriptions } from 'antd'
-import { ComponentNode, Nycticorax } from '@variousjs/various'
+import {
+  ComponentNode,
+  Nycticorax,
+  OnMessage,
+} from '@variousjs/various'
 
-type S = { component: string, event: string, value: any }
+const { createStore, connect, emit } = new Nycticorax<Parameters<OnMessage>[0]>()
 
-const { createStore, connect, emit } = new Nycticorax<S>()
-
-createStore({ component: '', event: '', value: undefined })
+createStore({ trigger: { name: '', module: '' }, event: '', value: undefined })
 
 const G = ((props) => (
   <Descriptions column={2} size="small" title="GG" layout="vertical" bordered>
     <Descriptions.Item label="Component">
-      <span data-gg="component">{props.component || '-'}</span>
+      <span data-gg="component">{Object.values(props.trigger).join('.') || '-'}</span>
     </Descriptions.Item>
 
     <Descriptions.Item label="Event">
@@ -22,10 +24,10 @@ const G = ((props) => (
       <span data-gg="value">{props.value?.to || '-'}</span>
     </Descriptions.Item>
   </Descriptions>
-)) as ComponentNode<{}, S>
+)) as ComponentNode<{}, Parameters<OnMessage>[0]>
 
 G.$onMessage = (message) => {
   emit(message)
 }
 
-export default connect('component', 'event', 'value')(G)
+export default connect('trigger', 'event', 'value')(G)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Descriptions } from 'antd'
-import { ComponentProps, Nycticorax, Invoker } from '@variousjs/various'
+import { ComponentProps, Nycticorax, PublicAction } from '@variousjs/various'
 import { Store } from '../types'
 
 type S = { value: string, trigger: string }
@@ -10,9 +10,9 @@ const { createStore, connect, emit } = new Nycticorax<S>()
 createStore({ value: '', trigger: '' })
 
 class A extends Component<ComponentProps<Store, S>> {
-  static updateValue: Invoker = async (value, trigger) => {
+  static updateValue: PublicAction = async (value, trigger) => {
     await new Promise((r) => setTimeout(r, 100))
-    emit({ value, trigger }, true)
+    emit({ value, trigger: Object.values(trigger).join('.') }, true)
   }
 
   state = {
@@ -21,13 +21,21 @@ class A extends Component<ComponentProps<Store, S>> {
   }
 
   onGetB = async () => {
-    const b = await this.props.$dispatch('dispatch-b', 'getValue')
+    const b = await this.props.$dispatch({
+      name: 'dispatch-b',
+      action: 'getValue',
+      value: undefined,
+    })
     this.setState({ bValue: (b as string) })
   }
 
   onSetG = async () => {
     try {
-      await this.props.$dispatch('app', 'no-exist')
+      await this.props.$dispatch({
+        name: 'app',
+        action: 'no-exist',
+        value: undefined,
+      })
     } catch (e) {
       this.setState({ dispatchError: (e as Error).message })
     }
@@ -35,7 +43,12 @@ class A extends Component<ComponentProps<Store, S>> {
 
   onDpB = async () => {
     try {
-      await this.props.$dispatch('b.C', 'no-exist')
+      await this.props.$dispatch({
+        name: 'b',
+        module: 'C',
+        action: 'no-exist',
+        value: undefined,
+      })
     } catch (e) {
       this.setState({ dispatchError: (e as Error).message })
     }

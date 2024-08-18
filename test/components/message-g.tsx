@@ -3,16 +3,16 @@ import { Button, Descriptions } from 'antd'
 import { ComponentProps, Nycticorax, OnMessage } from '@variousjs/various'
 import { sendAbc } from 'helper'
 
-type S = { component: string, event: string, value: any }
+type S = Parameters<OnMessage>[0]
 
 const { createStore, connect, emit } = new Nycticorax<S>()
 
-createStore({ component: '', event: '', value: undefined })
+createStore({ trigger: { name: '', module: '' }, event: '', value: undefined })
 
 const G: FC<ComponentProps & S> & { $onMessage: OnMessage } = (props) => (
   <Descriptions column={2} size="small" title="G" layout="vertical" bordered>
     <Descriptions.Item label="Component">
-      <span data-g="component">{props.component || '-'}</span>
+      <span data-g="component">{Object.values(props.trigger).join('.') || '-'}</span>
     </Descriptions.Item>
 
     <Descriptions.Item label="Event">
@@ -24,7 +24,7 @@ const G: FC<ComponentProps & S> & { $onMessage: OnMessage } = (props) => (
     </Descriptions.Item>
 
     <Descriptions.Item label="Actions">
-      <Button data-g="action" type="primary" size="small" onClick={() => props.$postMessage('xyz')}>
+      <Button data-g="action" type="primary" size="small" onClick={() => props.$postMessage('xyz', undefined)}>
         Send
       </Button>
       <Button data-g="action-abc" type="primary" size="small" onClick={sendAbc}>
@@ -38,4 +38,4 @@ G.$onMessage = (message) => {
   emit(message)
 }
 
-export default connect('component', 'event', 'value')(G)
+export default connect('trigger', 'event', 'value')(G)

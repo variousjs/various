@@ -1,29 +1,38 @@
 import React, { Component, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
-import { App, Config } from '@variousjs/various'
+import { App, Config, VariousError as ve } from '@variousjs/various'
 import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
   ROOT,
   MESSAGE_KEY,
-  ERROR_TYPE,
   ENV_KEY,
   CONFIG_KEY,
 } from '../config'
 import connector from './connector'
-import { onError } from './helper'
+import { onError, VariousError } from './helper'
 import { Container as ContainerNode } from './default-component'
-import { ErrorState, Store } from '../types'
+import { Store } from '../types'
+
+export { default as Nycticorax } from 'nycticorax'
 
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
 export { getPostMessage as createPostMessage } from './component/message'
 
-export { default as Nycticorax } from 'nycticorax'
+export {
+  getConfig,
+  getEnv,
+  preloadPackages,
+  isModuleLoaded,
+  getMountedComponents,
+  onComponentMounted,
+} from './helper'
 
-export * from './component'
-export { getConfig, getEnv } from './helper'
+export { default as createModule } from './create-module'
+export { default as createComponent } from './create-component'
+export { default as renderComponent } from './render-component'
 
 export default (config: Config & App<Store>) => {
   const {
@@ -62,29 +71,31 @@ export default (config: Config & App<Store>) => {
     [MESSAGE_KEY]: null,
   })
 
-  class R extends Component<{}, ErrorState> {
+  class R extends Component<{}, { isError: boolean }> {
+    private error?: ve
+
     state = {
-      errorType: undefined,
-      errorMessage: '',
+      isError: false,
     }
 
     componentDidCatch(e: Error) {
-      onError({
-        name: 'container',
-        message: e.message,
-        type: ERROR_TYPE.APP_ERROR,
+      const error = new VariousError({
+        name: 'app',
+        type: 'APP_ERROR',
+        originalError: e,
       })
-      this.setState({ errorType: ERROR_TYPE.APP_ERROR, errorMessage: e.message })
+      onError(error)
+      this.error = error
+      this.setState({ isError: true })
     }
 
     render() {
-      const { errorType, errorMessage } = this.state
+      const { isError } = this.state
 
-      if (errorType) {
+      if (isError) {
         return (
           <ErrorNode
-            $type={ERROR_TYPE[errorType]}
-            $message={errorMessage}
+            $error={this.error!}
             $store={store as Store}
           />
         )
@@ -96,7 +107,7 @@ export default (config: Config & App<Store>) => {
     }
   }
 
-  (R as ComponentType).displayName = 'various-container'
+  (R as ComponentType).displayName = 'various-app'
 
   createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

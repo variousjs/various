@@ -1,6 +1,6 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-import { DEFAULT_PACKAGES, ERROR_TYPE } from './config'
+import { DEFAULT_PACKAGES } from './config'
 import { Various, AppWithDefault } from './types'
 
 declare global {
@@ -28,8 +28,8 @@ function loader(config: Config) {
   const parallels = earlyParallelComponents
     .filter((name) => dependencieNames.includes(name))
 
-  Object.keys(paths).forEach((name, i) => {
-    paths[name] = `${paths[name]}#${i}`
+  Object.keys(paths).forEach((name) => {
+    paths[name] = `${paths[name]}#${name}`
   })
 
   window.requirejs.config({
@@ -58,7 +58,6 @@ function loader(config: Config) {
         name: 'app',
         loadStart,
         loadEnd,
-        duration: loadEnd - loadStart,
         beenLoaded: false,
       })
 
@@ -66,7 +65,7 @@ function loader(config: Config) {
     },
     (error: Error) => {
       window.console.error(error)
-      document.body.innerHTML = `[${ERROR_TYPE.APP_ERROR}] ${error.message}`
+      document.body.innerHTML = `[APP_ERROR] ${error.message}`
     },
   )
 }

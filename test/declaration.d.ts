@@ -38,7 +38,24 @@ declare module 'moment' {
   export default A
 }
 
+declare module 'module-error' {
+  const A: any
+  export default A
+}
+
+declare module 'module-error2' {
+  const A: any
+  export default A
+}
+
 declare module 'rc-table' {
+  import { ComponentType } from 'react'
+
+  const A: ComponentType
+  export default A
+}
+
+declare module 'rc-table2' {
   import { ComponentType } from 'react'
 
   const A: ComponentType

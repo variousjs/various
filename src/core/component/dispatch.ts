@@ -1,72 +1,80 @@
 import { createDispatch as cd } from '@variousjs/various'
 import connector from '../connector'
 import { dispatch } from '../store'
-import { onError, consoleWarn } from '../helper'
+import { onError, consoleWarn, VariousError } from '../helper'
 
-const createDispatch: typeof cd = (componentName) => async function (n, m, v) {
+const createDispatch: typeof cd = (moduleDefined) => async function (params) {
   const middlewares = connector.getMiddlewares()
-  let name = n
-  let method = m
-  let value = v
+
+  let {
+    name,
+    module,
+    action,
+    value,
+  } = params
 
   if (middlewares?.onDispatch) {
     const check = await middlewares.onDispatch({
-      target: name,
-      method,
+      target: { name, module },
+      action,
       value,
-      trigger: componentName,
+      trigger: moduleDefined,
     })
     if (check === false) {
-      consoleWarn(componentName, '[dispatch] blocked by middleware')
+      consoleWarn(moduleDefined, '[dispatch] blocked by middleware')
       return Promise.resolve()
     }
     if (check !== true) {
-      name = check.target
-      method = check.method
+      name = check.target.name
+      module = check.target.module
+      action = check.action
       value = check.value
     }
   }
 
   if (name === 'app') {
     const storeActions = connector.getStoreActions()
-    const action = storeActions[method]
-    if (!action) {
-      const errorMessage = `\`app\` action \`${method}\` is not present`
-      onError({
-        name: componentName,
-        type: 'dispatch',
-        message: errorMessage,
+    const storeAction = storeActions[action]
+    if (!storeAction) {
+      const errorMessage = `Action "${action}" is not present`
+      const error = new VariousError({
+        ...moduleDefined,
+        type: 'DISPATCH',
+        originalError: new Error(errorMessage),
       })
-      throw new Error(errorMessage)
+      onError(error)
+      throw error
     }
-    return dispatch(action, value, componentName)
+    return dispatch(storeAction, value, moduleDefined)
   }
 
-  const componentActions = connector.getComponentActions(name)
+  const componentActions = connector.getComponentActions({ name, module })
 
   if (!componentActions) {
-    const errorMessage = `component \`${name}\` is not ready`
-    onError({
-      name: componentName,
-      type: 'dispatch',
-      message: errorMessage,
+    const errorMessage = 'Component is not ready'
+    const error = new VariousError({
+      ...moduleDefined,
+      type: 'DISPATCH',
+      originalError: new Error(errorMessage),
     })
-    throw new Error(errorMessage)
+    onError(error)
+    throw error
   }
 
-  const componentAction = componentActions[method]
+  const componentAction = componentActions[action]
 
   if (!componentAction) {
-    const errorMessage = `\`${name}\` action \`${method}\` is not present`
-    onError({
-      name: componentName,
-      type: 'dispatch',
-      message: errorMessage,
+    const errorMessage = `Action "${action}" is not present`
+    const error = new VariousError({
+      ...moduleDefined,
+      type: 'DISPATCH',
+      originalError: new Error(errorMessage),
     })
-    throw new Error(errorMessage)
+    onError(error)
+    throw error
   }
 
-  return Promise.resolve(componentAction(value, componentName))
+  return Promise.resolve(componentAction(value, moduleDefined))
 }
 
 export default createDispatch

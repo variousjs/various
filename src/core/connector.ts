@@ -4,11 +4,12 @@ import {
   LoaderNode,
   ErrorNode,
   I18n,
-  Actions,
   App,
+  ModuleDefined,
 } from '@variousjs/various'
 import { Loader, Error } from './default-component'
-import { ComponentActions, Store } from '../types'
+import { PublicActions, Store, Actions } from '../types'
+import { getNameWithModule } from './helper'
 
 class Connector {
   private loaderComponent: LoaderNode<Store>
@@ -17,9 +18,9 @@ class Connector {
 
   private storeActions: Actions<Store>
 
-  private componentActions: Record<string, ComponentActions>
+  private componentActions: Record<string, PublicActions>
 
-  private components: Record<string, ComponentType>
+  private components: Record<string, ComponentType<any>>
 
   private renderRoots: Record<string, Root>
 
@@ -46,43 +47,53 @@ class Connector {
     return this.middlewares
   }
 
-  setI18nConfig(name: string, config: ReturnType<I18n>) {
+  setI18nConfig(moduleDefined: ModuleDefined, config: ReturnType<I18n>) {
+    const name = getNameWithModule(moduleDefined)
     this.i18nConfigs[name] = config
   }
 
-  getI18nConfig(name: string) {
+  getI18nConfig(moduleDefined: ModuleDefined) {
+    const name = getNameWithModule(moduleDefined)
     return this.i18nConfigs[name]
   }
 
-  setRenderRoot(name: string, root: Root) {
+  setRenderRoot(moduleDefined: ModuleDefined, root: Root) {
+    const name = getNameWithModule(moduleDefined)
     this.renderRoots[name] = root
   }
 
-  getRenderRoot(name: string) {
+  getRenderRoot(moduleDefined: ModuleDefined) {
+    const name = getNameWithModule(moduleDefined)
     return this.renderRoots[name]
   }
 
-  deleteRenderRoot(name: string) {
+  deleteRenderRoot(moduleDefined: ModuleDefined) {
+    const name = getNameWithModule(moduleDefined)
     delete this.renderRoots[name]
   }
 
-  setComponent(name: string, component: ComponentType) {
+  setComponent(moduleDefined: ModuleDefined, component: ComponentType) {
+    const name = getNameWithModule(moduleDefined)
     this.components[name] = component
   }
 
-  getComponent(name: string) {
+  getComponent(moduleDefined: ModuleDefined) {
+    const name = getNameWithModule(moduleDefined)
     return this.components[name]
   }
 
-  setComponentActions(name:string, actions: ComponentActions) {
+  setComponentActions(moduleDefined: ModuleDefined, actions: PublicActions) {
+    const name = getNameWithModule(moduleDefined)
     this.componentActions[name] = actions
   }
 
-  deleteComponentActions(name: string) {
+  deleteComponentActions(moduleDefined: ModuleDefined) {
+    const name = getNameWithModule(moduleDefined)
     delete this.componentActions[name]
   }
 
-  getComponentActions(name: string) {
+  getComponentActions(moduleDefined: ModuleDefined) {
+    const name = getNameWithModule(moduleDefined)
     return this.componentActions[name]
   }
 

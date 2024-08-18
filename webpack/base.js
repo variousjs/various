@@ -12,10 +12,13 @@ const config = {
 
     'antd',
     'rc-table',
+    'rc-table2',
     'table',
     'moment',
     'moment_zhCN',
     'helper',
+    'module-error',
+    'module-error2',
   ],
   devtool: 'source-map',
   resolve: {

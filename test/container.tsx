@@ -9,10 +9,10 @@ import { getConfig, createComponent } from '@variousjs/various'
 import { Layout, Menu, Icon } from 'antd'
 import { Config, Store } from './types'
 
-const C = createComponent<Store>('config', ['name'])
+const C = createComponent<Store>({ name: 'config' }, ['name'])
 
 class Container extends Component {
-  page = memo(createComponent('page'))
+  page = memo(createComponent({ name: 'page' }))
 
   render() {
     const $config = getConfig() as Config

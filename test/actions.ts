@@ -1,7 +1,7 @@
-import { Actions } from '@variousjs/various'
+import { Dispatch } from '@variousjs/various'
 import { Store } from './types'
 
-const actions: Actions<Store> = {
+const actions: Record<string, Dispatch<Store>> = {
   async setName({ emit }, value) {
     emit({ name: value })
   },
