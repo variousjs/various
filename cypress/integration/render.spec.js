@@ -13,6 +13,7 @@ describe('render component', () => {
 
     cy.get('[data-l="action-render"]').click()
     cy.get('#switch > span').should('exist')
+    cy.get('[data-m="is-switch"]').should('have.text', 'true')
 
     // rerender
     cy.get('[data-l="action-render"]').click()
@@ -20,6 +21,7 @@ describe('render component', () => {
 
     cy.get('[data-l="action-unmount"]').click()
     cy.get('#switch > span').should('not.exist')
+    cy.get('[data-m="is-switch"]').should('have.text', 'false')
   })
 
   // check component unmount

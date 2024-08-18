@@ -71,6 +71,7 @@ export const resetModuleConfig = (name: string, url?: string) => {
 
     try {
       const { registry } = window.requirejs.s.contexts._
+      /* istanbul ignore else  */
       if (registry[name].error) {
         path = getUrlHash(url)
       }

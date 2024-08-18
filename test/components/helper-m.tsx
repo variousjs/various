@@ -13,6 +13,7 @@ export default () => {
   const [showRender, setShowRender] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const [preLoaded, setPreLoaded] = useState(false)
+  const [preLoadedError, setPreLoadedError] = useState('-')
   const [createValue, setCreateValue] = useState('-')
   const unMount = useRef<() => void>(() => null)
 
@@ -24,15 +25,22 @@ export default () => {
     if (isModuleLoaded({ name: 'helper-n' })) {
       setPreLoaded(true)
     }
+
+    try {
+      await preloadPackages('helper-aa')
+    } catch (e) {
+      const error = e as Error
+      setPreLoadedError(error.message)
+    }
   }
 
   const onCreate = async () => {
     try {
-      const j = await createModule<string>({ name: 'create-h' })
+      const j = await createModule<string>({ name: 'module-error' })
       setCreateValue(j)
     } catch (e) {
       const error = e as VariousError
-      console.log(error.originalError, error.type)
+      setCreateValue(error.message)
     }
   }
 
@@ -73,14 +81,20 @@ export default () => {
         </div>
       </Descriptions.Item>
 
-      <Descriptions.Item label="Preloaded">
+      <Descriptions.Item label="Preload">
         <div data-m="preloaded">
           {preLoaded ? 'true' : 'false'}
         </div>
       </Descriptions.Item>
 
-      <Descriptions.Item label="Preloaded">
-        <div data-m="createModule">
+      <Descriptions.Item label="Preload">
+        <div style={{ width: 50 }} data-m="preloaded-error">
+          {preLoadedError}
+        </div>
+      </Descriptions.Item>
+
+      <Descriptions.Item label="Create">
+        <div style={{ width: 50 }} data-m="createModule">
           {createValue}
         </div>
       </Descriptions.Item>

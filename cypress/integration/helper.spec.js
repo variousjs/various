@@ -29,6 +29,10 @@ describe('helper', () => {
 
     cy.get('[data-m="action-preload"]').click()
     cy.get('[data-m="preloaded"]').should('have.text', 'true')
+    cy.get('[data-m="preloaded-error"]').should('contain.text', 'Script error for "helper-aa"')
+
+    cy.get('[data-m="action-create"]').click()
+    cy.get('[data-m="createModule"]').should('contain.text', 'Maximum call stack size exceeded')
 
     cy.visit('/#/')
     cy.wait(500)

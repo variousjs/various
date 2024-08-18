@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Descriptions } from 'antd'
-import { renderComponent } from '@variousjs/various'
+import { createModule, renderComponent } from '@variousjs/various'
 
 export const L = () => {
+  const [isL, setIsL] = useState(false)
   const unMount = useRef<() => void>(() => null)
 
   useEffect(() => () => unMount.current(), [])
@@ -13,17 +14,27 @@ export const L = () => {
         <div id="switch" style={{ minHeight: 20 }} />
       </Descriptions.Item>
 
+      <Descriptions.Item label="L">
+        <div data-m="is-switch">{isL ? 'true' : 'false'}</div>
+      </Descriptions.Item>
+
       <Descriptions.Item label="Actions">
         <Button
           data-l="action-render"
           size="small"
           type="primary"
-          onClick={() => {
+          onClick={async () => {
             unMount.current = renderComponent({
               name: 'switch',
               url: './libs/switch.min.js',
               target: document.querySelector('#switch'),
             })
+
+            const s = await createModule({
+              name: 'switch',
+              url: './libs/switch.min.js',
+            })
+            setIsL(!!s)
           }}
         >
           Render
@@ -32,8 +43,18 @@ export const L = () => {
           data-l="action-unmount"
           size="small"
           type="primary"
-          onClick={() => {
+          onClick={async () => {
             unMount.current()
+
+            try {
+              await createModule({
+                name: 'switch2',
+                url: './libs/switch.min2.js',
+              })
+              setIsL(true)
+            } catch (e) {
+              setIsL(false)
+            }
           }}
         >
           Unmount
