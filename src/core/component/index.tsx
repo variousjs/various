@@ -200,6 +200,8 @@ function createReactComponent<P extends object>(config: {
         return !$silent
           ? (
             <ErrorNode
+              $name={name}
+              $module={module}
               $reload={[
                 'NOT_DEFINED',
               ].includes(this.error!.type) ? undefined : this.onReload}

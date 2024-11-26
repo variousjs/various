@@ -77,6 +77,8 @@ declare module '@variousjs/various' {
     $reload?: () => void,
     $error: VariousError,
     $store: Readonly<S>,
+    $name: string,
+    $module?: string,
   }
   export type ErrorNode<S extends object = ObjectAny> = ComponentType<ErrorNodeProps<S>>
 
