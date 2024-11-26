@@ -11,7 +11,6 @@ const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
     const current: string = await $dispatch({
       name: 'app',
       action: 'getLocale',
-      value: undefined,
     })
     setLang(current)
   }

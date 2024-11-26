@@ -24,7 +24,6 @@ class A extends Component<ComponentProps<Store, S>> {
     const b = await this.props.$dispatch({
       name: 'dispatch-b',
       action: 'getValue',
-      value: undefined,
     })
     this.setState({ bValue: (b as string) })
   }
@@ -34,7 +33,6 @@ class A extends Component<ComponentProps<Store, S>> {
       await this.props.$dispatch({
         name: 'app',
         action: 'no-exist',
-        value: undefined,
       })
     } catch (e) {
       this.setState({ dispatchError: (e as Error).message })
