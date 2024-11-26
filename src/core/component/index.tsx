@@ -109,12 +109,15 @@ function createReactComponent<P extends object>(config: {
         }
 
         if (!isReactComponent(componentNode)) {
-          throw new VariousError({
+          const error = new VariousError({
             name,
             module,
             originalError: new Error('Not a valid React component'),
             type: 'INVALID_COMPONENT',
           })
+
+          onError(error)
+          throw error
         }
 
         const mountedComponents = getMountedComponents()
@@ -163,7 +166,6 @@ function createReactComponent<P extends object>(config: {
           return
         }
 
-        onError(error)
         this.error = error
         this.setState({ isError: true })
       }

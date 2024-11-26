@@ -3,7 +3,12 @@ import { RequireError, RequiredComponent } from '../types'
 import { DEPENDENCIES_KEY } from '../config'
 import { getStore } from './store'
 import connector from './connector'
-import { isModuleLoaded, resetModuleConfig, VariousError } from './helper'
+import {
+  isModuleLoaded,
+  resetModuleConfig,
+  VariousError,
+  onError,
+} from './helper'
 
 const createModule: typeof cm = (config) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
@@ -83,12 +88,15 @@ const createModule: typeof cm = (config) => {
         errorType = requireModule === name ? 'SCRIPT_ERROR' : 'SUBMODULE_SCRIPT_ERROR'
       }
 
-      reject(new VariousError({
+      const error = new VariousError({
         name,
         module: requireModule === name ? undefined : requireModule,
         type: errorType,
         originalError: e,
-      }))
+      })
+
+      onError(error)
+      reject(error)
     })
   })
 }
