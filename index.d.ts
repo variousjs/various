@@ -82,7 +82,11 @@ declare module '@variousjs/various' {
   }
   export type ErrorNode<S extends object = ObjectAny> = ComponentType<ErrorNodeProps<S>>
 
-  export interface LoaderNodeProps<S extends object = ObjectAny> { $store: Readonly<S>}
+  export interface LoaderNodeProps<S extends object = ObjectAny> {
+    $store: Readonly<S>,
+    $name: string,
+    $module?: string,
+  }
   export type LoaderNode<S extends object = ObjectAny> = ComponentType<LoaderNodeProps<S>>
 
   type Dispatch<T extends object = ObjectAny> = (

@@ -4,7 +4,7 @@ import { Store } from './types'
 
 const errorComponent: ErrorNode<Store> = (props) => {
   const {
-    $reload, $error, $name, $module,
+    $reload, $error, $name, $module, $store,
   } = props
   return (
     <>
@@ -34,7 +34,7 @@ const errorComponent: ErrorNode<Store> = (props) => {
           type="button"
           onClick={$reload}
         >
-          刷新
+          {$store.locale === 'zh' ? '刷新' : 'reload'}
         </button>
         )
       }

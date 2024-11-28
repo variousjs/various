@@ -213,9 +213,17 @@ function createReactComponent<P extends object>(config: {
       }
 
       if (!componentReady) {
-        return !$silent && componentExist === false
-          ? (<LoaderNode $store={store as Store} />)
-          : null
+        if ($silent || componentExist) {
+          return null
+        }
+
+        return (
+          <LoaderNode
+            $name={name}
+            $module={module}
+            $store={store as Store}
+          />
+        )
       }
 
       return (

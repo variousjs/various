@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ComponentType } from 'react'
 import { createComponent as cc } from '@variousjs/various'
 import createReactComponent from './component'
 import connector from './connector'
@@ -11,21 +11,25 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
     return existComponent
   }
 
+  let component: ComponentType<any>
+
   const C = createReactComponent({
     name,
     module,
     url,
     watchKeys: storeKeys as string[],
+    onMounted() {
+      connector.setComponent({ name, module }, component)
+    },
   })
 
-  const component = (props: any) => {
+  component = (props: any) => {
     const { $silent, ...rest } = props || {}
     const nextProps = { $componentProps: rest, $silent }
     return (<C {...nextProps} />)
   }
 
   component.displayName = 'various-creator'
-  connector.setComponent({ name, module }, component)
   return component
 }
 

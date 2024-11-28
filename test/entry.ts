@@ -3,7 +3,7 @@ import 'moment_zhCN'
 import { App } from '@variousjs/various'
 import actions from './actions'
 import store from './store'
-import Container from './container'
+import Container from './container-node'
 import Loader from './loader'
 import Error from './error'
 
