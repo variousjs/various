@@ -22,12 +22,15 @@ const createModule: typeof cm = (config) => {
 
   return new Promise<any>((resolve, reject) => {
     if (!url && !dependencies[name]) {
-      reject(new VariousError({
+      const error = new VariousError({
         name,
         module,
         type: 'NOT_DEFINED',
         originalError: new Error(`Module "${name}" not defined`),
-      }))
+      })
+
+      onError(error)
+      reject(error)
       return
     }
 
@@ -43,13 +46,16 @@ const createModule: typeof cm = (config) => {
       })
 
       if (!C) {
-        resetModuleConfig(name)
-        reject(new VariousError({
+        const error = new VariousError({
           name,
           module,
           type: 'INVALID_MODULE',
           originalError: new Error(`Module "${name}" not content`),
-        }))
+        })
+
+        resetModuleConfig(name)
+        onError(error)
+        reject(error)
         return
       }
 
@@ -57,13 +63,16 @@ const createModule: typeof cm = (config) => {
       const actualModule = !module ? defaultModule : C[module]
 
       if (!actualModule && module) {
-        resetModuleConfig(name)
-        reject(new VariousError({
+        const error = new VariousError({
           name,
           module,
           type: 'SUBMODULE_NOT_DEFINED',
           originalError: new Error(`Submodule "${module}" not defined`),
-        }))
+        })
+
+        resetModuleConfig(name)
+        onError(error)
+        reject(error)
         return
       }
 
