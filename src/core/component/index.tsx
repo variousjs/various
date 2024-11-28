@@ -34,7 +34,7 @@ function createReactComponent<P extends object>(config: {
   module?: string,
   url?: string,
   watchKeys?: string[],
-  onMounted?: () => void,
+  onMounted: () => void,
 }) {
   const {
     name,
@@ -154,10 +154,7 @@ function createReactComponent<P extends object>(config: {
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
 
-        if (onMounted) {
-          onMounted()
-        }
-
+        onMounted()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         const error = e as VariousError
