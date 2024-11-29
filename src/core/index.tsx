@@ -95,6 +95,7 @@ export default (config: Config & App<Store>) => {
       if (isError) {
         return (
           <ErrorNode
+            $name="app"
             $error={this.error!}
             $store={store as Store}
           />

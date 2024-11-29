@@ -3,7 +3,9 @@ import { ErrorNode } from '@variousjs/various'
 import { Store } from './types'
 
 const errorComponent: ErrorNode<Store> = (props) => {
-  const { $reload, $error } = props
+  const {
+    $reload, $error, $name, $module, $store,
+  } = props
   return (
     <>
       <div
@@ -15,6 +17,7 @@ const errorComponent: ErrorNode<Store> = (props) => {
           borderRadius: 4,
         }}
       >
+        <h4>{$name}{$module ? '.' : ''}{$module}</h4>
         {`[${$error.type}]:${$error.message || '组件错误'}`}
       </div>
       {
@@ -31,7 +34,7 @@ const errorComponent: ErrorNode<Store> = (props) => {
           type="button"
           onClick={$reload}
         >
-          刷新
+          {$store.locale === 'zh' ? '刷新' : 'reload'}
         </button>
         )
       }

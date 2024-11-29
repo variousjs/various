@@ -34,7 +34,7 @@ function createReactComponent<P extends object>(config: {
   module?: string,
   url?: string,
   watchKeys?: string[],
-  onMounted?: () => void,
+  onMounted: () => void,
 }) {
   const {
     name,
@@ -109,12 +109,15 @@ function createReactComponent<P extends object>(config: {
         }
 
         if (!isReactComponent(componentNode)) {
-          throw new VariousError({
+          const error = new VariousError({
             name,
             module,
             originalError: new Error('Not a valid React component'),
             type: 'INVALID_COMPONENT',
           })
+
+          onError(error)
+          throw error
         }
 
         const mountedComponents = getMountedComponents()
@@ -151,10 +154,7 @@ function createReactComponent<P extends object>(config: {
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
 
-        if (onMounted) {
-          onMounted()
-        }
-
+        onMounted()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         const error = e as VariousError
@@ -163,7 +163,6 @@ function createReactComponent<P extends object>(config: {
           return
         }
 
-        onError(error)
         this.error = error
         this.setState({ isError: true })
       }
@@ -198,6 +197,8 @@ function createReactComponent<P extends object>(config: {
         return !$silent
           ? (
             <ErrorNode
+              $name={name}
+              $module={module}
               $reload={[
                 'NOT_DEFINED',
               ].includes(this.error!.type) ? undefined : this.onReload}
@@ -209,9 +210,17 @@ function createReactComponent<P extends object>(config: {
       }
 
       if (!componentReady) {
-        return !$silent && componentExist === false
-          ? (<LoaderNode $store={store as Store} />)
-          : null
+        if ($silent || componentExist) {
+          return null
+        }
+
+        return (
+          <LoaderNode
+            $name={name}
+            $module={module}
+            $store={store as Store}
+          />
+        )
       }
 
       return (

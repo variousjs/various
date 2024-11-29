@@ -24,7 +24,7 @@ const G: FC<ComponentProps & S> & { $onMessage: OnMessage } = (props) => (
     </Descriptions.Item>
 
     <Descriptions.Item label="Actions">
-      <Button data-g="action" type="primary" size="small" onClick={() => props.$postMessage('xyz', undefined)}>
+      <Button data-g="action" type="primary" size="small" onClick={() => props.$postMessage('xyz')}>
         Send
       </Button>
       <Button data-g="action-abc" type="primary" size="small" onClick={sendAbc}>

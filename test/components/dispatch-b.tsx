@@ -25,7 +25,6 @@ const B = ((props) => {
       await props.$dispatch({
         name: 'dispatch-a',
         action: 'nonexist',
-        value: undefined,
       })
     } catch (e) {
       setDe((e as Error).message)
@@ -45,7 +44,6 @@ const B = ((props) => {
       await props.$dispatch({
         name: 'no-exist',
         action: 'some method',
-        value: undefined,
       })
     } catch (e) {
       setDe((e as Error).message)
@@ -56,7 +54,6 @@ const B = ((props) => {
     props.$dispatch({
       name: 'dispatch-a',
       action: 'block',
-      value: undefined,
     })
   }
 

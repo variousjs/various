@@ -18,9 +18,11 @@ const renderComponent: typeof rc = ({
       name,
       module,
       url,
-      onMounted,
+      onMounted() {
+        connector.setComponent({ name, module }, C)
+        onMounted?.()
+      },
     })
-    connector.setComponent({ name, module }, C)
   }
 
   let root: Root

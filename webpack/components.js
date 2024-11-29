@@ -19,6 +19,8 @@ fs
 
 components.helper = path.resolve(__dirname, '../test/components/helper.ts')
 
+components.container = path.resolve(__dirname, '../test/container.tsx')
+
 if (NODE_ENV === 'development') {
   components.index = path.resolve(__dirname, '../src/core')
 }

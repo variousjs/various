@@ -35,9 +35,9 @@ declare module '@variousjs/various' {
 
   type $dispatch = (args: ModuleDefined & {
     action: string,
-    value: any,
+    value?: any,
   }) => Promise<any>
-  type $postMessage = (event: string, value: any) => void
+  type $postMessage = (event: string, value?: any) => void
 
   export type Intl = (key: string, params?: Record<string, string | number>) => string
 
@@ -77,10 +77,16 @@ declare module '@variousjs/various' {
     $reload?: () => void,
     $error: VariousError,
     $store: Readonly<S>,
+    $name: string,
+    $module?: string,
   }
   export type ErrorNode<S extends object = ObjectAny> = ComponentType<ErrorNodeProps<S>>
 
-  export interface LoaderNodeProps<S extends object = ObjectAny> { $store: Readonly<S>}
+  export interface LoaderNodeProps<S extends object = ObjectAny> {
+    $store: Readonly<S>,
+    $name: string,
+    $module?: string,
+  }
   export type LoaderNode<S extends object = ObjectAny> = ComponentType<LoaderNodeProps<S>>
 
   type Dispatch<T extends object = ObjectAny> = (
@@ -96,14 +102,14 @@ declare module '@variousjs/various' {
   interface MessageEventArgs {
     trigger: ModuleDefined,
     event: string,
-    value: any,
+    value?: any,
   }
   type MessageEventRes = boolean | Omit<MessageEventArgs, 'trigger'>
   interface DispatchEventArgs {
     target: ModuleDefined,
     trigger: ModuleDefined,
     action: string,
-    value: any,
+    value?: any,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
   interface LoadEventArgs extends ModuleDefined {

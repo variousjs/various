@@ -47,12 +47,12 @@ describe('create component', () => {
     cy.contains('create-j.k')
       .should('exist')
       .next()
-      .should('have.text', '[INVALID_COMPONENT]:Not a valid React component')
+      .should('contain.text', '[INVALID_COMPONENT]:Not a valid React component')
 
     cy.contains('create-j.l')
       .should('exist')
       .next()
-      .should('have.text', '[INVALID_COMPONENT]:Not a valid React component')
+      .should('contain.text', '[INVALID_COMPONENT]:Not a valid React component')
 
     cy.contains('[SUBMODULE_NOT_DEFINED]:Submodule "no-exist" not defined')
       .should('exist')
