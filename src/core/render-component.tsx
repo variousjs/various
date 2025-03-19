@@ -10,6 +10,7 @@ const renderComponent: typeof rc = ({
   url,
   target,
   props,
+  renderNode,
   onMounted,
 }) => {
   let C = connector.getComponent({ name, module })
@@ -35,8 +36,9 @@ const renderComponent: typeof rc = ({
 
   const { $silent, ...rest } = props || {}
   const nextProps = { $componentProps: rest, $silent }
+  const node = <C {...nextProps} />
 
-  root.render(<C {...nextProps} />)
+  root.render(renderNode ? renderNode(node) : node)
 
   return () => setTimeout(() => {
     root.unmount()

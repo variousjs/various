@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Descriptions } from 'antd'
 import { createModule, renderComponent } from '@variousjs/various'
+import { useLocation } from 'react-router-dom'
 
 export const L = () => {
   const [isL, setIsL] = useState(false)
@@ -131,5 +132,12 @@ export const LL = () => {
         </Button>
       </Descriptions.Item>
     </Descriptions>
+  )
+}
+
+export const C = () => {
+  const { pathname } = useLocation()
+  return (
+    <div>Pathname: {pathname}</div>
   )
 }
