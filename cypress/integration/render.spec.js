@@ -5,6 +5,12 @@ describe('render component', () => {
     cy.visit('/#/render')
   })
 
+  it('context', () => {
+    cy.get('#context').should('have.text', '-')
+    cy.get('[data-k="action-context"]').click()
+    cy.get('#context').should('have.text', 'Pathname: /render')
+  })
+
   it('k', () => {
     cy.get('[data-k="ready"]').should('have.text', 'false')
 

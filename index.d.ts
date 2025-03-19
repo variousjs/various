@@ -1,5 +1,5 @@
 declare module '@variousjs/various' {
-  import { ComponentType, FC } from 'react'
+  import { ComponentType, FC, ReactNode } from 'react'
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
@@ -165,6 +165,7 @@ declare module '@variousjs/various' {
     url?: string,
     props?: P & ComponentDefaultProps,
     target: Element | null,
+    renderNode?: (children: ReactNode) => ReactNode,
     onMounted?: () => void,
   }): () => void
 
