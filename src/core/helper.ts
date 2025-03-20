@@ -1,7 +1,7 @@
 import {
   onComponentMounted as ocm,
-  isModuleLoaded as im,
-  preloadPackages as pp,
+  isDependencyLoaded as im,
+  preloadDependencies as pp,
   VariousError as ve,
   ErrorType as et,
   ModuleDefined,
@@ -18,16 +18,13 @@ import { RequiredComponent } from '../types'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-export const preloadPackages: typeof pp = (name) => new Promise<void>((resolve, reject) => {
+export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {
   const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
 })
 
-export const isModuleLoaded: typeof im = (moduleDefined) => {
-  const { name } = moduleDefined
-  return window.requirejs.specified(name)
+export const isDependencyLoaded: typeof im = (name) => window.requirejs.specified(name)
   && !!window.requirejs.s.contexts._.defined[name]
-}
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
@@ -55,7 +52,7 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
   return unSubscribe
 }
 
-export const resetModuleConfig = (name: string, url?: string) => {
+export const resetDependencyConfig = (name: string, url?: string) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
 
   // ignore multiple custom module url

@@ -4,8 +4,8 @@ import { DEPENDENCIES_KEY } from '../config'
 import { getStore } from './store'
 import connector from './connector'
 import {
-  isModuleLoaded,
-  resetModuleConfig,
+  isDependencyLoaded,
+  resetDependencyConfig,
   VariousError,
   onError,
 } from './helper'
@@ -17,7 +17,7 @@ const createModule: typeof cm = (config) => {
   const loadStart = +new Date()
 
   if (url) {
-    resetModuleConfig(name, url)
+    resetDependencyConfig(name, url)
   }
 
   return new Promise<any>((resolve, reject) => {
@@ -42,7 +42,7 @@ const createModule: typeof cm = (config) => {
         module,
         loadStart,
         loadEnd,
-        beenLoaded: isModuleLoaded({ name, module }),
+        beenLoaded: isDependencyLoaded(name),
       })
 
       if (!C) {
@@ -53,7 +53,7 @@ const createModule: typeof cm = (config) => {
           originalError: new Error(`Module "${name}" not content`),
         })
 
-        resetModuleConfig(name)
+        resetDependencyConfig(name)
         onError(error)
         reject(error)
         return
@@ -70,7 +70,7 @@ const createModule: typeof cm = (config) => {
           originalError: new Error(`Submodule "${module}" not defined`),
         })
 
-        resetModuleConfig(name)
+        resetDependencyConfig(name)
         onError(error)
         reject(error)
         return
@@ -80,17 +80,13 @@ const createModule: typeof cm = (config) => {
     }, (e: RequireError) => {
       const [requireModule] = e.requireModules
 
-      resetModuleConfig(name, url)
-      resetModuleConfig(requireModule)
+      resetDependencyConfig(name, url)
+      resetDependencyConfig(requireModule)
 
       let errorType: VariousError['type'] = 'LOADING_ERROR'
 
       if (requireModule !== name) {
         errorType = 'SUBMODULE_LOADING_ERROR'
-      }
-
-      if (!dependencies[requireModule]) {
-        errorType = 'SUBMODULE_NOT_DEFINED'
       }
 
       if (!e.message.includes('https://requirejs.org/docs/errors.html')) {

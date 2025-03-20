@@ -146,7 +146,7 @@ declare module '@variousjs/various' {
     root?: string,
     env?: ENV,
     timeout?: number,
-    earlyParallelComponents?: string[],
+    earlyParallelDependencies?: string[],
   }
 
   export function createComponent<
@@ -169,9 +169,9 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => void
 
-  export const isModuleLoaded: (moduleDefined: ModuleDefined) => boolean
+  export const isDependencyLoaded: (name: string) => boolean
   export const getMountedComponents: () => ModuleDefined[]
-  export const preloadPackages: (name: string | string[]) => Promise<void>
+  export const preloadDependencies: (name: string | string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
   ) => () => void

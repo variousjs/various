@@ -24,8 +24,8 @@ export { getPostMessage as createPostMessage } from './component/message'
 export {
   getConfig,
   getEnv,
-  preloadPackages,
-  isModuleLoaded,
+  preloadDependencies,
+  isDependencyLoaded,
   getMountedComponents,
   onComponentMounted,
 } from './helper'

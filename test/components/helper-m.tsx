@@ -3,8 +3,8 @@ import { Descriptions, Button } from 'antd'
 import {
   onComponentMounted,
   renderComponent,
-  preloadPackages,
-  isModuleLoaded,
+  preloadDependencies,
+  isDependencyLoaded,
   createModule,
   VariousError,
 } from '@variousjs/various'
@@ -18,16 +18,16 @@ export default () => {
   const unMount = useRef<() => void>(() => null)
 
   const onPreload = async () => {
-    if (isModuleLoaded({ name: 'helper-n' })) {
+    if (isDependencyLoaded('helper-n')) {
       setPreLoaded(true)
     }
-    await preloadPackages(['helper-n'])
-    if (isModuleLoaded({ name: 'helper-n' })) {
+    await preloadDependencies(['helper-n'])
+    if (isDependencyLoaded('helper-n')) {
       setPreLoaded(true)
     }
 
     try {
-      await preloadPackages('helper-aa')
+      await preloadDependencies('helper-aa')
     } catch (e) {
       const error = e as Error
       setPreLoadedError(error.message)
