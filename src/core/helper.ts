@@ -1,12 +1,13 @@
 import {
   onComponentMounted as ocm,
-  isModuleLoaded as im,
-  preloadPackages as pp,
+  isDependencyLoaded as im,
+  preloadDependencies as pp,
+  defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
   ModuleDefined,
 } from '@variousjs/various'
-import { getStore, subscribe } from './store'
+import { getStore, subscribe, emit } from './store'
 import connector from './connector'
 import {
   ENV_KEY,
@@ -18,16 +19,25 @@ import { RequiredComponent } from '../types'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-export const preloadPackages: typeof pp = (name) => new Promise<void>((resolve, reject) => {
+export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {
   const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
 })
 
-export const isModuleLoaded: typeof im = (moduleDefined) => {
-  const { name } = moduleDefined
-  return window.requirejs.specified(name)
-  && !!window.requirejs.s.contexts._.defined[name]
+export const defineDependencies: typeof dd = (deps) => {
+  const dependencies = getStore(DEPENDENCIES_KEY)
+  const next = {} as Record<string, string>
+
+  Object.keys(deps).forEach((name) => {
+    next[name] = `${deps[name]}#${name}`
+  })
+
+  window.requirejs.config({ paths: next })
+  emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
+
+export const isDependencyLoaded: typeof im = (name) => window.requirejs.specified(name)
+  && !!window.requirejs.s.contexts._.defined[name]
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
@@ -55,7 +65,7 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
   return unSubscribe
 }
 
-export const resetModuleConfig = (name: string, url?: string) => {
+export const resetDependencyConfig = (name: string, url?: string) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
 
   // ignore multiple custom module url

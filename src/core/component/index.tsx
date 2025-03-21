@@ -4,7 +4,7 @@ import {
   isReactComponent,
   onError,
   getMountedComponents,
-  resetModuleConfig,
+  resetDependencyConfig,
   VariousError,
   hasModule,
   getNameWithModule,
@@ -80,7 +80,7 @@ function createReactComponent<P extends object>(config: {
 
       this.error = error
       this.setState({ isError: true })
-      resetModuleConfig(name)
+      resetDependencyConfig(name)
       this.unMountComponent()
     }
 

@@ -3,10 +3,11 @@ import { Descriptions, Button } from 'antd'
 import {
   onComponentMounted,
   renderComponent,
-  preloadPackages,
-  isModuleLoaded,
+  preloadDependencies,
+  isDependencyLoaded,
   createModule,
   VariousError,
+  defineDependencies,
 } from '@variousjs/various'
 
 export default () => {
@@ -18,16 +19,16 @@ export default () => {
   const unMount = useRef<() => void>(() => null)
 
   const onPreload = async () => {
-    if (isModuleLoaded({ name: 'helper-n' })) {
+    if (isDependencyLoaded('helper-n')) {
       setPreLoaded(true)
     }
-    await preloadPackages(['helper-n'])
-    if (isModuleLoaded({ name: 'helper-n' })) {
+    await preloadDependencies(['helper-n'])
+    if (isDependencyLoaded('helper-n')) {
       setPreLoaded(true)
     }
 
     try {
-      await preloadPackages('helper-aa')
+      await preloadDependencies('helper-aa')
     } catch (e) {
       const error = e as Error
       setPreLoadedError(error.message)
@@ -42,6 +43,18 @@ export default () => {
       const error = e as VariousError
       setCreateValue(error.message)
     }
+  }
+
+  const onCreateDependencies = () => {
+    defineDependencies({
+      switch: './libs/switch.min.js',
+    })
+
+    renderComponent({
+      name: 'deps',
+      url: './dist/module-deps.js',
+      target: document.querySelector('#deps'),
+    })
   }
 
   useEffect(() => () => unMount.current(), [])
@@ -71,6 +84,9 @@ export default () => {
     <Descriptions column={3} size="small" title="M" layout="vertical" bordered>
       <Descriptions.Item label="N">
         <div data-m="n" id="n">
+          -
+        </div>
+        <div data-m="deps" id="deps">
           -
         </div>
       </Descriptions.Item>
@@ -120,6 +136,7 @@ export default () => {
         }
         <Button data-m="action-preload" onClick={onPreload} size="small" type="primary">Preload</Button>
         <Button data-m="action-create" onClick={onCreate} size="small" type="primary">CreateModule</Button>
+        <Button data-m="action-dependencies" onClick={onCreateDependencies} size="small" type="primary">Dependencies</Button>
       </Descriptions.Item>
     </Descriptions>
   )

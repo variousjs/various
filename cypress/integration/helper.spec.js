@@ -12,6 +12,7 @@ describe('helper', () => {
 
   it('m', () => {
     cy.get('[data-m="n"]').should('have.text', '-')
+    cy.get('[data-m="deps"]').should('have.text', '-')
     cy.get('[data-m="loaded"]').should('have.text', 'false')
     cy.get('[data-m="preloaded"]').should('have.text', 'false')
 
@@ -26,6 +27,9 @@ describe('helper', () => {
     cy.get('[data-m="action-render"]').click()
     cy.get('[data-m="n"]').should('have.text', 'N')
     cy.get('[data-m="loaded"]').should('have.text', 'true')
+
+    cy.get('[data-m="action-dependencies"]').click()
+    cy.get('#deps > span').should('exist')
 
     cy.get('[data-m="action-preload"]').click()
     cy.get('[data-m="preloaded"]').should('have.text', 'true')

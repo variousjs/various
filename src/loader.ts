@@ -16,7 +16,7 @@ function loader(config: Config) {
   const {
     dependencies,
     timeout,
-    earlyParallelComponents = [],
+    earlyParallelDependencies = [],
   } = config
   const paths: Config['dependencies'] = {
     ...DEFAULT_PACKAGES,
@@ -25,7 +25,7 @@ function loader(config: Config) {
   }
 
   const dependencieNames = Object.keys(dependencies)
-  const parallels = earlyParallelComponents
+  const parallels = earlyParallelDependencies
     .filter((name) => dependencieNames.includes(name))
 
   Object.keys(paths).forEach((name) => {

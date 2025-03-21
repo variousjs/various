@@ -15,6 +15,7 @@ const config = {
     'rc-table2',
     'table',
     'moment',
+    'switch',
     'moment_zhCN',
     'helper',
     'module-error',

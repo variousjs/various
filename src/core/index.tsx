@@ -24,10 +24,11 @@ export { getPostMessage as createPostMessage } from './component/message'
 export {
   getConfig,
   getEnv,
-  preloadPackages,
-  isModuleLoaded,
+  preloadDependencies,
+  isDependencyLoaded,
   getMountedComponents,
   onComponentMounted,
+  defineDependencies,
 } from './helper'
 
 export { default as createModule } from './create-module'
