@@ -175,6 +175,7 @@ declare module '@variousjs/various' {
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
   ) => () => void
+  export const defineDependencies: (deps: Record<string, string>) => void
 
   export const getEnv: () => ENV
   export function getConfig<C extends object = ObjectAny>(): C

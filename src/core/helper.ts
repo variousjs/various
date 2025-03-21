@@ -2,11 +2,12 @@ import {
   onComponentMounted as ocm,
   isDependencyLoaded as im,
   preloadDependencies as pp,
+  defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
   ModuleDefined,
 } from '@variousjs/various'
-import { getStore, subscribe } from './store'
+import { getStore, subscribe, emit } from './store'
 import connector from './connector'
 import {
   ENV_KEY,
@@ -22,6 +23,18 @@ export const preloadDependencies: typeof pp = (name) => new Promise<void>((resol
   const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
 })
+
+export const defineDependencies: typeof dd = (deps) => {
+  const dependencies = getStore(DEPENDENCIES_KEY)
+  const next = {} as Record<string, string>
+
+  Object.keys(deps).forEach((name) => {
+    next[name] = `${deps[name]}#${name}`
+  })
+
+  window.requirejs.config({ paths: next })
+  emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
+}
 
 export const isDependencyLoaded: typeof im = (name) => window.requirejs.specified(name)
   && !!window.requirejs.s.contexts._.defined[name]

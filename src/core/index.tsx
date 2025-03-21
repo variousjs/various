@@ -28,6 +28,7 @@ export {
   isDependencyLoaded,
   getMountedComponents,
   onComponentMounted,
+  defineDependencies,
 } from './helper'
 
 export { default as createModule } from './create-module'

@@ -7,6 +7,7 @@ import {
   isDependencyLoaded,
   createModule,
   VariousError,
+  defineDependencies,
 } from '@variousjs/various'
 
 export default () => {
@@ -44,6 +45,18 @@ export default () => {
     }
   }
 
+  const onCreateDependencies = () => {
+    defineDependencies({
+      switch: './libs/switch.min.js',
+    })
+
+    renderComponent({
+      name: 'deps',
+      url: './dist/module-deps.js',
+      target: document.querySelector('#deps'),
+    })
+  }
+
   useEffect(() => () => unMount.current(), [])
 
   useEffect(() => {
@@ -71,6 +84,9 @@ export default () => {
     <Descriptions column={3} size="small" title="M" layout="vertical" bordered>
       <Descriptions.Item label="N">
         <div data-m="n" id="n">
+          -
+        </div>
+        <div data-m="deps" id="deps">
           -
         </div>
       </Descriptions.Item>
@@ -120,6 +136,7 @@ export default () => {
         }
         <Button data-m="action-preload" onClick={onPreload} size="small" type="primary">Preload</Button>
         <Button data-m="action-create" onClick={onCreate} size="small" type="primary">CreateModule</Button>
+        <Button data-m="action-dependencies" onClick={onCreateDependencies} size="small" type="primary">Dependencies</Button>
       </Descriptions.Item>
     </Descriptions>
   )
