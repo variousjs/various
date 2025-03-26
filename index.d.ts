@@ -167,7 +167,7 @@ declare module '@variousjs/various' {
     target: Element | null,
     renderNode?: (children: ReactNode) => ReactNode,
     onMounted?: () => void,
-  }): () => void
+  }): () => Promise<void>
 
   export const isDependencyLoaded: (name: string) => boolean
   export const getMountedComponents: () => ModuleDefined[]

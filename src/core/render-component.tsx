@@ -40,9 +40,12 @@ const renderComponent: typeof rc = ({
 
   root.render(renderNode ? renderNode(node) : node)
 
-  return () => setTimeout(() => {
-    root.unmount()
-    connector.deleteRenderRoot({ name, module })
+  return () => new Promise<void>((resolve) => {
+    setTimeout(() => {
+      root.unmount()
+      connector.deleteRenderRoot({ name, module })
+      resolve()
+    })
   })
 }
 
