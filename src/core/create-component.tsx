@@ -24,8 +24,8 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   })
 
   component = (props: any) => {
-    const { $silent, ...rest } = props || {}
-    const nextProps = { $componentProps: rest, $silent }
+    const { $silent, $ref, ...rest } = props || {}
+    const nextProps = { $componentProps: rest, $silent, $ref }
     return (<C {...nextProps} />)
   }
 

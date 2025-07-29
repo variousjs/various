@@ -1,5 +1,7 @@
 import React, { Component, ComponentType } from 'react'
-import { I18n, OnMessage, VariousError as ve } from '@variousjs/various'
+import {
+  ComponentDefaultProps, I18n, OnMessage, VariousError as ve,
+} from '@variousjs/various'
 import {
   isReactComponent,
   onError,
@@ -46,7 +48,7 @@ function createReactComponent<P extends object>(config: {
   const storeKeys = (watchKeys || Object.keys(getStore()))
 
   class R extends Component<
-    CreateComponentProps<P>,
+    CreateComponentProps<P> & ComponentDefaultProps,
     CreateComponentState
   > {
     state = {
@@ -186,7 +188,7 @@ function createReactComponent<P extends object>(config: {
     render() {
       const ErrorNode = connector.getErrorComponent()
       const LoaderNode = connector.getLoaderComponent()
-      const { $silent, $componentProps } = this.props
+      const { $silent, $componentProps, $ref } = this.props
       const {
         componentReady, isError, componentExist,
       } = this.state
@@ -230,6 +232,7 @@ function createReactComponent<P extends object>(config: {
           $store={store}
           $postMessage={this.$postMessage}
           $t={this.$t}
+          ref={$ref}
         />
       )
     }

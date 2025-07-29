@@ -8,7 +8,6 @@ import {
   I18n,
   App,
   Dispatch,
-  ComponentDefaultProps,
   ModuleDefined,
 } from '@variousjs/various'
 import {
@@ -51,7 +50,7 @@ export interface CreateComponentState {
 }
 
 export interface CreateComponentProps<P extends object> extends Store {
-  $componentProps: P & ComponentDefaultProps,
+  $componentProps: P,
 }
 
 export interface Various {

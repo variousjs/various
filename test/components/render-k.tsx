@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import { Button, Descriptions } from 'antd'
 import { renderComponent } from '@variousjs/various'
 import { HashRouter } from 'react-router-dom'
@@ -9,6 +9,8 @@ export default class extends Component {
   state = {
     ready: false,
   }
+
+  inRef = createRef<any>()
 
   componentWillUnmount() {
     if (this.unMount) {
@@ -23,9 +25,12 @@ export default class extends Component {
       target: document.querySelector('#ll'),
       props: {
         text: 'll',
+        $ref: this.inRef,
       },
       onMounted: () => {
-        this.setState({ ready: true })
+        this.setState({ ready: true }, () => {
+          this.inRef.current?.hello()
+        })
       },
     })
   }
