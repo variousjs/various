@@ -4,7 +4,3 @@
 [![codecov](https://codecov.io/gh/variousjs/various/branch/master/graph/badge.svg)](https://codecov.io/gh/variousjs/various)
 
 RequireJS(AMD) + React
-
-## Documentation
-
-https://various.js.org
