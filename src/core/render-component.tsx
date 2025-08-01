@@ -34,8 +34,8 @@ const renderComponent: typeof rc = ({
     connector.setRenderRoot({ name, module }, root)
   }
 
-  const { $silent, ...rest } = props || {}
-  const nextProps = { $componentProps: rest, $silent }
+  const { $silent, $ref, ...rest } = props || {}
+  const nextProps = { $componentProps: rest, $silent, $ref }
   const node = <C {...nextProps} />
 
   root.render(renderNode ? renderNode(node) : node)

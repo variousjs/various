@@ -134,11 +134,16 @@ export const onError = (e: VariousError) => {
   consoleError({ name, module }, originalError)
 }
 
-export const isReactComponent = (component: RequiredComponent) => (
-  !!component.prototype?.isReactComponent) || (
-  typeof component === 'function'
+export const isReactComponent = (component: RequiredComponent) => {
+  if (component.$$typeof) {
+    return true
+  }
+  return (
+    !!component.prototype?.isReactComponent) || (
+    typeof component === 'function'
     && String(component).includes('createElement(')
-)
+  )
+}
 
 export class VariousError extends Error implements ve {
   type: et

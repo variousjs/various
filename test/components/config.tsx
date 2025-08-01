@@ -1,12 +1,17 @@
-import React from 'react'
-import { Descriptions, DatePicker } from 'antd'
+import React, { useRef } from 'react'
+import { Descriptions, DatePicker, Button } from 'antd'
 import moment from 'moment'
-import { ComponentProps, getEnv, getConfig } from '@variousjs/various'
+import {
+  ComponentProps, getEnv, getConfig, createComponent,
+} from '@variousjs/various'
 import { getName } from 'helper'
 import { Store, Config } from '../types'
 
+const Ref = createComponent({ name: 'create-j', module: 'refNode' })
+
 export default (props: ComponentProps<Store> & { locale: string }) => {
   const config = getConfig<Config>()
+  const inRef = useRef<{ txt(): void }>(null)
 
   return (
     <div style={{ width: 610 }} className="component">
@@ -29,12 +34,22 @@ export default (props: ComponentProps<Store> & { locale: string }) => {
             defaultValue={moment('2022-02-15')}
             format="MMMM Do YYYY"
           />
+          <div style={{ height: 4 }} />
+          <Ref $ref={inRef} />
         </Descriptions.Item>
 
         <Descriptions.Item span={1} label="Props">
           <div data-config="props">
             {props.locale}
           </div>
+          <Button
+            data-refbutton="ref"
+            style={{ marginTop: 4 }}
+            size="small"
+            onClick={() => inRef.current?.txt()}
+          >
+            Click Ref
+          </Button>
         </Descriptions.Item>
 
         <Descriptions.Item span={2} label="Config">

@@ -1,11 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef, useEffect, useImperativeHandle, useRef, useState,
+} from 'react'
 import { Button, Descriptions } from 'antd'
 import { createModule, renderComponent } from '@variousjs/various'
 import { useLocation } from 'react-router-dom'
 
-export const L = () => {
+export const L = forwardRef((_, ref) => {
   const [isL, setIsL] = useState(false)
+  const [refTxt, setRefTxt] = useState<string>()
   const unMount = useRef<() => void>(() => null)
+
+  useImperativeHandle(ref, () => ({
+    hello: () => {
+      setRefTxt('from ref txt')
+    },
+  }))
 
   useEffect(() => () => unMount.current(), [])
 
@@ -17,6 +26,7 @@ export const L = () => {
 
       <Descriptions.Item label="L">
         <div data-m="is-switch">{isL ? 'true' : 'false'}</div>
+        <div data-ref="ref">{refTxt}</div>
       </Descriptions.Item>
 
       <Descriptions.Item label="Actions">
@@ -63,7 +73,7 @@ export const L = () => {
       </Descriptions.Item>
     </Descriptions>
   )
-}
+})
 
 export const LL = () => {
   const unMount = useRef<() => void>(() => null)

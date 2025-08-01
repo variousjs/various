@@ -1,5 +1,7 @@
 declare module '@variousjs/various' {
-  import { ComponentType, FC, ReactNode } from 'react'
+  import {
+    ComponentType, FC, ReactNode, RefObject,
+  } from 'react'
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
@@ -18,6 +20,7 @@ declare module '@variousjs/various' {
 
   export interface ComponentDefaultProps {
     $silent?: boolean,
+    $ref?: RefObject<unknown>,
   }
 
   export interface VariousError extends Error {
