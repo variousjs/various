@@ -29,7 +29,9 @@ export default class extends Component {
       },
       onMounted: () => {
         this.setState({ ready: true }, () => {
-          this.inRef.current?.hello()
+          setTimeout(() => {
+            this.inRef.current?.hello()
+          }, 500)
         })
       },
     })

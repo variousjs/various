@@ -21,7 +21,7 @@ export const refNode = forwardRef<{ txt:() => void }, unknown>((_, ref) => {
 
   return (
     <div>
-      <Input value={t} />
+      <Input data-input="ref" value={t} />
     </div>
   )
 })

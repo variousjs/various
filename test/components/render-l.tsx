@@ -26,7 +26,7 @@ export const L = forwardRef((_, ref) => {
 
       <Descriptions.Item label="L">
         <div data-m="is-switch">{isL ? 'true' : 'false'}</div>
-        <div>{refTxt}</div>
+        <div data-ref="ref">{refTxt}</div>
       </Descriptions.Item>
 
       <Descriptions.Item label="Actions">

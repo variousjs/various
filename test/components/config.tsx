@@ -43,6 +43,7 @@ export default (props: ComponentProps<Store> & { locale: string }) => {
             {props.locale}
           </div>
           <Button
+            data-refbutton="ref"
             style={{ marginTop: 4 }}
             size="small"
             onClick={() => inRef.current?.txt()}
