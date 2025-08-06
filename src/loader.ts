@@ -1,7 +1,7 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-import { DEFAULT_PACKAGES } from './config'
-import { Various, AppWithDefault } from './types'
+import { DEFAULT_PACKAGES, REAVT_REQUIREMENT_VERSION } from './config'
+import { Various, AppWithDefault, ReactWithVersion } from './types'
 
 declare global {
   interface Require { s: any }
@@ -11,6 +11,11 @@ declare global {
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('loader.js', 'index.js')
+
+const onError = (error: Error) => {
+  window.console.error(error)
+  document.body.innerHTML = `<P style="white-space:pre-wrap">[APP_ERROR] ${error.message}</P>`
+}
 
 function loader(config: Config) {
   const {
@@ -50,7 +55,25 @@ function loader(config: Config) {
       'react-dom',
       ...parallels,
     ],
-    (various: Various, entry: { default: App | AppWithDefault }) => {
+    (
+      various: Various,
+      entry: { default: App | AppWithDefault },
+      React: ReactWithVersion,
+      ReactDOM: ReactWithVersion,
+    ) => {
+      const versionRegex = new RegExp(`^${REAVT_REQUIREMENT_VERSION}\\.`)
+      if (!versionRegex.test(React.version) || !versionRegex.test(ReactDOM.version)) {
+        const error = new Error(`
+
+React/ReactDOM Version Requirement
+
+Current: React v${React.version} / ReactDOM v${ReactDOM.version}
+
+Important: This application only works with React/ReactDOM ${REAVT_REQUIREMENT_VERSION}`)
+        onError(error)
+        return
+      }
+
       const app = (entry.default || entry) as App
       const loadEnd = +new Date()
 
@@ -63,10 +86,7 @@ function loader(config: Config) {
 
       various.default({ ...config, ...app })
     },
-    (error: Error) => {
-      window.console.error(error)
-      document.body.innerHTML = `[APP_ERROR] ${error.message}`
-    },
+    onError,
   )
 }
 
