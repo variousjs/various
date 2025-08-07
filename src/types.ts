@@ -58,3 +58,5 @@ export interface Various {
 }
 
 export type AppWithDefault = { default: App }
+
+export interface ReactWithVersion { version: string }

@@ -38,6 +38,7 @@ describe('helper', () => {
     cy.get('[data-m="action-create"]').click()
     cy.get('[data-m="createModule"]').should('contain.text', 'Maximum call stack size exceeded')
 
+    // test exist component
     cy.visit('/#/')
     cy.wait(500)
     cy.visit('/#/helper')
