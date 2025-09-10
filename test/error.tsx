@@ -34,7 +34,7 @@ const errorComponent: ErrorNode<Store> = (props) => {
           type="button"
           onClick={$reload}
         >
-          {$store.locale === 'zh' ? '刷新' : 'reload'}
+          {$store.locale === 'zh' || $store.locale === 'zh-CN' ? '刷新' : 'reload'}
         </button>
         )
       }
