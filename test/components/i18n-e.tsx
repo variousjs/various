@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Descriptions } from 'antd'
+import { Descriptions, Input } from 'antd'
 import { ComponentProps } from '@variousjs/various'
 
 const T: FC<ComponentProps> = (props) => {
@@ -12,6 +12,7 @@ const T: FC<ComponentProps> = (props) => {
           {/* @ts-ignore */}
           {$t('title', [])}
         </span>
+        <Input value={$t('globalTitle')} />
       </Descriptions.Item>
     </Descriptions>
   )

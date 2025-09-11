@@ -5,7 +5,7 @@ import { getStore } from '../store'
 
 export default function (moduleDefined: ModuleDefined) {
   return function (key, params, defaultString) {
-    const i18nConfig = connector.getI18nConfig(moduleDefined)
+    const i18nConfig = connector.getI18nConfig(moduleDefined) || connector.getGlobalI18nConfig()
 
     let defaultText = defaultString
     if (defaultText === undefined) {

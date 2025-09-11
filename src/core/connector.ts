@@ -24,7 +24,9 @@ class Connector {
 
   private renderRoots: Record<string, Root>
 
-  private i18nConfigs: Record<string, I18nConfig>
+  private i18nConfigs: Record<string, I18nConfig | undefined>
+
+  private globalI18nConfig: I18nConfig | undefined
 
   private middlewares: App['middlewares']
 
@@ -55,6 +57,14 @@ class Connector {
   getI18nConfig(moduleDefined: ModuleDefined) {
     const name = getNameWithModule(moduleDefined)
     return this.i18nConfigs[name]
+  }
+
+  setGlobalI18nConfig(config: I18nConfig) {
+    this.globalI18nConfig = config
+  }
+
+  getGlobalI18nConfig() {
+    return this.globalI18nConfig
   }
 
   setRenderRoot(moduleDefined: ModuleDefined, root: Root) {

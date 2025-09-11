@@ -6,6 +6,7 @@ import store from './store'
 import Container from './container-node'
 import Loader from './loader'
 import Error from './error'
+import Zh from './components/i18n/global.json'
 
 moment.locale('zh-cn')
 
@@ -50,6 +51,14 @@ const entry: App<typeof store> = {
   Error,
   actions,
   middlewares: window.location.pathname.includes('middlewares.html') ? undefined : middlewares,
+  i18n: async () => {
+    await new Promise((r) => setTimeout(r, 0))
+
+    return {
+      localeKey: 'locale',
+      resources: { zh: Zh },
+    }
+  },
 }
 
 export default entry

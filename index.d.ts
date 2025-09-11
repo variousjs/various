@@ -144,6 +144,7 @@ declare module '@variousjs/various' {
       onMessage?: MessageEvent,
       onDispatch?: DispatchEvent,
     },
+    i18n?: I18n,
   }
 
   export interface Config {
