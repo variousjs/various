@@ -16,4 +16,4 @@ export const DEPENDENCIES_KEY = Symbol('DEPENDENCIES')
 
 export const ROOT = '#root'
 
-export const REAVT_REQUIREMENT_VERSION = 18
+export const REACT_REQUIREMENT_VERSION = 18

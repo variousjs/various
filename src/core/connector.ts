@@ -3,7 +3,7 @@ import { Root } from 'react-dom/client'
 import {
   LoaderNode,
   ErrorNode,
-  I18n,
+  I18nConfig,
   App,
   ModuleDefined,
 } from '@variousjs/various'
@@ -24,7 +24,7 @@ class Connector {
 
   private renderRoots: Record<string, Root>
 
-  private i18nConfigs: Record<string, ReturnType<I18n>>
+  private i18nConfigs: Record<string, I18nConfig>
 
   private middlewares: App['middlewares']
 
@@ -47,7 +47,7 @@ class Connector {
     return this.middlewares
   }
 
-  setI18nConfig(moduleDefined: ModuleDefined, config: ReturnType<I18n>) {
+  setI18nConfig(moduleDefined: ModuleDefined, config: I18nConfig) {
     const name = getNameWithModule(moduleDefined)
     this.i18nConfigs[name] = config
   }

@@ -10,6 +10,7 @@ import {
   VariousError,
   hasModule,
   getNameWithModule,
+  isPromiseLike,
 } from '../helper'
 import {
   connect,
@@ -63,7 +64,7 @@ function createReactComponent<P extends object>(config: {
 
     private isUnMounted?: boolean
 
-    private unSubscribe = () => null as unknown
+    private unSubscribeMessage = () => null as unknown
 
     componentDidMount() {
       this.setState({ componentExist: !!connector.getComponent({ name, module }) })
@@ -91,7 +92,7 @@ function createReactComponent<P extends object>(config: {
       this.ComponentNode = null
       this.unMountComponent()
       this.isUnMounted = true
-      this.unSubscribe()
+      this.unSubscribeMessage()
     }
 
     unMountComponent = () => {
@@ -136,7 +137,7 @@ function createReactComponent<P extends object>(config: {
               return
             }
             if (method === '$onMessage') {
-              this.unSubscribe = getOnMessage(
+              this.unSubscribeMessage = getOnMessage(
                 { name, module },
                 componentNode[method] as OnMessage,
               )
@@ -144,7 +145,26 @@ function createReactComponent<P extends object>(config: {
             }
             if (method === '$i18n') {
               const i18nConfig = (componentNode[method] as I18n)()
-              connector.setI18nConfig({ name, module }, i18nConfig)
+
+              if (!isPromiseLike(i18nConfig)) {
+                connector.setI18nConfig({ name, module }, i18nConfig)
+                return
+              }
+
+              i18nConfig
+                .then((res) => {
+                  connector.setI18nConfig({ name, module }, res)
+                  this.forceUpdate()
+                })
+                .catch((e: Error) => {
+                  onError(new VariousError({
+                    name,
+                    module,
+                    type: 'I18N',
+                    originalError: e,
+                  }))
+                })
+
               return
             }
 

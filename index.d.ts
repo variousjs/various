@@ -48,10 +48,12 @@ declare module '@variousjs/various' {
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
-  export type I18n = () => {
+  export interface I18nConfig {
     localeKey: string,
     resources: Record<string, Record<string, string>>,
   }
+
+  export type I18n = () => I18nConfig | Promise<I18nConfig>
 
   export type OnMessage = (message: Message) => void
 

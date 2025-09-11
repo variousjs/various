@@ -7,13 +7,17 @@ import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
 
 export default class C extends Component<ComponentProps<Store>> {
-  static $i18n: I18n = () => ({
-    localeKey: 'locale',
-    resources: {
-      zh: Zh,
-      en: En,
-    },
-  })
+  static $i18n: I18n = async () => {
+    await new Promise((r) => setTimeout(r, 3000))
+
+    return {
+      localeKey: 'locale',
+      resources: {
+        zh: Zh,
+        en: En,
+      },
+    }
+  }
 
   render() {
     const { $t } = this.props

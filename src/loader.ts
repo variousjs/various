@@ -1,6 +1,6 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-import { DEFAULT_PACKAGES, REAVT_REQUIREMENT_VERSION } from './config'
+import { DEFAULT_PACKAGES, REACT_REQUIREMENT_VERSION } from './config'
 import { Various, AppWithDefault, ReactWithVersion } from './types'
 
 declare global {
@@ -61,7 +61,7 @@ function loader(config: Config) {
       React: ReactWithVersion,
       ReactDOM: ReactWithVersion,
     ) => {
-      const versionRegex = new RegExp(`^${REAVT_REQUIREMENT_VERSION}\\.`)
+      const versionRegex = new RegExp(`^${REACT_REQUIREMENT_VERSION}\\.`)
       if (!versionRegex.test(React.version) || !versionRegex.test(ReactDOM.version)) {
         const error = new Error(`
 
@@ -69,7 +69,7 @@ React/ReactDOM Version Requirement
 
 Current: React v${React.version} / ReactDOM v${ReactDOM.version}
 
-Important: This application only works with React/ReactDOM ${REAVT_REQUIREMENT_VERSION}`)
+Important: This application only works with React/ReactDOM ${REACT_REQUIREMENT_VERSION}`)
         onError(error)
         return
       }
