@@ -4,9 +4,13 @@ import { VariousError, onError } from '../helper'
 import { getStore } from '../store'
 
 export default function (moduleDefined: ModuleDefined) {
-  return function (key, params) {
+  return function (key, params, defaultString) {
     const i18nConfig = connector.getI18nConfig(moduleDefined)
-    const defaultText = typeof params === 'string' ? params : key
+
+    let defaultText = defaultString
+    if (defaultText === undefined) {
+      defaultText = typeof params === 'string' ? params : key
+    }
 
     if (!i18nConfig) {
       onError(new VariousError({

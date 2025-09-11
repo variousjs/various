@@ -8,7 +8,7 @@ import En from './i18n/en.json'
 
 export default class C extends Component<ComponentProps<Store>> {
   static $i18n: I18n = async () => {
-    await new Promise((r) => setTimeout(r, 3000))
+    await new Promise((r) => setTimeout(r, 1000))
 
     return {
       localeKey: 'locale',
@@ -30,7 +30,7 @@ export default class C extends Component<ComponentProps<Store>> {
 
         <Descriptions.Item label="Hello">
           <span data-c="hello">
-            {$t('hello', { name: 1, name2: '999' })}
+            {$t('hello', { name: 1, name2: '999' }, 'Default Hello')}
           </span>
         </Descriptions.Item>
 

@@ -42,7 +42,11 @@ declare module '@variousjs/various' {
   }) => Promise<any>
   type $postMessage = (event: string, value?: any) => void
 
-  export type Intl = (key: string, params?: Record<string, string | number> | string) => string
+  export type Intl = (
+    key: string,
+    paramsOrDefaultText?: Record<string, string | number> | string,
+    defaultText?: string,
+  ) => string
 
   export type ENV = 'development' | 'production'
 
