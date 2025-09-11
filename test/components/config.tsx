@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Descriptions, DatePicker, Button } from 'antd'
 import moment from 'moment'
 import {
-  ComponentProps, getEnv, getConfig, createComponent,
+  ComponentProps, getConfig, createComponent, version,
 } from '@variousjs/various'
 import { getName } from 'helper'
 import { Store, Config } from '../types'
@@ -20,8 +20,8 @@ export default (props: ComponentProps<Store> & { locale: string }) => {
           <span data-store="name">{props.$store.name}</span>
         </Descriptions.Item>
 
-        <Descriptions.Item label="ENV">
-          <span data-env="env">{getEnv()}</span>
+        <Descriptions.Item label="VERSION">
+          <span data-version="version">{version}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Name">

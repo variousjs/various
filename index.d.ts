@@ -187,6 +187,7 @@ declare module '@variousjs/various' {
   ) => () => void
   export const defineDependencies: (deps: Record<string, string>) => void
 
+  export const version: string
   export const getEnv: () => ENV
   export function getConfig<C extends object = ObjectAny>(): C
   export function getStore<S extends object = ObjectAny>(): S

@@ -15,6 +15,10 @@ import { isPromiseLike, onError, VariousError } from './helper'
 import { Container as ContainerNode } from './default-component'
 import { Store } from '../types'
 
+declare global {
+  const VERSION: string
+}
+
 export { default as Nycticorax } from 'nycticorax'
 
 export { getUserStore as getStore } from './store'
@@ -34,6 +38,9 @@ export {
 export { default as createModule } from './create-module'
 export { default as createComponent } from './create-component'
 export { default as renderComponent } from './render-component'
+
+// eslint-disable-next-line no-undef
+export const version = VERSION
 
 export default (config: Config & App<Store>) => {
   const {
