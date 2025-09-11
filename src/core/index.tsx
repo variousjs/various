@@ -100,26 +100,27 @@ export default (config: Config & App<Store>) => {
 
       if (!isPromiseLike(i18nConfig)) {
         connector.setGlobalI18nConfig(i18nConfig)
-      } else {
-        i18nConfig
-          .then((res) => {
-            const locale = getStore(res.localeKey)
-
-            connector.setGlobalI18nConfig(res)
-
-            if (locale !== undefined) {
-              emit({ [res.localeKey]: undefined }, true)
-              emit({ [res.localeKey]: locale })
-            }
-          })
-          .catch((e: Error) => {
-            onError(new VariousError({
-              name: 'app',
-              type: 'I18N',
-              originalError: e,
-            }))
-          })
+        return
       }
+
+      i18nConfig
+        .then((res) => {
+          const locale = getStore(res.localeKey)
+
+          connector.setGlobalI18nConfig(res)
+
+          if (locale !== undefined) {
+            emit({ [res.localeKey]: undefined }, true)
+            emit({ [res.localeKey]: locale })
+          }
+        })
+        .catch((e: Error) => {
+          onError(new VariousError({
+            name: 'app',
+            type: 'I18N',
+            originalError: e,
+          }))
+        })
     }
 
     render() {
