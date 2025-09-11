@@ -166,3 +166,7 @@ export class VariousError extends Error implements ve {
     this.name = data.name
   }
 }
+
+export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
+  return value != null && typeof (value as any).then === 'function'
+}

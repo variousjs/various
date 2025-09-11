@@ -42,16 +42,22 @@ declare module '@variousjs/various' {
   }) => Promise<any>
   type $postMessage = (event: string, value?: any) => void
 
-  export type Intl = (key: string, params?: Record<string, string | number>) => string
+  export type Intl = (
+    key: string,
+    paramsOrDefaultText?: Record<string, string | number> | string,
+    defaultText?: string,
+  ) => string
 
   export type ENV = 'development' | 'production'
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
-  export type I18n = () => {
+  export interface I18nConfig {
     localeKey: string,
     resources: Record<string, Record<string, string>>,
   }
+
+  export type I18n = () => I18nConfig | Promise<I18nConfig>
 
   export type OnMessage = (message: Message) => void
 
@@ -138,6 +144,7 @@ declare module '@variousjs/various' {
       onMessage?: MessageEvent,
       onDispatch?: DispatchEvent,
     },
+    i18n?: I18n,
   }
 
   export interface Config {

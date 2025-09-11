@@ -4,8 +4,13 @@ import { VariousError, onError } from '../helper'
 import { getStore } from '../store'
 
 export default function (moduleDefined: ModuleDefined) {
-  return function (key, params) {
-    const i18nConfig = connector.getI18nConfig(moduleDefined)
+  return function (key, params, defaultString) {
+    const i18nConfig = connector.getI18nConfig(moduleDefined) || connector.getGlobalI18nConfig()
+
+    let defaultText = defaultString
+    if (defaultText === undefined) {
+      defaultText = typeof params === 'string' ? params : key
+    }
 
     if (!i18nConfig) {
       onError(new VariousError({
@@ -13,11 +18,21 @@ export default function (moduleDefined: ModuleDefined) {
         type: 'I18N',
         originalError: new Error('config not exist'),
       }))
-      return key
+      return defaultText
     }
 
     const { localeKey, resources } = i18nConfig
-    const locale = getStore(localeKey) as string
+    const locale: string | undefined = getStore(localeKey)
+
+    if (locale === undefined) {
+      onError(new VariousError({
+        ...moduleDefined,
+        type: 'I18N',
+        originalError: new Error('locale key not defined'),
+      }))
+      return defaultText
+    }
+
     const resource = resources[locale]
 
     if (!resource) {
@@ -26,7 +41,7 @@ export default function (moduleDefined: ModuleDefined) {
         type: 'I18N',
         originalError: new Error(`locale resource \`${locale}\` not exist`),
       }))
-      return key
+      return defaultText
     }
 
     if (!resource[key]) {
@@ -35,12 +50,12 @@ export default function (moduleDefined: ModuleDefined) {
         type: 'I18N',
         originalError: new Error(`locale key \`${key}\` not exist`),
       }))
-      return key
+      return defaultText
     }
 
     const text = resource[key]
 
-    if (!params || Object.prototype.toString.call(params) !== '[object Object]') {
+    if (!params || typeof params === 'string' || Object.prototype.toString.call(params) !== '[object Object]') {
       return text
     }
 

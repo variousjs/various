@@ -1,7 +1,7 @@
 import React, { Component, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App, Config, VariousError as ve } from '@variousjs/various'
-import { createStore } from './store'
+import { createStore, getStore, emit } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
@@ -11,7 +11,7 @@ import {
   CONFIG_KEY,
 } from '../config'
 import connector from './connector'
-import { onError, VariousError } from './helper'
+import { isPromiseLike, onError, VariousError } from './helper'
 import { Container as ContainerNode } from './default-component'
 import { Store } from '../types'
 
@@ -46,6 +46,7 @@ export default (config: Config & App<Store>) => {
     Error: ErrorComponent,
     Container: ContainerComponent = ContainerNode,
     middlewares,
+    i18n,
     ...rest
   } = config
 
@@ -88,6 +89,38 @@ export default (config: Config & App<Store>) => {
       onError(error)
       this.error = error
       this.setState({ isError: true })
+    }
+
+    componentDidMount() {
+      if (!i18n) {
+        return
+      }
+
+      const i18nConfig = i18n()
+
+      if (!isPromiseLike(i18nConfig)) {
+        connector.setGlobalI18nConfig(i18nConfig)
+        return
+      }
+
+      i18nConfig
+        .then((res) => {
+          const locale = getStore(res.localeKey)
+
+          connector.setGlobalI18nConfig(res)
+
+          if (locale !== undefined) {
+            emit({ [res.localeKey]: undefined }, true)
+            emit({ [res.localeKey]: locale })
+          }
+        })
+        .catch((e: Error) => {
+          onError(new VariousError({
+            name: 'app',
+            type: 'I18N',
+            originalError: e,
+          }))
+        })
     }
 
     render() {

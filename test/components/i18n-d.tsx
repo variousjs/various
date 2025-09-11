@@ -18,7 +18,7 @@ const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
   return (
     <Descriptions column={2} size="small" title="D" layout="vertical" bordered>
       <Descriptions.Item label="Title">
-        <span data-d="title">{$t('title', {})}</span>
+        <span data-d="title">{$t('title', 'default title')}</span>
       </Descriptions.Item>
 
       <Descriptions.Item label="I18n Nonexist">
@@ -47,12 +47,18 @@ const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
   )
 }
 
-F.$i18n = () => ({
-  localeKey: 'locale',
-  resources: {
-    zh: Zh,
-    en: En,
-  },
-})
+F.$i18n = () => {
+  if (window.location.pathname.includes('i18n.html')) {
+    throw new Error('something error')
+  }
+
+  return {
+    localeKey: 'locale',
+    resources: {
+      zh: Zh,
+      en: En,
+    },
+  }
+}
 
 export default F

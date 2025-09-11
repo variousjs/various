@@ -7,13 +7,21 @@ import Zh from './i18n/zh.json'
 import En from './i18n/en.json'
 
 export default class C extends Component<ComponentProps<Store>> {
-  static $i18n: I18n = () => ({
-    localeKey: 'locale',
-    resources: {
-      zh: Zh,
-      en: En,
-    },
-  })
+  static $i18n: I18n = async () => {
+    await new Promise((r) => setTimeout(r, 1000))
+
+    if (window.location.pathname.includes('i18n2.html')) {
+      throw new Error('get i18n something error')
+    }
+
+    return {
+      localeKey: 'locale',
+      resources: {
+        zh: Zh,
+        en: En,
+      },
+    }
+  }
 
   render() {
     const { $t } = this.props
@@ -21,12 +29,12 @@ export default class C extends Component<ComponentProps<Store>> {
     return (
       <Descriptions column={2} size="small" title="C" layout="vertical" bordered>
         <Descriptions.Item label="Title">
-          <span data-c="title">{$t('title')}</span>
+          <span data-c="title">{$t('title', {})}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Hello">
           <span data-c="hello">
-            {$t('hello', { name: 1, name2: '999' })}
+            {$t('hello', { name: 1, name2: '999' }, 'Default Hello')}
           </span>
         </Descriptions.Item>
 
