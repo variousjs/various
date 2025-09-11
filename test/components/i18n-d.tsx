@@ -47,12 +47,18 @@ const F: FC<ComponentProps> & { $i18n: I18n } = (props) => {
   )
 }
 
-F.$i18n = () => ({
-  localeKey: 'locale',
-  resources: {
-    zh: Zh,
-    en: En,
-  },
-})
+F.$i18n = () => {
+  if (window.location.pathname.includes('i18n.html')) {
+    throw new Error('something error')
+  }
+
+  return {
+    localeKey: 'locale',
+    resources: {
+      zh: Zh,
+      en: En,
+    },
+  }
+}
 
 export default F

@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<link rel="stylesheet" href="./libs/antd.min.css" />
+<style>
+.component {
+  background: #fff;
+  padding: 10px;
+  width: 300px;
+  margin: 0 10px 10px 0;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 4px;
+}
+.component:empty {
+  display: none;
+}
+button {
+  margin: 0 10px 10px 0;
+}
+</style>
+<script>
+var VARIOUS_CONFIG = {
+  timeout: 1.5,
+  root: '#root',
+  earlyParallelDependencies: ['config', 'helper-n', 'page'],
+  dependencies: {
+    app: './dist/entry.js',
+    react: './libs/react.production.min.js',
+    'react-dom': './libs/react-dom.production.min.js',
+    'react-router-dom': './libs/react-router-dom.min.js',
+    moment: './libs/moment.min.js',
+    antd: './libs/antd-with-locales.min.js',
+    moment_zhCN: './zh-cn.js',
+    'rc-table': 'http://no-exist/rc-table.js',
+    helper: './dist/helper.js',
+
+    container: './dist/container.js',
+    page: './dist/page.js',
+    'i18n-d': './dist/i18n-d.js',
+    'i18n-e': './dist/i18n-e.js',
+  },
+  env: 'development',
+  pages: [
+    {
+      label: 'I18n',
+      icon: 'copy',
+      component: 'i18n',
+      path: '/',
+      components: ['i18n-e', 'i18n-d'],
+    },
+  ],
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="./dist/loader.js"></script>
+</body>
+</html>

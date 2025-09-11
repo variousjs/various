@@ -179,13 +179,23 @@ function createReactComponent<P extends object>(config: {
         onMounted()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
-        const error = e as VariousError
+        if (e instanceof VariousError) {
+          this.error = e
+        } else {
+          const error = new VariousError({
+            name,
+            module,
+            type: 'SCRIPT_ERROR',
+            originalError: e as Error,
+          })
+          onError(error)
+          this.error = error
+        }
 
         if (this.isUnMounted) {
           return
         }
 
-        this.error = error
         this.setState({ isError: true })
       }
     }

@@ -12,7 +12,7 @@ const T: FC<ComponentProps> = (props) => {
           {/* @ts-ignore */}
           {$t('title', [])}
         </span>
-        <Input value={$t('globalTitle')} />
+        <Input data-e="input" value={$t('globalTitle')} />
       </Descriptions.Item>
     </Descriptions>
   )

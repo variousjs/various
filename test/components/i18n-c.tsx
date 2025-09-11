@@ -10,6 +10,10 @@ export default class C extends Component<ComponentProps<Store>> {
   static $i18n: I18n = async () => {
     await new Promise((r) => setTimeout(r, 1000))
 
+    if (window.location.pathname.includes('i18n2.html')) {
+      throw new Error('get i18n something error')
+    }
+
     return {
       localeKey: 'locale',
       resources: {
@@ -25,7 +29,7 @@ export default class C extends Component<ComponentProps<Store>> {
     return (
       <Descriptions column={2} size="small" title="C" layout="vertical" bordered>
         <Descriptions.Item label="Title">
-          <span data-c="title">{$t('title')}</span>
+          <span data-c="title">{$t('title', {})}</span>
         </Descriptions.Item>
 
         <Descriptions.Item label="Hello">

@@ -22,7 +22,17 @@ export default function (moduleDefined: ModuleDefined) {
     }
 
     const { localeKey, resources } = i18nConfig
-    const locale = getStore(localeKey) as string
+    const locale: string | undefined = getStore(localeKey)
+
+    if (locale === undefined) {
+      onError(new VariousError({
+        ...moduleDefined,
+        type: 'I18N',
+        originalError: new Error('locale key not defined'),
+      }))
+      return defaultText
+    }
+
     const resource = resources[locale]
 
     if (!resource) {
