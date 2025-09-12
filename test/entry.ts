@@ -56,7 +56,7 @@ const middlewares: App['middlewares'] = {
   },
   onLog(e) {
     if (window.Cypress) {
-      window.console.log(e.message)
+      window.console.log(e.message?.message || e.message)
       return false
     }
     return true

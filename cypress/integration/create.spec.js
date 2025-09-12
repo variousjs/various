@@ -29,7 +29,7 @@ describe('create component', () => {
       .next()
       .should('have.text', '刷新')
 
-    cy.contains('[NOT_DEFINED]:Module "no-defined" not defined')
+    cy.contains('[NOT_DEFINED]:module "no-defined" not defined')
       .should('exist')
       .next()
       .should('not.exist')
@@ -39,7 +39,7 @@ describe('create component', () => {
       .next()
       .should('have.text', '刷新')
 
-    cy.contains('[INVALID_MODULE]:Module "create-empty-content" not content')
+    cy.contains('[INVALID_MODULE]:module "create-empty-content" not content')
       .should('exist')
       .next()
       .should('have.text', '刷新')
@@ -47,14 +47,14 @@ describe('create component', () => {
     cy.contains('create-j.k')
       .should('exist')
       .next()
-      .should('contain.text', '[INVALID_COMPONENT]:Not a valid React component')
+      .should('contain.text', '[INVALID_COMPONENT]:not a valid React component')
 
     cy.contains('create-j.l')
       .should('exist')
       .next()
-      .should('contain.text', '[INVALID_COMPONENT]:Not a valid React component')
+      .should('contain.text', '[INVALID_COMPONENT]:not a valid React component')
 
-    cy.contains('[SUBMODULE_NOT_DEFINED]:Submodule "no-exist" not defined')
+    cy.contains('[SUBMODULE_NOT_DEFINED]:submodule "no-exist" not defined')
       .should('exist')
       .next()
       .should('have.text', '刷新')

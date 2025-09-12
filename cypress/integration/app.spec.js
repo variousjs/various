@@ -46,12 +46,12 @@ describe('config', () => {
   it('production env', () => {
     cy.visit('/production.html', {
       onBeforeLoad(win) {
-        cy.spy(win.console, 'warn').as('console.warn')
+        cy.spy(win.console, 'log').as('console.log')
       },
     })
 
     cy.get('[data-b="action-a-block"]').click()
-    cy.get('@console.warn').should('be.calledWith', 'block')
+    cy.get('@console.log').should('be.calledWith', 'block')
   })
 
   it('middlewares', () => {

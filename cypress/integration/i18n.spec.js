@@ -49,28 +49,18 @@ describe('i18n', () => {
 
     cy.visit('/i18n2.html', {
       onBeforeLoad(win) {
-        cy.spy(win.console, 'error').as('console.error')
+        cy.spy(win.console, 'log').as('console.log')
       },
     })
     cy.get('[data-e="input"]').should('have.value', 'globalTitle')
     cy.get('[data-c="hello"]').should('have.text', 'Default Hello')
-    cy.get('@console.error').should(
-      'be.calledWithMatch',
-      Cypress.sinon.match.any,
-      Cypress.sinon.match.any,
-      Cypress.sinon.match.has('message', 'get i18n something error'),
-    )
+    cy.get('@console.log').should('be.calledWith', 'get i18n something error')
 
     cy.visit('/i18n3.html', {
       onBeforeLoad(win) {
-        cy.spy(win.console, 'error').as('console.error2')
+        cy.spy(win.console, 'log').as('console.log2')
       },
     })
-    cy.get('@console.error2').should(
-      'be.calledWithMatch',
-      Cypress.sinon.match.any,
-      Cypress.sinon.match.any,
-      Cypress.sinon.match.has('message', 'locale key not defined'),
-    )
+    cy.get('@console.log2').should('be.calledWith', 'locale key not defined')
   })
 })

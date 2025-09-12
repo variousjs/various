@@ -4,7 +4,7 @@ describe('message', () => {
   beforeEach(() => {
     cy.visit('/#/message', {
       onBeforeLoad(win) {
-        cy.spy(win.console, 'warn').as('console.warn')
+        cy.spy(win.console, 'log').as('console.log')
       },
     })
   })
@@ -23,7 +23,7 @@ describe('message', () => {
         cy.get('[data-gg="value"]').should('have.text', 'changed by middleware')
 
         cy.get('[data-f="block"]').click()
-        cy.get('@console.warn').should('be.calledWith', 'block')
+        cy.get('@console.log').should('be.calledWith', 'block')
       })
     })
   })
