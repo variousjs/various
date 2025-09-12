@@ -42,9 +42,9 @@ const middlewares: App['middlewares'] = {
     }
     return true
   },
-  onLog() {
-    return false
-  },
+  // onLog() {
+  //   return false
+  // },
 }
 
 const entry: App<typeof store> = {

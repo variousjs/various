@@ -16,7 +16,7 @@ declare module '@variousjs/various' {
     'SUBMODULE_NOT_DEFINED' |
     'SUBMODULE_SCRIPT_ERROR' |
     'DISPATCH' |
-    'I18N'
+    'I18N' | (string & {})
 
   export interface ComponentDefaultProps {
     $silent?: boolean,

@@ -1,6 +1,6 @@
 import { createLogger as cl, LogEvent } from '@variousjs/various'
 import connector from './connector'
-import { getNameWithModule } from './helper'
+import { getNameWithModule, VariousError } from './helper'
 
 type LogArgs = Parameters<LogEvent>[0]
 type LogLevel = LogArgs['level']
@@ -52,6 +52,17 @@ const createLogger: typeof cl = (moduleDefined) => ({
     })
   },
   error(message, type) {
+    const middlewares = connector.getMiddlewares()
+    const error = message instanceof VariousError
+      ? message
+      : new VariousError({
+        ...moduleDefined,
+        type: type || 'unknow',
+        originalError: message instanceof Error ? message : new Error(message),
+      })
+
+    middlewares?.onError?.(error)
+
     logger({
       ...moduleDefined, level: 'error', type, message,
     })

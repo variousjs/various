@@ -21,8 +21,6 @@ export const refNode = forwardRef<{ txt:() => void }, ComponentProps>((props, re
     },
   }))
 
-  props.$logger.info('???', 'TTT')
-
   return (
     <div>
       <Input data-input="ref" value={t} />
