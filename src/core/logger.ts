@@ -1,15 +1,18 @@
-import { createLogger as cl, ModuleDefined } from '@variousjs/various'
+import { createLogger as cl, LogEvent } from '@variousjs/various'
+import connector from './connector'
 import { getNameWithModule } from './helper'
 
-type LogLevel = 'info' | 'warn' | 'error'
-
-interface LogArgs extends ModuleDefined {
-  level: LogLevel,
-  type?: string,
-  message: any,
-}
+type LogArgs = Parameters<LogEvent>[0]
+type LogLevel = LogArgs['level']
 
 const logger = (args: LogArgs) => {
+  const middlewares = connector.getMiddlewares()
+  const canLog = middlewares?.onLog?.(args)
+
+  if (canLog === false) {
+    return
+  }
+
   const colorMap: Record<LogLevel, string> = {
     info: 'blue',
     warn: 'orange',

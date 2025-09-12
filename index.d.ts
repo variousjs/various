@@ -134,10 +134,18 @@ declare module '@variousjs/various' {
     beenLoaded: boolean,
   }
 
+  type LogLevel = 'info' | 'warn' | 'error'
+  interface LogArgs extends ModuleDefined {
+    level: LogLevel,
+    type?: string,
+    message: any,
+  }
+
   export type MessageEvent = (e: MessageEventArgs) => Promise<MessageEventRes> | MessageEventRes
   export type DispatchEvent = (e: DispatchEventArgs) => Promise<DispatchEventRes> | DispatchEventRes
   export type LoadEvent = (e: LoadEventArgs) => void
   export type ErrorEvent = (e: VariousError) => void
+  export type LogEvent = (e: LogArgs) => boolean
 
   export interface App<S extends object = ObjectAny> {
     store?: readonly S,
@@ -150,6 +158,7 @@ declare module '@variousjs/various' {
       onError?: ErrorEvent,
       onMessage?: MessageEvent,
       onDispatch?: DispatchEvent,
+      onLog?: LogEvent,
     },
     i18n?: I18n,
   }
@@ -158,6 +167,8 @@ declare module '@variousjs/various' {
     dependencies: {
       app: string,
       '@variousjs/various'?: string,
+      react?: string,
+      'react-dom'?: string,
       [x: string]: string,
     },
     root?: string,
