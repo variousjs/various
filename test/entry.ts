@@ -8,6 +8,10 @@ import Loader from './loader'
 import ErrorNode from './error'
 import Zh from './components/i18n/global.json'
 
+declare global {
+  interface Window { Cypress: any }
+}
+
 moment.locale('zh-cn')
 
 if (window.location.hash === '') {
@@ -16,14 +20,20 @@ if (window.location.hash === '') {
 
 const middlewares: App['middlewares'] = {
   onLoad(e) {
-    window.console.log(`${e.name},${e.beenLoaded}`)
+    if (window.Cypress) {
+      window.console.log(`${e.name},${e.beenLoaded}`)
+    }
   },
   onError(e) {
-    window.console.log(`${e.name},${e.type}`)
+    if (window.Cypress) {
+      window.console.log(`${e.name},${e.type}`)
+    }
   },
   onMessage(e) {
     if (e.event === 'block') {
-      window.console.warn('block')
+      if (window.Cypress) {
+        window.console.log('block')
+      }
       return false
     }
     if (e.trigger.name === 'message-f') {
@@ -37,14 +47,20 @@ const middlewares: App['middlewares'] = {
       return { ...e, value: 'changed by middleware' }
     }
     if (e.action === 'block') {
-      window.console.warn('block')
+      if (window.Cypress) {
+        window.console.log('block')
+      }
       return false
     }
     return true
   },
-  // onLog() {
-  //   return false
-  // },
+  onLog(e) {
+    if (window.Cypress) {
+      window.console.log(e.message)
+      return false
+    }
+    return true
+  },
 }
 
 const entry: App<typeof store> = {

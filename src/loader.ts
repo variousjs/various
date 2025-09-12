@@ -4,7 +4,6 @@ import { DEFAULT_PACKAGES, REACT_REQUIREMENT_VERSION } from './config'
 import { Various, AppWithDefault, ReactWithVersion } from './types'
 
 declare global {
-  interface Require { s: any }
   interface Window { VARIOUS_CONFIG: Config }
 }
 

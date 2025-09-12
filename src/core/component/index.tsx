@@ -116,7 +116,7 @@ function createReactComponent<P extends object>(config: {
           const error = new VariousError({
             name,
             module,
-            originalError: new Error('Not a valid React component'),
+            originalError: new Error('not a valid React component'),
             type: 'INVALID_COMPONENT',
           })
 

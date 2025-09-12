@@ -1,18 +1,20 @@
 import { ModuleDefined, OnMessage, createPostMessage as cpm } from '@variousjs/various'
 import connector from '../connector'
-import { consoleWarn } from '../helper'
+import createLogger from '../logger'
 import { emit, subscribe } from '../store'
 import { MESSAGE_KEY } from '../../config'
 
 export const getPostMessage: typeof cpm = (moduleDefined) => async (event, value) => {
   const middlewares = connector.getMiddlewares()
+  const logger = createLogger(moduleDefined)
+
   let next = { trigger: moduleDefined, event, value }
 
   if (middlewares?.onMessage) {
     const check = await middlewares.onMessage(next)
 
     if (check === false) {
-      consoleWarn(moduleDefined, '[message] blocked by middleware')
+      logger.warn('blocked by middleware', 'POST_MESSAGE')
       return
     }
 

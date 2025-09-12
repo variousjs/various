@@ -8,7 +8,7 @@ import {
   ModuleDefined,
 } from '@variousjs/various'
 import { getStore, subscribe, emit } from './store'
-import connector from './connector'
+import createLogger from './logger'
 import {
   CONFIG_KEY,
   MOUNTED_COMPONENTS_KEY,
@@ -98,32 +98,17 @@ export const getNameWithModule = (moduleDefined: ModuleDefined) => {
   return module ? `${name}.${module}` : name
 }
 
-const getConsolePrefix = (name: string) => {
-  const text = `%c${name}`
-  const style = 'color:white;background:blue;padding:1px 2px'
-  return [text, style]
-}
-
-function consoleError(moduleDefined: ModuleDefined, e: Error) {
-  const nameWithModule = getNameWithModule(moduleDefined)
-  window.console.error(...getConsolePrefix(nameWithModule), e)
-}
-
-export function consoleWarn(moduleDefined: ModuleDefined, text: string) {
-  const nameWithModule = getNameWithModule(moduleDefined)
-  window.console.warn(...getConsolePrefix(nameWithModule), text)
-}
-
 export function getConfig<C extends object = {}>() {
   return getStore(CONFIG_KEY) as C
 }
 
 export const onError = (e: VariousError) => {
-  const middlewares = connector.getMiddlewares()
-  const { name, module, originalError } = e
+  const {
+    name, module, originalError, type,
+  } = e
+  const logger = createLogger({ name, module })
 
-  middlewares?.onError?.(e)
-  consoleError({ name, module }, originalError)
+  logger.error(originalError, type)
 }
 
 export const isReactComponent = (component: RequiredComponent) => {
