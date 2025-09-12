@@ -42,6 +42,12 @@ declare module '@variousjs/various' {
   }) => Promise<any>
   type $postMessage = (event: string, value?: any) => void
 
+  interface $logger {
+    info: (message: any, type?: string) => void,
+    warn: (message: any, type?: string) => void,
+    error: (message: any, type?: string) => void,
+  }
+
   export type Intl = (
     key: string,
     paramsOrDefaultText?: Record<string, string | number> | string,
@@ -75,6 +81,7 @@ declare module '@variousjs/various' {
     $dispatch: $dispatch,
     $postMessage: $postMessage,
     $t: Intl,
+    $logger: $logger,
   } & P
 
   export type ComponentNode<
@@ -194,4 +201,5 @@ declare module '@variousjs/various' {
 
   export const createDispatch: (m: ModuleDefined) => $dispatch
   export const createPostMessage: (m: ModuleDefined) => $postMessage
+  export const createLogger: (m: ModuleDefined) => $logger
 }

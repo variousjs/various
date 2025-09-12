@@ -24,6 +24,7 @@ export { default as Nycticorax } from 'nycticorax'
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
 export { getPostMessage as createPostMessage } from './component/message'
+export { default as createLogger } from './logger'
 
 export {
   getConfig,

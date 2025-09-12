@@ -22,6 +22,7 @@ import { MOUNTED_COMPONENTS_KEY } from '../../config'
 import connector from '../connector'
 import { getPostMessage, getOnMessage } from './message'
 import getDispatch from './dispatch'
+import createLogger from '../logger'
 import getI18n from './i18n'
 import createModule from '../create-module'
 import {
@@ -215,6 +216,8 @@ function createReactComponent<P extends object>(config: {
 
     $t = getI18n({ name, module })
 
+    $logger = createLogger({ name, module })
+
     render() {
       const ErrorNode = connector.getErrorComponent()
       const LoaderNode = connector.getLoaderComponent()
@@ -262,6 +265,7 @@ function createReactComponent<P extends object>(config: {
           $store={store}
           $postMessage={this.$postMessage}
           $t={this.$t}
+          $logger={this.$logger}
           ref={$ref}
         />
       )
