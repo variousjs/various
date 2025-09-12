@@ -7,7 +7,6 @@ import {
   DEPENDENCIES_KEY,
   ROOT,
   MESSAGE_KEY,
-  ENV_KEY,
   CONFIG_KEY,
 } from '../config'
 import connector from './connector'
@@ -28,7 +27,6 @@ export { default as createLogger } from './logger'
 
 export {
   getConfig,
-  getEnv,
   preloadDependencies,
   isDependencyLoaded,
   getMountedComponents,
@@ -46,7 +44,6 @@ export const version = VERSION
 export default (config: Config & App<Store>) => {
   const {
     dependencies,
-    env,
     root,
     store = {},
     actions = {},
@@ -75,7 +72,6 @@ export default (config: Config & App<Store>) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS_KEY]: [],
-    [ENV_KEY]: (env === 'production' || env === 'development') ? env : 'production',
     [CONFIG_KEY]: rest,
     [DEPENDENCIES_KEY]: dependencies,
     [MESSAGE_KEY]: null,

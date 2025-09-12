@@ -10,7 +10,6 @@ import {
 import { getStore, subscribe, emit } from './store'
 import connector from './connector'
 import {
-  ENV_KEY,
   CONFIG_KEY,
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
@@ -99,8 +98,6 @@ export const getNameWithModule = (moduleDefined: ModuleDefined) => {
   return module ? `${name}.${module}` : name
 }
 
-export const getEnv = () => getStore(ENV_KEY)
-
 const getConsolePrefix = (name: string) => {
   const text = `%c${name}`
   const style = 'color:white;background:blue;padding:1px 2px'
@@ -109,16 +106,12 @@ const getConsolePrefix = (name: string) => {
 
 function consoleError(moduleDefined: ModuleDefined, e: Error) {
   const nameWithModule = getNameWithModule(moduleDefined)
-  if (getEnv() === 'development') {
-    window.console.error(...getConsolePrefix(nameWithModule), e)
-  }
+  window.console.error(...getConsolePrefix(nameWithModule), e)
 }
 
 export function consoleWarn(moduleDefined: ModuleDefined, text: string) {
   const nameWithModule = getNameWithModule(moduleDefined)
-  if (getEnv() === 'development') {
-    window.console.warn(...getConsolePrefix(nameWithModule), text)
-  }
+  window.console.warn(...getConsolePrefix(nameWithModule), text)
 }
 
 export function getConfig<C extends object = {}>() {

@@ -54,8 +54,6 @@ declare module '@variousjs/various' {
     defaultText?: string,
   ) => string
 
-  export type ENV = 'development' | 'production'
-
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
   export interface I18nConfig {
@@ -172,7 +170,6 @@ declare module '@variousjs/various' {
       [x: string]: string,
     },
     root?: string,
-    env?: ENV,
     timeout?: number,
     earlyParallelDependencies?: string[],
   }
@@ -206,7 +203,6 @@ declare module '@variousjs/various' {
   export const defineDependencies: (deps: Record<string, string>) => void
 
   export const version: string
-  export const getEnv: () => ENV
   export function getConfig<C extends object = ObjectAny>(): C
   export function getStore<S extends object = ObjectAny>(): S
 
