@@ -3,11 +3,6 @@ import { App, Config } from '@variousjs/various'
 import { DEFAULT_PACKAGES, REACT_REQUIREMENT_VERSION } from './config'
 import { Various, AppWithDefault, ReactWithVersion } from './types'
 
-declare global {
-  interface Require { s: any }
-  interface Window { VARIOUS_CONFIG: Config }
-}
-
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
 const corePath = src.replace('loader.js', 'index.js')

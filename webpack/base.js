@@ -1,4 +1,6 @@
 const path = require('path')
+const webpack = require('webpack')
+const package = require('../package.json')
 
 const config = {
   stats: 'minimal',
@@ -26,6 +28,11 @@ const config = {
     // includes .js, for webpack dev server
     extensions: ['.js', '.ts', '.tsx'],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(package.version),
+    }),
+  ],
   devServer: {
     allowedHosts: 'all',
     port: 2333,

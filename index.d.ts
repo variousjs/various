@@ -16,7 +16,7 @@ declare module '@variousjs/various' {
     'SUBMODULE_NOT_DEFINED' |
     'SUBMODULE_SCRIPT_ERROR' |
     'DISPATCH' |
-    'I18N'
+    'I18N' | (string & {})
 
   export interface ComponentDefaultProps {
     $silent?: boolean,
@@ -42,13 +42,17 @@ declare module '@variousjs/various' {
   }) => Promise<any>
   type $postMessage = (event: string, value?: any) => void
 
+  interface $logger {
+    info: (message: any, type?: string) => void,
+    warn: (message: any, type?: string) => void,
+    error: (message: any, type?: string) => void,
+  }
+
   export type Intl = (
     key: string,
     paramsOrDefaultText?: Record<string, string | number> | string,
     defaultText?: string,
   ) => string
-
-  export type ENV = 'development' | 'production'
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
@@ -75,6 +79,7 @@ declare module '@variousjs/various' {
     $dispatch: $dispatch,
     $postMessage: $postMessage,
     $t: Intl,
+    $logger: $logger,
   } & P
 
   export type ComponentNode<
@@ -127,10 +132,18 @@ declare module '@variousjs/various' {
     beenLoaded: boolean,
   }
 
+  type LogLevel = 'info' | 'warn' | 'error'
+  interface LogArgs extends ModuleDefined {
+    level: LogLevel,
+    type?: string,
+    message: any,
+  }
+
   export type MessageEvent = (e: MessageEventArgs) => Promise<MessageEventRes> | MessageEventRes
   export type DispatchEvent = (e: DispatchEventArgs) => Promise<DispatchEventRes> | DispatchEventRes
   export type LoadEvent = (e: LoadEventArgs) => void
   export type ErrorEvent = (e: VariousError) => void
+  export type LogEvent = (e: LogArgs) => boolean
 
   export interface App<S extends object = ObjectAny> {
     store?: readonly S,
@@ -143,6 +156,7 @@ declare module '@variousjs/various' {
       onError?: ErrorEvent,
       onMessage?: MessageEvent,
       onDispatch?: DispatchEvent,
+      onLog?: LogEvent,
     },
     i18n?: I18n,
   }
@@ -151,10 +165,11 @@ declare module '@variousjs/various' {
     dependencies: {
       app: string,
       '@variousjs/various'?: string,
+      react?: string,
+      'react-dom'?: string,
       [x: string]: string,
     },
     root?: string,
-    env?: ENV,
     timeout?: number,
     earlyParallelDependencies?: string[],
   }
@@ -187,10 +202,11 @@ declare module '@variousjs/various' {
   ) => () => void
   export const defineDependencies: (deps: Record<string, string>) => void
 
-  export const getEnv: () => ENV
+  export const version: string
   export function getConfig<C extends object = ObjectAny>(): C
   export function getStore<S extends object = ObjectAny>(): S
 
   export const createDispatch: (m: ModuleDefined) => $dispatch
   export const createPostMessage: (m: ModuleDefined) => $postMessage
+  export const createLogger: (m: ModuleDefined) => $logger
 }

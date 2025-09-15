@@ -61,8 +61,8 @@ var VARIOUS_CONFIG = {
     'helper-n': './dist/helper-n.js',
     'module-error': './dist/module-error.js',
     'module-error2': './dist/module-error.js',
+    'log': './dist/log.js',
   },
-  env: 'development',
   pages: [
     {
       label: 'App',
@@ -126,6 +126,17 @@ var VARIOUS_CONFIG = {
       component: 'helper',
       path: '/helper',
       components: ['helper-m'],
+    },
+    {
+      label: 'Logger',
+      icon: 'radar-chart',
+      component: 'logger',
+      path: '/logger',
+      components: ['log'],
+    },
+    {
+      path: '/logger2',
+      components: ['log'],
     },
   ],
 }

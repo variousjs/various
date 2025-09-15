@@ -2,7 +2,6 @@ import { ComponentType } from 'react'
 import {
   ComponentProps,
   PublicAction,
-  ENV,
   Config,
   OnMessage,
   I18n,
@@ -14,14 +13,18 @@ import {
   MESSAGE_KEY,
   DEPENDENCIES_KEY,
   MOUNTED_COMPONENTS_KEY,
-  ENV_KEY,
   CONFIG_KEY,
 } from './config'
+
+declare global {
+  export const VERSION: string
+  interface Require { s: any }
+  interface Window { VARIOUS_CONFIG: Config }
+}
 
 export interface Store {
   [MESSAGE_KEY]: null | (Parameters<OnMessage>[0] & { timestamp: number }),
   [MOUNTED_COMPONENTS_KEY]: ModuleDefined[],
-  [ENV_KEY]: ENV,
   [CONFIG_KEY]: Record<string | symbol, any>,
   [DEPENDENCIES_KEY]: Record<string, string>,
   [key: string]: any,

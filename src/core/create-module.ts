@@ -26,7 +26,7 @@ const createModule: typeof cm = (config) => {
         name,
         module,
         type: 'NOT_DEFINED',
-        originalError: new Error(`Module "${name}" not defined`),
+        originalError: new Error(`module "${name}" not defined`),
       })
 
       onError(error)
@@ -50,7 +50,7 @@ const createModule: typeof cm = (config) => {
           name,
           module,
           type: 'INVALID_MODULE',
-          originalError: new Error(`Module "${name}" not content`),
+          originalError: new Error(`module "${name}" not content`),
         })
 
         resetDependencyConfig(name)
@@ -67,7 +67,7 @@ const createModule: typeof cm = (config) => {
           name,
           module,
           type: 'SUBMODULE_NOT_DEFINED',
-          originalError: new Error(`Submodule "${module}" not defined`),
+          originalError: new Error(`submodule "${module}" not defined`),
         })
 
         resetDependencyConfig(name)

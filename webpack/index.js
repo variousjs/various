@@ -1,5 +1,5 @@
 const path = require('path')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
@@ -29,7 +29,7 @@ if (NODE_ENV === 'production') {
       index: path.resolve(__dirname, '../src/core'),
     },
     mode: 'production',
-    plugins: [new BundleAnalyzerPlugin()],
+    // plugins: [new BundleAnalyzerPlugin()],
     output: {
       path: path.join(__dirname, '../dist'),
       filename: '[name].js',

@@ -7,7 +7,6 @@ import {
   DEPENDENCIES_KEY,
   ROOT,
   MESSAGE_KEY,
-  ENV_KEY,
   CONFIG_KEY,
 } from '../config'
 import connector from './connector'
@@ -20,10 +19,10 @@ export { default as Nycticorax } from 'nycticorax'
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
 export { getPostMessage as createPostMessage } from './component/message'
+export { default as createLogger } from './logger'
 
 export {
   getConfig,
-  getEnv,
   preloadDependencies,
   isDependencyLoaded,
   getMountedComponents,
@@ -35,10 +34,12 @@ export { default as createModule } from './create-module'
 export { default as createComponent } from './create-component'
 export { default as renderComponent } from './render-component'
 
+// eslint-disable-next-line no-undef
+export const version = VERSION
+
 export default (config: Config & App<Store>) => {
   const {
     dependencies,
-    env,
     root,
     store = {},
     actions = {},
@@ -67,7 +68,6 @@ export default (config: Config & App<Store>) => {
   createStore({
     ...store,
     [MOUNTED_COMPONENTS_KEY]: [],
-    [ENV_KEY]: (env === 'production' || env === 'development') ? env : 'production',
     [CONFIG_KEY]: rest,
     [DEPENDENCIES_KEY]: dependencies,
     [MESSAGE_KEY]: null,

@@ -1,3 +1,4 @@
+import { ComponentProps } from '@variousjs/various'
 import { Input } from 'antd'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 
@@ -11,8 +12,9 @@ export const k = 'k'
 
 export const l = () => 'l'
 
-export const refNode = forwardRef<{ txt:() => void }, unknown>((_, ref) => {
+export const refNode = forwardRef<{ txt:() => void }, ComponentProps>((_, ref) => {
   const [t, setT] = useState<string>()
+
   useImperativeHandle(ref, () => ({
     txt() {
       setT((v) => (v ? undefined : 'ref'))
