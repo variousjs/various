@@ -12,7 +12,7 @@ export const k = 'k'
 
 export const l = () => 'l'
 
-export const refNode = forwardRef<{ txt:() => void }, ComponentProps>((props, ref) => {
+export const refNode = forwardRef<{ txt:() => void }, ComponentProps>((_, ref) => {
   const [t, setT] = useState<string>()
 
   useImperativeHandle(ref, () => ({
