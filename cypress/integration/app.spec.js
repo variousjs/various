@@ -17,7 +17,7 @@ describe('config', () => {
     cy.get('[data-version="version"]').should('have.text', packageJson.version)
     cy.get('[data-config="props"]').should('have.text', 'Locale')
     cy.get('#date-picker input').should('have.value', '二月 15日 2022')
-    cy.get('[data-config="pages"]').should('have.text', 'config, dispatch, i18n, message, create, render, helper')
+    cy.get('[data-config="pages"]').should('have.text', 'config, dispatch, i18n, message, create, render, helper, logger')
 
     cy.get('@console.log').should('be.calledWith', 'app,false')
     cy.get('@console.log').should('be.calledWith', 'page,true')

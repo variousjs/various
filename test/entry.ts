@@ -55,8 +55,11 @@ const middlewares: App['middlewares'] = {
     return true
   },
   onLog(e) {
+    if (window.location.hash === '#/logger2') {
+      return true
+    }
     if (window.Cypress) {
-      window.console.log(e.message?.message || e.message)
+      window.console.log(e.message?.message || e.message, e.type)
       return false
     }
     return true

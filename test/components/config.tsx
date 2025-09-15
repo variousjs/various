@@ -54,7 +54,7 @@ export default (props: ComponentProps<Store> & { locale: string }) => {
 
         <Descriptions.Item span={2} label="Config">
           <div data-config="pages">
-            {config.pages.map((t) => t.component).join(', ')}
+            {config.pages.map((t) => t.component).filter(Boolean).join(', ')}
           </div>
         </Descriptions.Item>
       </Descriptions>

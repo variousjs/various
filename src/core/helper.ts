@@ -16,6 +16,25 @@ import {
 } from '../config'
 import { RequiredComponent } from '../types'
 
+declare global {
+  interface Window {
+    requirejs: {
+      s: {
+        contexts: {
+          _: {
+            defined: {
+              [name: string]: any,
+            },
+            registry: {
+              [name: string]: any,
+            },
+          },
+        },
+      },
+    },
+  }
+}
+
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
 export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {
@@ -80,7 +99,7 @@ export const resetDependencyConfig = (name: string, url?: string) => {
 
     try {
       const { registry } = window.requirejs.s.contexts._
-      if (registry[name].error) {
+      if (registry?.[name].error) {
         path = getUrlHash(url)
       }
     } catch (e) {
@@ -103,12 +122,10 @@ export function getConfig<C extends object = {}>() {
 }
 
 export const onError = (e: VariousError) => {
-  const {
-    name, module, originalError, type,
-  } = e
+  const { name, module, type } = e
   const logger = createLogger({ name, module })
 
-  logger.error(originalError, type)
+  logger.error(e, type)
 }
 
 export const isReactComponent = (component: RequiredComponent) => {
