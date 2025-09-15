@@ -14,10 +14,6 @@ import { isPromiseLike, onError, VariousError } from './helper'
 import { Container as ContainerNode } from './default-component'
 import { Store } from '../types'
 
-declare global {
-  const VERSION: string
-}
-
 export { default as Nycticorax } from 'nycticorax'
 
 export { getUserStore as getStore } from './store'

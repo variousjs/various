@@ -16,25 +16,6 @@ import {
 } from '../config'
 import { RequiredComponent } from '../types'
 
-declare global {
-  interface Window {
-    requirejs: {
-      s: {
-        contexts: {
-          _: {
-            defined: {
-              [name: string]: any,
-            },
-            registry: {
-              [name: string]: any,
-            },
-          },
-        },
-      },
-    },
-  }
-}
-
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
 export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {

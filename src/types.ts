@@ -16,6 +16,12 @@ import {
   CONFIG_KEY,
 } from './config'
 
+declare global {
+  export const VERSION: string
+  interface Require { s: any }
+  interface Window { VARIOUS_CONFIG: Config }
+}
+
 export interface Store {
   [MESSAGE_KEY]: null | (Parameters<OnMessage>[0] & { timestamp: number }),
   [MOUNTED_COMPONENTS_KEY]: ModuleDefined[],
