@@ -8,18 +8,18 @@ import {
   ROOT,
   MESSAGE_KEY,
   CONFIG_KEY,
-} from '../config'
+} from './config'
 import connector from './connector'
 import { onError, VariousError } from './helper'
-import { createI18nConfig } from './component/i18n'
+import { createI18nConfig } from './i18n'
 import { Container as ContainerNode } from './default-component'
-import { Store } from '../types'
+import { Store } from './types'
 
 export { default as Nycticorax } from 'nycticorax'
 
 export { getUserStore as getStore } from './store'
-export { default as createDispatch } from './component/dispatch'
-export { createPostMessage } from './component/message'
+export { default as createDispatch } from './dispatch'
+export { createPostMessage } from './message'
 export { default as createLogger } from './logger'
 
 export {

@@ -5,7 +5,6 @@ import {
   Config,
   OnMessage,
   I18n,
-  App,
   Dispatch,
   ModuleDefined,
 } from '@variousjs/various'
@@ -55,11 +54,3 @@ export interface CreateComponentState {
 export interface CreateComponentProps<P extends object> extends Store {
   $componentProps: P,
 }
-
-export interface Various {
-  default: (config: Config & App) => void,
-}
-
-export type AppWithDefault = { default: App }
-
-export interface ReactWithVersion { version: string }

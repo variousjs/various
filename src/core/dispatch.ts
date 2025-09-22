@@ -1,8 +1,8 @@
 import { createDispatch as cd } from '@variousjs/various'
-import connector from '../connector'
-import { dispatch } from '../store'
-import { onError, VariousError } from '../helper'
-import createLogger from '../logger'
+import connector from './connector'
+import { dispatch } from './store'
+import { onError, VariousError } from './helper'
+import createLogger from './logger'
 
 const createDispatch: typeof cd = (moduleDefined) => async function (params) {
   const middlewares = connector.getMiddlewares()

@@ -8,7 +8,7 @@ import {
   ModuleDefined,
 } from '@variousjs/various'
 import { Loader, Error } from './default-component'
-import { PublicActions, Store, Actions } from '../types'
+import { PublicActions, Store, Actions } from './types'
 import { getNameWithModule } from './helper'
 
 class Connector {

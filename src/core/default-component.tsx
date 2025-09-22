@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 import { ErrorNode, LoaderNode } from '@variousjs/various'
-import { Store } from '../types'
+import { Store } from './types'
 
 export const Loader: LoaderNode<Store> = () => (
   <div>Loading</div>

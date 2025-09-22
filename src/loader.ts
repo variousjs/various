@@ -1,11 +1,22 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-import { DEFAULT_PACKAGES, REACT_REQUIREMENT_VERSION } from './config'
-import { Various, AppWithDefault, ReactWithVersion } from './types'
+
+interface Various { default: (config: Config & App) => void }
+type AppWithDefault = { default: App }
+interface ReactWithVersion { version: string }
+
+const DEFAULT_PACKAGES = {
+  react: 'https://unpkg.com/react@18/umd/react.production.min.js',
+  'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
+  '@variousjs/various': 'https://unpkg.com/@variousjs/various/dist/index.js',
+}
+const REACT_REQUIREMENT_VERSION = 18
+const LOADER_JS = 'loader.js'
+const INDEX_JS = 'index.js'
 
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
-const corePath = src.replace('loader.js', 'index.js')
+const corePath = src.replace(LOADER_JS, INDEX_JS)
 
 const onError = (error: Error) => {
   window.console.error(error)

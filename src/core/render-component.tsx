@@ -1,7 +1,7 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
-import componentCreator from './component'
+import componentCreator from './react-component'
 import connector from './connector'
 
 const renderComponent: typeof rc = ({

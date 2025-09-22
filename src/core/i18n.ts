@@ -1,7 +1,7 @@
 import { Intl, ModuleDefined, I18n } from '@variousjs/various'
-import connector from '../connector'
-import { VariousError, onError, isPromiseLike } from '../helper'
-import { getStore, emit } from '../store'
+import connector from './connector'
+import { VariousError, onError, isPromiseLike } from './helper'
+import { getStore, emit } from './store'
 
 export function createI18nConfig(
   method?: I18n,

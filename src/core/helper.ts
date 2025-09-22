@@ -13,8 +13,8 @@ import {
   CONFIG_KEY,
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
-} from '../config'
-import { RequiredComponent } from '../types'
+} from './config'
+import { RequiredComponent } from './types'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 

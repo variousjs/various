@@ -10,27 +10,27 @@ import {
   VariousError,
   hasModule,
   getNameWithModule,
-} from '../helper'
+} from './helper'
 import {
   connect,
   getStore,
   emit,
   getUserStore,
-} from '../store'
-import { MOUNTED_COMPONENTS_KEY } from '../../config'
-import connector from '../connector'
+} from './store'
+import { MOUNTED_COMPONENTS_KEY } from './config'
+import connector from './connector'
 import { createPostMessage, createOnMessage } from './message'
 import getDispatch from './dispatch'
-import createLogger from '../logger'
+import createLogger from './logger'
 import { createI18n, createI18nConfig } from './i18n'
-import createModule from '../create-module'
+import createModule from './create-module'
 import {
   CreateComponentState,
   CreateComponentProps,
   RequiredComponent,
   PublicActions,
   Store,
-} from '../../types'
+} from './types'
 
 function createReactComponent<P extends object>(config: {
   name: string,

@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 import { createComponent as cc } from '@variousjs/various'
-import createReactComponent from './component'
+import createReactComponent from './react-component'
 import connector from './connector'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {

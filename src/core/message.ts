@@ -1,8 +1,8 @@
 import { ModuleDefined, OnMessage, createPostMessage as cpm } from '@variousjs/various'
-import connector from '../connector'
-import createLogger from '../logger'
-import { emit, subscribe } from '../store'
-import { MESSAGE_KEY } from '../../config'
+import connector from './connector'
+import createLogger from './logger'
+import { emit, subscribe } from './store'
+import { MESSAGE_KEY } from './config'
 
 export const createPostMessage: typeof cpm = (moduleDefined) => async (event, value) => {
   const middlewares = connector.getMiddlewares()
