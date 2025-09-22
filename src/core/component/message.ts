@@ -4,7 +4,7 @@ import createLogger from '../logger'
 import { emit, subscribe } from '../store'
 import { MESSAGE_KEY } from '../../config'
 
-export const getPostMessage: typeof cpm = (moduleDefined) => async (event, value) => {
+export const createPostMessage: typeof cpm = (moduleDefined) => async (event, value) => {
   const middlewares = connector.getMiddlewares()
   const logger = createLogger(moduleDefined)
 
@@ -33,7 +33,7 @@ export const getPostMessage: typeof cpm = (moduleDefined) => async (event, value
   })
 }
 
-export const getOnMessage = (moduleDefined: ModuleDefined, onMessage: OnMessage) => subscribe({
+export const createOnMessage = (moduleDefined: ModuleDefined, onMessage: OnMessage) => subscribe({
   [MESSAGE_KEY](v) {
     const { trigger, value, event } = v as Parameters<OnMessage>[0]
     if (moduleDefined.name !== trigger.name || moduleDefined.module !== trigger.module) {

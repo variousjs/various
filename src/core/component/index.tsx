@@ -1,6 +1,6 @@
 import React, { Component, ComponentType } from 'react'
 import {
-  ComponentDefaultProps, I18n, OnMessage, VariousError as ve,
+  ComponentDefaultProps, OnMessage, VariousError as ve,
 } from '@variousjs/various'
 import {
   isReactComponent,
@@ -10,7 +10,6 @@ import {
   VariousError,
   hasModule,
   getNameWithModule,
-  isPromiseLike,
 } from '../helper'
 import {
   connect,
@@ -20,10 +19,10 @@ import {
 } from '../store'
 import { MOUNTED_COMPONENTS_KEY } from '../../config'
 import connector from '../connector'
-import { getPostMessage, getOnMessage } from './message'
+import { createPostMessage, createOnMessage } from './message'
 import getDispatch from './dispatch'
 import createLogger from '../logger'
-import getI18n from './i18n'
+import { createI18n, createI18nConfig } from './i18n'
 import createModule from '../create-module'
 import {
   CreateComponentState,
@@ -138,34 +137,16 @@ function createReactComponent<P extends object>(config: {
               return
             }
             if (method === '$onMessage') {
-              this.unSubscribeMessage = getOnMessage(
+              this.unSubscribeMessage = createOnMessage(
                 { name, module },
                 componentNode[method] as OnMessage,
               )
               return
             }
             if (method === '$i18n') {
-              const i18nConfig = (componentNode[method] as I18n)()
-
-              if (!isPromiseLike(i18nConfig)) {
-                connector.setI18nConfig({ name, module }, i18nConfig)
-                return
-              }
-
-              i18nConfig
-                .then((res) => {
-                  connector.setI18nConfig({ name, module }, res)
-                  this.forceUpdate()
-                })
-                .catch((e: Error) => {
-                  onError(new VariousError({
-                    name,
-                    module,
-                    type: 'I18N',
-                    originalError: e,
-                  }))
-                })
-
+              createI18nConfig(componentNode[method], { name, module }, () => {
+                this.forceUpdate()
+              })
               return
             }
 
@@ -210,11 +191,11 @@ function createReactComponent<P extends object>(config: {
       })
     }
 
-    $postMessage = getPostMessage({ name, module })
+    $postMessage = createPostMessage({ name, module })
 
     $dispatch = getDispatch({ name, module })
 
-    $t = getI18n({ name, module })
+    $t = createI18n({ name, module })
 
     $logger = createLogger({ name, module })
 

@@ -1,9 +1,53 @@
-import { Intl, ModuleDefined } from '@variousjs/various'
+import { Intl, ModuleDefined, I18n } from '@variousjs/various'
 import connector from '../connector'
-import { VariousError, onError } from '../helper'
-import { getStore } from '../store'
+import { VariousError, onError, isPromiseLike } from '../helper'
+import { getStore, emit } from '../store'
 
-export default function (moduleDefined: ModuleDefined) {
+export function createI18nConfig(
+  method?: I18n,
+  moduleDefined?: ModuleDefined,
+  callback?: () => void,
+) {
+  if (!method) {
+    return
+  }
+
+  const i18nConfig = method()
+
+  if (!isPromiseLike(i18nConfig)) {
+    if (moduleDefined) {
+      connector.setI18nConfig(moduleDefined, i18nConfig)
+    } else {
+      connector.setGlobalI18nConfig(i18nConfig)
+    }
+    return
+  }
+
+  i18nConfig
+    .then((res) => {
+      if (moduleDefined) {
+        connector.setI18nConfig(moduleDefined, res)
+        callback?.()
+        return
+      }
+
+      const locale = getStore(res.localeKey)
+      connector.setGlobalI18nConfig(res)
+
+      emit({ [res.localeKey]: undefined }, true)
+      emit({ [res.localeKey]: locale })
+    })
+    .catch((e: Error) => {
+      onError(new VariousError({
+        name: moduleDefined?.name || 'app',
+        module: moduleDefined?.module,
+        type: 'I18N',
+        originalError: e,
+      }))
+    })
+}
+
+export function createI18n(moduleDefined: ModuleDefined) {
   return function (key, params, defaultString) {
     const i18nConfig = connector.getI18nConfig(moduleDefined) || connector.getGlobalI18nConfig()
 

@@ -1,7 +1,7 @@
 import React, { Component, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App, Config, VariousError as ve } from '@variousjs/various'
-import { createStore, getStore, emit } from './store'
+import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
@@ -10,7 +10,8 @@ import {
   CONFIG_KEY,
 } from '../config'
 import connector from './connector'
-import { isPromiseLike, onError, VariousError } from './helper'
+import { onError, VariousError } from './helper'
+import { createI18nConfig } from './component/i18n'
 import { Container as ContainerNode } from './default-component'
 import { Store } from '../types'
 
@@ -18,7 +19,7 @@ export { default as Nycticorax } from 'nycticorax'
 
 export { getUserStore as getStore } from './store'
 export { default as createDispatch } from './component/dispatch'
-export { getPostMessage as createPostMessage } from './component/message'
+export { createPostMessage } from './component/message'
 export { default as createLogger } from './logger'
 
 export {
@@ -92,35 +93,7 @@ export default (config: Config & App<Store>) => {
     }
 
     componentDidMount() {
-      if (!i18n) {
-        return
-      }
-
-      const i18nConfig = i18n()
-
-      if (!isPromiseLike(i18nConfig)) {
-        connector.setGlobalI18nConfig(i18nConfig)
-        return
-      }
-
-      i18nConfig
-        .then((res) => {
-          const locale = getStore(res.localeKey)
-
-          connector.setGlobalI18nConfig(res)
-
-          if (locale !== undefined) {
-            emit({ [res.localeKey]: undefined }, true)
-            emit({ [res.localeKey]: locale })
-          }
-        })
-        .catch((e: Error) => {
-          onError(new VariousError({
-            name: 'app',
-            type: 'I18N',
-            originalError: e,
-          }))
-        })
+      createI18nConfig(i18n)
     }
 
     render() {
