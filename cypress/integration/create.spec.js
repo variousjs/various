@@ -32,7 +32,7 @@ describe('create component', () => {
     cy.contains('[NOT_DEFINED]:module "no-defined" not defined')
       .should('exist')
       .next()
-      .should('not.exist')
+      .should('have.text', '刷新')
 
     cy.contains('[LOADING_ERROR]:Script error for "create-path-error"')
       .should('exist')
@@ -59,10 +59,10 @@ describe('create component', () => {
       .next()
       .should('have.text', '刷新')
 
-    cy.contains('create-slient')
+    cy.contains('[NOT_DEFINED]:module "create-slient" not defined')
       .should('exist')
       .next()
-      .should('not.exist')
+      .should('have.text', '刷新')
 
     cy.contains('create-timeout')
       .should('exist')

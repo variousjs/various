@@ -15,6 +15,7 @@ import {
   DEPENDENCIES_KEY,
 } from './config'
 import { RequiredComponent } from './types'
+import connector from './connector'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
@@ -146,3 +147,18 @@ export class VariousError extends Error implements ve {
 export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
   return value != null && typeof (value as any).then === 'function'
 }
+
+export function unMountComponent(moduleDefined: ModuleDefined) {
+  const { name, module } = moduleDefined
+  let mountedComponents = getMountedComponents()
+
+  mountedComponents = mountedComponents
+    .filter((item) => item.name !== name || item.module !== module)
+
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
+  connector.deleteComponentActions({ name, module })
+}
+
+// export function parseError(e: Error | VariousError) {
+
+// }

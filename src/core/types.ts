@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import { ComponentType, ReactNode } from 'react'
 import {
   ComponentProps,
   PublicAction,
@@ -53,4 +53,8 @@ export interface CreateComponentState {
 
 export interface CreateComponentProps<P extends object> extends Store {
   $componentProps: P,
+}
+
+export type ErrorBoundaryProps = ModuleDefined & {
+  children: ReactNode,
 }

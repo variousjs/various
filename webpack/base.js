@@ -11,6 +11,7 @@ const config = {
     'react-dom/client',
     'react-router-dom',
     '@variousjs/various',
+    'vue',
 
     'antd',
     'rc-table',

@@ -1,7 +1,8 @@
 import React, { ComponentType } from 'react'
-import { createComponent as cc } from '@variousjs/various'
+import { createComponent as cc, ComponentDefaultProps } from '@variousjs/various'
 import createReactComponent from './react-component'
 import connector from './connector'
+import { CreateComponentProps } from './types'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   const { name, module, url } = config
@@ -23,13 +24,15 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
     },
   })
 
-  component = (props: any) => {
+  component = (props: ComponentDefaultProps) => {
     const { $silent, $ref, ...rest } = props || {}
-    const nextProps = { $componentProps: rest, $silent, $ref }
+    const nextProps = {
+      $componentProps: rest, $silent, $ref,
+    } as ComponentDefaultProps & CreateComponentProps<any>
     return (<C {...nextProps} />)
   }
 
-  component.displayName = 'various-creator'
+  component.displayName = 'various-component-creator'
   return component
 }
 

@@ -1,15 +1,18 @@
-import React, { Component, ComponentType } from 'react'
+import React, { Component } from 'react'
 import {
-  ComponentDefaultProps, OnMessage, VariousError as ve,
+  ComponentDefaultProps,
+  OnMessage,
+  VariousError as ve,
+  ModuleDefined,
 } from '@variousjs/various'
 import {
   isReactComponent,
   onError,
   getMountedComponents,
-  resetDependencyConfig,
   VariousError,
   hasModule,
   getNameWithModule,
+  unMountComponent,
 } from './helper'
 import {
   connect,
@@ -24,6 +27,7 @@ import getDispatch from './dispatch'
 import createLogger from './logger'
 import { createI18n, createI18nConfig } from './i18n'
 import createModule from './create-module'
+import ErrorBoundary from './error-boundary'
 import {
   CreateComponentState,
   CreateComponentProps,
@@ -32,9 +36,7 @@ import {
   Store,
 } from './types'
 
-function createReactComponent<P extends object>(config: {
-  name: string,
-  module?: string,
+function reactComponent<P extends object>(config: ModuleDefined & {
   url?: string,
   watchKeys?: string[],
   onMounted: () => void,
@@ -52,13 +54,15 @@ function createReactComponent<P extends object>(config: {
     CreateComponentProps<P> & ComponentDefaultProps,
     CreateComponentState
   > {
+    static displayName = getNameWithModule({ name, module })
+
     state = {
       componentExist: false,
       componentReady: false,
       isError: false,
     }
 
-    private error?: ve
+    private error?: ve | Error
 
     private ComponentNode: RequiredComponent | null
 
@@ -71,36 +75,13 @@ function createReactComponent<P extends object>(config: {
       this.mountComponent()
     }
 
-    componentDidCatch(e: Error) {
-      const error = new VariousError({
-        name,
-        module,
-        type: 'SCRIPT_ERROR',
-        originalError: e,
-      })
-
-      onError(error)
-
-      this.error = error
-      this.setState({ isError: true })
-      resetDependencyConfig(name)
-      this.unMountComponent()
-    }
-
     componentWillUnmount() {
       this.error = undefined
       this.ComponentNode = null
-      this.unMountComponent()
       this.isUnMounted = true
       this.unSubscribeMessage()
-    }
 
-    unMountComponent = () => {
-      let mountedComponents = getMountedComponents()
-      mountedComponents = mountedComponents
-        .filter((item) => item.name !== name || item.module !== module)
-      emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
-      connector.deleteComponentActions({ name, module })
+      unMountComponent({ name, module })
     }
 
     mountComponent = async () => {
@@ -161,34 +142,13 @@ function createReactComponent<P extends object>(config: {
         onMounted()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
-        if (e instanceof VariousError) {
-          this.error = e
-        } else {
-          const error = new VariousError({
-            name,
-            module,
-            type: 'SCRIPT_ERROR',
-            originalError: e as Error,
-          })
-          onError(error)
-          this.error = error
-        }
-
         if (this.isUnMounted) {
           return
         }
 
-        this.setState({ isError: true })
+        this.error = e as Error
+        this.setState({ componentReady: true, isError: true })
       }
-    }
-
-    onReload = () => {
-      this.setState({
-        isError: false,
-        componentReady: false,
-      }, () => {
-        this.mountComponent()
-      })
     }
 
     $postMessage = createPostMessage({ name, module })
@@ -200,29 +160,18 @@ function createReactComponent<P extends object>(config: {
     $logger = createLogger({ name, module })
 
     render() {
-      const ErrorNode = connector.getErrorComponent()
       const LoaderNode = connector.getLoaderComponent()
       const { $silent, $componentProps, $ref } = this.props
       const {
-        componentReady, isError, componentExist,
+        componentReady,
+        isError,
+        componentExist,
       } = this.state
       const store = getUserStore()
       const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (isError) {
-        return !$silent
-          ? (
-            <ErrorNode
-              $name={name}
-              $module={module}
-              $reload={[
-                'NOT_DEFINED',
-              ].includes(this.error!.type) ? undefined : this.onReload}
-              $store={store as Store}
-              $error={this.error!}
-            />
-          )
-          : null
+        throw this.error
       }
 
       if (!componentReady) {
@@ -253,9 +202,13 @@ function createReactComponent<P extends object>(config: {
     }
   }
 
-  (R as ComponentType<any>).displayName = getNameWithModule({ name, module })
+  const Connected = connect(...storeKeys)(R)
 
-  return connect(...storeKeys)(R)
+  return (props: CreateComponentProps<P> & ComponentDefaultProps) => (
+    <ErrorBoundary name={name} module={module}>
+      <Connected {...props} />
+    </ErrorBoundary>
+  )
 }
 
-export default createReactComponent
+export default reactComponent
