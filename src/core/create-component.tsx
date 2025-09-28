@@ -32,7 +32,7 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
     return (<C {...nextProps} />)
   }
 
-  component.displayName = 'various-component-creator'
+  component.displayName = 'various-creator'
   return component
 }
 

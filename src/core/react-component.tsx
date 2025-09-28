@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, FC } from 'react'
 import {
   ComponentDefaultProps,
   OnMessage,
@@ -204,11 +204,19 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
   const Connected = connect(...storeKeys)(R)
 
-  return (props: CreateComponentProps<P> & ComponentDefaultProps) => (
+  Connected.displayName = 'various-connector'
+
+  const ReactCreator: FC<CreateComponentProps<P> & ComponentDefaultProps> & {
+    displayName: string,
+  } = (props) => (
     <ErrorBoundary name={name} module={module}>
       <Connected {...props} />
     </ErrorBoundary>
   )
+
+  ReactCreator.displayName = 'various-react-creator'
+
+  return ReactCreator
 }
 
 export default reactComponent
