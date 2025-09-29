@@ -10,11 +10,17 @@ import {
   onError,
 } from './helper'
 
-const createModule: typeof cm = (config) => {
+const createModule: typeof cm = (config, logError = true) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const middlewares = connector.getMiddlewares()
   const { name, module, url } = config
   const loadStart = +new Date()
+
+  const logOnError = (e: VariousError) => {
+    if (logError) {
+      onError(e)
+    }
+  }
 
   if (url) {
     resetDependencyConfig(name, url)
@@ -29,7 +35,7 @@ const createModule: typeof cm = (config) => {
         originalError: new Error(`module "${name}" not defined`),
       })
 
-      onError(error)
+      logOnError(error)
       reject(error)
       return
     }
@@ -54,7 +60,7 @@ const createModule: typeof cm = (config) => {
         })
 
         resetDependencyConfig(name)
-        onError(error)
+        logOnError(error)
         reject(error)
         return
       }
@@ -71,7 +77,7 @@ const createModule: typeof cm = (config) => {
         })
 
         resetDependencyConfig(name)
-        onError(error)
+        logOnError(error)
         reject(error)
         return
       }
@@ -100,7 +106,7 @@ const createModule: typeof cm = (config) => {
         originalError: e,
       })
 
-      onError(error)
+      logOnError(error)
       reject(error)
     })
   })

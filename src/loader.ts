@@ -45,6 +45,11 @@ function loader(config: Config) {
 
   window.requirejs.config({
     paths,
+    shim: {
+      vue: {
+        exports: 'Vue',
+      },
+    },
     waitSeconds: timeout || 10,
     onNodeCreated(node) {
       node.setAttribute('crossorigin', 'anonymous')

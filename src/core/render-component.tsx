@@ -1,7 +1,8 @@
 import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
-import componentCreator from './react-component'
+import createReactComponent from './react-component'
+import createVueComponent from './vue-component'
 import connector from './connector'
 
 const renderComponent: typeof rc = ({
@@ -10,12 +11,13 @@ const renderComponent: typeof rc = ({
   url,
   target,
   props,
+  type = 'react',
   renderNode,
   onMounted,
 }) => {
   let C = connector.getComponent({ name, module })
   if (!C) {
-    C = componentCreator({
+    C = (type === 'vue3' ? createVueComponent : createReactComponent)({
       name,
       module,
       url,

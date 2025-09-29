@@ -159,6 +159,6 @@ export function unMountComponent(moduleDefined: ModuleDefined) {
   connector.deleteComponentActions({ name, module })
 }
 
-// export function parseError(e: Error | VariousError) {
+export function checkVueComponent(component: RequiredComponent) {
 
-// }
+}

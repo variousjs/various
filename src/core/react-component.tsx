@@ -7,7 +7,6 @@ import {
 } from '@variousjs/various'
 import {
   isReactComponent,
-  onError,
   getMountedComponents,
   VariousError,
   hasModule,
@@ -86,22 +85,19 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
     mountComponent = async () => {
       try {
-        const componentNode = await createModule<RequiredComponent>({ name, module, url })
+        const componentNode = await createModule<RequiredComponent>({ name, module, url }, false)
 
         if (this.isUnMounted) {
           return
         }
 
         if (!isReactComponent(componentNode)) {
-          const error = new VariousError({
+          throw new VariousError({
             name,
             module,
             originalError: new Error('not a valid React component'),
             type: 'INVALID_COMPONENT',
           })
-
-          onError(error)
-          throw error
         }
 
         const mountedComponents = getMountedComponents()
@@ -206,9 +202,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
   Connected.displayName = 'various-connector'
 
-  const ReactCreator: FC<CreateComponentProps<P> & ComponentDefaultProps> & {
-    displayName: string,
-  } = (props) => (
+  const ReactCreator: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => (
     <ErrorBoundary name={name} module={module}>
       <Connected {...props} />
     </ErrorBoundary>

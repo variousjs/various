@@ -9,6 +9,8 @@ declare module '@variousjs/various' {
 
   export type ObjectRecord<T = any> = Record<string, T>
 
+  export type VariousComponentType = 'react' | 'vue3'
+
   export type ErrorType =
     'LOADING_ERROR' |
     'SUBMODULE_LOADING_ERROR' |
@@ -24,6 +26,9 @@ declare module '@variousjs/various' {
 
   export interface ComponentDefaultProps {
     $silent?: boolean,
+    /**
+     * for React Component only
+     */
     $ref?: RefObject<unknown>,
     [k: string]: any,
   }
@@ -180,16 +185,17 @@ declare module '@variousjs/various' {
     S extends object = ObjectRecord,
     P extends object = ObjectRecord
   >(
-    config: ModuleDefined & { url?: string },
+    config: ModuleDefined & { url?: string, type?: VariousComponentType },
     storeKeys?: (keyof S)[],
   ): ComponentType<ComponentDefaultProps & P>
 
   export function createModule<T = unknown> (params: ModuleDefined & {
     url?: string,
-  }): Promise<T>
+  }, logError?: boolean): Promise<T>
 
   export function renderComponent<P extends object = ObjectRecord>(params: ModuleDefined & {
     url?: string,
+    type?: VariousComponentType,
     props?: P & ComponentDefaultProps,
     target: Element | null,
     renderNode?: (children: ReactNode) => ReactNode,

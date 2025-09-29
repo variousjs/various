@@ -26,3 +26,5 @@ export const VUE_FUNCTION_OPTIONS = [
   'data',
   'render',
 ]
+
+export const VUE_VERSION = 3
