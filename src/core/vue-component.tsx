@@ -10,13 +10,21 @@ import {
   ComponentDefaultProps,
   ModuleDefined,
   VariousError as ve,
+  ObjectRecord,
 } from '@variousjs/various'
 import ErrorBoundary from './error-boundary'
 import connector from './connector'
 import createModule from './create-module'
-import { VUE_FUNCTION_OPTIONS } from './config'
-import { getStore, useStore } from './store'
-import { getNameWithModule, unMountComponent } from './helper'
+import { MOUNTED_COMPONENTS_KEY, VUE_FUNCTION_OPTIONS } from './config'
+import { emit, getStore, useStore } from './store'
+import {
+  getNameWithModule,
+  unMountComponent,
+  checkVueComponent,
+  VariousError,
+  getMountedComponents,
+  hasModule,
+} from './helper'
 import { CreateComponentProps, RequiredComponent } from './types'
 
 function vueComponent<P extends object>(config: ModuleDefined & {
@@ -31,14 +39,18 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     watchKeys,
     onMounted,
   } = config
-  const storeKeys = (watchKeys || Object.keys(getStore()))
 
   const V: FC<CreateComponentProps<P> &ComponentDefaultProps> = (props) => {
+    const storeKeys = (watchKeys || Object.keys(getStore()))
     const store = useStore(...storeKeys)
 
     const errorRef = useRef<Error | ve>()
     const isUnMountedRef = useRef(false)
     const ComponentNodeRef = useRef<RequiredComponent>()
+
+    const containerDivRef = useRef<HTMLDivElement | null>(null)
+    const vueReactiveRef = useRef<{ value: ObjectRecord }>()
+    const unMountVue = useRef<() => void>()
 
     const [componentExist, setComponentExist] = useState(false)
     const [componentReady, setComponentReady] = useState(false)
@@ -46,6 +58,21 @@ function vueComponent<P extends object>(config: ModuleDefined & {
 
     const LoaderNode = connector.getLoaderComponent()
     const { $silent, $componentProps } = props
+
+    const mountVue = useCallback(() => {
+      vueReactiveRef.current = ref({ ...$componentProps, ...store })
+
+      const vueApp = createApp({
+        render() {
+          return h(ComponentNodeRef.current as any, {
+            ...vueReactiveRef.current!.value,
+          })
+        },
+      })
+
+      vueApp.mount(containerDivRef.current!)
+      unMountVue.current = () => vueApp.unmount()
+    }, [$componentProps, store])
 
     const mountComponent = useCallback(async () => {
       try {
@@ -55,9 +82,28 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           return
         }
 
-        // check vue
+        const isVueComponent = await checkVueComponent(componentNode)
 
-        console.log(componentNode, '???')
+        if (!isVueComponent) {
+          throw new VariousError({
+            name,
+            module,
+            originalError: new Error('not a valid Vue component'),
+            type: 'INVALID_COMPONENT',
+          })
+        }
+
+        const mountedComponents = getMountedComponents()
+
+        if (!hasModule(mountedComponents, { name, module })) {
+          mountedComponents.push({ name, module })
+        }
+
+        ComponentNodeRef.current = componentNode
+        setTimeout(mountVue)
+        setComponentReady(true)
+        onMounted()
+        emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         if (isUnMountedRef.current) {
           return
@@ -67,7 +113,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         setComponentReady(true)
         setIsError(true)
       }
-    }, [])
+    }, [mountVue])
 
     useEffect(() => {
       setComponentExist(Boolean(connector.getComponent({ name, module })))
@@ -77,6 +123,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         ComponentNodeRef.current = undefined
         isUnMountedRef.current = true
         unMountComponent({ name, module })
+        unMountVue.current?.()
       }
     }, [])
 
@@ -84,25 +131,35 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       mountComponent()
     }, [mountComponent])
 
+    useEffect(() => {
+      if (vueReactiveRef.current) {
+        vueReactiveRef.current.value = { ...$componentProps, ...store }
+      }
+    }, [$componentProps, store])
+
     if (isError) {
       throw errorRef.current
     }
 
-    if (!componentReady) {
-      if ($silent || componentExist) {
-        return null
-      }
-
-      return (
-        <LoaderNode
-          $name={name}
-          $module={module}
-          $store={store}
+    return (
+      <>
+        {
+          !componentReady && !$silent && !componentExist
+            ? (
+              <LoaderNode
+                $name={name}
+                $module={module}
+                $store={store}
+              />
+            )
+            : null
+        }
+        <div
+          style={{ display: componentReady ? 'block' : 'none' }}
+          ref={containerDivRef}
         />
-      )
-    }
-
-    return null
+      </>
+    )
   }
 
   V.displayName = getNameWithModule({ name, module })

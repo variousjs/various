@@ -13,6 +13,7 @@ import {
   CONFIG_KEY,
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
+  VUE_VERSION,
 } from './config'
 import { RequiredComponent } from './types'
 import connector from './connector'
@@ -160,5 +161,20 @@ export function unMountComponent(moduleDefined: ModuleDefined) {
 }
 
 export function checkVueComponent(component: RequiredComponent) {
+  const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
 
+  return new Promise<boolean>((resolve, reject) => {
+    window.requirejs(['vue'], (Vue: { version: string }) => {
+      if (!versionRegex.test(Vue.version)) {
+        reject(new Error(`Vue ${VUE_VERSION}+ required, detected an incompatible version`))
+      }
+
+      if (typeof component?.render === 'function' || typeof component?.setup === 'function') {
+        resolve(true)
+        return
+      }
+
+      resolve(false)
+    })
+  })
 }
