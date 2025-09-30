@@ -1,4 +1,4 @@
-import React, { Component, ComponentType } from 'react'
+import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App, Config, VariousError as ve } from '@variousjs/various'
 import { createStore } from './store'
@@ -74,7 +74,11 @@ export default (config: Config & App<Store>) => {
     [MESSAGE_KEY]: null,
   })
 
+  ContainerComponent.displayName = 'various-container'
+
   class R extends Component<{}, { isError: boolean }> {
+    static displayName = 'various-app'
+
     private error?: ve
 
     state = {
@@ -114,8 +118,6 @@ export default (config: Config & App<Store>) => {
       )
     }
   }
-
-  (R as ComponentType).displayName = 'various-app'
 
   createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

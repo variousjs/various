@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const { VueLoaderPlugin } = require('vue-loader')
 const package = require('../package.json')
 
 const config = {
@@ -33,6 +34,7 @@ const config = {
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(package.version),
     }),
+    new VueLoaderPlugin(),
   ],
   devServer: {
     allowedHosts: 'all',
@@ -51,6 +53,10 @@ const config = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.vue$/,
+        use: 'vue-loader',
       },
     ],
   },

@@ -15,7 +15,7 @@ import {
 import ErrorBoundary from './error-boundary'
 import connector from './connector'
 import createModule from './create-module'
-import { MOUNTED_COMPONENTS_KEY, VUE_FUNCTION_OPTIONS } from './config'
+import { MOUNTED_COMPONENTS_KEY } from './config'
 import { emit, getStore, useStore } from './store'
 import {
   getNameWithModule,
@@ -24,6 +24,7 @@ import {
   VariousError,
   getMountedComponents,
   hasModule,
+  getComponentActions,
 } from './helper'
 import { CreateComponentProps, RequiredComponent } from './types'
 
@@ -98,6 +99,14 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         if (!hasModule(mountedComponents, { name, module })) {
           mountedComponents.push({ name, module })
         }
+
+        const {
+          actions,
+          i18nAction,
+          onMessageAction,
+        } = getComponentActions(componentNode, 'vue3')
+
+        console.log(actions, '???')
 
         ComponentNodeRef.current = componentNode
         setTimeout(mountVue)

@@ -1,7 +1,6 @@
 import React, { Component, FC } from 'react'
 import {
   ComponentDefaultProps,
-  OnMessage,
   VariousError as ve,
   ModuleDefined,
 } from '@variousjs/various'
@@ -12,6 +11,7 @@ import {
   hasModule,
   getNameWithModule,
   unMountComponent,
+  getComponentActions,
 } from './helper'
 import {
   connect,
@@ -31,7 +31,6 @@ import {
   CreateComponentState,
   CreateComponentProps,
   RequiredComponent,
-  PublicActions,
   Store,
 } from './types'
 
@@ -53,7 +52,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     CreateComponentProps<P> & ComponentDefaultProps,
     CreateComponentState
   > {
-    static displayName = getNameWithModule({ name, module })
+    static displayName = 'various-component'
 
     state = {
       componentExist: false,
@@ -100,35 +99,32 @@ function reactComponent<P extends object>(config: ModuleDefined & {
           })
         }
 
+        componentNode.displayName = getNameWithModule({ name, module })
+
         const mountedComponents = getMountedComponents()
-        const actions: PublicActions = {}
 
         if (!hasModule(mountedComponents, { name, module })) {
           mountedComponents.push({ name, module })
         }
 
-        Object
-          .getOwnPropertyNames(componentNode)
-          .forEach((method) => {
-            if (typeof componentNode[method] !== 'function') {
-              return
-            }
-            if (method === '$onMessage') {
-              this.unSubscribeMessage = createOnMessage(
-                { name, module },
-                componentNode[method] as OnMessage,
-              )
-              return
-            }
-            if (method === '$i18n') {
-              createI18nConfig(componentNode[method], { name, module }, () => {
-                this.forceUpdate()
-              })
-              return
-            }
+        const {
+          actions,
+          i18nAction,
+          onMessageAction,
+        } = getComponentActions(componentNode)
 
-            actions[method] = componentNode[method]
+        if (onMessageAction) {
+          this.unSubscribeMessage = createOnMessage(
+            { name, module },
+            onMessageAction,
+          )
+        }
+
+        if (i18nAction) {
+          createI18nConfig(i18nAction, { name, module }, () => {
+            this.forceUpdate()
           })
+        }
 
         connector.setComponentActions({ name, module }, actions)
 

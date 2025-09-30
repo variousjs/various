@@ -6,6 +6,9 @@ import {
   VariousError as ve,
   ErrorType as et,
   ModuleDefined,
+  OnMessage,
+  I18n,
+  VariousComponentType,
 } from '@variousjs/various'
 import { getStore, subscribe, emit } from './store'
 import createLogger from './logger'
@@ -14,8 +17,9 @@ import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
   VUE_VERSION,
+  VUE_FUNCTION_OPTIONS,
 } from './config'
-import { RequiredComponent } from './types'
+import { PublicActions, RequiredComponent } from './types'
 import connector from './connector'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
@@ -177,4 +181,33 @@ export function checkVueComponent(component: RequiredComponent) {
       resolve(false)
     })
   })
+}
+
+export function getComponentActions(componentNode: RequiredComponent, type?: VariousComponentType) {
+  const actions: PublicActions = {}
+  let onMessageAction: OnMessage | undefined
+  let i18nAction: I18n | undefined
+
+  Object
+    .getOwnPropertyNames(componentNode)
+    .forEach((method) => {
+      if (typeof componentNode[method] !== 'function') {
+        return
+      }
+      if (method === '$onMessage') {
+        onMessageAction = componentNode[method]
+        return
+      }
+      if (method === '$i18n') {
+        i18nAction = componentNode[method]
+        return
+      }
+      if (type === 'vue3' && VUE_FUNCTION_OPTIONS.includes(method)) {
+        return
+      }
+
+      actions[method] = componentNode[method]
+    })
+
+  return { actions, onMessageAction, i18nAction }
 }

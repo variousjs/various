@@ -25,6 +25,14 @@ if (NODE_ENV === 'development') {
   components.index = path.resolve(__dirname, '../src/core')
 }
 
+// vue
+fs
+  .readdirSync(path.resolve(__dirname, '../test/components'))
+  .filter((name) => name.includes('.vue'))
+  .forEach((name) => {
+    components[name.split('.vue')[0]] = path.resolve(__dirname, '../test/components', name)
+  })
+
 const config = {
   ...base,
   // watch components change
