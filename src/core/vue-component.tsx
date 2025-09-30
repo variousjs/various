@@ -45,6 +45,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const storeKeys = (watchKeys || Object.keys(getStore()))
     const store = useStore(...storeKeys)
 
+    const isVueMounted = useRef(false)
     const errorRef = useRef<Error | ve>()
     const isUnMountedRef = useRef(false)
     const ComponentNodeRef = useRef<RequiredComponent>()
@@ -72,6 +73,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       })
 
       vueApp.mount(containerDivRef.current!)
+      isVueMounted.current = true
       unMountVue.current = () => vueApp.unmount()
     }, [$componentProps, store])
 
@@ -108,6 +110,8 @@ function vueComponent<P extends object>(config: ModuleDefined & {
 
         console.log(actions, '???')
 
+        connector.setComponentActions({ name, module }, actions)
+
         ComponentNodeRef.current = componentNode
         setTimeout(mountVue)
         setComponentReady(true)
@@ -133,10 +137,14 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         isUnMountedRef.current = true
         unMountComponent({ name, module })
         unMountVue.current?.()
+        isVueMounted.current = false
       }
     }, [])
 
     useEffect(() => {
+      if (isVueMounted.current) {
+        return
+      }
       mountComponent()
     }, [mountComponent])
 
