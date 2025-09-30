@@ -26,6 +26,9 @@ import {
   hasModule,
   getComponentActions,
 } from './helper'
+import createDispatch from './dispatch'
+import createLogger from './logger'
+import { createPostMessage, createOnMessage } from './message'
 import { CreateComponentProps, RequiredComponent } from './types'
 
 function vueComponent<P extends object>(config: ModuleDefined & {
@@ -53,6 +56,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const containerDivRef = useRef<HTMLDivElement | null>(null)
     const vueReactiveRef = useRef<{ value: ObjectRecord }>()
     const unMountVue = useRef<() => void>()
+    const unSubscribeMessageRef = useRef<() => void>()
 
     const [componentExist, setComponentExist] = useState(false)
     const [componentReady, setComponentReady] = useState(false)
@@ -62,12 +66,19 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const { $silent, $componentProps } = props
 
     const mountVue = useCallback(() => {
+      const $logger = createLogger({ name, module })
+      const $dispatch = createDispatch({ name, module })
+      const $postMessage = createPostMessage({ name, module })
+
       vueReactiveRef.current = ref({ ...$componentProps, ...store })
 
       const vueApp = createApp({
         render() {
           return h(ComponentNodeRef.current as any, {
             ...vueReactiveRef.current!.value,
+            variousLogger: $logger,
+            variousDispatch: $dispatch,
+            variousPostMessage: $postMessage,
           })
         },
       })
@@ -108,7 +119,12 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           onMessageAction,
         } = getComponentActions(componentNode, 'vue3')
 
-        console.log(actions, '???')
+        if (onMessageAction) {
+          unSubscribeMessageRef.current = createOnMessage(
+            { name, module },
+            onMessageAction,
+          )
+        }
 
         connector.setComponentActions({ name, module }, actions)
 
@@ -137,6 +153,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         isUnMountedRef.current = true
         unMountComponent({ name, module })
         unMountVue.current?.()
+        unSubscribeMessageRef.current?.()
         isVueMounted.current = false
       }
     }, [])

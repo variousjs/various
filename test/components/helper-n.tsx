@@ -1,26 +1,49 @@
 import React, { useRef, useState } from 'react'
-import { ComponentProps, createComponent } from '@variousjs/various'
+import { ComponentNode, createComponent } from '@variousjs/various'
+import { Store } from '../types'
 
-const V = createComponent({ name: 'v-dispatch', type: 'vue3' })
+const V = createComponent<Store>({ name: 'v-dispatch', type: 'vue3' }, ['name'])
 
 export default () => (
   <div>N</div>
 )
 
-const VueD = (props: ComponentProps) => (
-  <button
-    type="button"
-    onClick={() => props.$dispatch({
-      name: 'v-dispatch',
-      action: 'aa',
-      value: '666',
-    })}
-  >
-    dispatch-vue
-  </button>
-)
+export const VueD = ((props) => (
+  <>
+    <button
+      type="button"
+      onClick={() => props.$dispatch({
+        name: 'v-dispatch',
+        action: 'inputChange',
+        value: new Date().getMilliseconds(),
+      })}
+    >
+      dispatch-vue
+    </button>
+    <button
+      type="button"
+      onClick={() => props.$dispatch({
+        name: 'app',
+        action: 'setName',
+        value: new Date().getMilliseconds(),
+      })}
+    >
+      dispatch-global
+    </button>
+    <button
+      type="button"
+      onClick={() => props.$postMessage('message', 'message')}
+    >
+      postMessage
+    </button>
+  </>
+)) as ComponentNode
 
-export const VueC = (props: ComponentProps) => {
+VueD.$onMessage = (v) => {
+  console.log(v)
+}
+
+export const VueC = () => {
   const [count, setCount] = useState('')
   const c = useRef(0)
 
@@ -33,7 +56,7 @@ export const VueC = (props: ComponentProps) => {
           setCount(`${e.screenX}.${c.current}`)
         }}
       />
-      <VueD {...props} />
+      <div style={{ height: 20 }} />
     </div>
   )
 }

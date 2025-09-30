@@ -22,7 +22,7 @@ import {
 import { MOUNTED_COMPONENTS_KEY } from './config'
 import connector from './connector'
 import { createPostMessage, createOnMessage } from './message'
-import getDispatch from './dispatch'
+import createDispatch from './dispatch'
 import createLogger from './logger'
 import { createI18n, createI18nConfig } from './i18n'
 import createModule from './create-module'
@@ -145,7 +145,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
     $postMessage = createPostMessage({ name, module })
 
-    $dispatch = getDispatch({ name, module })
+    $dispatch = createDispatch({ name, module })
 
     $t = createI18n({ name, module })
 
