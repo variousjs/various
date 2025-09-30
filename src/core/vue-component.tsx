@@ -30,6 +30,7 @@ import createDispatch from './dispatch'
 import createLogger from './logger'
 import { createPostMessage, createOnMessage } from './message'
 import { CreateComponentProps, RequiredComponent } from './types'
+import { createI18n, createI18nConfig } from './i18n'
 
 function vueComponent<P extends object>(config: ModuleDefined & {
   url?: string,
@@ -69,6 +70,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       const $logger = createLogger({ name, module })
       const $dispatch = createDispatch({ name, module })
       const $postMessage = createPostMessage({ name, module })
+      const $t = createI18n({ name, module })
 
       vueReactiveRef.current = ref({ ...$componentProps, ...store })
 
@@ -79,6 +81,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
             variousLogger: $logger,
             variousDispatch: $dispatch,
             variousPostMessage: $postMessage,
+            variousT: $t,
           })
         },
       })
@@ -124,6 +127,13 @@ function vueComponent<P extends object>(config: ModuleDefined & {
             { name, module },
             onMessageAction,
           )
+        }
+
+        if (i18nAction) {
+          createI18nConfig(i18nAction, { name, module }, () => {
+            unMountVue.current?.()
+            mountVue()
+          })
         }
 
         connector.setComponentActions({ name, module }, actions)
@@ -189,6 +199,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
             : null
         }
         <div
+          className={`various-component-${getNameWithModule({ name, module })}`}
           style={{ display: componentReady ? 'block' : 'none' }}
           ref={containerDivRef}
         />

@@ -48,15 +48,12 @@ export const VueC = () => {
   const c = useRef(0)
 
   return (
-    <div>
-      <V
-        text={`vue-button${count}`}
-        onClick={(e: PointerEvent) => {
-          c.current += 1
-          setCount(`${e.screenX}.${c.current}`)
-        }}
-      />
-      <div style={{ height: 20 }} />
-    </div>
+    <V
+      text={`vue-button${count}`}
+      onClick={(e: PointerEvent) => {
+        c.current += 1
+        setCount(`${e.screenX}.${c.current}`)
+      }}
+    />
   )
 }
