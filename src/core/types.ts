@@ -48,7 +48,6 @@ export type RequiredComponent = ComponentType<ComponentProps>
 export interface CreateComponentState {
   isError: boolean,
   componentReady: boolean,
-  componentExist: boolean,
 }
 
 export interface CreateComponentProps<P extends object> extends Store {

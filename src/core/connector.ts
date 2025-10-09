@@ -1,5 +1,3 @@
-import { ComponentType } from 'react'
-import { Root } from 'react-dom/client'
 import {
   LoaderNode,
   ErrorNode,
@@ -20,10 +18,6 @@ class Connector {
 
   private componentActions: Record<string, PublicActions>
 
-  private components: Record<string, ComponentType<any>>
-
-  private renderRoots: Record<string, Root>
-
   private i18nConfigs: Record<string, I18nConfig | undefined>
 
   private globalI18nConfig: I18nConfig | undefined
@@ -35,8 +29,6 @@ class Connector {
     this.errorComponent = Error
     this.storeActions = {}
     this.componentActions = {}
-    this.components = {}
-    this.renderRoots = {}
     this.i18nConfigs = {}
     this.middlewares = {}
   }
@@ -65,31 +57,6 @@ class Connector {
 
   getGlobalI18nConfig() {
     return this.globalI18nConfig
-  }
-
-  setRenderRoot(moduleDefined: ModuleDefined, root: Root) {
-    const name = getNameWithModule(moduleDefined)
-    this.renderRoots[name] = root
-  }
-
-  getRenderRoot(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    return this.renderRoots[name]
-  }
-
-  deleteRenderRoot(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    delete this.renderRoots[name]
-  }
-
-  setComponent(moduleDefined: ModuleDefined, component: ComponentType) {
-    const name = getNameWithModule(moduleDefined)
-    this.components[name] = component
-  }
-
-  getComponent(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    return this.components[name]
   }
 
   setComponentActions(moduleDefined: ModuleDefined, actions: PublicActions) {

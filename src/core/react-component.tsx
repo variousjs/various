@@ -37,7 +37,7 @@ import {
 function reactComponent<P extends object>(config: ModuleDefined & {
   url?: string,
   watchKeys?: string[],
-  onMounted: () => void,
+  onMounted?: () => void,
 }) {
   const {
     name,
@@ -55,7 +55,6 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     static displayName = 'various-component'
 
     state = {
-      componentExist: false,
       componentReady: false,
       isError: false,
     }
@@ -69,7 +68,6 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     private unSubscribeMessage = () => null as unknown
 
     componentDidMount() {
-      this.setState({ componentExist: !!connector.getComponent({ name, module }) })
       this.mountComponent()
     }
 
@@ -131,7 +129,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
 
-        onMounted()
+        onMounted?.()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         if (this.isUnMounted) {
@@ -154,11 +152,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     render() {
       const LoaderNode = connector.getLoaderComponent()
       const { $silent, $componentProps, $ref } = this.props
-      const {
-        componentReady,
-        isError,
-        componentExist,
-      } = this.state
+      const { componentReady, isError } = this.state
       const store = getUserStore()
       const ComponentNode = this.ComponentNode as RequiredComponent
 
@@ -167,7 +161,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       }
 
       if (!componentReady) {
-        if ($silent || componentExist) {
+        if ($silent) {
           return null
         }
 

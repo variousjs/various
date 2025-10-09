@@ -1,8 +1,7 @@
-import React, { ComponentType } from 'react'
+import React from 'react'
 import { createComponent as cc, ComponentDefaultProps } from '@variousjs/various'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
-import connector from './connector'
 import { CreateComponentProps } from './types'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
@@ -13,24 +12,14 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
     type = 'react',
   } = config
 
-  const existComponent = connector.getComponent({ name, module })
-  if (existComponent) {
-    return existComponent
-  }
-
-  let component: ComponentType<any>
-
   const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
     name,
     module,
     url,
     watchKeys: storeKeys as string[],
-    onMounted() {
-      connector.setComponent({ name, module }, component)
-    },
   })
 
-  component = (props: ComponentDefaultProps) => {
+  const component = (props: ComponentDefaultProps) => {
     const { $silent, $ref, ...rest } = props || {}
     const nextProps = {
       $componentProps: rest, $silent, $ref,

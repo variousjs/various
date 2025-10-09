@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { ComponentNode, createComponent } from '@variousjs/various'
+import { ComponentNode, createComponent, renderComponent } from '@variousjs/various'
 import { Store } from '../types'
 
 const V = createComponent<Store>({ name: 'v-dispatch', type: 'vue3' }, ['name'])
@@ -36,6 +36,38 @@ export const VueD = ((props) => (
     >
       postMessage
     </button>
+    <button
+      type="button"
+      onClick={() => {
+        renderComponent({
+          // name: 'vue-toggles',
+          name: 'v-dispatch',
+          target: document.querySelector('#vue-component-div'),
+          type: 'vue3',
+          props: { checkedBg: 'green', text: 'render' },
+          // url: 'https://unpkg.com/vue-toggles@2.2.1/dist/vue-toggles.umd.cjs',
+        })
+      }}
+    >
+      renderComponent
+    </button>
+    <div id="vue-component-div" />
+    <button
+      type="button"
+      onClick={() => {
+        renderComponent({
+          // name: 'vue-toggles',
+          name: 'v-dispatch',
+          target: document.querySelector('#vue-component-div2'),
+          type: 'vue3',
+          props: { checkedBg: 'green', text: 'render' },
+          // url: 'https://unpkg.com/vue-toggles@2.2.1/dist/vue-toggles.umd.cjs',
+        })
+      }}
+    >
+      renderComponent2
+    </button>
+    <div id="vue-component-div2" />
   </>
 )) as ComponentNode
 
@@ -48,12 +80,15 @@ export const VueC = () => {
   const c = useRef(0)
 
   return (
-    <V
-      text={`vue-button${count}`}
-      onClick={(e: PointerEvent) => {
-        c.current += 1
-        setCount(`${e.screenX}.${c.current}`)
-      }}
-    />
+    <>
+      <V
+        text={`vue-button${count}`}
+        onClick={(e: PointerEvent) => {
+          c.current += 1
+          setCount(`${e.screenX}.${c.current}`)
+        }}
+      />
+      <V text="666" />
+    </>
   )
 }

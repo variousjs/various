@@ -1,9 +1,8 @@
 import React from 'react'
-import { createRoot, Root } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
-import connector from './connector'
 
 const renderComponent: typeof rc = ({
   name,
@@ -15,29 +14,16 @@ const renderComponent: typeof rc = ({
   renderNode,
   onMounted,
 }) => {
-  let C = connector.getComponent({ name, module })
-  if (!C) {
-    C = (type === 'vue3' ? createVueComponent : createReactComponent)({
-      name,
-      module,
-      url,
-      onMounted() {
-        connector.setComponent({ name, module }, C)
-        onMounted?.()
-      },
-    })
-  }
+  const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
+    name,
+    module,
+    url,
+    onMounted,
+  })
 
-  let root: Root
-  if (connector.getRenderRoot({ name, module })) {
-    root = connector.getRenderRoot({ name, module })
-  } else {
-    root = createRoot(target as Element)
-    connector.setRenderRoot({ name, module }, root)
-  }
-
+  const root = createRoot(target as Element)
   const { $silent, $ref, ...rest } = props || {}
-  const nextProps = { $componentProps: rest, $silent, $ref }
+  const nextProps: any = { $componentProps: rest, $silent, $ref }
   const node = <C {...nextProps} />
 
   root.render(renderNode ? renderNode(node) : node)
@@ -45,7 +31,6 @@ const renderComponent: typeof rc = ({
   return () => new Promise<void>((resolve) => {
     setTimeout(() => {
       root.unmount()
-      connector.deleteRenderRoot({ name, module })
       resolve()
     })
   })

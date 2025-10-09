@@ -81,7 +81,7 @@ C.$onMessage = (v) => {
 }
 
 C.$i18n = async () => {
-  await new Promise((r) => setTimeout(r, 10000))
+  await new Promise((r) => setTimeout(r, 1000))
 
   return {
     localeKey: 'locale',

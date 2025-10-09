@@ -119,11 +119,13 @@ export const isReactComponent = (component: RequiredComponent) => {
   if (component.$$typeof) {
     return true
   }
-  return (
-    !!component.prototype?.isReactComponent) || (
-    typeof component === 'function'
-    && String(component).includes('createElement(')
-  )
+  if (component.prototype?.isReactComponent) {
+    return true
+  }
+  if (typeof component === 'function') {
+    return true
+  }
+  return false
 }
 
 export class VariousError extends Error implements ve {

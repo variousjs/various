@@ -35,7 +35,7 @@ import { createI18n, createI18nConfig } from './i18n'
 function vueComponent<P extends object>(config: ModuleDefined & {
   url?: string,
   watchKeys?: string[],
-  onMounted: () => void,
+  onMounted?: () => void,
 }) {
   const {
     name,
@@ -44,9 +44,9 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     watchKeys,
     onMounted,
   } = config
+  const storeKeys = (watchKeys || Object.keys(getStore()))
 
-  const V: FC<CreateComponentProps<P> &ComponentDefaultProps> = (props) => {
-    const storeKeys = (watchKeys || Object.keys(getStore()))
+  const V: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => {
     const store = useStore(...storeKeys)
 
     const isVueMounted = useRef(false)
@@ -59,7 +59,6 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const unMountVue = useRef<() => void>()
     const unSubscribeMessageRef = useRef<() => void>()
 
-    const [componentExist, setComponentExist] = useState(false)
     const [componentReady, setComponentReady] = useState(false)
     const [isError, setIsError] = useState(false)
 
@@ -141,7 +140,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         ComponentNodeRef.current = componentNode
         setTimeout(mountVue)
         setComponentReady(true)
-        onMounted()
+        onMounted?.()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         if (isUnMountedRef.current) {
@@ -154,18 +153,14 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       }
     }, [mountVue])
 
-    useEffect(() => {
-      setComponentExist(Boolean(connector.getComponent({ name, module })))
-
-      return () => {
-        errorRef.current = undefined
-        ComponentNodeRef.current = undefined
-        isUnMountedRef.current = true
-        unMountComponent({ name, module })
-        unMountVue.current?.()
-        unSubscribeMessageRef.current?.()
-        isVueMounted.current = false
-      }
+    useEffect(() => () => {
+      errorRef.current = undefined
+      ComponentNodeRef.current = undefined
+      isUnMountedRef.current = true
+      unMountComponent({ name, module })
+      unMountVue.current?.()
+      unSubscribeMessageRef.current?.()
+      isVueMounted.current = false
     }, [])
 
     useEffect(() => {
@@ -188,7 +183,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     return (
       <>
         {
-          !componentReady && !$silent && !componentExist
+          !componentReady && !$silent
             ? (
               <LoaderNode
                 $name={name}
