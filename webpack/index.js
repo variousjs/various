@@ -23,7 +23,8 @@ if (NODE_ENV === 'production') {
     path: path.join(__dirname, '../dist'),
     filename: '[name].js',
   }
-  configs.push({
+
+  const coreConfig = {
     ...base,
     entry: {
       index: path.resolve(__dirname, '../src/core'),
@@ -35,6 +36,14 @@ if (NODE_ENV === 'production') {
       filename: '[name].js',
       libraryTarget: 'amd',
     },
+  }
+
+  configs.push(coreConfig, {
+    ...coreConfig,
+    entry: {
+      'index.amd': path.resolve(__dirname, '../src/core'),
+    },
+    mode: 'development',
   })
 }
 
