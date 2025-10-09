@@ -5,7 +5,7 @@
     {{ text }}
   </button>
   <p>name: {{ name }}</p>
-  <p>i18n: {{ variousT('title', 'default Title') }}</p>
+  <p>i18n: {{ various.$t('title', 'default Title') }}</p>
   <input :value="current.t" />
   <div style="height: 20px;" />
   <button
@@ -37,10 +37,7 @@ const C = defineComponent({
   props: {
     text: String,
     name: String,
-    variousLogger: Object,
-    variousDispatch: Function,
-    variousPostMessage: Function,
-    variousT: Function,
+    various: Object,
   },
   emits: ['click'],
   data() {
@@ -56,13 +53,13 @@ const C = defineComponent({
     return {
       handleClick,
       log() {
-        props.variousLogger.info('lohaa')
+        props.various.$logger.info('lohaa')
       },
       postMessage() {
-        props.variousPostMessage('vue-component', 'ready')
+        props.various.$postMessage('vue-component', 'ready')
       },
       dispatch() {
-        props.variousDispatch({
+        props.various.$dispatch({
           name: 'app',
           action: 'setName',
           value: new Date().getMilliseconds(),

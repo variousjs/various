@@ -41,7 +41,7 @@ if (NODE_ENV === 'production') {
   configs.push(coreConfig, {
     ...coreConfig,
     entry: {
-      'index.amd': path.resolve(__dirname, '../src/core'),
+      'index.dev': path.resolve(__dirname, '../src/core'),
     },
     mode: 'development',
   })

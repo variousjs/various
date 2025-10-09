@@ -77,10 +77,12 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         render() {
           return h(ComponentNodeRef.current as any, {
             ...vueReactiveRef.current!.value,
-            variousLogger: $logger,
-            variousDispatch: $dispatch,
-            variousPostMessage: $postMessage,
-            variousT: $t,
+            various: {
+              $dispatch,
+              $logger,
+              $postMessage,
+              $t,
+            },
           })
         },
       })
