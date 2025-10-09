@@ -115,19 +115,6 @@ export const onError = (e: VariousError) => {
   logger.error(e, type)
 }
 
-export const isReactComponent = (component: RequiredComponent) => {
-  if (component.$$typeof) {
-    return true
-  }
-  if (component.prototype?.isReactComponent) {
-    return true
-  }
-  if (typeof component === 'function') {
-    return true
-  }
-  return false
-}
-
 export class VariousError extends Error implements ve {
   type: et
 
@@ -151,6 +138,21 @@ export class VariousError extends Error implements ve {
   }
 }
 
+export function checkReactComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
+  return new Promise<void>((reslove, reject) => {
+    if (component.$$typeof || component.prototype?.isReactComponent || typeof component === 'function') {
+      reslove()
+      return
+    }
+
+    reject(new VariousError({
+      ...moduleDefined,
+      originalError: new Error('not a valid React component'),
+      type: 'INVALID_COMPONENT',
+    }))
+  })
+}
+
 export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
   return value != null && typeof (value as any).then === 'function'
 }
@@ -166,21 +168,25 @@ export function unMountComponent(moduleDefined: ModuleDefined) {
   connector.deleteComponentActions({ name, module })
 }
 
-export function checkVueComponent(component: RequiredComponent) {
+export function checkVueComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
   const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
 
-  return new Promise<boolean>((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     window.requirejs(['vue'], (Vue: { version: string }) => {
       if (!versionRegex.test(Vue.version)) {
         reject(new Error(`Vue ${VUE_VERSION}+ required, detected an incompatible version`))
       }
 
       if (typeof component?.render === 'function' || typeof component?.setup === 'function') {
-        resolve(true)
+        resolve()
         return
       }
 
-      resolve(false)
+      reject(new VariousError({
+        ...moduleDefined,
+        originalError: new Error('not a valid Vue component'),
+        type: 'INVALID_COMPONENT',
+      }))
     })
   })
 }

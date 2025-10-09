@@ -21,7 +21,6 @@ import {
   getNameWithModule,
   unMountComponent,
   checkVueComponent,
-  VariousError,
   getMountedComponents,
   hasModule,
   getComponentActions,
@@ -100,16 +99,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           return
         }
 
-        const isVueComponent = await checkVueComponent(componentNode)
-
-        if (!isVueComponent) {
-          throw new VariousError({
-            name,
-            module,
-            originalError: new Error('not a valid Vue component'),
-            type: 'INVALID_COMPONENT',
-          })
-        }
+        await checkVueComponent(componentNode, { name, module })
 
         const mountedComponents = getMountedComponents()
 

@@ -5,9 +5,8 @@ import {
   ModuleDefined,
 } from '@variousjs/various'
 import {
-  isReactComponent,
+  checkReactComponent,
   getMountedComponents,
-  VariousError,
   hasModule,
   getNameWithModule,
   unMountComponent,
@@ -88,14 +87,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
           return
         }
 
-        if (!isReactComponent(componentNode)) {
-          throw new VariousError({
-            name,
-            module,
-            originalError: new Error('not a valid React component'),
-            type: 'INVALID_COMPONENT',
-          })
-        }
+        await checkReactComponent(componentNode, { name, module })
 
         componentNode.displayName = getNameWithModule({ name, module })
 
