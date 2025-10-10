@@ -1,9 +1,6 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-
-interface Various { default: (config: Config & App) => void }
-type AppWithDefault = { default: App }
-interface ReactWithVersion { version: string }
+import { Various, AppWithDefault, ReactWithVersion } from './types'
 
 const DEFAULT_PACKAGES = {
   react: 'https://unpkg.com/react@18/umd/react.production.min.js',

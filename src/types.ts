@@ -7,13 +7,14 @@ import {
   I18n,
   Dispatch,
   ModuleDefined,
+  App,
 } from '@variousjs/various'
-import {
+import type {
   MESSAGE_KEY,
   DEPENDENCIES_KEY,
   MOUNTED_COMPONENTS_KEY,
   CONFIG_KEY,
-} from './config'
+} from './core/config'
 
 declare global {
   export const VERSION: string
@@ -57,3 +58,7 @@ export interface CreateComponentProps<P extends object> extends Store {
 export type ErrorBoundaryProps = ModuleDefined & {
   children: ReactNode,
 }
+
+export interface Various { default: (config: Config & App) => void }
+export type AppWithDefault = { default: App }
+export interface ReactWithVersion { version: string }

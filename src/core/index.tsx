@@ -13,7 +13,7 @@ import connector from './connector'
 import { onError, VariousError } from './helper'
 import { createI18nConfig } from './i18n'
 import { Container as ContainerNode } from './default-component'
-import { Store } from './types'
+import { Store } from '../types'
 
 export { default as Nycticorax } from 'nycticorax'
 
@@ -107,6 +107,10 @@ export default (config: Config & App<Store>) => {
         return (
           <ErrorNode
             $name="app"
+            $reload={() => {
+              this.error = undefined
+              this.setState({ isError: false })
+            }}
             $error={this.error!}
             $store={store as Store}
           />

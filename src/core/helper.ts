@@ -19,7 +19,7 @@ import {
   VUE_VERSION,
   VUE_FUNCTION_OPTIONS,
 } from './config'
-import { PublicActions, RequiredComponent } from './types'
+import { PublicActions, RequiredComponent } from '../types'
 import connector from './connector'
 import { createOnMessage } from './message'
 import { createI18nConfig } from './i18n'

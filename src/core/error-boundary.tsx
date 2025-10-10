@@ -7,7 +7,7 @@ import {
   updateUnMountComponent,
 } from './helper'
 import connector from './connector'
-import { ErrorBoundaryProps, Store } from './types'
+import { ErrorBoundaryProps, Store } from '../types'
 import { getUserStore } from './store'
 
 class ErrorBoundary extends Component<ErrorBoundaryProps> {

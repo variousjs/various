@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 import { ErrorNode, LoaderNode } from '@variousjs/various'
-import { Store } from './types'
+import { Store } from '../types'
 
 export const Loader: LoaderNode<Store> = () => (
   <div>Loading</div>
@@ -9,18 +9,12 @@ export const Loader: LoaderNode<Store> = () => (
 export const Error: ErrorNode<Store> = ({ $error, $reload }) => (
   <>
     <div>{`[${$error.type}] ${$error.message}`}</div>
-    {
-      $reload
-        ? (
-          <button
-            type="button"
-            onClick={$reload}
-          >
-            Reload
-          </button>
-        )
-        : null
-    }
+    <button
+      type="button"
+      onClick={$reload}
+    >
+      Reload
+    </button>
   </>
 )
 

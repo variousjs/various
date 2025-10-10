@@ -94,7 +94,7 @@ declare module '@variousjs/various' {
   > = FC<ComponentProps<S, P>> & StaticProps
 
   export interface ErrorNodeProps<S extends object = ObjectRecord> {
-    $reload?: () => void,
+    $reload: () => void,
     $error: VariousError,
     $store: Readonly<S>,
     $name: ModuleDefined['name'],

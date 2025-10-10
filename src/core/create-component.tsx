@@ -2,7 +2,7 @@ import React from 'react'
 import { createComponent as cc, ComponentDefaultProps } from '@variousjs/various'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
-import { CreateComponentProps } from './types'
+import { CreateComponentProps } from '../types'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   const {

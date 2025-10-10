@@ -1,5 +1,5 @@
 import { createModule as cm } from '@variousjs/various'
-import { RequireError, RequiredComponent } from './types'
+import { RequireError, RequiredComponent } from '../types'
 import { DEPENDENCIES_KEY } from './config'
 import { getStore } from './store'
 import connector from './connector'

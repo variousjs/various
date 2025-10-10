@@ -26,7 +26,7 @@ import {
 import createDispatch from './dispatch'
 import createLogger from './logger'
 import { createPostMessage } from './message'
-import { CreateComponentProps, RequiredComponent } from './types'
+import { CreateComponentProps, RequiredComponent } from '../types'
 import { createI18n } from './i18n'
 
 function vueComponent<P extends object>(config: ModuleDefined & {

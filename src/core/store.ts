@@ -1,5 +1,5 @@
 import Nycticorax from 'nycticorax'
-import { Store } from './types'
+import { Store } from '../types'
 
 export const {
   createStore,

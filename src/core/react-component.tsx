@@ -24,7 +24,7 @@ import {
   CreateComponentProps,
   RequiredComponent,
   Store,
-} from './types'
+} from '../types'
 
 function reactComponent<P extends object>(config: ModuleDefined & {
   url?: string,
