@@ -23,16 +23,24 @@ export function createI18nConfig(
     return
   }
 
+  if (moduleDefined) {
+    connector.setI18nConfig(moduleDefined, {
+      loading: true,
+      localeKey: '',
+      resources: {},
+    })
+  }
+
   i18nConfig
     .then((res) => {
       if (moduleDefined) {
-        connector.setI18nConfig(moduleDefined, res)
+        connector.setI18nConfig(moduleDefined, { ...res, loading: false })
         callback?.()
         return
       }
 
       const locale = getStore(res.localeKey)
-      connector.setGlobalI18nConfig(res)
+      connector.setGlobalI18nConfig({ ...res, loading: false })
 
       emit({ [res.localeKey]: undefined }, true)
       emit({ [res.localeKey]: locale })
@@ -62,6 +70,10 @@ export function createI18n(moduleDefined: ModuleDefined) {
         type: 'I18N',
         originalError: new Error('config not exist'),
       }))
+      return defaultText
+    }
+
+    if (i18nConfig.loading) {
       return defaultText
     }
 

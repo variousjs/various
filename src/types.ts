@@ -8,6 +8,7 @@ import {
   Dispatch,
   ModuleDefined,
   App,
+  I18nConfig,
 } from '@variousjs/various'
 import type {
   MESSAGE_KEY,
@@ -57,6 +58,10 @@ export interface CreateComponentProps<P extends object> extends Store {
 
 export type ErrorBoundaryProps = ModuleDefined & {
   children: ReactNode,
+}
+
+export interface ConnectorI18nConfig extends I18nConfig {
+  loading?: boolean,
 }
 
 export interface Various { default: (config: Config & App) => void }
