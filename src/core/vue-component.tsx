@@ -15,14 +15,12 @@ import {
 import ErrorBoundary from './error-boundary'
 import connector from './connector'
 import createModule from './create-module'
-import { MOUNTED_COMPONENTS_KEY } from './config'
-import { emit, getStore, useStore } from './store'
+import { getStore, useStore } from './store'
 import {
   getNameWithModule,
-  unMountComponent,
+  updateUnMountComponent,
+  updateMountedComponent,
   checkVueComponent,
-  getMountedComponents,
-  hasModule,
   parseComponentActions,
 } from './helper'
 import createDispatch from './dispatch'
@@ -101,11 +99,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
 
         await checkVueComponent(componentNode, { name, module })
 
-        const mountedComponents = getMountedComponents()
-
-        if (!hasModule(mountedComponents, { name, module })) {
-          mountedComponents.push({ name, module })
-        }
+        updateMountedComponent({ name, module })
 
         unSubscribeMessageRef.current = parseComponentActions({
           componentNode,
@@ -119,10 +113,11 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         })
 
         ComponentNodeRef.current = componentNode
+
         setTimeout(mountVue)
         setComponentReady(true)
+
         onMounted?.()
-        emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         if (isUnMountedRef.current) {
           return
@@ -138,7 +133,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       errorRef.current = undefined
       ComponentNodeRef.current = undefined
       isUnMountedRef.current = true
-      unMountComponent({ name, module })
+      updateUnMountComponent({ name, module })
       unMountVue.current?.()
       unSubscribeMessageRef.current?.()
       isVueMounted.current = false

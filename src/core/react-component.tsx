@@ -6,19 +6,12 @@ import {
 } from '@variousjs/various'
 import {
   checkReactComponent,
-  getMountedComponents,
-  hasModule,
   getNameWithModule,
-  unMountComponent,
+  updateUnMountComponent,
+  updateMountedComponent,
   parseComponentActions,
 } from './helper'
-import {
-  connect,
-  getStore,
-  emit,
-  getUserStore,
-} from './store'
-import { MOUNTED_COMPONENTS_KEY } from './config'
+import { connect, getStore, getUserStore } from './store'
 import connector from './connector'
 import { createPostMessage } from './message'
 import createDispatch from './dispatch'
@@ -75,8 +68,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       this.ComponentNode = null
       this.isUnMounted = true
       this.unSubscribeMessage()
-
-      unMountComponent({ name, module })
+      updateUnMountComponent({ name, module })
     }
 
     mountComponent = async () => {
@@ -91,11 +83,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
         componentNode.displayName = getNameWithModule({ name, module })
 
-        const mountedComponents = getMountedComponents()
-
-        if (!hasModule(mountedComponents, { name, module })) {
-          mountedComponents.push({ name, module })
-        }
+        updateMountedComponent({ name, module })
 
         this.unSubscribeMessage = parseComponentActions({
           componentNode,
@@ -106,8 +94,8 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
+
         onMounted?.()
-        emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
         if (this.isUnMounted) {
           return

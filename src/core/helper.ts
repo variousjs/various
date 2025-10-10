@@ -26,6 +26,9 @@ import { createI18nConfig } from './i18n'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
+const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
+  .some((c) => c.name === module.name && c.module === module.module)
+
 export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {
   const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
@@ -47,9 +50,6 @@ export const isDependencyLoaded: typeof im = (name) => window.requirejs.specifie
   && !!window.requirejs.s.contexts._.defined[name]
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
-
-export const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
-  .some((c) => c.name === module.name && c.module === module.module)
 
 export const onComponentMounted: typeof ocm = (module, callback) => {
   const modules = Array.isArray(module) ? module : [module]
@@ -159,17 +159,6 @@ export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLik
   return value != null && typeof (value as any).then === 'function'
 }
 
-export function unMountComponent(moduleDefined: ModuleDefined) {
-  const { name, module } = moduleDefined
-  let mountedComponents = getMountedComponents()
-
-  mountedComponents = mountedComponents
-    .filter((item) => item.name !== name || item.module !== module)
-
-  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
-  connector.deleteComponentActions({ name, module })
-}
-
 export function checkVueComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
   const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
 
@@ -242,4 +231,25 @@ export function parseComponentActions(params: ModuleDefined & {
   }
 
   return () => null
+}
+
+export function updateMountedComponent(moduleDefined: ModuleDefined) {
+  const mountedComponents = getMountedComponents()
+
+  if (!hasModule(mountedComponents, moduleDefined)) {
+    mountedComponents.push(moduleDefined)
+  }
+
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
+}
+
+export function updateUnMountComponent(moduleDefined: ModuleDefined) {
+  const { name, module } = moduleDefined
+  let mountedComponents = getMountedComponents()
+
+  mountedComponents = mountedComponents
+    .filter((item) => item.name !== name || item.module !== module)
+
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
+  connector.deleteComponentActions({ name, module })
 }

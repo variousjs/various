@@ -4,7 +4,7 @@ import {
   onError,
   VariousError,
   resetDependencyConfig,
-  unMountComponent,
+  updateUnMountComponent,
 } from './helper'
 import connector from './connector'
 import { ErrorBoundaryProps, Store } from './types'
@@ -34,7 +34,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
     this.error = error
     onError(error)
     resetDependencyConfig(this.props.name)
-    unMountComponent({ name, module })
+    updateUnMountComponent({ name, module })
   }
 
   reload = () => {
