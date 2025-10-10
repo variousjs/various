@@ -23,13 +23,13 @@ import {
   checkVueComponent,
   getMountedComponents,
   hasModule,
-  getComponentActions,
+  parseComponentActions,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
-import { createPostMessage, createOnMessage } from './message'
+import { createPostMessage } from './message'
 import { CreateComponentProps, RequiredComponent } from './types'
-import { createI18n, createI18nConfig } from './i18n'
+import { createI18n } from './i18n'
 
 function vueComponent<P extends object>(config: ModuleDefined & {
   url?: string,
@@ -107,27 +107,16 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           mountedComponents.push({ name, module })
         }
 
-        const {
-          actions,
-          i18nAction,
-          onMessageAction,
-        } = getComponentActions(componentNode, 'vue3')
-
-        if (onMessageAction) {
-          unSubscribeMessageRef.current = createOnMessage(
-            { name, module },
-            onMessageAction,
-          )
-        }
-
-        if (i18nAction) {
-          createI18nConfig(i18nAction, { name, module }, () => {
+        unSubscribeMessageRef.current = parseComponentActions({
+          componentNode,
+          name,
+          module,
+          type: 'vue3',
+          i18nUpdate() {
             unMountVue.current?.()
             mountVue()
-          })
-        }
-
-        connector.setComponentActions({ name, module }, actions)
+          },
+        })
 
         ComponentNodeRef.current = componentNode
         setTimeout(mountVue)

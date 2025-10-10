@@ -21,6 +21,8 @@ import {
 } from './config'
 import { PublicActions, RequiredComponent } from './types'
 import connector from './connector'
+import { createOnMessage } from './message'
+import { createI18nConfig } from './i18n'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
@@ -191,7 +193,19 @@ export function checkVueComponent(component: RequiredComponent, moduleDefined: M
   })
 }
 
-export function getComponentActions(componentNode: RequiredComponent, type?: VariousComponentType) {
+export function parseComponentActions(params: ModuleDefined & {
+  componentNode: RequiredComponent,
+  type?: VariousComponentType,
+  i18nUpdate: () => void,
+}) {
+  const {
+    componentNode,
+    name,
+    module,
+    type,
+    i18nUpdate,
+  } = params
+
   const actions: PublicActions = {}
   let onMessageAction: OnMessage | undefined
   let i18nAction: I18n | undefined
@@ -217,5 +231,15 @@ export function getComponentActions(componentNode: RequiredComponent, type?: Var
       actions[method] = componentNode[method]
     })
 
-  return { actions, onMessageAction, i18nAction }
+  if (i18nAction) {
+    createI18nConfig(i18nAction, { name, module }, i18nUpdate)
+  }
+
+  connector.setComponentActions({ name, module }, actions)
+
+  if (onMessageAction) {
+    return createOnMessage({ name, module }, onMessageAction)
+  }
+
+  return () => null
 }

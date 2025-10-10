@@ -10,7 +10,7 @@ import {
   hasModule,
   getNameWithModule,
   unMountComponent,
-  getComponentActions,
+  parseComponentActions,
 } from './helper'
 import {
   connect,
@@ -20,10 +20,10 @@ import {
 } from './store'
 import { MOUNTED_COMPONENTS_KEY } from './config'
 import connector from './connector'
-import { createPostMessage, createOnMessage } from './message'
+import { createPostMessage } from './message'
 import createDispatch from './dispatch'
 import createLogger from './logger'
-import { createI18n, createI18nConfig } from './i18n'
+import { createI18n } from './i18n'
 import createModule from './create-module'
 import ErrorBoundary from './error-boundary'
 import {
@@ -97,30 +97,15 @@ function reactComponent<P extends object>(config: ModuleDefined & {
           mountedComponents.push({ name, module })
         }
 
-        const {
-          actions,
-          i18nAction,
-          onMessageAction,
-        } = getComponentActions(componentNode)
-
-        if (onMessageAction) {
-          this.unSubscribeMessage = createOnMessage(
-            { name, module },
-            onMessageAction,
-          )
-        }
-
-        if (i18nAction) {
-          createI18nConfig(i18nAction, { name, module }, () => {
-            this.forceUpdate()
-          })
-        }
-
-        connector.setComponentActions({ name, module }, actions)
+        this.unSubscribeMessage = parseComponentActions({
+          componentNode,
+          name,
+          module,
+          i18nUpdate: () => this.forceUpdate(),
+        })
 
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })
-
         onMounted?.()
         emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
       } catch (e) {
