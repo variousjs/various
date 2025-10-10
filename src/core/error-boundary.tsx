@@ -26,7 +26,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
       : new VariousError({
         name,
         module,
-        type: 'SCRIPT_ERROR',
+        type: name === 'app' ? 'APP_ERROR' : 'SCRIPT_ERROR',
         originalError: e,
       })
 

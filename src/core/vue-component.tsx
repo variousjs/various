@@ -22,6 +22,7 @@ import {
   updateMountedComponent,
   checkVueComponent,
   parseComponentActions,
+  isDependencyLoaded,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
@@ -159,7 +160,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     return (
       <>
         {
-          !componentReady && !$silent
+          !componentReady && !$silent && !isDependencyLoaded(name)
             ? (
               <LoaderNode
                 $name={name}

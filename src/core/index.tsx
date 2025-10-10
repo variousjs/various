@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
-import { App, Config, VariousError as ve } from '@variousjs/various'
+import { App, Config } from '@variousjs/various'
 import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
@@ -10,9 +10,9 @@ import {
   CONFIG_KEY,
 } from './config'
 import connector from './connector'
-import { onError, VariousError } from './helper'
 import { createI18nConfig } from './i18n'
 import { Container as ContainerNode } from './default-component'
+import ErrorBoundary from './error-boundary'
 import { Store } from '../types'
 
 export { default as Nycticorax } from 'nycticorax'
@@ -64,7 +64,6 @@ export default (config: Config & App<Store>) => {
   if (ErrorComponent) {
     connector.setErrorComponent(ErrorComponent)
   }
-  const ErrorNode = connector.getErrorComponent()
 
   createStore({
     ...store,
@@ -79,46 +78,15 @@ export default (config: Config & App<Store>) => {
   class R extends Component<{}, { isError: boolean }> {
     static displayName = 'various-app'
 
-    private error?: ve
-
-    state = {
-      isError: false,
-    }
-
-    componentDidCatch(e: Error) {
-      const error = new VariousError({
-        name: 'app',
-        type: 'APP_ERROR',
-        originalError: e,
-      })
-      onError(error)
-      this.error = error
-      this.setState({ isError: true })
-    }
-
     componentDidMount() {
       createI18nConfig(i18n)
     }
 
     render() {
-      const { isError } = this.state
-
-      if (isError) {
-        return (
-          <ErrorNode
-            $name="app"
-            $reload={() => {
-              this.error = undefined
-              this.setState({ isError: false })
-            }}
-            $error={this.error!}
-            $store={store as Store}
-          />
-        )
-      }
-
       return (
-        <ContainerComponent />
+        <ErrorBoundary name="app">
+          <ContainerComponent />
+        </ErrorBoundary>
       )
     }
   }
