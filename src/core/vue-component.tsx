@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { createApp, h, ref } from 'vue'
+import Vue from 'vue'
 import {
   ComponentDefaultProps,
   ModuleDefined,
@@ -47,6 +47,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
   const V: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => {
     const store = useStore(...storeKeys)
 
+    const vueRef = useRef<typeof Vue>()
     const isVueMounted = useRef(false)
     const errorRef = useRef<Error | ve>()
     const isUnMountedRef = useRef(false)
@@ -69,11 +70,11 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       const $postMessage = createPostMessage({ name, module })
       const $t = createI18n({ name, module })
 
-      vueReactiveRef.current = ref({ ...$componentProps, ...store })
+      vueReactiveRef.current = vueRef.current!.ref({ ...$componentProps, ...store })
 
-      const vueApp = createApp({
+      const vueApp = vueRef.current!.createApp({
         render() {
-          return h(ComponentNodeRef.current as any, {
+          return vueRef.current!.h(ComponentNodeRef.current as any, {
             ...vueReactiveRef.current!.value,
             various: {
               $dispatch,
@@ -92,6 +93,9 @@ function vueComponent<P extends object>(config: ModuleDefined & {
 
     const mountComponent = useCallback(async () => {
       try {
+        const vue = await createModule<typeof Vue>({ name: 'vue' })
+        vueRef.current = vue
+
         const componentNode = await createModule<RequiredComponent>({ name, module, url }, false)
 
         if (isUnMountedRef.current) {
