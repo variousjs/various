@@ -2,6 +2,7 @@ import React from 'react'
 import { createComponent as cc, ComponentDefaultProps } from '@variousjs/various'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
+import ErrorBoundary from './error-boundary'
 import { CreateComponentProps } from '../types'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
@@ -24,7 +25,11 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
     const nextProps = {
       $componentProps: rest, $silent, $ref,
     } as ComponentDefaultProps & CreateComponentProps<any>
-    return (<C {...nextProps} />)
+    return (
+      <ErrorBoundary name={name} module={module}>
+        <C {...nextProps} />
+      </ErrorBoundary>
+    )
   }
 
   component.displayName = 'various-creator'

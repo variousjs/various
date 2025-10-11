@@ -1,4 +1,4 @@
-import React, { Component, FC } from 'react'
+import React, { Component } from 'react'
 import {
   ComponentDefaultProps,
   VariousError as ve,
@@ -19,7 +19,6 @@ import createDispatch from './dispatch'
 import createLogger from './logger'
 import { createI18n } from './i18n'
 import createModule from './create-module'
-import ErrorBoundary from './error-boundary'
 import {
   CreateComponentState,
   CreateComponentProps,
@@ -45,7 +44,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     CreateComponentProps<P> & ComponentDefaultProps,
     CreateComponentState
   > {
-    static displayName = 'various-component'
+    static displayName = 'various-react-component'
 
     state = {
       componentReady: false,
@@ -155,18 +154,9 @@ function reactComponent<P extends object>(config: ModuleDefined & {
   }
 
   const Connected = connect(...storeKeys)(R)
-
   Connected.displayName = 'various-connector'
 
-  const ReactCreator: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => (
-    <ErrorBoundary name={name} module={module}>
-      <Connected {...props} />
-    </ErrorBoundary>
-  )
-
-  ReactCreator.displayName = 'various-react-creator'
-
-  return ReactCreator
+  return Connected
 }
 
 export default reactComponent

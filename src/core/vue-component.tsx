@@ -12,7 +12,6 @@ import {
   VariousError as ve,
   ObjectRecord,
 } from '@variousjs/various'
-import ErrorBoundary from './error-boundary'
 import connector from './connector'
 import createModule from './create-module'
 import { getStore, useStore } from './store'
@@ -184,15 +183,13 @@ function vueComponent<P extends object>(config: ModuleDefined & {
 
   V.displayName = getNameWithModule({ name, module })
 
-  const VueCreator: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => (
-    <ErrorBoundary name={name} module={module}>
-      <V {...props} />
-    </ErrorBoundary>
-  )
+  const VueComponent: FC<
+    CreateComponentProps<P> & ComponentDefaultProps
+  > = (props) => (<V {...props} />)
 
-  VueCreator.displayName = 'various-vue-creator'
+  VueComponent.displayName = 'various-vue-component'
 
-  return VueCreator
+  return VueComponent
 }
 
 export default vueComponent
