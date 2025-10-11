@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<style>
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: #FF3D00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+@keyframes rotation {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.component {
+}
+.component:empty {
+  display: none;
+}
+</style>
+<script>
+var VARIOUS_CONFIG = {
+  timeout: 1.5,
+  root: '#root',
+  earlyParallelDependencies: [],
+  dependencies: {
+    react: './libs/react.production.min.js',
+    'react-dom': './libs/react-dom.production.min.js',
+    'react-router-dom': './libs/react-router-dom.min.js',
+    'vue': './libs/vue.js',
+
+    app: './dist/app.js',
+    helper: './dist/helper.js',
+    container: './dist/container.js',
+  },
+  pages: [
+    {
+      label: 'Helper',
+      components: [
+        { name: 'helper' },
+      ],
+      path: '/',
+    },
+  ],
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="./dist/loader.js"></script>
+</body>
+</html>

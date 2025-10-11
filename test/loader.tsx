@@ -1,10 +1,13 @@
 import React from 'react'
-import { Spin } from 'antd'
 import { LoaderNodeProps } from '@variousjs/various'
 import { Store } from './types'
 
 export default function (props: LoaderNodeProps<Store>) {
+  if (window.Cypress) {
+    window.console.log(props.$store.name)
+  }
+
   return (
-    <Spin className={props.$store.loader} />
+    <div className="loader" />
   )
 }

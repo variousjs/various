@@ -71,5 +71,6 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0,
     'react/sort-comp': 0,
     'react/static-property-placement': 0,
+    'react/button-has-type': 0,
   },
 }

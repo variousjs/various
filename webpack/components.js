@@ -4,34 +4,23 @@ const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
 const components = {
-  entry: path.resolve(__dirname, '../test/entry.ts'),
-  default: path.resolve(__dirname, '../test/default.ts'),
-  'container-error': path.resolve(__dirname, '../test/container-error.tsx'),
-  'component-error': path.resolve(__dirname, '../test/component-error.tsx'),
+  app: path.resolve(__dirname, '../test/app.ts'),
 }
+
+const extensions = ['.tsx', '.vue']
 
 fs
   .readdirSync(path.resolve(__dirname, '../test/components'))
-  .filter((name) => name.includes('.tsx'))
   .forEach((name) => {
-    components[name.split('.tsx')[0]] = path.resolve(__dirname, '../test/components', name)
+    if (extensions.some((n) => name.endsWith(n))) {
+      const [ext] = name.split('.').slice(-1)
+      components[name.split(`.${ext}`)[0]] = path.resolve(__dirname, '../test/components', name)
+    }
   })
-
-components.helper = path.resolve(__dirname, '../test/components/helper.ts')
-
-components.container = path.resolve(__dirname, '../test/container.tsx')
 
 if (NODE_ENV === 'development') {
   components.index = path.resolve(__dirname, '../src/core')
 }
-
-// vue
-fs
-  .readdirSync(path.resolve(__dirname, '../test/components'))
-  .filter((name) => name.includes('.vue'))
-  .forEach((name) => {
-    components[name.split('.vue')[0]] = path.resolve(__dirname, '../test/components', name)
-  })
 
 const config = {
   ...base,
@@ -40,7 +29,7 @@ const config = {
   mode: NODE_ENV,
   entry: components,
   output: {
-    path: path.resolve(__dirname, '../public/dist'),
+    path: path.resolve(__dirname, '../docs/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
     libraryTarget: 'amd',

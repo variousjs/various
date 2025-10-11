@@ -13,17 +13,6 @@ const config = {
     'react-router-dom',
     '@variousjs/various',
     'vue',
-
-    'antd',
-    'rc-table',
-    'rc-table2',
-    'table',
-    'moment',
-    'switch',
-    'moment_zhCN',
-    'helper',
-    'module-error',
-    'module-error2',
   ],
   devtool: 'source-map',
   resolve: {
@@ -41,9 +30,9 @@ const config = {
     port: 2333,
     host: '0.0.0.0',
     static: {
-      directory: path.join(__dirname, '../public'),
+      directory: path.join(__dirname, '../docs'),
     },
-    watchFiles: ['../public'],
+    watchFiles: ['../docs'],
   },
   module: {
     rules: [

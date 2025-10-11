@@ -18,5 +18,5 @@
     "skipLibCheck": true,
     "strictPropertyInitialization": false
   },
-  "exclude": ["dist", "public"]
+  "exclude": ["dist", "docs"]
 }
