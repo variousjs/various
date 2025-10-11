@@ -22,7 +22,7 @@ import {
   updateMountedComponent,
   checkVueComponent,
   parseComponentActions,
-  isDependencyLoaded,
+  isModuleLoaded,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
@@ -164,7 +164,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     return (
       <>
         {
-          !componentReady && !$silent && !isDependencyLoaded(name)
+          !componentReady && !$silent && !isModuleLoaded(name)
             ? (
               <LoaderNode
                 $name={name}
@@ -176,7 +176,6 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         }
         <div
           className={`various-component-${getNameWithModule({ name, module })}`}
-          style={{ display: componentReady ? 'block' : 'none' }}
           ref={containerDivRef}
         />
       </>

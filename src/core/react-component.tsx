@@ -10,7 +10,7 @@ import {
   updateUnMountComponent,
   updateMountedComponent,
   parseComponentActions,
-  isDependencyLoaded,
+  isModuleLoaded,
 } from './helper'
 import { connect, getStore, getUserStore } from './store'
 import connector from './connector'
@@ -127,7 +127,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       }
 
       if (!componentReady) {
-        if ($silent || isDependencyLoaded(name)) {
+        if ($silent || isModuleLoaded(name)) {
           return null
         }
 

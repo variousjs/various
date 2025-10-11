@@ -24,8 +24,8 @@ export { default as createLogger } from './logger'
 
 export {
   getConfig,
-  preloadDependencies,
-  isDependencyLoaded,
+  preloadModules,
+  isModuleLoaded,
   getMountedComponents,
   onComponentMounted,
   defineDependencies,

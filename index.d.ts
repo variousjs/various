@@ -173,7 +173,7 @@ declare module '@variousjs/various' {
       '@variousjs/various'?: string,
       react?: string,
       'react-dom'?: string,
-      'vue'?: string,
+      vue?: string,
       [x: string]: string,
     },
     root?: string,
@@ -202,9 +202,9 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => Promise<void>
 
-  export const isDependencyLoaded: (name: string) => boolean
+  export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => ModuleDefined[]
-  export const preloadDependencies: (name: string | string[]) => Promise<void>
+  export const preloadModules: (name: string | string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
   ) => () => void

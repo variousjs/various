@@ -4,7 +4,7 @@ import { DEPENDENCIES_KEY } from './config'
 import { getStore } from './store'
 import connector from './connector'
 import {
-  isDependencyLoaded,
+  isModuleLoaded,
   resetDependencyConfig,
   VariousError,
   onError,
@@ -48,7 +48,7 @@ const createModule: typeof cm = (config, logError = true) => {
         module,
         loadStart,
         loadEnd,
-        beenLoaded: isDependencyLoaded(name),
+        beenLoaded: isModuleLoaded(name),
       })
 
       if (!C) {

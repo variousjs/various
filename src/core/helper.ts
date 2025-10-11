@@ -1,7 +1,7 @@
 import {
   onComponentMounted as ocm,
-  isDependencyLoaded as im,
-  preloadDependencies as pp,
+  isModuleLoaded as im,
+  preloadModules as pp,
   defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
@@ -29,7 +29,7 @@ const getUrlHash = (url: string) => `${url}?${+new Date()}`
 const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
   .some((c) => c.name === module.name && c.module === module.module)
 
-export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {
+export const preloadModules: typeof pp = (name) => new Promise<void>((resolve, reject) => {
   const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
 })
@@ -46,7 +46,7 @@ export const defineDependencies: typeof dd = (deps) => {
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isDependencyLoaded: typeof im = (name) => window.requirejs.specified(name)
+export const isModuleLoaded: typeof im = (name) => window.requirejs.specified(name)
   && !!window.requirejs.s.contexts._.defined[name]
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
