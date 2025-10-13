@@ -40,6 +40,7 @@ export const defineDependencies: typeof dd = (deps) => {
 
   Object.keys(deps).forEach((name) => {
     next[name] = `${deps[name]}#${name}`
+    window.requirejs.undef(name)
   })
 
   window.requirejs.config({ paths: next })

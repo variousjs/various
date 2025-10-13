@@ -7,7 +7,7 @@ const components = {
   app: path.resolve(__dirname, '../test/app.ts'),
 }
 
-const extensions = ['.tsx', '.vue']
+const extensions = ['.tsx', '.vue', '.ts']
 
 fs
   .readdirSync(path.resolve(__dirname, '../test/components'))

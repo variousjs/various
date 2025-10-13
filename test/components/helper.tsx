@@ -6,13 +6,16 @@ import {
   preloadModules,
   onComponentMounted,
   createComponent,
+  defineDependencies,
+  getConfig,
+  getStore,
 } from '@variousjs/various'
 
-const testPreloadModule = 'post-message'
+const testPreloadModule = 'helper-define'
 const testOnMountedModule = { name: 'helper', module: 'Waiting' }
 
 export default () => {
-  const [isLoaded, setIsLoaded] = useState(() => String(isModuleLoaded(testPreloadModule)))
+  const [isLoaded, setIsLoaded] = useState('false')
   const [isMounted, setIsMounted] = useState(false)
   const [isHelperMounted, setIsHelperMounted] = useState(false)
   const [canMount, setCanMount] = useState(false)
@@ -27,8 +30,12 @@ export default () => {
     .join()
 
   const preload = async () => {
-    await preloadModules(testPreloadModule)
-    setIsLoaded(String(isModuleLoaded(testPreloadModule)))
+    try {
+      await preloadModules(testPreloadModule)
+      setIsLoaded(String(isModuleLoaded(testPreloadModule)))
+    } catch (_) {
+      setIsLoaded('load error')
+    }
   }
 
   useEffect(() => {
@@ -49,16 +56,33 @@ export default () => {
       <h3>version</h3>
       <div className="value">{version}</div>
 
+      <h3>getConfig</h3>
+      <div className="value">timeout: {getConfig().timeout}</div>
+
+      <h3>getStore</h3>
+      <div className="value">{JSON.stringify(getStore())}</div>
+
       <h3>isModuleLoaded</h3>
       <div className="value">{testPreloadModule}: {isLoaded}</div>
 
-      <h3>getMountedComponents</h3>
-      <div className="value">{mountedComponents}</div>
+      <h3>defineDependencies</h3>
+      <div className="value">
+        <button
+          onClick={() => defineDependencies({
+            [testPreloadModule]: `./dist/${testPreloadModule}.js`,
+          })}
+        >
+          Define: {testPreloadModule}
+        </button>
+      </div>
 
       <h3>preloadModules</h3>
       <div className="value">
         <button onClick={() => preload()}>Preload: {testPreloadModule}</button>
       </div>
+
+      <h3>getMountedComponents</h3>
+      <div className="value">{mountedComponents}</div>
 
       <h3>onComponentMounted</h3>
       <div className="value">
