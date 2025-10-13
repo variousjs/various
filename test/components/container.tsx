@@ -16,7 +16,7 @@ const componentsMap = $config.pages.reduce((prev, current) => {
     const [name, module] = c.name.split('.')
     if (!prev[c.name] && !p[c.name] && !c.runtimeCreate) {
       // eslint-disable-next-line no-param-reassign
-      p[c.name] = createComponent({ name, module }, c.storeKeys)
+      p[c.name] = createComponent({ name, module, type: c.type }, c.storeKeys)
     }
     return p
   }, {} as CMap)
@@ -59,8 +59,8 @@ class Container extends Component {
                             components.map((com, i) => {
                               const [name, module] = com.name.split('.')
                               const C = com.runtimeCreate
-                                ? memo(createComponent({ name, module }))
-                                : componentsMap[name]
+                                ? memo(createComponent({ name, module, type: com.type }))
+                                : componentsMap[com.name]
 
                               return (
                                 // eslint-disable-next-line react/no-array-index-key

@@ -37,13 +37,14 @@ p {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  flex-basis: 50%;
   background: #1a1a1a;
   color: #ffffffde;
   overflow-y: auto;
+  align-content: flex-start;
 }
 .component {
   flex: 1;
+  flex-basis: 300px;
 }
 .component:empty {
   display: none;

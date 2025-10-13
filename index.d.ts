@@ -202,6 +202,13 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => Promise<void>
 
+  export interface VueVarious {
+    $dispatch: $dispatch,
+    $logger: $logger,
+    $postMessage: $postMessage,
+    $t: Intl,
+  }
+
   export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => ModuleDefined[]
   export const preloadModules: (name: string | string[]) => Promise<void>

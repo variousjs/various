@@ -19,7 +19,13 @@ module.exports = {
       },
     ],
     '@babel/preset-react',
-    '@babel/preset-typescript',
+    [
+      '@babel/preset-typescript',
+      {
+        allExtensions: true,
+        isTSX: true,
+      },
+    ],
   ],
   plugins,
 }
