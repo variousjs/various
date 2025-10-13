@@ -8,6 +8,6 @@ export default function (props: LoaderNodeProps<Store>) {
   }
 
   return (
-    <div className="loader" />
+    <div>...</div>
   )
 }

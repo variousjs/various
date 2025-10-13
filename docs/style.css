@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+p {
+  margin: 0;
+  margin-bottom: 10px;
+}
+.container {
+  display: flex;
+  height: 100vh;
+}
+.slider {
+  width: 160px;
+  background: #2a2b2d;
+  padding: 20px;
+  color: #fff;
+}
+.slider > div {
+  margin-bottom: 10px;
+}
+.slider > div a {
+  font-size: 16px;
+  color: #fff;
+  background: #9b9b9b;
+  display: block;
+  padding: 10px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.slider > div a:hover {
+  background-color: #8a8a8a;
+}
+.content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-basis: 50%;
+  background: #1a1a1a;
+  color: #ffffffde;
+}
+.component {
+  flex: 1;
+}
+.component:empty {
+  display: none;
+}
+.value {
+  background: #242424;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+button {
+  background-color: #ffffff;
+  border: 1px solid rgb(209, 213, 219);
+  border-radius: 0.5rem;
+  color: #111827;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+button:hover {
+  background-color: #f9fafb;
+}

@@ -27,24 +27,22 @@ class Container extends Component {
   render() {
     return (
       <HashRouter>
-        <div style={{ height: '100vh' }}>
-          <div>
-            <h3> VariousJS </h3>
-            <div>
-              {
-                $config.pages.map((item) => {
-                  const { label, path } = item
+        <div className="container">
+          <div className="slider">
+            <h2> VariousJS </h2>
+            {
+              $config.pages.map((item) => {
+                const { label, path } = item
 
-                  return (
-                    <div key={path}>
-                      <Link to={path}>{label}</Link>
-                    </div>
-                  )
-                })
-              }
-            </div>
+                return (
+                  <div key={path}>
+                    <Link to={path}>{label}</Link>
+                  </div>
+                )
+              })
+            }
           </div>
-          <div>
+          <div className="content">
             <Switch>
               {
                 $config.pages.map((page) => {
