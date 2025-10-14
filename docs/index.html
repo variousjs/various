@@ -22,6 +22,10 @@ var VARIOUS_CONFIG = {
     'post-message-vue': './dist/post-message/c.js',
     'create-module': './dist/create-module/index.js',
     'stack-exceeded': './dist/create-module/stack-exceeded.js',
+    logger: './dist/logger/index.js',
+    'logger-v': './dist/logger/v.js',
+    'render': './dist/render-component/index.js',
+    'render-v': './dist/render-component/r.js',
   },
   pages: [
     {
@@ -46,6 +50,22 @@ var VARIOUS_CONFIG = {
         { name: 'create-module' },
       ],
       path: '/create-module',
+    },
+    {
+      label: 'Logger',
+      components: [
+        { name: 'logger' },
+        { name: 'logger-v', type: 'vue3' },
+      ],
+      path: '/logger',
+    },
+    {
+      label: 'RenderComponent',
+      components: [
+        { name: 'render' },
+        { name: 'render-v', type: 'vue3' },
+      ],
+      path: '/render-component',
     },
   ],
 }

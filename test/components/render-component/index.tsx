@@ -1,0 +1,87 @@
+import React from 'react'
+import { renderComponent } from '@variousjs/various'
+import { HashRouter, useLocation } from 'react-router-dom'
+
+export default () => (
+  <>
+    <h3>Render Component</h3>
+    <div className="value">
+      <div id="a-dom" />
+      <button
+        onClick={() => {
+          renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
+        }}
+      >
+        render
+      </button>
+    </div>
+
+    <h3>Props</h3>
+    <div className="value">
+      <div id="props-dom" />
+      <button
+        onClick={() => {
+          renderComponent({
+            name: 'render',
+            module: 'WidthProps',
+            target: document.querySelector('#props-dom'),
+            props: { foo: 'bar' },
+          })
+        }}
+      >
+        with props
+      </button>
+    </div>
+
+    <h3>Custom Node</h3>
+    <div className="value">
+      <div id="custom-dom" />
+      <button
+        onClick={() => {
+          renderComponent({
+            name: 'render',
+            module: 'P',
+            target: document.querySelector('#custom-dom'),
+            renderNode(children) {
+              return <HashRouter>{children}</HashRouter>
+            },
+          })
+        }}
+      >
+        custom
+      </button>
+    </div>
+
+    <h3>URL & Vue</h3>
+    <div className="value">
+      <div id="url-dom" />
+      <button
+        onClick={() => {
+          renderComponent({
+            name: 'url',
+            type: 'vue3',
+            url: './dist/render-component/url.js',
+            target: document.querySelector('#url-dom'),
+          })
+        }}
+      >
+        url & vue
+      </button>
+    </div>
+  </>
+)
+
+export const A = () => 'A'
+
+export const WidthProps = (props: { foo: string }) => (
+  <div>{props.foo}</div>
+)
+
+export const P = () => {
+  const { pathname } = useLocation()
+  return (
+    <div>Pathname: {pathname}</div>
+  )
+}
+
+export const ForVue = () => 'this will render by vue component'
