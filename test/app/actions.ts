@@ -1,5 +1,5 @@
 import { Dispatch } from '@variousjs/various'
-import { Store } from './types'
+import { Store } from '../types'
 
 const actions: Record<string, Dispatch<Store>> = {
   async setName({ emit, getStore }) {

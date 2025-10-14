@@ -1,6 +1,6 @@
 import React from 'react'
 import { ErrorNode } from '@variousjs/various'
-import { Store } from './types'
+import { Store } from '../types'
 
 const errorComponent: ErrorNode<Store> = (props) => {
   const {

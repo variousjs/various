@@ -1,5 +1,5 @@
-import { createModule as cm } from '@variousjs/various'
-import { RequireError, RequiredComponent } from '../types'
+import { createModule as cm, ObjectRecord } from '@variousjs/various'
+import { RequireError } from '../types'
 import { DEPENDENCIES_KEY } from './config'
 import { getStore } from './store'
 import connector from './connector'
@@ -40,7 +40,7 @@ const createModule: typeof cm = (config, logError = true) => {
       return
     }
 
-    window.requirejs([name], (C: RequiredComponent) => {
+    window.requirejs([name], (C?: ObjectRecord) => {
       const loadEnd = +new Date()
 
       middlewares?.onLoad?.({
@@ -56,7 +56,7 @@ const createModule: typeof cm = (config, logError = true) => {
           name,
           module,
           type: 'INVALID_MODULE',
-          originalError: new Error(`module "${name}" not content`),
+          originalError: new Error(`module "${name}" invalid`),
         })
 
         resetDependencyConfig(name)
@@ -68,7 +68,7 @@ const createModule: typeof cm = (config, logError = true) => {
       const defaultModule = 'default' in C ? C.default : C
       const actualModule = !module ? defaultModule : C[module]
 
-      if (!actualModule && module) {
+      if (actualModule === undefined && module) {
         const error = new VariousError({
           name,
           module,

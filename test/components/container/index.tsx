@@ -6,7 +6,7 @@ import {
   Link,
 } from 'react-router-dom'
 import { getConfig, createComponent, Config } from '@variousjs/various'
-import { Page } from '../types'
+import { Page } from '../../types'
 
 type CMap = Record<string, ReturnType<typeof createComponent>>
 

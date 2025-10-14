@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoaderNodeProps } from '@variousjs/various'
-import { Store } from './types'
+import { Store } from '../types'
 
 export default function (props: LoaderNodeProps<Store>) {
   if (window.Cypress) {

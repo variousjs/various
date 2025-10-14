@@ -15,11 +15,13 @@ var VARIOUS_CONFIG = {
     'react-router-dom': './libs/react-router-dom.min.js',
     'vue': './libs/vue.js',
 
+    empty: './dist/empty.js', // create by npm script
     app: './dist/app.js',
-    helper: './dist/helper.js',
-    container: './dist/container.js',
-    'post-message': './dist/post-message.js',
-    'post-message-vue': './dist/post-message-vue.js',
+    helper: './dist/helper/index.js',
+    container: './dist/container/index.js',
+    'post-message': './dist/post-message/index.js',
+    'post-message-vue': './dist/post-message/c.js',
+    'create-module': './dist/create-module/index.js',
   },
   pages: [
     {
@@ -37,6 +39,13 @@ var VARIOUS_CONFIG = {
         { name: 'post-message-vue', type: 'vue3' },
       ],
       path: '/post-message',
+    },
+    {
+      label: 'CreateModule',
+      components: [
+        { name: 'create-module' },
+      ],
+      path: '/create-module',
     },
   ],
 }

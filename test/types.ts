@@ -1,5 +1,5 @@
 import { VariousComponentType } from '@variousjs/various'
-import store from './store'
+import store from './app/store'
 
 export type Store = typeof store
 

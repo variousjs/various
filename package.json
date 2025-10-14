@@ -19,7 +19,7 @@
   "types": "index.d.ts",
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
-    "prestart": "mkdir -p docs/dist",
+    "prestart": "mkdir -p docs/dist && touch docs/dist/empty.js",
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress --no-client-overlay",
     "prebuild": "npm run lint",
     "build": "rm -rf dist && NODE_ENV=production webpack --config webpack/index.js --progress",

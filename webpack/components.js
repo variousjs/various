@@ -4,18 +4,29 @@ const base = require('./base')
 
 const { NODE_ENV = 'development' } = process.env
 const components = {
-  app: path.resolve(__dirname, '../test/app.ts'),
+  app: path.resolve(__dirname, '../test/app/index.ts'),
 }
 
 const extensions = ['.tsx', '.vue', '.ts']
+const basePath = path.resolve(__dirname, '../test/components')
 
 fs
-  .readdirSync(path.resolve(__dirname, '../test/components'))
+  .readdirSync(basePath)
   .forEach((name) => {
-    if (extensions.some((n) => name.endsWith(n))) {
-      const [ext] = name.split('.').slice(-1)
-      components[name.split(`.${ext}`)[0]] = path.resolve(__dirname, '../test/components', name)
+    const currentPath = path.join(basePath, name)
+    if (!fs.lstatSync(currentPath).isDirectory()) {
+      return
     }
+
+    fs
+      .readdirSync(currentPath)
+      .forEach((filename) => {
+        if (extensions.some((n) => filename.endsWith(n))) {
+          const [ext] = filename.split('.').slice(-1)
+          const key = `${name}/${filename.split(`.${ext}`)[0]}`
+          components[key] = path.join(currentPath, filename)
+        }
+      })
   })
 
 if (NODE_ENV === 'development') {

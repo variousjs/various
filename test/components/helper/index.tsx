@@ -69,7 +69,7 @@ export default () => {
       <div className="value">
         <button
           onClick={() => defineDependencies({
-            [testPreloadModule]: `./dist/${testPreloadModule}.js`,
+            [testPreloadModule]: './dist/helper/define.js',
           })}
         >
           Define: {testPreloadModule}
