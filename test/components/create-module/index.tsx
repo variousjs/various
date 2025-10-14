@@ -51,7 +51,8 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'empty' }, false)
+              // empty create by npm script
+              await createModule({ name: 'empty', url: './dist/empty.js' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -78,6 +79,90 @@ export default () => {
               setErrors((pre) => ({
                 ...pre,
                 subModuleNotDefined: { type: error.type, msg: error.message },
+              }))
+            }
+          }}
+        >
+          Create
+        </button>
+      </div>
+
+      <h3>Script Error</h3>
+      <div className="value">
+        <p>Error: {errors.scriptError?.type}</p>
+        <p>{errors.scriptError?.msg}</p>
+        <button
+          onClick={async () => {
+            try {
+              await createModule({ name: 'stack-exceeded', url: './dist/create-module/stack-exceeded.js' }, false)
+            } catch (e) {
+              const error = e as VariousError
+              setErrors((pre) => ({
+                ...pre,
+                scriptError: { type: error.type, msg: error.message },
+              }))
+            }
+          }}
+        >
+          Create
+        </button>
+      </div>
+
+      <h3>Loading Error</h3>
+      <div className="value">
+        <p>Error: {errors.loadingError?.type}</p>
+        <p>{errors.loadingError?.msg}</p>
+        <button
+          onClick={async () => {
+            try {
+              await createModule({ name: 'timeout', url: './dist/create-module/timeout.js' }, false)
+            } catch (e) {
+              const error = e as VariousError
+              setErrors((pre) => ({
+                ...pre,
+                loadingError: { type: error.type, msg: error.message },
+              }))
+            }
+          }}
+        >
+          Create
+        </button>
+      </div>
+
+      <h3>Submodule Loading Error</h3>
+      <div className="value">
+        <p>Error: {errors.submoduleLoadingError?.type}</p>
+        <p>{errors.submoduleLoadingError?.msg}</p>
+        <button
+          onClick={async () => {
+            try {
+              await createModule({ name: 'sub', url: './dist/create-module/sub-not-define.js' }, false)
+            } catch (e) {
+              const error = e as VariousError
+              setErrors((pre) => ({
+                ...pre,
+                submoduleLoadingError: { type: error.type, msg: error.message },
+              }))
+            }
+          }}
+        >
+          Create
+        </button>
+      </div>
+
+      <h3>Submodule Script Error</h3>
+      <div className="value">
+        <p>Error: {errors.submoduleScriptError?.type}</p>
+        <p>{errors.submoduleScriptError?.msg}</p>
+        <button
+          onClick={async () => {
+            try {
+              await createModule({ name: 'sub-error', url: './dist/create-module/sub-error.js' }, false)
+            } catch (e) {
+              const error = e as VariousError
+              setErrors((pre) => ({
+                ...pre,
+                submoduleScriptError: { type: error.type, msg: error.message },
               }))
             }
           }}

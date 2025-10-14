@@ -13,6 +13,10 @@ const config = {
     'react-router-dom',
     '@variousjs/various',
     'vue',
+
+    // create-module test
+    'sub-m',
+    'stack-exceeded',
   ],
   devtool: 'source-map',
   resolve: {
