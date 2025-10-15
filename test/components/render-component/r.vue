@@ -1,12 +1,18 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onUnmounted } from 'vue'
 import { renderComponent } from '@variousjs/various'
 
 const V = defineComponent({
   setup() {
+    let un = () => Promise.resolve()
+
+    onUnmounted(() => {
+      un()
+    })
+
     return {
       render() {
-        renderComponent({
+        un = renderComponent({
           name: 'render',
           module: 'ForVue',
           target: document.querySelector('#vue-dom')

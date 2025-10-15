@@ -1,75 +1,127 @@
-import React from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { renderComponent } from '@variousjs/various'
 import { HashRouter, useLocation } from 'react-router-dom'
 
-export default () => (
-  <>
-    <h3>Render Component</h3>
-    <div className="value">
-      <div id="a-dom" />
-      <button
-        onClick={() => {
-          renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
-        }}
-      >
-        render
-      </button>
-    </div>
+export default () => {
+  const ref = useRef<any>(null)
+  const unMountedRef = useRef<(() => Promise<void>)[]>([])
+  const [showRefBtn, setShowRefBtn] = useState(false)
 
-    <h3>Props</h3>
-    <div className="value">
-      <div id="props-dom" />
-      <button
-        onClick={() => {
-          renderComponent({
-            name: 'render',
-            module: 'WidthProps',
-            target: document.querySelector('#props-dom'),
-            props: { foo: 'bar' },
-          })
-        }}
-      >
-        with props
-      </button>
-    </div>
+  useEffect(() => () => {
+    unMountedRef.current.forEach((s) => s())
+  }, [])
 
-    <h3>Custom Node</h3>
-    <div className="value">
-      <div id="custom-dom" />
-      <button
-        onClick={() => {
-          renderComponent({
-            name: 'render',
-            module: 'P',
-            target: document.querySelector('#custom-dom'),
-            renderNode(children) {
-              return <HashRouter>{children}</HashRouter>
-            },
-          })
-        }}
-      >
-        custom
-      </button>
-    </div>
+  return (
+    <>
+      <h3>Render Component</h3>
+      <div className="value">
+        <div id="a-dom" />
+        <button
+          onClick={() => {
+            const un = renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
+            unMountedRef.current.push(un)
+          }}
+        >
+          render
+        </button>
+      </div>
 
-    <h3>URL & Vue</h3>
-    <div className="value">
-      <div id="url-dom" />
-      <button
-        onClick={() => {
-          renderComponent({
-            name: 'url',
-            type: 'vue3',
-            url: './dist/render-component/url.js',
-            target: document.querySelector('#url-dom'),
-          })
-        }}
-      >
-        url & vue
-      </button>
-    </div>
-  </>
-)
+      <h3>Props</h3>
+      <div className="value">
+        <div id="props-dom" />
+        <button
+          onClick={() => {
+            const un = renderComponent({
+              name: 'render',
+              module: 'WidthProps',
+              target: document.querySelector('#props-dom'),
+              props: { foo: 'bar' },
+            })
+            unMountedRef.current.push(un)
+          }}
+        >
+          with props
+        </button>
+      </div>
+
+      <h3>Ref(React)</h3>
+      <div className="value">
+        <div id="ref-dom" />
+        <button
+          onClick={() => {
+            const un = renderComponent({
+              name: 'render',
+              module: 'Ref',
+              target: document.querySelector('#ref-dom'),
+              props: { $ref: ref },
+              onMounted() {
+                setShowRefBtn(true)
+              },
+            })
+            unMountedRef.current.push(un)
+          }}
+        >
+          ref
+        </button>
+        {
+          showRefBtn && (
+          <button
+            onClick={() => {
+              ref.current.set?.('text via ref')
+            }}
+          >
+            set text
+          </button>
+          )
+        }
+      </div>
+
+      <h3>Custom Node</h3>
+      <div className="value">
+        <div id="custom-dom" />
+        <button
+          onClick={() => {
+            const un = renderComponent({
+              name: 'render',
+              module: 'P',
+              target: document.querySelector('#custom-dom'),
+              renderNode(children) {
+                return <HashRouter>{children}</HashRouter>
+              },
+            })
+            unMountedRef.current.push(un)
+          }}
+        >
+          custom
+        </button>
+      </div>
+
+      <h3>URL & Vue</h3>
+      <div className="value">
+        <div id="url-dom" />
+        <button
+          onClick={() => {
+            const un = renderComponent({
+              name: 'url',
+              type: 'vue3',
+              url: './dist/render-component/url.js',
+              target: document.querySelector('#url-dom'),
+            })
+            unMountedRef.current.push(un)
+          }}
+        >
+          url & vue
+        </button>
+      </div>
+    </>
+  )
+}
 
 export const A = () => 'A'
 
@@ -83,5 +135,19 @@ export const P = () => {
     <div>Pathname: {pathname}</div>
   )
 }
+
+export const Ref = forwardRef((_, ref) => {
+  const [text, setText] = useState('')
+
+  useImperativeHandle(ref, () => ({
+    set: (t: string) => {
+      setText(t)
+    },
+  }))
+
+  return (
+    <p>text: {text}</p>
+  )
+})
 
 export const ForVue = () => 'this will render by vue component'
