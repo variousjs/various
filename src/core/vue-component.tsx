@@ -74,6 +74,14 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       storeReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...store })
 
       const vueApp = vueRef.current!.createApp({
+        errorCaptured(e) {
+          const error = e as Error
+          errorRef.current = error.message?.includes('https://react')
+            ? new Error('not a valid Vue component')
+            : error
+          setIsError(true)
+        },
+
         render() {
           return vueRef.current!.h(ComponentNodeRef.current as any, {
             ...propsReactiveRef.current!.value,
