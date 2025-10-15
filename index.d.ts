@@ -78,8 +78,8 @@ declare module '@variousjs/various' {
   }
 
   export type ComponentProps<
-    S extends object = {},
-    P extends object = {}
+    S extends object = ObjectRecord,
+    P extends object = ObjectRecord
   > = {
     $store: Readonly<S>,
     $dispatch: $dispatch,
@@ -202,11 +202,12 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => Promise<void>
 
-  export interface VueVarious {
+  export interface VueVarious<S extends object = ObjectRecord> {
     $dispatch: $dispatch,
     $logger: $logger,
     $postMessage: $postMessage,
     $t: Intl,
+    $store: Readonly<S>,
   }
 
   export const isModuleLoaded: (name: string) => boolean

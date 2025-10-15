@@ -26,6 +26,7 @@ var VARIOUS_CONFIG = {
     'logger-v': './dist/logger/v.js',
     'render': './dist/render-component/index.js',
     'render-v': './dist/render-component/r.js',
+    'create': './dist/create-component/index.js',
   },
   pages: [
     {
@@ -34,6 +35,13 @@ var VARIOUS_CONFIG = {
         { name: 'helper' },
       ],
       path: '/',
+    },
+    {
+      label: 'CreateComponent',
+      components: [
+        { name: 'create' },
+      ],
+      path: '/create-component',
     },
     {
       label: 'PostMessage',

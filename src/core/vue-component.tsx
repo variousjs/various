@@ -53,7 +53,8 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const ComponentNodeRef = useRef<RequiredComponent>()
 
     const containerDivRef = useRef<HTMLDivElement | null>(null)
-    const vueReactiveRef = useRef<{ value: ObjectRecord }>()
+    const propsReactiveRef = useRef<{ value: ObjectRecord }>()
+    const storeReactiveRef = useRef<{ value: ObjectRecord }>()
     const unMountVue = useRef<() => void>()
     const unSubscribeMessageRef = useRef<() => void>()
 
@@ -69,17 +70,19 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       const $postMessage = createPostMessage({ name, module })
       const $t = createI18n({ name, module })
 
-      vueReactiveRef.current = vueRef.current!.ref({ ...$componentProps, ...store })
+      propsReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...$componentProps })
+      storeReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...store })
 
       const vueApp = vueRef.current!.createApp({
         render() {
           return vueRef.current!.h(ComponentNodeRef.current as any, {
-            ...vueReactiveRef.current!.value,
+            ...propsReactiveRef.current!.value,
             various: {
               $dispatch,
               $logger,
               $postMessage,
               $t,
+              $store: storeReactiveRef.current!.value,
             },
           })
         },
@@ -151,10 +154,16 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     }, [mountComponent])
 
     useEffect(() => {
-      if (vueReactiveRef.current) {
-        vueReactiveRef.current.value = { ...$componentProps, ...store }
+      if (propsReactiveRef.current) {
+        propsReactiveRef.current.value = { ...$componentProps }
       }
-    }, [$componentProps, store])
+    }, [$componentProps])
+
+    useEffect(() => {
+      if (storeReactiveRef.current) {
+        storeReactiveRef.current.value = { ...store }
+      }
+    }, [store])
 
     if (isError) {
       throw errorRef.current

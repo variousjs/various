@@ -5,8 +5,9 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { renderComponent } from '@variousjs/various'
+import { renderComponent, ComponentNode } from '@variousjs/various'
 import { HashRouter, useLocation } from 'react-router-dom'
+import { Store } from '../../types'
 
 export default () => {
   const ref = useRef<any>(null)
@@ -47,6 +48,23 @@ export default () => {
           }}
         >
           with props
+        </button>
+      </div>
+
+      <h3>Global Props</h3>
+      <div className="value">
+        <div id="global-dom" />
+        <button
+          onClick={() => {
+            const un = renderComponent({
+              name: 'render',
+              module: 'GlobalProps',
+              target: document.querySelector('#global-dom'),
+            })
+            unMountedRef.current.push(un)
+          }}
+        >
+          global
         </button>
       </div>
 
@@ -151,3 +169,20 @@ export const Ref = forwardRef((_, ref) => {
 })
 
 export const ForVue = () => 'this will render by vue component'
+
+export const GlobalProps = ((props) => {
+  const { $store, $dispatch } = props
+
+  return (
+    <>
+      <p>name: {$store.name}</p>
+      <button
+        onClick={() => {
+          $dispatch({ name: 'app', action: 'setName' })
+        }}
+      >
+        dispatch
+      </button>
+    </>
+  )
+}) as ComponentNode<Store>
