@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { VueVarious } from '@variousjs/various'
+import { VueVarious, createLogger } from '@variousjs/various'
 
 const V = defineComponent({
   props: {
@@ -20,6 +20,11 @@ const V = defineComponent({
       error() {
         props.various?.$logger.error('vue something error')
       },
+
+      createLog() {
+        const logger = createLogger({ name: 'custom' })
+        logger.info('hello', 'greet')
+      },
     }
   }
 })
@@ -34,5 +39,6 @@ export default V
     <button @click="info">info</button>
     <button @click="warn">warn</button>
     <button @click="error">error</button>
+    <button @click="createLog">from createLogger</button>
   </div>
 </template>

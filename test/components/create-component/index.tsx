@@ -2,6 +2,7 @@ import React, {
   Component,
   forwardRef,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -20,6 +21,8 @@ const Mi = createComponent({ name: 'create-vue-e', url: './dist/create-component
 
 export default (props: ComponentProps) => {
   const maRef = useRef<any>(null)
+  const [num, setNum] = useState(0)
+  const RuntimeCreate = useMemo(() => createComponent({ name: 'create', module: 'E' }), [])
 
   return (
     <>
@@ -27,6 +30,13 @@ export default (props: ComponentProps) => {
       <div className="value">
         <Ma $ref={maRef} />
         <button onClick={() => maRef.current?.set('some text')}>set text</button>
+      </div>
+
+      <h3>Runtime Create</h3>
+      <div className="value">
+        <RuntimeCreate />
+        <input />
+        <button onClick={() => setNum((n) => n + 1)}>add ({num})</button>
       </div>
 
       <h3>Watch Store</h3>
@@ -88,4 +98,8 @@ export const C = 'not a component'
 export const D = () => (
   // @ts-ignore cause script error
   <div>{A.bind.c}</div>
+)
+
+export const E = (props: ComponentProps<Store>) => (
+  <p>{JSON.stringify(props.$store)}</p>
 )

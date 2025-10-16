@@ -27,6 +27,7 @@ var VARIOUS_CONFIG = {
     'render': './dist/render-component/index.js',
     'render-v': './dist/render-component/r.js',
     'create': './dist/create-component/index.js',
+    i18n: './dist/i18n/index.js',
   },
   pages: [
     {
@@ -74,6 +75,13 @@ var VARIOUS_CONFIG = {
         { name: 'render-v', type: 'vue3' },
       ],
       path: '/render-component',
+    },
+    {
+      label: 'I18n',
+      components: [
+        { name: 'i18n' },
+      ],
+      path: '/i18n',
     },
   ],
 }

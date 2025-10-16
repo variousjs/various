@@ -1,0 +1,4 @@
+{
+  "name": "Json",
+  "greet": "Hello, {name}, {name2}"
+}
