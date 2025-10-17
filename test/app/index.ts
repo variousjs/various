@@ -3,6 +3,7 @@ import actions from './actions'
 import store from './store'
 import Loader from './loader'
 import ErrorNode from './error'
+import middlewares from './middlewares'
 
 const app: App<typeof store> = {
   store,
@@ -10,6 +11,7 @@ const app: App<typeof store> = {
   Loader,
   Error: ErrorNode,
   actions,
+  middlewares,
 }
 
 export default app

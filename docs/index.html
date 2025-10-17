@@ -31,6 +31,7 @@ var VARIOUS_CONFIG = {
     'i18n-v': './dist/i18n/i.js',
     dispatch: './dist/dispatch/index.js',
     'dispatch-v': './dist/dispatch/d.js',
+    'middlewares': './dist/moddlewares/index.js',
   },
   pages: [
     {
@@ -94,6 +95,13 @@ var VARIOUS_CONFIG = {
         { name: 'dispatch-v', type: 'vue3' },
       ],
       path: '/dispatch',
+    },
+    {
+      label: 'Middlewares',
+      components: [
+        { name: 'middlewares' },
+      ],
+      path: '/moddlewares',
     },
   ],
 }

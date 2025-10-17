@@ -1,5 +1,8 @@
 export {}
 
 declare global {
-  interface Window { Cypress: any }
+  interface Window {
+    Cypress: any,
+    middlewaresEnabled?: boolean,
+  }
 }
