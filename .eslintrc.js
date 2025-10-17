@@ -72,5 +72,6 @@ module.exports = {
     'react/sort-comp': 0,
     'react/static-property-placement': 0,
     'react/button-has-type': 0,
+    'max-classes-per-file': 0,
   },
 }

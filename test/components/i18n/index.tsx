@@ -14,6 +14,7 @@ const Md = createComponent({ name: 'i18n', module: 'NoResource' })
 const Me = createComponent({ name: 'i18n', module: 'NoKey' })
 const Mf = createComponent({ name: 'i18n', module: 'NoLocale' })
 const Mg = createComponent({ name: 'i18n', module: 'Async' })
+const Mh = createComponent({ name: 'i18n', module: 'ConfigError' })
 
 const A = ((props) => {
   const { $t, $dispatch } = props
@@ -29,6 +30,7 @@ const A = ((props) => {
 
       <h3>Error</h3>
       <div className="value">
+        <Mh />
         <Mc />
         <Md />
         <Me />
@@ -83,6 +85,11 @@ export const NoResource = ((props) => (
   <p>{props.$t('no-resources')}</p>
 )) as ComponentNode
 NoResource.$i18n = () => ({ localeKey: 'locale', resources: {} })
+
+export const ConfigError = ((props) => (
+  <p>{props.$t('error')}</p>
+)) as ComponentNode
+ConfigError.$i18n = () => { throw new Error('get i18n config error') }
 
 export const NoKey = ((props) => (
   <p>{props.$t('no-key')}</p>

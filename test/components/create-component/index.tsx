@@ -18,11 +18,13 @@ const Mf = createComponent({ name: 'create', module: 'C' })
 const Mg = createComponent({ name: 'create', module: 'C', type: 'vue3' })
 const Mh = createComponent({ name: 'create', module: 'D' })
 const Mi = createComponent({ name: 'create-vue-e', url: './dist/create-component/e.js', type: 'vue3' })
+const Mj = createComponent({ name: 'create', module: 'Ref' })
 
 export default (props: ComponentProps) => {
   const maRef = useRef<any>(null)
   const [num, setNum] = useState(0)
   const RuntimeCreate = useMemo(() => createComponent({ name: 'create', module: 'E' }), [])
+  const ref = useRef<any>(null)
 
   return (
     <>
@@ -37,6 +39,12 @@ export default (props: ComponentProps) => {
         <RuntimeCreate />
         <input />
         <button onClick={() => setNum((n) => n + 1)}>add ({num})</button>
+      </div>
+
+      <h3>Ref</h3>
+      <div className="value">
+        <Mj $ref={ref} />
+        <button onClick={() => ref.current?.add?.()}>add</button>
       </div>
 
       <h3>Watch Store</h3>
@@ -103,3 +111,19 @@ export const D = () => (
 export const E = (props: ComponentProps<Store>) => (
   <p>{JSON.stringify(props.$store)}</p>
 )
+
+export class Ref extends Component<unknown, { value: number }> {
+  state = {
+    value: 0,
+  }
+
+  add = () => {
+    this.setState((prevState) => ({ value: prevState.value + 1 }))
+  }
+
+  render() {
+    return (
+      <input value={this.state.value} />
+    )
+  }
+}

@@ -29,6 +29,8 @@ var VARIOUS_CONFIG = {
     'create': './dist/create-component/index.js',
     i18n: './dist/i18n/index.js',
     'i18n-v': './dist/i18n/i.js',
+    dispatch: './dist/dispatch/index.js',
+    'dispatch-v': './dist/dispatch/d.js',
   },
   pages: [
     {
@@ -84,6 +86,14 @@ var VARIOUS_CONFIG = {
         { name: 'i18n-v', type: 'vue3' },
       ],
       path: '/i18n',
+    },
+    {
+      label: 'Dispatch',
+      components: [
+        { name: 'dispatch' },
+        { name: 'dispatch-v', type: 'vue3' },
+      ],
+      path: '/dispatch',
     },
   ],
 }
