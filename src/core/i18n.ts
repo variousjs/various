@@ -1,4 +1,9 @@
-import { Intl, ModuleDefined, I18n } from '@variousjs/various'
+import {
+  Intl,
+  ModuleDefined,
+  I18n,
+  I18nConfig,
+} from '@variousjs/various'
 import connector from './connector'
 import { VariousError, onError, isPromiseLike } from './helper'
 import { getStore, emit } from './store'
@@ -55,8 +60,11 @@ export function createI18nConfig(
     })
 }
 
-export function createI18n(moduleDefined: ModuleDefined) {
-  return function (key, params, defaultString) {
+export function createI18n(
+  moduleDefined: ModuleDefined,
+  updater: () => void,
+) {
+  const ctx: Intl = (key, params, defaultString) => {
     const i18nConfig = connector.getI18nConfig(moduleDefined) || connector.getGlobalI18nConfig()
 
     let defaultText = defaultString
@@ -89,7 +97,7 @@ export function createI18n(moduleDefined: ModuleDefined) {
       return defaultText
     }
 
-    const resource = resources[locale]
+    const resource = resources?.[locale]
 
     if (!resource) {
       onError(new VariousError({
@@ -125,5 +133,14 @@ export function createI18n(moduleDefined: ModuleDefined) {
       const regex = new RegExp(`{\\s*${arg}\\s*}`, 'g')
       return next.replace(regex, params[arg].toString())
     }, text)
-  } as Intl
+  }
+
+  ctx.update = (config) => {
+    const i18nConfig = connector.getI18nConfig(moduleDefined)
+    const next = { ...i18nConfig, ...config } as I18nConfig
+    connector.setI18nConfig(moduleDefined, next)
+    updater()
+  }
+
+  return ctx
 }

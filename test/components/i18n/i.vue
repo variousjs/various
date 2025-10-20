@@ -11,7 +11,10 @@ const V = defineComponent({
 
   setup(props) {
     return {
-      t: props.various?.$t || (() => null)
+      t: props.various?.$t || (() => null),
+      update() {
+        props.various?.$t.update({ localeKey: 'no-exist' })
+      },
     }
   }
 })
@@ -28,5 +31,6 @@ export default V
   <div class="value">
     <p>name: {{ t('name') }}</p>
     <p>greet: {{ t('greet', { name: 'C', name2: 'D' }) }}</p>
+    <button @click="update">update localeKey</button>
   </div>
 </template>

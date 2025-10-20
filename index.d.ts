@@ -54,11 +54,13 @@ declare module '@variousjs/various' {
     error: (message: any, type?: string) => void,
   }
 
-  export type Intl = (
+  export type Intl = ((
     key: string,
     paramsOrDefaultText?: Record<string, string | number> | string,
     defaultText?: string,
-  ) => string
+  ) => string) & {
+    update: (config: Partial<I18nConfig>) => void,
+  }
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 

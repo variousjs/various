@@ -114,7 +114,6 @@ export function getConfig<C extends object = {}>() {
 export const onError = (e: VariousError) => {
   const { name, module, type } = e
   const logger = createLogger({ name, module })
-
   logger.error(e, type)
 }
 

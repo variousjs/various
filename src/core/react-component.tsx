@@ -110,7 +110,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
     $dispatch = createDispatch({ name, module })
 
-    $t = createI18n({ name, module })
+    $t = createI18n({ name, module }, () => this.forceUpdate())
 
     $logger = createLogger({ name, module })
 

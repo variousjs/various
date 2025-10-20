@@ -68,7 +68,10 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       const $logger = createLogger({ name, module })
       const $dispatch = createDispatch({ name, module })
       const $postMessage = createPostMessage({ name, module })
-      const $t = createI18n({ name, module })
+      const $t = createI18n({ name, module }, () => {
+        unMountVue.current?.()
+        mountVue()
+      })
 
       propsReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...$componentProps })
       storeReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...store })

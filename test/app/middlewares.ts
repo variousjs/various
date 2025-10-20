@@ -9,6 +9,9 @@ export default {
       window.console.log('block by onLog middleware')
       return false
     }
+    if (e.level === 'error') {
+      return false
+    }
     return true
   },
 

@@ -15,6 +15,7 @@ const Me = createComponent({ name: 'i18n', module: 'NoKey' })
 const Mf = createComponent({ name: 'i18n', module: 'NoLocale' })
 const Mg = createComponent({ name: 'i18n', module: 'Async' })
 const Mh = createComponent({ name: 'i18n', module: 'ConfigError' })
+const Mi = createComponent({ name: 'i18n', module: 'Update' })
 
 const A = ((props) => {
   const { $t, $dispatch } = props
@@ -43,6 +44,8 @@ const A = ((props) => {
       <div className="value">
         <Mg />
       </div>
+
+      <Mi />
     </>
   )
 }) as ComponentNode
@@ -117,3 +120,28 @@ Async.$i18n = async () => {
   })
   return { localeKey: 'locale', resources: { zh, en } }
 }
+
+export const Update = ((props) => {
+  const { $t } = props
+
+  return (
+    <>
+      <h3>Update</h3>
+      <p>{$t('name')}</p>
+      <button
+        onClick={() => {
+          $t.update({ localeKey: 'locale' })
+        }}
+      >
+        update localeKey
+      </button>
+      <button
+        onClick={() => {
+          $t.update({ resources: { zh, en } })
+        }}
+      >
+        update resources
+      </button>
+    </>
+  )
+}) as ComponentNode
