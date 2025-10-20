@@ -34,6 +34,12 @@ export function createI18nConfig(
       localeKey: '',
       resources: {},
     })
+  } else {
+    connector.setGlobalI18nConfig({
+      loading: true,
+      localeKey: '',
+      resources: {},
+    })
   }
 
   i18nConfig
@@ -45,10 +51,10 @@ export function createI18nConfig(
       }
 
       const locale = getStore(res.localeKey)
-      connector.setGlobalI18nConfig({ ...res, loading: false })
 
       emit({ [res.localeKey]: undefined }, true)
-      emit({ [res.localeKey]: locale })
+      emit({ [res.localeKey]: locale }, true)
+      connector.setGlobalI18nConfig({ ...res, loading: false })
     })
     .catch((e: Error) => {
       onError(new VariousError({

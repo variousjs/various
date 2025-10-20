@@ -46,6 +46,9 @@ const A = ((props) => {
       </div>
 
       <Mi />
+
+      <h3>Global</h3>
+      <button onClick={() => window.open('/i18n.html')}>go</button>
     </>
   )
 }) as ComponentNode

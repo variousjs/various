@@ -5,6 +5,7 @@ const base = require('./base')
 const { NODE_ENV = 'development' } = process.env
 const components = {
   app: path.resolve(__dirname, '../test/app/index.ts'),
+  'app-i18n': path.resolve(__dirname, '../test/app/i18n/index.tsx'),
 }
 
 const extensions = ['.tsx', '.vue', '.ts']
