@@ -49,7 +49,17 @@ const A = ((props) => {
 
       <h3>Global</h3>
       <div className="value">
-        <button onClick={() => window.open('/i18n.html')}>go</button>
+        <button onClick={() => window.open('/i18n/index.html')}>go</button>
+      </div>
+
+      <h3>Global Async</h3>
+      <div className="value">
+        <button onClick={() => window.open('/i18n/async.html')}>go</button>
+      </div>
+
+      <h3>Global Async Error</h3>
+      <div className="value">
+        <button onClick={() => window.open('/i18n/async-error.html')}>go</button>
       </div>
     </>
   )

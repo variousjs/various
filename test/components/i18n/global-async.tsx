@@ -6,7 +6,7 @@ export default (props: ComponentProps & { setSuccess: () => void }) => {
 
   return (
     <div style={{ padding: 20 }}>
-      <h3>Global</h3>
+      <h3>Global Async</h3>
       <div className="value">
         <p>title: {$t('title')}</p>
         <button onClick={() => setSuccess()}>get Resource</button>
