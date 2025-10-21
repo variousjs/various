@@ -57,6 +57,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const storeReactiveRef = useRef<{ value: ObjectRecord }>()
     const unMountVue = useRef<() => void>()
     const unSubscribeMessageRef = useRef<() => void>()
+    const updateVueComponentRef = useRef<() => void>()
 
     const [componentReady, setComponentReady] = useState(false)
     const [isError, setIsError] = useState(false)
@@ -69,14 +70,23 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       const $dispatch = createDispatch({ name, module })
       const $postMessage = createPostMessage({ name, module })
       const $t = createI18n({ name, module }, () => {
-        unMountVue.current?.()
-        mountVue()
+        updateVueComponentRef.current?.()
       })
 
       propsReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...$componentProps })
       storeReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...store })
 
       const vueApp = vueRef.current!.createApp({
+        setup() {
+          const renderKey = vueRef.current!.ref(0)
+          updateVueComponentRef.current = () => {
+            renderKey.value += 1
+          }
+          return {
+            key: renderKey,
+          }
+        },
+
         errorCaptured(e) {
           const error = e as Error
           errorRef.current = error.message?.includes('https://react')
@@ -95,6 +105,8 @@ function vueComponent<P extends object>(config: ModuleDefined & {
               $t,
               $store: storeReactiveRef.current!.value,
             },
+            // eslint-disable-next-line react/no-this-in-sfc
+            key: this.key,
           })
         },
       })
@@ -125,8 +137,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           module,
           type: 'vue3',
           i18nUpdate() {
-            unMountVue.current?.()
-            mountVue()
+            updateVueComponentRef.current?.()
           },
         })
 

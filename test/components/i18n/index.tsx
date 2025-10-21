@@ -48,7 +48,9 @@ const A = ((props) => {
       <Mi />
 
       <h3>Global</h3>
-      <button onClick={() => window.open('/i18n.html')}>go</button>
+      <div className="value">
+        <button onClick={() => window.open('/i18n.html')}>go</button>
+      </div>
     </>
   )
 }) as ComponentNode

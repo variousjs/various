@@ -141,10 +141,18 @@ export function createI18n(
     }, text)
   }
 
-  ctx.update = (config) => {
-    const i18nConfig = connector.getI18nConfig(moduleDefined)
+  ctx.update = (config, type) => {
+    const i18nConfig = type === 'app'
+      ? connector.getGlobalI18nConfig()
+      : connector.getI18nConfig(moduleDefined)
     const next = { ...i18nConfig, ...config } as I18nConfig
-    connector.setI18nConfig(moduleDefined, next)
+
+    if (type === 'app') {
+      connector.setGlobalI18nConfig(next)
+    } else {
+      connector.setI18nConfig(moduleDefined, next)
+    }
+
     updater()
   }
 

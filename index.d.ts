@@ -59,7 +59,7 @@ declare module '@variousjs/various' {
     paramsOrDefaultText?: Record<string, string | number> | string,
     defaultText?: string,
   ) => string) & {
-    update: (config: Partial<I18nConfig>) => void,
+    update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
