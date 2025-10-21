@@ -16,6 +16,7 @@ const testOnMountedModule = { name: 'helper', module: 'Waiting' }
 
 export default () => {
   const [isLoaded, setIsLoaded] = useState('false')
+  const [isPreloadLoaded, setIsPreloadLoaded] = useState('false')
   const [isMounted, setIsMounted] = useState(false)
   const [isHelperMounted, setIsHelperMounted] = useState(false)
   const [canMount, setCanMount] = useState(false)
@@ -39,6 +40,7 @@ export default () => {
   }
 
   useEffect(() => {
+    setIsPreloadLoaded(String(isModuleLoaded('preload')))
     const un0 = onComponentMounted({ ...testOnMountedModule, module: undefined }, () => {
       setIsHelperMounted(true)
     })
@@ -63,7 +65,10 @@ export default () => {
       <div className="value">{JSON.stringify(getStore())}</div>
 
       <h3>isModuleLoaded</h3>
-      <div className="value">{testPreloadModule}: {isLoaded}</div>
+      <div className="value">
+        <p>{testPreloadModule}: {isLoaded}</p>
+        <p>preload component: {isPreloadLoaded}</p>
+      </div>
 
       <h3>defineDependencies</h3>
       <div className="value">

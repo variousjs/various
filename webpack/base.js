@@ -6,6 +6,7 @@ const package = require('../package.json')
 const config = {
   stats: 'minimal',
   target: ['web', 'es5'],
+  mode: 'production',
   externals: [
     // default
     'react',

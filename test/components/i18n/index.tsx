@@ -142,21 +142,23 @@ export const Update = ((props) => {
   return (
     <>
       <h3>Update</h3>
-      <p>{$t('name')}</p>
-      <button
-        onClick={() => {
-          $t.update({ localeKey: 'locale' })
-        }}
-      >
-        update localeKey
-      </button>
-      <button
-        onClick={() => {
-          $t.update({ resources: { zh, en } })
-        }}
-      >
-        update resources
-      </button>
+      <div className="value">
+        <p>{$t('name')}</p>
+        <button
+          onClick={() => {
+            $t.update({ localeKey: 'locale' })
+          }}
+        >
+          update localeKey
+        </button>
+        <button
+          onClick={() => {
+            $t.update({ resources: { zh, en } })
+          }}
+        >
+          update resources
+        </button>
+      </div>
     </>
   )
 }) as ComponentNode

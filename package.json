@@ -21,8 +21,9 @@
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "prestart": "mkdir -p docs/dist && touch docs/dist/empty.js",
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress --no-client-overlay",
-    "prebuild": "npm run lint",
-    "build": "rm -rf dist && NODE_ENV=production webpack --config webpack/index.js --progress",
+    "prebuild": "npm run lint && rm -rf dist && rm -rf docs/dist",
+    "build": "NODE_ENV=production webpack --config webpack/components.js --progress && NODE_ENV=production webpack --config webpack/index.js --progress",
+    "postbuild": "cp dist/* docs/dist/",
     "cy:run": "rm -rf .nyc_output && cypress run",
     "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"

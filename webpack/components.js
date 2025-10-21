@@ -40,7 +40,6 @@ const config = {
   ...base,
   // watch components change
   watch: NODE_ENV === 'development',
-  mode: NODE_ENV,
   entry: components,
   output: {
     path: path.resolve(__dirname, '../docs/dist'),

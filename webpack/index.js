@@ -9,7 +9,6 @@ const configs = [{
   entry: {
     loader: path.resolve(__dirname, '../src/loader.ts'),
   },
-  mode: NODE_ENV,
   // plugins: [new BundleAnalyzerPlugin()],
   output: {
     path: path.resolve(__dirname, '../docs/dist'),
@@ -29,7 +28,6 @@ if (NODE_ENV === 'production') {
     entry: {
       index: path.resolve(__dirname, '../src/core'),
     },
-    mode: 'production',
     // plugins: [new BundleAnalyzerPlugin()],
     output: {
       path: path.join(__dirname, '../dist'),

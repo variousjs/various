@@ -8,7 +8,7 @@
 var VARIOUS_CONFIG = {
   timeout: 1.5,
   root: '#root',
-  earlyParallelDependencies: [],
+  earlyParallelDependencies: ['preload'],
   dependencies: {
     react: './libs/react.production.min.js',
     'react-dom': './libs/react-dom.production.min.js',
@@ -17,6 +17,7 @@ var VARIOUS_CONFIG = {
 
     app: './dist/app.js',
     helper: './dist/helper/index.js',
+    preload: './dist/helper/preload.js',
     container: './dist/container/index.js',
     'post-message': './dist/post-message/index.js',
     'post-message-vue': './dist/post-message/c.js',
