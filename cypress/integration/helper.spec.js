@@ -1,49 +1,62 @@
 /// <reference types="cypress" />
+const packageJson = require('../../package.json')
 
 describe('helper', () => {
   beforeEach(() => {
-    cy.visit('/#/helper', {
-      // onBeforeLoad(win) {
-      //   cy.stub(win.console, 'error').as('consoleError')
-      // },
-    })
+    cy.visit('/#/')
     Cypress.on('uncaught:exception', () => false)
   })
 
-  it('m', () => {
-    cy.get('[data-m="n"]').should('have.text', '-')
-    cy.get('[data-m="deps"]').should('have.text', '-')
-    cy.get('[data-m="loaded"]').should('have.text', 'false')
-    cy.get('[data-m="preloaded"]').should('have.text', 'false')
+  it('test', () => {
+    // version
+    cy.contains('h3', 'version').next().should('have.text', packageJson.version)
 
-    // cy.wait(1000)
-    // cy.get('@consoleError').should(
-    //   'have.been.calledWith',
-    //   '%chelper-m',
-    //   'color:white;background:blue;padding:1px 2px',
-    //   '[component] props key duplicate with store',
-    // )
+    // getConfig
+    cy.contains('h3', 'getConfig').next().should('have.text', 'timeout: 1.5')
 
-    cy.get('[data-m="action-render"]').click()
-    cy.get('[data-m="n"]').should('have.text', 'N')
-    cy.get('[data-m="loaded"]').should('have.text', 'true')
+    // getStore
+    cy.contains('h3', 'getStore').next().should('have.text', 'name: humpback')
 
-    cy.get('[data-m="action-dependencies"]').click()
-    cy.get('#deps > span').should('exist')
+    // isModuleLoaded
+    cy.contains('h3', 'isModuleLoaded').next().children()
+      .eq(0)
+      .should('have.text', 'helper-define: false')
 
-    cy.get('[data-m="action-preload"]').click()
-    cy.get('[data-m="preloaded"]').should('have.text', 'true')
-    cy.get('[data-m="preloaded-error"]').should('contain.text', 'Script error for "helper-aa"')
+    // earlyParallelDependencies
+    cy.contains('h3', 'isModuleLoaded').next().children()
+      .eq(1)
+      .should('have.text', 'preload component: true')
 
-    cy.get('[data-m="action-create"]').click()
-    cy.get('[data-m="createModule"]').should('contain.text', 'Maximum call stack size exceeded')
+    // preloadModules error
+    cy.contains('button', 'Preload: helper-define').click()
+    cy.contains('h3', 'isModuleLoaded').next().children()
+      .eq(0)
+      .should('have.text', 'helper-define: load error')
 
-    // test exist component
-    cy.visit('/#/')
-    cy.wait(500)
-    cy.visit('/#/helper')
-    cy.wait(500)
-    cy.visit('/#/')
-    cy.wait(1000)
+    // defineDependencies and isModuleLoaded
+    cy.contains('button', 'Define: helper-define').click().then(() => {
+      cy.contains('button', 'Preload: helper-define').click()
+    })
+    cy.contains('h3', 'isModuleLoaded').next().children()
+      .eq(0)
+      .should('have.text', 'helper-define: true')
+
+    // getMountedComponents
+    cy.contains('h3', 'getMountedComponents').next().should('have.text', 'container,helper')
+
+    // onComponentMounted
+    cy.contains('h3', 'onComponentMounted').next().children()
+      .eq(0)
+      .should('have.text', 'helper: true')
+    cy.contains('h3', 'onComponentMounted').next().children()
+      .eq(1)
+      .should('have.text', 'Waiting: false')
+
+    // onComponentMounted mount component
+    cy.contains('button', 'Mount: Waiting').click()
+    cy.contains('h3', 'onComponentMounted').next().children()
+      .eq(1)
+      .should('have.text', 'Waiting: true')
+    cy.contains('h3', 'getMountedComponents').next().should('have.text', 'container,helper,helper.Waiting')
   })
 })

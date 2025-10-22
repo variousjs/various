@@ -3,10 +3,12 @@ const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const package = require('../package.json')
 
+const { NODE_ENV = 'development' } = process.env
+
 const config = {
   stats: 'minimal',
   target: ['web', 'es5'],
-  mode: 'production',
+  mode: NODE_ENV,
   externals: [
     // default
     'react',

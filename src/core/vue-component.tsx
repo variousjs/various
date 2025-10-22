@@ -22,6 +22,7 @@ import {
   checkVueComponent,
   parseComponentActions,
   isModuleLoaded,
+  VariousError,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
@@ -90,7 +91,12 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         errorCaptured(e) {
           const error = e as Error
           errorRef.current = error.message?.includes('https://react')
-            ? new Error('not a valid Vue component')
+            ? new VariousError({
+              originalError: new Error('not a valid Vue component'),
+              name,
+              module,
+              type: 'INVALID_COMPONENT',
+            })
             : error
           setIsError(true)
         },

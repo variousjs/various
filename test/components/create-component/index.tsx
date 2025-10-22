@@ -15,7 +15,7 @@ const Mc = createComponent<Store>({ name: 'create-vue-c', url: './dist/create-co
 const Md = createComponent({ name: 'create', module: 'A', type: 'vue3' })
 const Me = createComponent({ name: 'create-react-vue', url: './dist/create-component/c.js' })
 const Mf = createComponent({ name: 'create', module: 'C' })
-const Mg = createComponent({ name: 'create', module: 'C', type: 'vue3' })
+const Mg = createComponent({ name: 'create', module: 'B', type: 'vue3' })
 const Mh = createComponent({ name: 'create', module: 'D' })
 const Mi = createComponent({ name: 'create-vue-e', url: './dist/create-component/e.js', type: 'vue3' })
 const Mj = createComponent({ name: 'create', module: 'Ref' })
@@ -37,14 +37,15 @@ export default (props: ComponentProps) => {
       <h3>Runtime Create</h3>
       <div className="value">
         <RuntimeCreate />
+        <p>for test runtime createComponent rerender</p>
         <input />
         <button onClick={() => setNum((n) => n + 1)}>add ({num})</button>
       </div>
 
-      <h3>Ref</h3>
+      <h3>Class Component Ref</h3>
       <div className="value">
         <Mj $ref={ref} />
-        <button onClick={() => ref.current?.add?.()}>add</button>
+        <button onClick={() => ref.current?.add?.()}>input add</button>
       </div>
 
       <h3>Watch Store</h3>
@@ -109,7 +110,7 @@ export const D = () => (
 )
 
 export const E = (props: ComponentProps<Store>) => (
-  <p>{JSON.stringify(props.$store)}</p>
+  <p>{props.$store.name}</p>
 )
 
 export class Ref extends Component<unknown, { value: number }> {

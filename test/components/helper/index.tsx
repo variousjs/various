@@ -28,6 +28,7 @@ export default () => {
       const { name, module } = m
       return [name, module].filter(Boolean).join('.')
     })
+    .sort()
     .join()
 
   const preload = async () => {
@@ -62,7 +63,7 @@ export default () => {
       <div className="value">timeout: {getConfig().timeout}</div>
 
       <h3>getStore</h3>
-      <div className="value">{JSON.stringify(getStore())}</div>
+      <div className="value">name: {getStore().name}</div>
 
       <h3>isModuleLoaded</h3>
       <div className="value">
