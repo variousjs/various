@@ -55,7 +55,7 @@ export class MessageB extends Component<ComponentProps> {
       <>
         <h3>postMessage</h3>
         <div className="value">
-          <button onClick={() => this.post()}>Post</button>
+          <button onClick={() => this.post()}>React Post</button>
           <button onClick={() => this.createPost()}>from createPostMessage</button>
         </div>
       </>

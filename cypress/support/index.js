@@ -1,7 +1,7 @@
 import '@cypress/code-coverage/support'
 
 beforeEach(() => {
-  cy.intercept({ url: '/dist/*.js', middleware: true }, (req) => {
+  cy.intercept({ url: '/dist/**/*.js', middleware: true }, (req) => {
     if (req.url.includes('timeout')) {
       req.on('response', (res) => {
         res.delay = 2000

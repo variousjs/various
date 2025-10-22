@@ -46,6 +46,6 @@ export default V
     <p>Trigger: {{ message.trigger }}</p>
     <p>Event: {{ message.event }}</p>
     <p>Value: {{ message.value }}</p>
-    <button @click="post">Post</button>
+    <button @click="post">Vue Post</button>
   </div>
 </template>
