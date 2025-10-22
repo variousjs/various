@@ -843,7 +843,7 @@ function createI18n(moduleDefined, updater) {
       resources
     } = i18nConfig;
     const locale = (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)(localeKey);
-    if (locale === undefined) {
+    if (localeKey === undefined || locale === undefined) {
       (0,_helper__WEBPACK_IMPORTED_MODULE_1__.onError)(new _helper__WEBPACK_IMPORTED_MODULE_1__.VariousError({
         ...moduleDefined,
         type: 'I18N',

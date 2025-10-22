@@ -94,7 +94,7 @@ export function createI18n(
     const { localeKey, resources } = i18nConfig
     const locale: string | undefined = getStore(localeKey)
 
-    if (locale === undefined) {
+    if (localeKey === undefined || locale === undefined) {
       onError(new VariousError({
         ...moduleDefined,
         type: 'I18N',

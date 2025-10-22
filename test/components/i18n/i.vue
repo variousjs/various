@@ -31,6 +31,6 @@ export default V
   <div class="value">
     <p>name: {{ t('name') }}</p>
     <p>greet: {{ t('greet', { name: 'C', name2: 'D' }) }}</p>
-    <button @click="update">update localeKey</button>
+    <button @click="update">vue update localeKey</button>
   </div>
 </template>

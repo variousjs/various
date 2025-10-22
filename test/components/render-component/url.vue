@@ -7,7 +7,5 @@ export default V
 </script>
 
 <template>
-  <div class="value">
-    vue component
-  </div>
+  <p>vue component</p>
 </template>

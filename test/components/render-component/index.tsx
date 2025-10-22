@@ -13,6 +13,7 @@ export default () => {
   const ref = useRef<any>(null)
   const unMountedRef = useRef<(() => Promise<void>)[]>([])
   const [showRefBtn, setShowRefBtn] = useState(false)
+  const unMounteA = useRef<() => Promise<void>>()
 
   useEffect(() => () => {
     unMountedRef.current.forEach((s) => s())
@@ -26,11 +27,12 @@ export default () => {
         <button
           onClick={() => {
             const un = renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
-            unMountedRef.current.push(un)
+            unMounteA.current = un
           }}
         >
-          render
+          renderA
         </button>
+        <button onClick={() => unMounteA.current?.()}>unMounteA</button>
       </div>
 
       <h3>Props</h3>
