@@ -34,6 +34,7 @@ var VARIOUS_CONFIG = {
     dispatch: './dist/dispatch/index.js',
     'dispatch-v': './dist/dispatch/d.js',
     'middlewares': './dist/moddlewares/index.js',
+    'app-config': './dist/app/index.js',
   },
   pages: [
     {
@@ -105,6 +106,13 @@ var VARIOUS_CONFIG = {
         { name: 'middlewares' },
       ],
       path: '/middlewares',
+    },
+    {
+      label: 'App',
+      components: [
+        { name: 'app-config' },
+      ],
+      path: '/app',
     },
   ],
 }

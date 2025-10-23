@@ -5,9 +5,15 @@ const base = require('./base')
 const { NODE_ENV = 'development' } = process.env
 const components = {
   app: path.resolve(__dirname, '../test/app/index.ts'),
+
+  // i18n
   'i18n-async': path.resolve(__dirname, '../test/app/i18n/async/index.tsx'),
   'i18n-async-error': path.resolve(__dirname, '../test/app/i18n/async-error/index.tsx'),
   'i18n-global': path.resolve(__dirname, '../test/app/i18n/global.tsx'),
+
+  // app config
+  'default-config': path.resolve(__dirname, '../test/app/default-config.ts'),
+  'container-error': path.resolve(__dirname, '../test/app/container-error.tsx'),
 }
 
 const extensions = ['.tsx', '.vue', '.ts']
