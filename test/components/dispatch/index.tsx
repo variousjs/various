@@ -85,7 +85,7 @@ export class B extends Component<ComponentProps> {
               }).catch((e) => this.onError('app', e))
             }}
           >
-            app
+            dispatch-app
           </button>
         </div>
 
@@ -100,7 +100,7 @@ export class B extends Component<ComponentProps> {
               }).catch((e) => this.onError('component', e))
             }}
           >
-            component
+            dispatch-component
           </button>
         </div>
 
@@ -115,7 +115,7 @@ export class B extends Component<ComponentProps> {
               }).catch((e) => this.onError('action', e))
             }}
           >
-            action
+            dispatch-action
           </button>
         </div>
       </>

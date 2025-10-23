@@ -45,6 +45,6 @@ export default V
     <p>store: {{ various?.$store.name }}</p>
     <p>Trigger: {{ message.trigger }}</p>
     <p>Value: {{ message.value }}</p>
-    <button @click="dispatch">dispatch</button>
+    <button @click="dispatch">dispatch react</button>
   </div>
 </template>
