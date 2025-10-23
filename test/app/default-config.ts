@@ -1,3 +1,3 @@
 import { App } from '@variousjs/various'
 
-export default {} as App
+export const store = {} as App['store']

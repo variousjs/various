@@ -17,5 +17,12 @@ describe('app', () => {
     // app container error
     cy.visit('/app/container-error.html')
     cy.contains('div', '[APP_ERROR] A is not defined').should('exist')
+
+    // react version error
+    cy.readFile('./docs/libs/react.production.min.js').then((res) => {
+      cy.intercept('react.production.min.js', res.replace('18.3.1', '17'))
+      cy.visit('/app/react-version-error.html')
+      cy.contains('p', 'React/ReactDOM Version Requirement').should('exist')
+    })
   })
 })

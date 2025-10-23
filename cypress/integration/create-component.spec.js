@@ -8,10 +8,11 @@ describe('create component', () => {
 
   it('test', () => {
     // FC Ref
-    cy.contains('button', 'set text').click()
-    cy.contains('h3', 'Create Component').next().children()
-      .eq(0)
-      .should('have.text', 'text: some text')
+    cy.contains('button', 'set text').click().then(() => {
+      cy.contains('h3', 'Create Component').next().children()
+        .eq(0)
+        .should('have.text', 'text: some text')
+    })
 
     // Runtime Create
     cy.contains('h3', 'Runtime Create').next().children()
