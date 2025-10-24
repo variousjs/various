@@ -780,13 +780,13 @@ function createI18nConfig(method, moduleDefined, callback) {
   if (moduleDefined) {
     _connector__WEBPACK_IMPORTED_MODULE_0__["default"].setI18nConfig(moduleDefined, {
       loading: true,
-      localeKey: '',
+      lngStoreKey: '',
       resources: {}
     });
   } else {
     _connector__WEBPACK_IMPORTED_MODULE_0__["default"].setGlobalI18nConfig({
       loading: true,
-      localeKey: '',
+      lngStoreKey: '',
       resources: {}
     });
   }
@@ -799,12 +799,12 @@ function createI18nConfig(method, moduleDefined, callback) {
       callback?.();
       return;
     }
-    const locale = (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)(res.localeKey);
+    const locale = (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)(res.lngStoreKey);
     (0,_store__WEBPACK_IMPORTED_MODULE_2__.emit)({
-      [res.localeKey]: undefined
+      [res.lngStoreKey]: undefined
     }, true);
     (0,_store__WEBPACK_IMPORTED_MODULE_2__.emit)({
-      [res.localeKey]: locale
+      [res.lngStoreKey]: locale
     }, true);
     _connector__WEBPACK_IMPORTED_MODULE_0__["default"].setGlobalI18nConfig({
       ...res,
@@ -838,11 +838,11 @@ function createI18n(moduleDefined, updater) {
       return defaultText;
     }
     const {
-      localeKey,
+      lngStoreKey,
       resources
     } = i18nConfig;
-    const locale = (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)(localeKey);
-    if (localeKey === undefined || locale === undefined) {
+    const locale = (0,_store__WEBPACK_IMPORTED_MODULE_2__.getStore)(lngStoreKey);
+    if (lngStoreKey === undefined || locale === undefined) {
       (0,_helper__WEBPACK_IMPORTED_MODULE_1__.onError)(new _helper__WEBPACK_IMPORTED_MODULE_1__.VariousError({
         ...moduleDefined,
         type: 'I18N',

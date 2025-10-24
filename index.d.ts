@@ -65,7 +65,9 @@ declare module '@variousjs/various' {
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
   export interface I18nConfig {
-    localeKey: string,
+    /** app store key */
+    lngStoreKey: string,
+    fallbackLng?: string[],
     resources: Record<string, Record<string, string>>,
   }
 

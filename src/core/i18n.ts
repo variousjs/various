@@ -31,13 +31,13 @@ export function createI18nConfig(
   if (moduleDefined) {
     connector.setI18nConfig(moduleDefined, {
       loading: true,
-      localeKey: '',
+      lngStoreKey: '',
       resources: {},
     })
   } else {
     connector.setGlobalI18nConfig({
       loading: true,
-      localeKey: '',
+      lngStoreKey: '',
       resources: {},
     })
   }
@@ -50,10 +50,10 @@ export function createI18nConfig(
         return
       }
 
-      const locale = getStore(res.localeKey)
+      const locale = getStore(res.lngStoreKey)
 
-      emit({ [res.localeKey]: undefined }, true)
-      emit({ [res.localeKey]: locale }, true)
+      emit({ [res.lngStoreKey]: undefined }, true)
+      emit({ [res.lngStoreKey]: locale }, true)
       connector.setGlobalI18nConfig({ ...res, loading: false })
     })
     .catch((e: Error) => {
@@ -91,10 +91,10 @@ export function createI18n(
       return defaultText
     }
 
-    const { localeKey, resources } = i18nConfig
-    const locale: string | undefined = getStore(localeKey)
+    const { lngStoreKey, resources } = i18nConfig
+    const locale: string | undefined = getStore(lngStoreKey)
 
-    if (localeKey === undefined || locale === undefined) {
+    if (lngStoreKey === undefined || locale === undefined) {
       onError(new VariousError({
         ...moduleDefined,
         type: 'I18N',

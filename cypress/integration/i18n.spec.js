@@ -42,11 +42,11 @@ describe('i18n', () => {
     // update config
     cy.contains('h3', 'Update').next().contains('p', 'name').should('exist')
     cy.contains('button', 'update resources').click()
-    cy.contains('button', 'update localeKey').click()
+    cy.contains('button', 'update lngStoreKey').click()
     cy.contains('h3', 'Update').next().contains('p', 'Json').should('exist')
 
     // update config vue
-    cy.contains('button', 'vue update localeKey').click()
+    cy.contains('button', 'vue update lngStoreKey').click()
     cy.contains('h3', 'Vue Component').next().contains('p', 'greet: greet').should('exist')
     cy.contains('h3', 'Vue Component').next().contains('p', 'name: name').should('exist')
 

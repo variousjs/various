@@ -2,7 +2,7 @@ import React from 'react'
 import { I18n, App, createComponent } from '@variousjs/various'
 
 const i18n: I18n = () => ({
-  localeKey: 'locale',
+  lngStoreKey: 'locale',
   resources: {
     jp: { title: 'Jpabn' },
   },

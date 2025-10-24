@@ -8,7 +8,7 @@ const i18n: I18n = () => new Promise((resolve) => {
     i18nPassSignal(v) {
       if (v) {
         resolve({
-          localeKey: 'locale',
+          lngStoreKey: 'locale',
           resources: { jp },
         })
       }
