@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<link href="/style.css" rel="stylesheet" />
+<script>
+var VARIOUS_CONFIG = {
+  timeout: 1.5,
+  root: '#root',
+  earlyParallelDependencies: [],
+  dependencies: {
+    app: '/dist/no-exsit.js',
+  },
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="/dist/loader.js"></script>
+</body>
+</html>

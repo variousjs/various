@@ -1,20 +1,26 @@
-import { createModule as cm } from '@variousjs/various'
-import { RequireError, RequiredComponent } from '../types'
-import { DEPENDENCIES_KEY } from '../config'
+import { createModule as cm, ObjectRecord } from '@variousjs/various'
+import { RequireError } from '../types'
+import { DEPENDENCIES_KEY } from './config'
 import { getStore } from './store'
 import connector from './connector'
 import {
-  isDependencyLoaded,
+  isModuleLoaded,
   resetDependencyConfig,
   VariousError,
   onError,
 } from './helper'
 
-const createModule: typeof cm = (config) => {
+const createModule: typeof cm = (config, logError = true) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const middlewares = connector.getMiddlewares()
   const { name, module, url } = config
   const loadStart = +new Date()
+
+  const logOnError = (e: VariousError) => {
+    if (logError) {
+      onError(e)
+    }
+  }
 
   if (url) {
     resetDependencyConfig(name, url)
@@ -29,12 +35,12 @@ const createModule: typeof cm = (config) => {
         originalError: new Error(`module "${name}" not defined`),
       })
 
-      onError(error)
+      logOnError(error)
       reject(error)
       return
     }
 
-    window.requirejs([name], (C: RequiredComponent) => {
+    window.requirejs([name], (C?: ObjectRecord) => {
       const loadEnd = +new Date()
 
       middlewares?.onLoad?.({
@@ -42,7 +48,7 @@ const createModule: typeof cm = (config) => {
         module,
         loadStart,
         loadEnd,
-        beenLoaded: isDependencyLoaded(name),
+        beenLoaded: isModuleLoaded(name),
       })
 
       if (!C) {
@@ -50,11 +56,11 @@ const createModule: typeof cm = (config) => {
           name,
           module,
           type: 'INVALID_MODULE',
-          originalError: new Error(`module "${name}" not content`),
+          originalError: new Error(`module "${name}" invalid`),
         })
 
         resetDependencyConfig(name)
-        onError(error)
+        logOnError(error)
         reject(error)
         return
       }
@@ -62,7 +68,7 @@ const createModule: typeof cm = (config) => {
       const defaultModule = 'default' in C ? C.default : C
       const actualModule = !module ? defaultModule : C[module]
 
-      if (!actualModule && module) {
+      if (actualModule === undefined && module) {
         const error = new VariousError({
           name,
           module,
@@ -71,7 +77,7 @@ const createModule: typeof cm = (config) => {
         })
 
         resetDependencyConfig(name)
-        onError(error)
+        logOnError(error)
         reject(error)
         return
       }
@@ -100,7 +106,7 @@ const createModule: typeof cm = (config) => {
         originalError: e,
       })
 
-      onError(error)
+      logOnError(error)
       reject(error)
     })
   })

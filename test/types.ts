@@ -1,13 +1,15 @@
-import store from './store'
+import { VariousComponentType } from '@variousjs/various'
+import store from './app/store'
 
 export type Store = typeof store
 
-export type Config = {
-  pages: {
-    label: string,
-    icon: string,
-    component: string,
-    path: string,
-    components: string[],
+export type Page = {
+  label: string,
+  components: {
+    name: string,
+    storeKeys?: string[],
+    runtimeCreate?: boolean,
+    type?: VariousComponentType,
   }[],
+  path: string,
 }

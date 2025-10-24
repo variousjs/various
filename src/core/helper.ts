@@ -1,11 +1,14 @@
 import {
   onComponentMounted as ocm,
-  isDependencyLoaded as im,
-  preloadDependencies as pp,
+  isModuleLoaded as im,
+  preloadModules as pp,
   defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
   ModuleDefined,
+  OnMessage,
+  I18n,
+  VariousComponentType,
 } from '@variousjs/various'
 import { getStore, subscribe, emit } from './store'
 import createLogger from './logger'
@@ -13,12 +16,20 @@ import {
   CONFIG_KEY,
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
-} from '../config'
-import { RequiredComponent } from '../types'
+  VUE_VERSION,
+  VUE_FUNCTION_OPTIONS,
+} from './config'
+import { PublicActions, RequiredComponent } from '../types'
+import connector from './connector'
+import { createOnMessage } from './message'
+import { createI18nConfig } from './i18n'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-export const preloadDependencies: typeof pp = (name) => new Promise<void>((resolve, reject) => {
+const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
+  .some((c) => c.name === module.name && c.module === module.module)
+
+export const preloadModules: typeof pp = (name) => new Promise<void>((resolve, reject) => {
   const names = typeof name === 'string' ? [name] : name
   window.requirejs(names, resolve, reject)
 })
@@ -29,26 +40,23 @@ export const defineDependencies: typeof dd = (deps) => {
 
   Object.keys(deps).forEach((name) => {
     next[name] = `${deps[name]}#${name}`
+    window.requirejs.undef(name)
   })
 
   window.requirejs.config({ paths: next })
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isDependencyLoaded: typeof im = (name) => window.requirejs.specified(name)
+export const isModuleLoaded: typeof im = (name) => window.requirejs.specified(name)
   && !!window.requirejs.s.contexts._.defined[name]
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
-
-export const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
-  .some((c) => c.name === module.name && c.module === module.module)
 
 export const onComponentMounted: typeof ocm = (module, callback) => {
   const modules = Array.isArray(module) ? module : [module]
 
   if (modules.every((m) => hasModule(getMountedComponents(), m))) {
     callback()
-    return () => null
   }
 
   const unSubscribe = subscribe({
@@ -105,19 +113,7 @@ export function getConfig<C extends object = {}>() {
 export const onError = (e: VariousError) => {
   const { name, module, type } = e
   const logger = createLogger({ name, module })
-
   logger.error(e, type)
-}
-
-export const isReactComponent = (component: RequiredComponent) => {
-  if (component.$$typeof) {
-    return true
-  }
-  return (
-    !!component.prototype?.isReactComponent) || (
-    typeof component === 'function'
-    && String(component).includes('createElement(')
-  )
 }
 
 export class VariousError extends Error implements ve {
@@ -143,6 +139,116 @@ export class VariousError extends Error implements ve {
   }
 }
 
+export function checkReactComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
+  return new Promise<void>((reslove, reject) => {
+    if (component.$$typeof || component.prototype?.isReactComponent || typeof component === 'function') {
+      reslove()
+      return
+    }
+
+    reject(new VariousError({
+      ...moduleDefined,
+      originalError: new Error('not a valid React component'),
+      type: 'INVALID_COMPONENT',
+    }))
+  })
+}
+
 export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
   return value != null && typeof (value as any).then === 'function'
+}
+
+export function checkVueComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
+  const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
+
+  return new Promise<void>((resolve, reject) => {
+    window.requirejs(['vue'], (Vue: { version: string }) => {
+      if (!versionRegex.test(Vue.version)) {
+        reject(new Error(`Vue ${VUE_VERSION}+ required, detected an incompatible version`))
+      }
+
+      if (typeof component?.render === 'function' || typeof component?.setup === 'function') {
+        resolve()
+        return
+      }
+
+      reject(new VariousError({
+        ...moduleDefined,
+        originalError: new Error('not a valid Vue component'),
+        type: 'INVALID_COMPONENT',
+      }))
+    })
+  })
+}
+
+export function parseComponentActions(params: ModuleDefined & {
+  componentNode: RequiredComponent,
+  type?: VariousComponentType,
+  i18nUpdate: () => void,
+}) {
+  const {
+    componentNode,
+    name,
+    module,
+    type,
+    i18nUpdate,
+  } = params
+
+  const actions: PublicActions = {}
+  let onMessageAction: OnMessage | undefined
+  let i18nAction: I18n | undefined
+
+  Object
+    .getOwnPropertyNames(componentNode)
+    .forEach((method) => {
+      if (typeof componentNode[method] !== 'function') {
+        return
+      }
+      if (method === '$onMessage') {
+        onMessageAction = componentNode[method]
+        return
+      }
+      if (method === '$i18n') {
+        i18nAction = componentNode[method]
+        return
+      }
+      if (type === 'vue3' && VUE_FUNCTION_OPTIONS.includes(method)) {
+        return
+      }
+
+      actions[method] = componentNode[method]
+    })
+
+  if (i18nAction) {
+    createI18nConfig(i18nAction, { name, module }, i18nUpdate)
+  }
+
+  connector.setComponentActions({ name, module }, actions)
+
+  if (onMessageAction) {
+    return createOnMessage({ name, module }, onMessageAction)
+  }
+
+  return () => null
+}
+
+export function updateMountedComponent(moduleDefined: ModuleDefined) {
+  const mountedComponents = getMountedComponents()
+
+  if (!hasModule(mountedComponents, moduleDefined)) {
+    mountedComponents.push(moduleDefined)
+  }
+
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
+}
+
+export function updateUnMountComponent(moduleDefined: ModuleDefined) {
+  const { name, module } = moduleDefined
+  let mountedComponents = getMountedComponents()
+
+  mountedComponents = mountedComponents
+    .filter((item) => item.name !== name || item.module !== module)
+
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
+  connector.deleteComponentActions({ name, module })
 }

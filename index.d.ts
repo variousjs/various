@@ -5,6 +5,12 @@ declare module '@variousjs/various' {
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
+  export interface ModuleDefined { name: string, module?: string }
+
+  export type ObjectRecord<T = any> = Record<string, T>
+
+  export type VariousComponentType = 'react' | 'vue3'
+
   export type ErrorType =
     'LOADING_ERROR' |
     'SUBMODULE_LOADING_ERROR' |
@@ -20,19 +26,19 @@ declare module '@variousjs/various' {
 
   export interface ComponentDefaultProps {
     $silent?: boolean,
+    /**
+     * for React Component only
+     */
     $ref?: RefObject<unknown>,
+    [k: string]: any,
   }
 
   export interface VariousError extends Error {
     type: ErrorType,
     originalError: Error,
-    module?: string,
-    name: string,
+    module?: ModuleDefined['module'],
+    name: ModuleDefined['name'],
   }
-
-  type ObjectAny = Record<string, any>
-
-  export interface ModuleDefined { name: string, module?: string }
 
   interface Message { event: string, value: any, trigger: ModuleDefined }
 
@@ -48,16 +54,19 @@ declare module '@variousjs/various' {
     error: (message: any, type?: string) => void,
   }
 
-  export type Intl = (
+  export type Intl = ((
     key: string,
     paramsOrDefaultText?: Record<string, string | number> | string,
     defaultText?: string,
-  ) => string
+  ) => string) & {
+    update: (config: Partial<I18nConfig>, type?: 'app') => void,
+  }
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
   export interface I18nConfig {
-    localeKey: string,
+    /** app store key */
+    lngStoreKey: string,
     resources: Record<string, Record<string, string>>,
   }
 
@@ -72,8 +81,8 @@ declare module '@variousjs/various' {
   }
 
   export type ComponentProps<
-    S extends object = {},
-    P extends object = {}
+    S extends object = ObjectRecord,
+    P extends object = ObjectRecord
   > = {
     $store: Readonly<S>,
     $dispatch: $dispatch,
@@ -87,23 +96,23 @@ declare module '@variousjs/various' {
     P extends object = {}
   > = FC<ComponentProps<S, P>> & StaticProps
 
-  export interface ErrorNodeProps<S extends object = ObjectAny> {
-    $reload?: () => void,
+  export interface ErrorNodeProps<S extends object = ObjectRecord> {
+    $reload: () => void,
     $error: VariousError,
     $store: Readonly<S>,
-    $name: string,
-    $module?: string,
+    $name: ModuleDefined['name'],
+    $module?: ModuleDefined['module'],
   }
-  export type ErrorNode<S extends object = ObjectAny> = ComponentType<ErrorNodeProps<S>>
+  export type ErrorNode<S extends object = ObjectRecord> = ComponentType<ErrorNodeProps<S>>
 
-  export interface LoaderNodeProps<S extends object = ObjectAny> {
+  export interface LoaderNodeProps<S extends object = ObjectRecord> {
     $store: Readonly<S>,
-    $name: string,
-    $module?: string,
+    $name: ModuleDefined['name'],
+    $module?: ModuleDefined['module'],
   }
-  export type LoaderNode<S extends object = ObjectAny> = ComponentType<LoaderNodeProps<S>>
+  export type LoaderNode<S extends object = ObjectRecord> = ComponentType<LoaderNodeProps<S>>
 
-  type Dispatch<T extends object = ObjectAny> = (
+  type Dispatch<T extends object = ObjectRecord> = (
     nycticorax: {
       getStore: <K extends keyof T | undefined = undefined>(k?: K | undefined) =>
         K extends keyof T ? T[K] : T,
@@ -145,7 +154,7 @@ declare module '@variousjs/various' {
   export type ErrorEvent = (e: VariousError) => void
   export type LogEvent = (e: LogArgs) => boolean
 
-  export interface App<S extends object = ObjectAny> {
+  export interface App<S extends object = ObjectRecord> {
     store?: readonly S,
     Error?: ErrorNode<S>,
     Loader?: LoaderNode<S>,
@@ -167,6 +176,7 @@ declare module '@variousjs/various' {
       '@variousjs/various'?: string,
       react?: string,
       'react-dom'?: string,
+      vue?: string,
       [x: string]: string,
     },
     root?: string,
@@ -175,36 +185,45 @@ declare module '@variousjs/various' {
   }
 
   export function createComponent<
-    S extends object = ObjectAny,
-    P extends object = ObjectAny
+    S extends object = ObjectRecord,
+    P extends object = ObjectRecord
   >(
-    config: ModuleDefined & { url?: string },
+    config: ModuleDefined & { url?: string, type?: VariousComponentType },
     storeKeys?: (keyof S)[],
   ): ComponentType<ComponentDefaultProps & P>
 
   export function createModule<T = unknown> (params: ModuleDefined & {
     url?: string,
-  }): Promise<T>
+  }, logError?: boolean): Promise<T>
 
-  export function renderComponent<P extends object = ObjectAny>(params: ModuleDefined & {
+  export function renderComponent<P extends object = ObjectRecord>(params: ModuleDefined & {
     url?: string,
+    type?: VariousComponentType,
     props?: P & ComponentDefaultProps,
     target: Element | null,
     renderNode?: (children: ReactNode) => ReactNode,
     onMounted?: () => void,
   }): () => Promise<void>
 
-  export const isDependencyLoaded: (name: string) => boolean
+  export interface VueVarious<S extends object = ObjectRecord> {
+    $dispatch: $dispatch,
+    $logger: $logger,
+    $postMessage: $postMessage,
+    $t: Intl,
+    $store: Readonly<S>,
+  }
+
+  export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => ModuleDefined[]
-  export const preloadDependencies: (name: string | string[]) => Promise<void>
+  export const preloadModules: (name: string | string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
-  ) => () => void
+  ) => (() => void) | void
   export const defineDependencies: (deps: Record<string, string>) => void
 
   export const version: string
-  export function getConfig<C extends object = ObjectAny>(): C
-  export function getStore<S extends object = ObjectAny>(): S
+  export function getConfig<C extends object = ObjectRecord>(): C
+  export function getStore<S extends object = ObjectRecord>(): S
 
   export const createDispatch: (m: ModuleDefined) => $dispatch
   export const createPostMessage: (m: ModuleDefined) => $postMessage

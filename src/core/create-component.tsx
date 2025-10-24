@@ -1,32 +1,35 @@
-import React, { ComponentType } from 'react'
-import { createComponent as cc } from '@variousjs/various'
-import createReactComponent from './component'
-import connector from './connector'
+import React from 'react'
+import { createComponent as cc, ComponentDefaultProps } from '@variousjs/various'
+import createReactComponent from './react-component'
+import createVueComponent from './vue-component'
+import ErrorBoundary from './error-boundary'
+import { CreateComponentProps } from '../types'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
-  const { name, module, url } = config
+  const {
+    name,
+    module,
+    url,
+    type = 'react',
+  } = config
 
-  const existComponent = connector.getComponent({ name, module })
-  if (existComponent) {
-    return existComponent
-  }
-
-  let component: ComponentType<any>
-
-  const C = createReactComponent({
+  const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
     name,
     module,
     url,
     watchKeys: storeKeys as string[],
-    onMounted() {
-      connector.setComponent({ name, module }, component)
-    },
   })
 
-  component = (props: any) => {
+  const component = (props: ComponentDefaultProps) => {
     const { $silent, $ref, ...rest } = props || {}
-    const nextProps = { $componentProps: rest, $silent, $ref }
-    return (<C {...nextProps} />)
+    const nextProps = {
+      $componentProps: rest, $silent, $ref,
+    } as ComponentDefaultProps & CreateComponentProps<any>
+    return (
+      <ErrorBoundary name={name} module={module}>
+        <C {...nextProps} />
+      </ErrorBoundary>
+    )
   }
 
   component.displayName = 'various-creator'

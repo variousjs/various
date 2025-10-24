@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<link href="/style.css" rel="stylesheet" />
+<script>
+var VARIOUS_CONFIG = {
+  timeout: 1.5,
+  root: '#root',
+  earlyParallelDependencies: [],
+  dependencies: {
+    react: '/libs/react.production.min.js',
+    'react-dom': '/libs/react-dom.production.min.js',
+    'react-router-dom': '/libs/react-router-dom.min.js',
+    'vue': '/libs/vue.js',
+
+    app: '/dist/i18n-global.js',
+    i18n: '/dist/i18n/global.js',
+  },
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="/dist/loader.js"></script>
+</body>
+</html>

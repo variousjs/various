@@ -1,63 +1,36 @@
 /// <reference types="cypress" />
-const packageJson = require('../../package.json')
 
-describe('config', () => {
+describe('app', () => {
   beforeEach(() => {
     Cypress.on('uncaught:exception', () => false)
   })
 
-  it('config', () => {
-    cy.visit('/#/', {
-      onBeforeLoad(win) {
-        cy.spy(win.console, 'log').as('console.log')
-      },
+  it('test', () => {
+    // app loading error
+    cy.visit('/app/error.html')
+    cy.contains('p', '[APP_ERROR] Script error for "app"').should('exist')
+
+    // app default config
+    cy.visit('/app/default-config.html')
+    cy.contains('div', 'App Container is not defined').should('exist')
+
+    // app container error
+    cy.visit('/app/container-error.html')
+    cy.contains('div', '[APP_ERROR] A is not defined').should('exist')
+
+    // react version error
+    cy.readFile('./docs/libs/react.production.min.js').then((res) => {
+      cy.intercept('react.production.min.js', res.replace('18.3.1', '17'))
+      cy.visit('/app/react-version-error.html')
+      cy.contains('p', 'React/ReactDOM Version Requirement').should('exist')
     })
-
-    cy.get('[data-store="name"]').should('have.text', 'humpback')
-    cy.get('[data-version="version"]').should('have.text', packageJson.version)
-    cy.get('[data-config="props"]').should('have.text', 'Locale')
-    cy.get('#date-picker input').should('have.value', '二月 15日 2022')
-    cy.get('[data-config="pages"]').should('have.text', 'config, dispatch, i18n, message, create, render, helper, logger')
-
-    cy.get('@console.log').should('be.calledWith', 'app,false')
-    cy.get('@console.log').should('be.calledWith', 'page,true')
   })
 
-  it('container error', () => {
-    cy.visit('/container-error.html')
-    cy.contains('[APP_ERROR] variable is not defined').should('exist')
-  })
-
-  it('default-container', () => {
-    cy.visit('/default-container.html')
-    cy.contains('App Container is not defined').should('exist')
-  })
-
-  it('component error', () => {
-    cy.visit('/component-error.html')
-    cy.contains('[SCRIPT_ERROR] noexist is not defined').should('exist')
-  })
-
-  it('store error', () => {
-    cy.visit('/store-error.html')
-    cy.contains('[APP_ERROR] b is not defined').should('exist')
-  })
-
-  it('production env', () => {
-    cy.visit('/production.html', {
-      onBeforeLoad(win) {
-        cy.spy(win.console, 'log').as('console.log')
-      },
+  it('vue version error test', () => {
+    cy.readFile('./docs/libs/vue.js').then((res) => {
+      cy.intercept('vue.js', res.replace('"3.5.21', '"2'))
+      cy.visit('/app/vue-version.html')
+      cy.contains('div', '[SCRIPT_ERROR] Vue 3+ required, detected an incompatible version').should('exist')
     })
-
-    cy.get('[data-b="action-a-block"]').click()
-    cy.get('@console.log').should('be.calledWith', 'block')
-  })
-
-  it('middlewares', () => {
-    cy.visit('/middlewares.html')
-    cy.get('[data-a="action-b"]').click()
-    cy.get('[data-f="block"]').click()
-    cy.wait(300)
   })
 })

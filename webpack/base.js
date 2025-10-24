@@ -1,27 +1,25 @@
 const path = require('path')
 const webpack = require('webpack')
+const { VueLoaderPlugin } = require('vue-loader')
 const package = require('../package.json')
+
+const { NODE_ENV = 'development' } = process.env
 
 const config = {
   stats: 'minimal',
   target: ['web', 'es5'],
+  mode: NODE_ENV,
   externals: [
     // default
     'react',
     'react-dom/client',
     'react-router-dom',
     '@variousjs/various',
+    'vue',
 
-    'antd',
-    'rc-table',
-    'rc-table2',
-    'table',
-    'moment',
-    'switch',
-    'moment_zhCN',
-    'helper',
-    'module-error',
-    'module-error2',
+    // create-module test
+    'sub-m',
+    'stack-exceeded',
   ],
   devtool: 'source-map',
   resolve: {
@@ -32,15 +30,16 @@ const config = {
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(package.version),
     }),
+    new VueLoaderPlugin(),
   ],
   devServer: {
     allowedHosts: 'all',
     port: 2333,
     host: '0.0.0.0',
     static: {
-      directory: path.join(__dirname, '../public'),
+      directory: path.join(__dirname, '../docs'),
     },
-    watchFiles: ['../public'],
+    watchFiles: ['../docs'],
   },
   module: {
     rules: [
@@ -50,6 +49,10 @@ const config = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.vue$/,
+        use: 'vue-loader',
       },
     ],
   },

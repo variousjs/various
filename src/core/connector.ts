@@ -1,14 +1,16 @@
-import { ComponentType } from 'react'
-import { Root } from 'react-dom/client'
 import {
   LoaderNode,
   ErrorNode,
-  I18nConfig,
   App,
   ModuleDefined,
 } from '@variousjs/various'
 import { Loader, Error } from './default-component'
-import { PublicActions, Store, Actions } from '../types'
+import {
+  PublicActions,
+  Store,
+  ConnectorI18nConfig,
+  Actions,
+} from '../types'
 import { getNameWithModule } from './helper'
 
 class Connector {
@@ -20,13 +22,9 @@ class Connector {
 
   private componentActions: Record<string, PublicActions>
 
-  private components: Record<string, ComponentType<any>>
+  private i18nConfigs: Record<string, ConnectorI18nConfig | undefined>
 
-  private renderRoots: Record<string, Root>
-
-  private i18nConfigs: Record<string, I18nConfig | undefined>
-
-  private globalI18nConfig: I18nConfig | undefined
+  private globalI18nConfig: ConnectorI18nConfig | undefined
 
   private middlewares: App['middlewares']
 
@@ -35,8 +33,6 @@ class Connector {
     this.errorComponent = Error
     this.storeActions = {}
     this.componentActions = {}
-    this.components = {}
-    this.renderRoots = {}
     this.i18nConfigs = {}
     this.middlewares = {}
   }
@@ -49,9 +45,9 @@ class Connector {
     return this.middlewares
   }
 
-  setI18nConfig(moduleDefined: ModuleDefined, config: I18nConfig) {
+  setI18nConfig(moduleDefined: ModuleDefined, config: ConnectorI18nConfig) {
     const name = getNameWithModule(moduleDefined)
-    this.i18nConfigs[name] = config
+    this.i18nConfigs[name] = { ...this.i18nConfigs[name], ...config }
   }
 
   getI18nConfig(moduleDefined: ModuleDefined) {
@@ -59,37 +55,12 @@ class Connector {
     return this.i18nConfigs[name]
   }
 
-  setGlobalI18nConfig(config: I18nConfig) {
-    this.globalI18nConfig = config
+  setGlobalI18nConfig(config: ConnectorI18nConfig) {
+    this.globalI18nConfig = { ...this.globalI18nConfig, ...config }
   }
 
   getGlobalI18nConfig() {
     return this.globalI18nConfig
-  }
-
-  setRenderRoot(moduleDefined: ModuleDefined, root: Root) {
-    const name = getNameWithModule(moduleDefined)
-    this.renderRoots[name] = root
-  }
-
-  getRenderRoot(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    return this.renderRoots[name]
-  }
-
-  deleteRenderRoot(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    delete this.renderRoots[name]
-  }
-
-  setComponent(moduleDefined: ModuleDefined, component: ComponentType) {
-    const name = getNameWithModule(moduleDefined)
-    this.components[name] = component
-  }
-
-  getComponent(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    return this.components[name]
   }
 
   setComponentActions(moduleDefined: ModuleDefined, actions: PublicActions) {

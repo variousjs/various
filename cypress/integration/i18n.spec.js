@@ -5,62 +5,81 @@ describe('i18n', () => {
     Cypress.on('uncaught:exception', () => false)
   })
 
-  it('c', () => {
+  it('component config test', () => {
     cy.visit('/#/i18n')
-    cy.get('[data-c="title"]').should('have.text', '标题')
-    cy.get('[data-c="hello"]').should('have.text', '你好，1，999')
 
-    cy.get('[data-e="title"]').should('have.text', 'title')
-    cy.get('[data-e="input"]').should('have.value', 'Global Title')
+    // error type
+    cy.contains('h3', 'Error').next().contains('p', 'no-config').should('exist')
+    cy.contains('h3', 'Error').next().contains('p', 'no-resources').should('exist')
+    cy.contains('h3', 'Error').next().contains('p', 'no-key').should('exist')
+    cy.contains('h3', 'Error').next().contains('p', 'no-locale').should('exist')
+    cy.contains('h3', 'Error').next().contains('p', '[SCRIPT_ERROR]:get i18n config error').should('exist')
+    cy.contains('h3', 'Error').next().contains('button', '刷新').should('exist')
 
-    cy.get('[data-d="title"]').should('have.text', '标题')
-      .then(() => {
-        cy.get('[data-c="action-set"]').click()
+    // change locale
+    cy.contains('h3', 'I18n').next().contains('p', 'name: 张三').should('exist')
+    cy.contains('h3', 'I18n').next().contains('p', 'greet: 你好，A，B').should('exist')
+    cy.contains('h3', 'Vue Component').next().contains('p', 'greet: 你好，C，D').should('exist')
+    cy.contains('h3', 'Vue Component').next().contains('p', 'name: 张三').should('exist')
+    cy.contains('button', 'change locale').click()
+    cy.contains('h3', 'I18n').next().contains('p', 'name: Json').should('exist')
+    cy.contains('h3', 'I18n').next().contains('p', 'greet: Hello, A, B').should('exist')
+    cy.contains('h3', 'Vue Component').next().contains('p', 'greet: Hello, C, D').should('exist')
+    cy.contains('h3', 'Vue Component').next().contains('p', 'name: Json').should('exist')
+    cy.contains('h3', 'Error').next().contains('button', 'reload').should('exist')
 
-        cy.get('[data-c="title"]').should('have.text', 'Title')
-        cy.get('[data-c="hello"]').should('have.text', 'Hello, 1, 999')
+    // default text
+    cy.contains('h3', 'Default Text').next().contains('p', 'default Text').should('exist')
+    cy.contains('h3', 'Default Text').next().contains('p', 'Json').should('exist')
+    cy.contains('h3', 'Default Text').next().contains('p', 'Hello, {name}, {name2}').should('exist')
+    cy.contains('h3', 'Default Text').next().contains('p', 'Hello, {name}, {name2}').should('exist')
 
-        cy.get('[data-e="title"]').should('have.text', 'title')
+    // async config
+    cy.contains('h3', 'Async').next().contains('p', 'name').should('exist')
+    cy.contains('button', 'get resources').click()
+    cy.contains('h3', 'Async').next().contains('p', 'Json').should('exist')
 
-        cy.get('[data-d="title"]').should('have.text', 'Title')
+    // update config
+    cy.contains('h3', 'Update').next().contains('p', 'name').should('exist')
+    cy.contains('button', 'update resources').click()
+    cy.contains('button', 'update lngStoreKey').click()
+    cy.contains('h3', 'Update').next().contains('p', 'Json').should('exist')
 
-        cy.get('[data-e="input"]').should('have.value', 'globalTitle')
-      })
+    // update config vue
+    cy.contains('button', 'vue update lngStoreKey').click()
+    cy.contains('h3', 'Vue Component').next().contains('p', 'greet: greet').should('exist')
+    cy.contains('h3', 'Vue Component').next().contains('p', 'name: name').should('exist')
+
+    // async config vue
+    cy.contains('button', 'vue async get config').click()
+    cy.contains('h3', 'Vue Async Component').next().contains('p', 'greet: Hello, C, D').should('exist')
+    cy.contains('h3', 'Vue Async Component').next().contains('p', 'name: Json').should('exist')
   })
 
-  it('d', () => {
-    cy.visit('/#/i18n')
-    cy.get('[data-d="title"]').should('have.text', '标题')
-    cy.get('[data-d="titl"]').should('have.text', 'titl')
+  it('app config', () => {
+    cy.visit('/i18n/index.html')
 
-    cy.get('[data-d="action-set"]').click()
-    cy.get('[data-d="title"]').should('have.text', 'default title')
-    cy.get('[data-d="titl"]').should('have.text', 'titl')
-    cy.get('[data-c="hello"]').should('have.text', 'Default Hello')
-
-    cy.get('[data-d="action-get"]').click()
-    cy.get('[data-d="lang"]').should('have.text', 'zh-CN')
+    // app update config
+    cy.contains('title: Jpabn').should('exist')
+    cy.contains('button', 'update global').click()
+    cy.contains('title: update JP').should('exist')
   })
 
-  it('error case', () => {
-    cy.visit('/i18n.html')
-    cy.get('[data-e="input"]').should('have.value', 'globalTitle')
-    cy.contains('[SCRIPT_ERROR]:something error').should('exist')
+  it('app async config', () => {
+    cy.visit('/i18n/async.html')
 
-    cy.visit('/i18n2.html', {
-      onBeforeLoad(win) {
-        cy.spy(win.console, 'log').as('console.log')
-      },
-    })
-    cy.get('[data-e="input"]').should('have.value', 'globalTitle')
-    cy.get('[data-c="hello"]').should('have.text', 'Default Hello')
-    cy.get('@console.log').should('be.calledWith', 'get i18n something error')
+    // app update config
+    cy.contains('title: title').should('exist')
+    cy.contains('button', 'get Resource').click()
+    cy.contains('title: Japan').should('exist')
+  })
 
-    cy.visit('/i18n3.html', {
-      onBeforeLoad(win) {
-        cy.spy(win.console, 'log').as('console.log2')
-      },
-    })
-    cy.get('@console.log2').should('be.calledWith', 'locale key not defined')
+  it('app async config error', () => {
+    cy.visit('/i18n/async-error.html')
+
+    // app update config
+    cy.contains('title: title').should('exist')
+    cy.contains('button', 'get Resource').click()
+    cy.contains('title: title').should('exist')
   })
 })

@@ -2,53 +2,34 @@
 
 describe('dispatch', () => {
   beforeEach(() => {
-    cy.visit('/#/dispatch', {
-      onBeforeLoad(win) {
-        cy.spy(win.console, 'log').as('console.log')
-      },
-    })
+    cy.visit('/#/dispatch')
     Cypress.on('uncaught:exception', () => false)
   })
 
-  it('a', () => {
-    cy.get('[data-a="store-name"]').should('have.text', 'humpback')
-    cy.get('[data-a="value"]').should('have.text', '-')
-    cy.get('[data-a="trigger"]').should('have.text', '-')
-    cy.get('[data-a="b-value"]').should('have.text', '-')
-    cy.get('[data-a="error"]').should('have.text', '-')
+  it('test', () => {
+    // dispatch app
+    cy.contains('h3', 'Dispatch').next().children().eq(0)
+      .should('have.text', 'store: humpback')
+    cy.contains('h3', 'Vue Component').next().children().eq(0)
+      .should('have.text', 'store: humpback')
+    cy.contains('button', 'dispatch app').click()
+    cy.contains('h3', 'Dispatch').next().children().eq(0)
+      .should('have.text', 'store: various')
+    cy.contains('h3', 'Vue Component').next().children().eq(0)
+      .should('have.text', 'store: various')
 
-    cy.get('[data-b="error"]').then(() => {
-      cy.get('[data-a="action-b"]').click()
-      cy.get('[data-a="b-value"]').should('have.text', 'b')
+    // dispatch component
+    cy.contains('button', 'dispatch vue').click()
+    cy.contains('p', 'Trigger: dispatch').should('exist')
+    cy.contains('button', 'dispatch react').click()
+    cy.contains('p', 'trigger: dispatch-v').should('exist')
 
-      cy.get('[data-a="action-b-nonexist"]').click()
-      cy.get('[data-a="error"]').should('have.text', 'component is not ready')
-
-      cy.get('[data-a="action-store-nonexist"]').click()
-      cy.get('[data-a="error"]').should('have.text', 'action "no-exist" is not present')
-    })
-  })
-
-  it('b', () => {
-    cy.get('[data-b="error"]').should('have.text', '-')
-
-    cy.get('[data-a="error"]').then(() => {
-      cy.get('[data-b="action-a"]').click()
-      cy.get('[data-a="value"]').should('have.text', 'changed by middleware')
-      cy.get('[data-a="trigger"]').should('have.text', 'dispatch-b.')
-
-      cy.get('[data-b="action-nonexist"]').click()
-      cy.get('[data-b="error"]').should('have.text', 'component is not ready')
-
-      cy.get('[data-b="action-store"]').click()
-      cy.get('[data-a="store-name"]').should('have.text', 'various')
-      cy.get('[data-store="name"]').should('have.text', 'various')
-
-      cy.get('[data-b="action-a-nonexist"]').click()
-      cy.get('[data-b="error"]').should('have.text', 'action "nonexist" is not present')
-
-      cy.get('[data-b="action-a-block"]').click()
-      cy.get('@console.log').should('be.calledWith', 'block')
-    })
+    // dispatch error
+    cy.contains('button', 'dispatch-app').click()
+    cy.contains('p', 'error: action "not exist" is not present').should('exist')
+    cy.contains('button', 'dispatch-component').click()
+    cy.contains('p', 'error: component is not ready').should('exist')
+    cy.contains('button', 'dispatch-action').click()
+    cy.contains('p', 'error: action "not-exist" is not present').should('exist')
   })
 })

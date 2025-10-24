@@ -1,20 +1,21 @@
-import { ComponentType } from 'react'
+import { ComponentType, ReactNode } from 'react'
 import {
   ComponentProps,
   PublicAction,
   Config,
   OnMessage,
   I18n,
-  App,
   Dispatch,
   ModuleDefined,
+  App,
+  I18nConfig,
 } from '@variousjs/various'
-import {
+import type {
   MESSAGE_KEY,
   DEPENDENCIES_KEY,
   MOUNTED_COMPONENTS_KEY,
   CONFIG_KEY,
-} from './config'
+} from './core/config'
 
 declare global {
   export const VERSION: string
@@ -49,17 +50,20 @@ export type RequiredComponent = ComponentType<ComponentProps>
 export interface CreateComponentState {
   isError: boolean,
   componentReady: boolean,
-  componentExist: boolean,
 }
 
 export interface CreateComponentProps<P extends object> extends Store {
   $componentProps: P,
 }
 
-export interface Various {
-  default: (config: Config & App) => void,
+export type ErrorBoundaryProps = ModuleDefined & {
+  children: ReactNode,
 }
 
-export type AppWithDefault = { default: App }
+export interface ConnectorI18nConfig extends I18nConfig {
+  loading?: boolean,
+}
 
+export interface Various { default: (config: Config & App) => void }
+export type AppWithDefault = { default: App }
 export interface ReactWithVersion { version: string }

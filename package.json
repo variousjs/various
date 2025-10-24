@@ -1,6 +1,6 @@
 {
   "name": "@variousjs/various",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
@@ -19,10 +19,11 @@
   "types": "index.d.ts",
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
-    "prestart": "mkdir -p public/dist && cp public/empty.js public/dist/empty.js",
+    "prestart": "mkdir -p docs/dist && touch docs/dist/empty.js",
     "start": "webpack --config webpack/components.js --progress & webpack serve --config webpack/index.js --progress --no-client-overlay",
-    "prebuild": "npm run lint",
-    "build": "rm -rf dist && NODE_ENV=production webpack --config webpack/index.js --progress",
+    "prebuild": "npm run lint && rm -rf dist && rm -rf docs/dist",
+    "build": "NODE_ENV=production webpack --config webpack/components.js --progress && NODE_ENV=production webpack --config webpack/index.js --progress",
+    "postbuild": "cp dist/* docs/dist/ && touch docs/dist/empty.js",
     "cy:run": "rm -rf .nyc_output && cypress run",
     "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
@@ -56,6 +57,7 @@
     "@types/requirejs": "^2.1.34",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "@vue/compiler-sfc": "^3.5.22",
     "babel-loader": "^8.2.5",
     "babel-plugin-istanbul": "^6.1.1",
     "cypress": "^9.7.0",
@@ -69,6 +71,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "start-server-and-test": "^2.0.3",
     "typescript": "^4.9.5",
+    "vue": "^3.5.21",
+    "vue-loader": "^17.3.1",
     "webpack": "^5.101.0",
     "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",

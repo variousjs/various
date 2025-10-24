@@ -70,5 +70,8 @@ module.exports = {
     'react/prefer-stateless-function': 0,
     'react/jsx-one-expression-per-line': 0,
     'react/sort-comp': 0,
+    'react/static-property-placement': 0,
+    'react/button-has-type': 0,
+    'max-classes-per-file': 0,
   },
 }

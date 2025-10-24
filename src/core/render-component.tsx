@@ -1,8 +1,9 @@
 import React from 'react'
-import { createRoot, Root } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
-import componentCreator from './component'
-import connector from './connector'
+import createReactComponent from './react-component'
+import createVueComponent from './vue-component'
+import { onError, VariousError } from './helper'
 
 const renderComponent: typeof rc = ({
   name,
@@ -10,43 +11,40 @@ const renderComponent: typeof rc = ({
   url,
   target,
   props,
+  type = 'react',
   renderNode,
   onMounted,
 }) => {
-  let C = connector.getComponent({ name, module })
-  if (!C) {
-    C = componentCreator({
+  const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
+    name,
+    module,
+    url,
+    onMounted,
+  })
+
+  try {
+    const root = createRoot(target as Element)
+    const { $silent, $ref, ...rest } = props || {}
+    const nextProps: any = { $componentProps: rest, $silent, $ref }
+    const node = <C {...nextProps} />
+
+    root.render(renderNode ? renderNode(node) : node)
+
+    return () => new Promise<void>((resolve) => {
+      setTimeout(() => {
+        root.unmount()
+        resolve()
+      })
+    })
+  } catch (e) {
+    onError(new VariousError({
       name,
       module,
-      url,
-      onMounted() {
-        connector.setComponent({ name, module }, C)
-        onMounted?.()
-      },
-    })
+      type: 'SCRIPT_ERROR',
+      originalError: e as Error,
+    }))
+    return () => Promise.resolve()
   }
-
-  let root: Root
-  if (connector.getRenderRoot({ name, module })) {
-    root = connector.getRenderRoot({ name, module })
-  } else {
-    root = createRoot(target as Element)
-    connector.setRenderRoot({ name, module }, root)
-  }
-
-  const { $silent, $ref, ...rest } = props || {}
-  const nextProps = { $componentProps: rest, $silent, $ref }
-  const node = <C {...nextProps} />
-
-  root.render(renderNode ? renderNode(node) : node)
-
-  return () => new Promise<void>((resolve) => {
-    setTimeout(() => {
-      root.unmount()
-      connector.deleteRenderRoot({ name, module })
-      resolve()
-    })
-  })
 }
 
 export default renderComponent

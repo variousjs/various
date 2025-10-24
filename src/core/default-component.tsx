@@ -9,18 +9,12 @@ export const Loader: LoaderNode<Store> = () => (
 export const Error: ErrorNode<Store> = ({ $error, $reload }) => (
   <>
     <div>{`[${$error.type}] ${$error.message}`}</div>
-    {
-      $reload
-        ? (
-          <button
-            type="button"
-            onClick={$reload}
-          >
-            Reload
-          </button>
-        )
-        : null
-    }
+    <button
+      type="button"
+      onClick={$reload}
+    >
+      Reload
+    </button>
   </>
 )
 

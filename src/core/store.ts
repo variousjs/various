@@ -8,6 +8,7 @@ export const {
   emit,
   subscribe,
   dispatch,
+  useStore,
 } = new Nycticorax<Store>()
 
 export function getUserStore<S extends object = {}>() {

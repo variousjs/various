@@ -9,10 +9,9 @@ const configs = [{
   entry: {
     loader: path.resolve(__dirname, '../src/loader.ts'),
   },
-  mode: NODE_ENV,
   // plugins: [new BundleAnalyzerPlugin()],
   output: {
-    path: path.resolve(__dirname, '../public/dist'),
+    path: path.resolve(__dirname, '../docs/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
   },
@@ -23,18 +22,26 @@ if (NODE_ENV === 'production') {
     path: path.join(__dirname, '../dist'),
     filename: '[name].js',
   }
-  configs.push({
+
+  const coreConfig = {
     ...base,
     entry: {
       index: path.resolve(__dirname, '../src/core'),
     },
-    mode: 'production',
     // plugins: [new BundleAnalyzerPlugin()],
     output: {
       path: path.join(__dirname, '../dist'),
       filename: '[name].js',
       libraryTarget: 'amd',
     },
+  }
+
+  configs.push(coreConfig, {
+    ...coreConfig,
+    entry: {
+      'index.dev': path.resolve(__dirname, '../src/core'),
+    },
+    mode: 'development',
   })
 }
 

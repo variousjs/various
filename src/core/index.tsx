@@ -1,30 +1,31 @@
-import React, { Component, ComponentType } from 'react'
+import React, { Component } from 'react'
 import { createRoot } from 'react-dom/client'
-import { App, Config, VariousError as ve } from '@variousjs/various'
-import { createStore, getStore, emit } from './store'
+import { App, Config } from '@variousjs/various'
+import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
   ROOT,
   MESSAGE_KEY,
   CONFIG_KEY,
-} from '../config'
+} from './config'
 import connector from './connector'
-import { isPromiseLike, onError, VariousError } from './helper'
+import { createI18nConfig } from './i18n'
 import { Container as ContainerNode } from './default-component'
+import ErrorBoundary from './error-boundary'
 import { Store } from '../types'
 
 export { default as Nycticorax } from 'nycticorax'
 
 export { getUserStore as getStore } from './store'
-export { default as createDispatch } from './component/dispatch'
-export { getPostMessage as createPostMessage } from './component/message'
+export { default as createDispatch } from './dispatch'
+export { createPostMessage } from './message'
 export { default as createLogger } from './logger'
 
 export {
   getConfig,
-  preloadDependencies,
-  isDependencyLoaded,
+  preloadModules,
+  isModuleLoaded,
   getMountedComponents,
   onComponentMounted,
   defineDependencies,
@@ -63,7 +64,6 @@ export default (config: Config & App<Store>) => {
   if (ErrorComponent) {
     connector.setErrorComponent(ErrorComponent)
   }
-  const ErrorNode = connector.getErrorComponent()
 
   createStore({
     ...store,
@@ -73,76 +73,23 @@ export default (config: Config & App<Store>) => {
     [MESSAGE_KEY]: null,
   })
 
+  ContainerComponent.displayName = 'various-container'
+
   class R extends Component<{}, { isError: boolean }> {
-    private error?: ve
-
-    state = {
-      isError: false,
-    }
-
-    componentDidCatch(e: Error) {
-      const error = new VariousError({
-        name: 'app',
-        type: 'APP_ERROR',
-        originalError: e,
-      })
-      onError(error)
-      this.error = error
-      this.setState({ isError: true })
-    }
+    static displayName = 'various-app'
 
     componentDidMount() {
-      if (!i18n) {
-        return
-      }
-
-      const i18nConfig = i18n()
-
-      if (!isPromiseLike(i18nConfig)) {
-        connector.setGlobalI18nConfig(i18nConfig)
-        return
-      }
-
-      i18nConfig
-        .then((res) => {
-          const locale = getStore(res.localeKey)
-
-          connector.setGlobalI18nConfig(res)
-
-          if (locale !== undefined) {
-            emit({ [res.localeKey]: undefined }, true)
-            emit({ [res.localeKey]: locale })
-          }
-        })
-        .catch((e: Error) => {
-          onError(new VariousError({
-            name: 'app',
-            type: 'I18N',
-            originalError: e,
-          }))
-        })
+      createI18nConfig(i18n)
     }
 
     render() {
-      const { isError } = this.state
-
-      if (isError) {
-        return (
-          <ErrorNode
-            $name="app"
-            $error={this.error!}
-            $store={store as Store}
-          />
-        )
-      }
-
       return (
-        <ContainerComponent />
+        <ErrorBoundary name="app">
+          <ContainerComponent />
+        </ErrorBoundary>
       )
     }
   }
-
-  (R as ComponentType).displayName = 'various-app'
 
   createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title> VariousJS </title>
+<link href="./style.css" rel="stylesheet" />
+<script>
+var VARIOUS_CONFIG = {
+  timeout: 1.5,
+  root: '#root',
+  earlyParallelDependencies: ['preload'],
+  dependencies: {
+    react: './libs/react.production.min.js',
+    'react-dom': './libs/react-dom.production.min.js',
+    'react-router-dom': './libs/react-router-dom.min.js',
+    'vue': './libs/vue.js',
+
+    app: './dist/app.js',
+    helper: './dist/helper/index.js',
+    preload: './dist/helper/preload.js',
+    container: './dist/container/index.js',
+    'post-message': './dist/post-message/index.js',
+    'post-message-vue': './dist/post-message/c.js',
+    'create-module': './dist/create-module/index.js',
+    'stack-exceeded': './dist/create-module/stack-exceeded.js',
+    logger: './dist/logger/index.js',
+    'logger-v': './dist/logger/v.js',
+    'render': './dist/render-component/index.js',
+    'render-v': './dist/render-component/r.js',
+    'create': './dist/create-component/index.js',
+    'create-reload': './dist/create-component/reload.js',
+    i18n: './dist/i18n/index.js',
+    'i18n-v': './dist/i18n/i.js',
+    'i18n-async-v': './dist/i18n/vue-async.js',
+    dispatch: './dist/dispatch/index.js',
+    'dispatch-v': './dist/dispatch/d.js',
+    'middlewares': './dist/moddlewares/index.js',
+    'app-config': './dist/app/index.js',
+  },
+  pages: [
+    {
+      label: 'Helper',
+      components: [
+        { name: 'helper' },
+      ],
+      path: '/',
+    },
+    {
+      label: 'CreateComponent',
+      components: [
+        { name: 'create' },
+        { name: 'create-reload' },
+      ],
+      path: '/create-component',
+    },
+    {
+      label: 'PostMessage',
+      components: [
+        { name: 'post-message.MessageA' },
+        { name: 'post-message.MessageB' },
+        { name: 'post-message-vue', type: 'vue3' },
+      ],
+      path: '/post-message',
+    },
+    {
+      label: 'CreateModule',
+      components: [
+        { name: 'create-module' },
+      ],
+      path: '/create-module',
+    },
+    {
+      label: 'Logger',
+      components: [
+        { name: 'logger' },
+        { name: 'logger-v', type: 'vue3' },
+      ],
+      path: '/logger',
+    },
+    {
+      label: 'RenderComponent',
+      components: [
+        { name: 'render' },
+        { name: 'render-v', type: 'vue3' },
+      ],
+      path: '/render-component',
+    },
+    {
+      label: 'I18n',
+      components: [
+        { name: 'i18n' },
+        { name: 'i18n-v', type: 'vue3' },
+        { name: 'i18n-async-v', type: 'vue3' },
+      ],
+      path: '/i18n',
+    },
+    {
+      label: 'Dispatch',
+      components: [
+        { name: 'dispatch' },
+        { name: 'dispatch-v', type: 'vue3' },
+      ],
+      path: '/dispatch',
+    },
+    {
+      label: 'Middlewares',
+      components: [
+        { name: 'middlewares' },
+      ],
+      path: '/middlewares',
+    },
+    {
+      label: 'App',
+      components: [
+        { name: 'app-config' },
+      ],
+      path: '/app',
+    },
+  ],
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="./dist/loader.js"></script>
+</body>
+</html>
