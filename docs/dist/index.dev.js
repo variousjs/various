@@ -1688,7 +1688,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // eslint-disable-next-line no-undef
-const version = "4.3.0";
+const version = "5.0.0";
 /* harmony default export */ __webpack_exports__["default"] = (config => {
   const {
     dependencies,
