@@ -67,7 +67,6 @@ declare module '@variousjs/various' {
   export interface I18nConfig {
     /** app store key */
     lngStoreKey: string,
-    fallbackLng?: string[],
     resources: Record<string, Record<string, string>>,
   }
 
