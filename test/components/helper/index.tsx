@@ -43,15 +43,19 @@ export default () => {
 
   useEffect(() => {
     setIsPreloadLoaded(String(isModuleLoaded('preload')))
+    const un2 = onComponentMounted([{ ...testOnMountedModule }, { name: 'no-exist' }], () => {
+      // will not trigger
+    })
     const un0 = onComponentMounted({ ...testOnMountedModule, module: undefined }, () => {
       setIsHelperMounted(true)
     })
-    const un1 = onComponentMounted({ ...testOnMountedModule }, () => {
+    const un1 = onComponentMounted([{ ...testOnMountedModule }], () => {
       setIsMounted(true)
+      un2?.()
     })
     return () => {
-      un0()
-      un1()
+      un0?.()
+      un1?.()
     }
   }, [])
 

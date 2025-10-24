@@ -57,7 +57,6 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
 
   if (modules.every((m) => hasModule(getMountedComponents(), m))) {
     callback()
-    return () => null
   }
 
   const unSubscribe = subscribe({

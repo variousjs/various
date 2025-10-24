@@ -76,11 +76,6 @@ export default (props: ComponentProps) => {
 
       <h3>Vue script error</h3>
       <Mi />
-
-      <h3>$slient react</h3>
-      <div className="value">
-        <button onClick={() => window.open('/app/create-component-slient.html')}>go</button>
-      </div>
     </>
   )
 }

@@ -565,7 +565,6 @@ const onComponentMounted = (module, callback) => {
   const modules = Array.isArray(module) ? module : [module];
   if (modules.every(m => hasModule(getMountedComponents(), m))) {
     callback();
-    return () => null;
   }
   const unSubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_0__.subscribe)({
     [_config__WEBPACK_IMPORTED_MODULE_2__.MOUNTED_COMPONENTS_KEY](value) {

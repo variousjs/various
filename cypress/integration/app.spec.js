@@ -25,4 +25,12 @@ describe('app', () => {
       cy.contains('p', 'React/ReactDOM Version Requirement').should('exist')
     })
   })
+
+  it('vue version error test', () => {
+    cy.readFile('./docs/libs/vue.js').then((res) => {
+      cy.intercept('vue.js', res.replace('"3.5.21', '"2'))
+      cy.visit('/app/vue-version.html')
+      cy.contains('div', '[SCRIPT_ERROR] Vue 3+ required, detected an incompatible version').should('exist')
+    })
+  })
 })

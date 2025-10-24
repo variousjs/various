@@ -26,9 +26,11 @@ export default V
 </script>
 
 <template>
+  <div>
   <h3>Vue Component</h3>
   <div class="value">
     <div id="vue-dom"></div>
     <button @click="render">vue render</button>
+  </div>
   </div>
 </template>

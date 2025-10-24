@@ -15,7 +15,7 @@ export default () => {
         <p>Default: {defaultText}</p>
         <button
           onClick={async () => {
-            const text = await createModule<string>({ name: 'create-module', module: 'defaultText' })
+            const text = await createModule<string>({ name: 'create-module', module: 'defaultText', url: './dist/create-module/index.js' })
             setDefaultText(text)
           }}
         >

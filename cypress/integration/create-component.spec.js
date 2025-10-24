@@ -19,6 +19,10 @@ describe('create component', () => {
       .eq(0)
       .should('have.text', 'humpback')
 
+    // Vue & custom url
+    cy.get('.various-component-create-vue-c').children()
+      .should('have.text', 'props name: humpback / store name: humpback')
+
     // Class Component Ref
     cy.contains('h3', 'Class Component Ref').next().children()
       .eq(0)
@@ -37,11 +41,9 @@ describe('create component', () => {
       cy.contains('h3', 'Watch Store').next().children()
         .eq(0)
         .should('have.text', 'name: various')
+      cy.get('.various-component-create-vue-c').children()
+        .should('have.text', 'props name: various / store name: various')
     })
-
-    // Vue & custom url
-    cy.get('.various-component-create-vue-c').children()
-      .should('have.text', 'props name: various / store name: various')
 
     // vue component type error
     cy.contains('h3', 'create.A').next().children()

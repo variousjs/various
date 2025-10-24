@@ -14,6 +14,7 @@ const components = {
   // app config
   'default-config': path.resolve(__dirname, '../test/app/default-config.ts'),
   'container-error': path.resolve(__dirname, '../test/app/container-error.tsx'),
+  'vue-version': path.resolve(__dirname, '../test/app/vue-version.tsx'),
 
   // create component props slient
   'create-slient': path.resolve(__dirname, '../test/app/create-component-slient.tsx'),

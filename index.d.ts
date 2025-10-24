@@ -217,7 +217,7 @@ declare module '@variousjs/various' {
   export const preloadModules: (name: string | string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
-  ) => () => void
+  ) => (() => void) | void
   export const defineDependencies: (deps: Record<string, string>) => void
 
   export const version: string
