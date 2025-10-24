@@ -40,9 +40,8 @@ describe('create component', () => {
     })
 
     // Vue & custom url
-    cy.contains('h3', 'Vue & URL').next().children()
-      .eq(0)
-      .should('have.text', 'name: various')
+    cy.get('.various-component-create-vue-c').children()
+      .should('have.text', 'props name: various / store name: various')
 
     // vue component type error
     cy.contains('h3', 'create.A').next().children()
@@ -77,5 +76,10 @@ describe('create component', () => {
       cy.contains('p', '[SCRIPT_ERROR]:A is not defined').next().click()
       cy.contains('div', 'Ggggggg').should('exist')
     })
+  })
+
+  it('props slient', () => {
+    cy.visit('/app/create-component-slient.html')
+    cy.get('#t').should('have.text', 'create,Acreatevue')
   })
 })

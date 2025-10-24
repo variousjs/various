@@ -49,6 +49,11 @@ describe('i18n', () => {
     cy.contains('button', 'vue update localeKey').click()
     cy.contains('h3', 'Vue Component').next().contains('p', 'greet: greet').should('exist')
     cy.contains('h3', 'Vue Component').next().contains('p', 'name: name').should('exist')
+
+    // async config vue
+    cy.contains('button', 'vue async get config').click()
+    cy.contains('h3', 'Vue Async Component').next().contains('p', 'greet: Hello, C, D').should('exist')
+    cy.contains('h3', 'Vue Async Component').next().contains('p', 'name: Json').should('exist')
   })
 
   it('app config', () => {

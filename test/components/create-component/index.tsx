@@ -56,7 +56,7 @@ export default (props: ComponentProps) => {
 
       <h3>Vue & URL</h3>
       <div className="value">
-        <Mc />
+        <Mc name={props.$store.name} />
       </div>
 
       <h3>Vue Component type Error</h3>
@@ -76,6 +76,11 @@ export default (props: ComponentProps) => {
 
       <h3>Vue script error</h3>
       <Mi />
+
+      <h3>$slient react</h3>
+      <div className="value">
+        <button onClick={() => window.open('/app/create-component-slient.html')}>go</button>
+      </div>
     </>
   )
 }

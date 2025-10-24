@@ -6,6 +6,9 @@ describe('post message', () => {
   })
 
   it('test', () => {
+    cy.get('.component').should('have.length', 3)
+    cy.contains('button', 'Vue Post').should('exist')
+
     // post message from react component
     cy.contains('button', 'React Post').click()
     cy.contains('h3', 'onMessage').next().children()

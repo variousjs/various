@@ -73,11 +73,12 @@ export default ((props) => {
       <div className="value">
         <button
           onClick={() => {
-            renderComponent({
+            const un = renderComponent({
               name: 'middlewares',
               module: 'A',
               target: document.querySelector('#error'),
             })
+            setTimeout(un)
           }}
         >
           render component error

@@ -34,6 +34,7 @@ export default () => {
   const preload = async () => {
     try {
       await preloadModules(testPreloadModule)
+      await preloadModules([testPreloadModule])
       setIsLoaded(String(isModuleLoaded(testPreloadModule)))
     } catch (_) {
       setIsLoaded('load error')

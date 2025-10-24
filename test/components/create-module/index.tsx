@@ -30,7 +30,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'not-defined' }, false)
+              await createModule({ name: 'not-defined' }, true)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({

@@ -6,6 +6,7 @@ import { Store } from '../../types'
 const V = defineComponent({
   props: {
     various: Object as PropType<VueVarious<Store>>,
+    name: String,
   },
 })
 
@@ -13,5 +14,5 @@ export default V
 </script>
 
 <template>
-  <p>name: {{ various?.$store.name }}</p>
+  <div>props name: {{ name }} / store name: {{ various?.$store.name }}</div>
 </template>

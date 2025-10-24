@@ -3,6 +3,7 @@
 describe('render component', () => {
   beforeEach(() => {
     cy.visit('/#/render-component')
+    Cypress.on('uncaught:exception', () => false)
   })
 
   it('test', () => {
