@@ -36,13 +36,23 @@ if (NODE_ENV === 'production') {
     },
   }
 
-  configs.push(coreConfig, {
-    ...coreConfig,
-    entry: {
-      'index.dev': path.resolve(__dirname, '../src/core'),
+  configs.push(
+    coreConfig,
+    {
+      ...coreConfig,
+      entry: {
+        'index.dev': path.resolve(__dirname, '../src/core'),
+      },
+      mode: 'development',
     },
-    mode: 'development',
-  })
+    {
+      ...configs[0],
+      entry: {
+        'loader.dev': path.resolve(__dirname, '../src/loader.ts'),
+      },
+      mode: 'development',
+    },
+  )
 }
 
 module.exports = configs

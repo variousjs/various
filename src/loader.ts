@@ -8,12 +8,10 @@ const DEFAULT_PACKAGES = {
   '@variousjs/various': 'https://unpkg.com/@variousjs/various/dist/index.js',
 }
 const REACT_REQUIREMENT_VERSION = 18
-const LOADER_JS = 'loader.js'
-const INDEX_JS = 'index.js'
 
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement
-const corePath = src.replace(LOADER_JS, INDEX_JS)
+const corePath = src.replace(/\/loader(\.dev)?\.js$/, '/index$1.js') // loader.js => index.js / loader.dev.js => index.dev.js
 
 const onError = (error: Error) => {
   window.console.error(error)
