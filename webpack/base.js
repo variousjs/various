@@ -1,4 +1,3 @@
-const path = require('path')
 const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const package = require('../package.json')
@@ -32,15 +31,6 @@ const config = {
     }),
     new VueLoaderPlugin(),
   ],
-  devServer: {
-    allowedHosts: 'all',
-    port: 2333,
-    host: '0.0.0.0',
-    static: {
-      directory: path.join(__dirname, '../docs'),
-    },
-    watchFiles: ['../docs'],
-  },
   module: {
     rules: [
       {
