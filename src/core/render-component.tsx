@@ -4,6 +4,7 @@ import { renderComponent as rc } from '@variousjs/various'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
 import { onError, VariousError } from './helper'
+import ErrorBoundary from './error-boundary'
 
 const renderComponent: typeof rc = ({
   name,
@@ -26,7 +27,11 @@ const renderComponent: typeof rc = ({
     const root = createRoot(target as Element)
     const { $silent, $ref, ...rest } = props || {}
     const nextProps: any = { $componentProps: rest, $silent, $ref }
-    const node = <C {...nextProps} />
+    const node = (
+      <ErrorBoundary name={name} module={module}>
+        <C {...nextProps} />
+      </ErrorBoundary>
+    )
 
     root.render(renderNode ? renderNode(node) : node)
 
