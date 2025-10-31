@@ -50,8 +50,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
     if (this.state.hasError) {
       return (
         <ErrorNode
-          $name={name}
-          $module={module}
+          $self={{ name, module }}
           $reload={this.reload}
           $store={store as Store}
           $error={this.error!}

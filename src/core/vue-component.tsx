@@ -110,6 +110,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
               $postMessage,
               $t,
               $store: storeReactiveRef.current!.value,
+              $self: { name, module },
             },
             // eslint-disable-next-line react/no-this-in-sfc
             key: this.key,
@@ -203,8 +204,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           !componentReady && !$silent && !isModuleLoaded(name)
             ? (
               <LoaderNode
-                $name={name}
-                $module={module}
+                $self={{ name, module }}
                 $store={store}
               />
             )

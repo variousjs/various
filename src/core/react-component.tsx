@@ -132,8 +132,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
         return (
           <LoaderNode
-            $name={name}
-            $module={module}
+            $self={{ name, module }}
             $store={store as Store}
           />
         )
@@ -142,6 +141,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       return (
         <ComponentNode
           {...$componentProps}
+          $self={{ name, module }}
           $dispatch={this.$dispatch}
           $store={store}
           $postMessage={this.$postMessage}

@@ -69,6 +69,7 @@ declare module '@variousjs/various' {
     $postMessage: $postMessage,
     $t: Intl,
     $logger: $logger,
+    $self: ModuleDefined,
   }
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
@@ -103,15 +104,13 @@ declare module '@variousjs/various' {
     $reload: () => void,
     $error: VariousError,
     $store: Readonly<S>,
-    $name: ModuleDefined['name'],
-    $module?: ModuleDefined['module'],
+    $self: ModuleDefined,
   }
   export type ErrorNode<S extends object = ObjectRecord> = ComponentType<ErrorNodeProps<S>>
 
   export interface LoaderNodeProps<S extends object = ObjectRecord> {
     $store: Readonly<S>,
-    $name: ModuleDefined['name'],
-    $module?: ModuleDefined['module'],
+    $self: ModuleDefined,
   }
   export type LoaderNode<S extends object = ObjectRecord> = ComponentType<LoaderNodeProps<S>>
 
