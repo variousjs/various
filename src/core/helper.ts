@@ -18,6 +18,7 @@ import {
   DEPENDENCIES_KEY,
   VUE_VERSION,
   VUE_FUNCTION_OPTIONS,
+  BASE_DEPENDENCIES,
 } from './config'
 import { PublicActions, RequiredComponent } from '../types'
 import connector from './connector'
@@ -40,7 +41,10 @@ export const defineDependencies: typeof dd = (deps) => {
 
   Object.keys(deps).forEach((name) => {
     next[name] = `${deps[name]}#${name}`
-    window.requirejs.undef(name)
+
+    if (!BASE_DEPENDENCIES.includes(name)) {
+      window.requirejs.undef(name)
+    }
   })
 
   window.requirejs.config({ paths: next })

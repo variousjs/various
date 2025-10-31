@@ -81,6 +81,7 @@ export default () => {
         <button
           onClick={() => defineDependencies({
             [testPreloadModule]: './dist/helper/define.js',
+            react: 'this won\'t take effect',
           })}
         >
           Define: {testPreloadModule}
