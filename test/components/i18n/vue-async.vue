@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 import { VueVarious, I18n } from '@variousjs/various'
 import zh from './zh.json'
 import en from './en.json'
@@ -8,7 +8,7 @@ let resolveFn = (() => null) as any
 
 const V = defineComponent({
   props: {
-    various: Object as PropType<VueVarious>,
+    various: Object as VueVarious,
   },
 
   setup(props) {

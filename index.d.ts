@@ -2,6 +2,7 @@ declare module '@variousjs/various' {
   import {
     ComponentType, FC, ReactNode, RefObject,
   } from 'react'
+  import { PropType } from 'vue'
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
@@ -62,6 +63,14 @@ declare module '@variousjs/various' {
     update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
+  interface ComponentBuiltinProps<S extends object = ObjectRecord> {
+    $store: Readonly<S>,
+    $dispatch: $dispatch,
+    $postMessage: $postMessage,
+    $t: Intl,
+    $logger: $logger,
+  }
+
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
   export interface I18nConfig {
@@ -83,13 +92,7 @@ declare module '@variousjs/various' {
   export type ComponentProps<
     S extends object = ObjectRecord,
     P extends object = ObjectRecord
-  > = {
-    $store: Readonly<S>,
-    $dispatch: $dispatch,
-    $postMessage: $postMessage,
-    $t: Intl,
-    $logger: $logger,
-  } & P
+  > = ComponentBuiltinProps<S> & P
 
   export type ComponentNode<
     S extends object = {},
@@ -205,13 +208,7 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => Promise<void>
 
-  export interface VueVarious<S extends object = ObjectRecord> {
-    $dispatch: $dispatch,
-    $logger: $logger,
-    $postMessage: $postMessage,
-    $t: Intl,
-    $store: Readonly<S>,
-  }
+  export type VueVarious<S extends object = ObjectRecord> = PropType<ComponentBuiltinProps<S>>
 
   export const isModuleLoaded: (name: string) => boolean
   export const getMountedComponents: () => ModuleDefined[]
