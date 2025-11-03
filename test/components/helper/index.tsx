@@ -9,6 +9,7 @@ import {
   defineDependencies,
   getConfig,
   getStore,
+  removeLoadedModules,
 } from '@variousjs/various'
 
 const testPreloadModule = 'helper-define'
@@ -38,6 +39,11 @@ export default () => {
     } catch (_) {
       setIsLoaded('load error')
     }
+  }
+
+  const remove = () => {
+    removeLoadedModules([testPreloadModule, 'react']) // react won\'t been remove
+    setIsLoaded(String(isModuleLoaded(testPreloadModule)))
   }
 
   useEffect(() => {
@@ -90,6 +96,11 @@ export default () => {
       <h3>preloadModules</h3>
       <div className="value">
         <button onClick={() => preload()}>Preload: {testPreloadModule}</button>
+      </div>
+
+      <h3>removeLoadedModules</h3>
+      <div className="value">
+        <button onClick={() => remove()}>remove: {testPreloadModule}</button>
       </div>
 
       <h3>getMountedComponents</h3>
