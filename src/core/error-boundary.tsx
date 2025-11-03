@@ -5,6 +5,7 @@ import {
   VariousError,
   resetDependencyConfig,
   updateUnMountComponent,
+  getSelfInfo,
 } from './helper'
 import connector from './connector'
 import { ErrorBoundaryProps, Store } from '../types'
@@ -37,20 +38,21 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
     updateUnMountComponent({ name, module })
   }
 
+  $self = getSelfInfo(this.props)
+
   reload = () => {
     this.error = undefined
     this.setState({ hasError: false })
   }
 
   render() {
-    const { name, module } = this.props
     const ErrorNode = connector.getErrorComponent()
     const store = getUserStore()
 
     if (this.state.hasError) {
       return (
         <ErrorNode
-          $self={{ name, module }}
+          $self={this.$self}
           $reload={this.reload}
           $store={store as Store}
           $error={this.error!}

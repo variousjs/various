@@ -2,6 +2,7 @@ import {
   onComponentMounted as ocm,
   isModuleLoaded as im,
   preloadModules as pp,
+  removeLoadedModules as rm,
   defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
@@ -30,19 +31,25 @@ const getUrlHash = (url: string) => `${url}?${+new Date()}`
 const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
   .some((c) => c.name === module.name && c.module === module.module)
 
-export const preloadModules: typeof pp = (name) => new Promise<void>((resolve, reject) => {
-  const names = typeof name === 'string' ? [name] : name
+export const preloadModules: typeof pp = (names) => new Promise<void>((resolve, reject) => {
   window.requirejs(names, resolve, reject)
 })
+
+export const removeLoadedModules: typeof rm = (names) => {
+  names.forEach((name) => {
+    if (!BASE_DEPENDENCIES.includes(name)) {
+      window.requirejs.undef(name)
+    }
+  })
+}
 
 export const defineDependencies: typeof dd = (deps) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const next = {} as Record<string, string>
 
   Object.keys(deps).forEach((name) => {
-    next[name] = `${deps[name]}#${name}`
-
     if (!BASE_DEPENDENCIES.includes(name)) {
+      next[name] = `${deps[name]}#${name}`
       window.requirejs.undef(name)
     }
   })
@@ -255,4 +262,15 @@ export function updateUnMountComponent(moduleDefined: ModuleDefined) {
 
   emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
   connector.deleteComponentActions({ name, module })
+}
+
+export function getSelfInfo(params: ModuleDefined & { url?: string }) {
+  const { name, module, url } = params
+  const dependencies = getStore(DEPENDENCIES_KEY)
+
+  return {
+    name,
+    module,
+    url: url || dependencies[name],
+  }
 }

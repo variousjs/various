@@ -11,6 +11,7 @@ import {
   updateMountedComponent,
   parseComponentActions,
   isModuleLoaded,
+  getSelfInfo,
 } from './helper'
 import { connect, getStore, getUserStore } from './store'
 import connector from './connector'
@@ -114,6 +115,8 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
     $logger = createLogger({ name, module })
 
+    $self = getSelfInfo({ name, module, url })
+
     render() {
       const LoaderNode = connector.getLoaderComponent()
       const { $silent, $componentProps, $ref } = this.props
@@ -132,7 +135,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
 
         return (
           <LoaderNode
-            $self={{ name, module }}
+            $self={this.$self}
             $store={store as Store}
           />
         )
@@ -141,7 +144,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       return (
         <ComponentNode
           {...$componentProps}
-          $self={{ name, module }}
+          $self={this.$self}
           $dispatch={this.$dispatch}
           $store={store}
           $postMessage={this.$postMessage}

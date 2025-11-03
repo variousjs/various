@@ -69,7 +69,7 @@ declare module '@variousjs/various' {
     $postMessage: $postMessage,
     $t: Intl,
     $logger: $logger,
-    $self: ModuleDefined,
+    $self: ModuleDefined & { url: string },
   }
 
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
@@ -104,13 +104,13 @@ declare module '@variousjs/various' {
     $reload: () => void,
     $error: VariousError,
     $store: Readonly<S>,
-    $self: ModuleDefined,
+    $self: ModuleDefined & { url?: string },
   }
   export type ErrorNode<S extends object = ObjectRecord> = ComponentType<ErrorNodeProps<S>>
 
   export interface LoaderNodeProps<S extends object = ObjectRecord> {
     $store: Readonly<S>,
-    $self: ModuleDefined,
+    $self: ModuleDefined & { url?: string },
   }
   export type LoaderNode<S extends object = ObjectRecord> = ComponentType<LoaderNodeProps<S>>
 
@@ -190,7 +190,10 @@ declare module '@variousjs/various' {
     S extends object = ObjectRecord,
     P extends object = ObjectRecord
   >(
-    config: ModuleDefined & { url?: string, type?: VariousComponentType },
+    config: ModuleDefined & {
+      url?: string,
+      type?: VariousComponentType,
+    },
     storeKeys?: (keyof S)[],
   ): ComponentType<ComponentDefaultProps & P>
 
@@ -210,8 +213,9 @@ declare module '@variousjs/various' {
   export type VueVarious<S extends object = ObjectRecord> = PropType<ComponentBuiltinProps<S>>
 
   export const isModuleLoaded: (name: string) => boolean
+  export const removeLoadedModules: (names: string[]) => void
   export const getMountedComponents: () => ModuleDefined[]
-  export const preloadModules: (name: string | string[]) => Promise<void>
+  export const preloadModules: (name: string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
   ) => (() => void) | void

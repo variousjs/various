@@ -29,6 +29,7 @@ export {
   getMountedComponents,
   onComponentMounted,
   defineDependencies,
+  removeLoadedModules,
 } from './helper'
 
 export { default as createModule } from './create-module'
@@ -84,7 +85,7 @@ export default (config: Config & App<Store>) => {
 
     render() {
       return (
-        <ErrorBoundary name="app">
+        <ErrorBoundary name="app" url={dependencies.app}>
           <ContainerComponent />
         </ErrorBoundary>
       )

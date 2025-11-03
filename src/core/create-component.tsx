@@ -26,7 +26,7 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
       $componentProps: rest, $silent, $ref,
     } as ComponentDefaultProps & CreateComponentProps<any>
     return (
-      <ErrorBoundary name={name} module={module}>
+      <ErrorBoundary name={name} module={module} url={url}>
         <C {...nextProps} />
       </ErrorBoundary>
     )

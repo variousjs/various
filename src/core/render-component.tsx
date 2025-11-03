@@ -28,7 +28,7 @@ const renderComponent: typeof rc = ({
     const { $silent, $ref, ...rest } = props || {}
     const nextProps: any = { $componentProps: rest, $silent, $ref }
     const node = (
-      <ErrorBoundary name={name} module={module}>
+      <ErrorBoundary name={name} module={module} url={url}>
         <C {...nextProps} />
       </ErrorBoundary>
     )
