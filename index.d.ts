@@ -2,6 +2,7 @@ declare module '@variousjs/various' {
   import {
     ComponentType, FC, ReactNode, RefObject,
   } from 'react'
+  import { PropType } from 'vue'
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
@@ -62,6 +63,15 @@ declare module '@variousjs/various' {
     update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
+  interface ComponentBuiltinProps<S extends object = ObjectRecord> {
+    $store: Readonly<S>,
+    $dispatch: $dispatch,
+    $postMessage: $postMessage,
+    $t: Intl,
+    $logger: $logger,
+    $self: ModuleDefined & { url: string },
+  }
+
   export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
   export interface I18nConfig {
@@ -83,13 +93,7 @@ declare module '@variousjs/various' {
   export type ComponentProps<
     S extends object = ObjectRecord,
     P extends object = ObjectRecord
-  > = {
-    $store: Readonly<S>,
-    $dispatch: $dispatch,
-    $postMessage: $postMessage,
-    $t: Intl,
-    $logger: $logger,
-  } & P
+  > = ComponentBuiltinProps<S> & P
 
   export type ComponentNode<
     S extends object = {},
@@ -100,15 +104,13 @@ declare module '@variousjs/various' {
     $reload: () => void,
     $error: VariousError,
     $store: Readonly<S>,
-    $name: ModuleDefined['name'],
-    $module?: ModuleDefined['module'],
+    $self: ModuleDefined & { url?: string },
   }
   export type ErrorNode<S extends object = ObjectRecord> = ComponentType<ErrorNodeProps<S>>
 
   export interface LoaderNodeProps<S extends object = ObjectRecord> {
     $store: Readonly<S>,
-    $name: ModuleDefined['name'],
-    $module?: ModuleDefined['module'],
+    $self: ModuleDefined & { url?: string },
   }
   export type LoaderNode<S extends object = ObjectRecord> = ComponentType<LoaderNodeProps<S>>
 
@@ -188,7 +190,10 @@ declare module '@variousjs/various' {
     S extends object = ObjectRecord,
     P extends object = ObjectRecord
   >(
-    config: ModuleDefined & { url?: string, type?: VariousComponentType },
+    config: ModuleDefined & {
+      url?: string,
+      type?: VariousComponentType,
+    },
     storeKeys?: (keyof S)[],
   ): ComponentType<ComponentDefaultProps & P>
 
@@ -205,17 +210,12 @@ declare module '@variousjs/various' {
     onMounted?: () => void,
   }): () => Promise<void>
 
-  export interface VueVarious<S extends object = ObjectRecord> {
-    $dispatch: $dispatch,
-    $logger: $logger,
-    $postMessage: $postMessage,
-    $t: Intl,
-    $store: Readonly<S>,
-  }
+  export type VueVarious<S extends object = ObjectRecord> = PropType<ComponentBuiltinProps<S>>
 
   export const isModuleLoaded: (name: string) => boolean
+  export const removeLoadedModules: (names: string[]) => void
   export const getMountedComponents: () => ModuleDefined[]
-  export const preloadModules: (name: string | string[]) => Promise<void>
+  export const preloadModules: (name: string[]) => Promise<void>
   export const onComponentMounted: (
     name: ModuleDefined | ModuleDefined[], callback: () => void
   ) => (() => void) | void

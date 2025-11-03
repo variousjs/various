@@ -21,9 +21,10 @@ const Mi = createComponent({ name: 'create-vue-e', url: './dist/create-component
 const Mj = createComponent({ name: 'create', module: 'Ref' })
 
 export default (props: ComponentProps) => {
+  const { name } = props.$self
   const maRef = useRef<any>(null)
   const [num, setNum] = useState(0)
-  const RuntimeCreate = useMemo(() => createComponent({ name: 'create', module: 'E' }), [])
+  const RuntimeCreate = useMemo(() => createComponent({ name, module: 'E' }), [name])
   const ref = useRef<any>(null)
 
   return (

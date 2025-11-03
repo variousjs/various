@@ -28,3 +28,10 @@ export const VUE_FUNCTION_OPTIONS = [
 ]
 
 export const VUE_VERSION = 3
+
+export const BASE_DEPENDENCIES = [
+  'react',
+  'react-dom',
+  '@variousjs/various',
+  'app',
+]

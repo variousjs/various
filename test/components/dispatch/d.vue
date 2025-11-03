@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { VueVarious, PublicAction } from '@variousjs/various'
 import { Store } from '../../types'
 
@@ -12,7 +12,7 @@ const message = ref<NS>({})
 
 const V = defineComponent({
   props: {
-    various: Object as PropType<VueVarious<Store>>,
+    various: Object as VueVarious<Store>,
   },
 
   data() {

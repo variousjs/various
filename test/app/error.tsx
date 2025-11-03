@@ -6,14 +6,13 @@ const errorComponent: ErrorNode<Store> = (props) => {
   const {
     $reload,
     $error,
-    $name,
-    $module,
+    $self,
     $store,
   } = props
 
   return (
     <>
-      <h3>{$name}{$module ? '.' : ''}{$module}</h3>
+      <h3>{[$self.name, $self.module].filter(Boolean).join('.')}</h3>
       <div className="value">
         <p>{`[${$error.type}]:${$error.message}`}</p>
         <button onClick={$reload}>

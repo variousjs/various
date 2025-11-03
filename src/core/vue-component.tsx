@@ -23,6 +23,7 @@ import {
   parseComponentActions,
   isModuleLoaded,
   VariousError,
+  getSelfInfo,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
@@ -52,6 +53,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const errorRef = useRef<Error | ve>()
     const isUnMountedRef = useRef(false)
     const ComponentNodeRef = useRef<RequiredComponent>()
+    const selfRef = useRef(getSelfInfo({ name, module, url }))
 
     const containerDivRef = useRef<HTMLDivElement | null>(null)
     const propsReactiveRef = useRef<{ value: ObjectRecord }>()
@@ -110,6 +112,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
               $postMessage,
               $t,
               $store: storeReactiveRef.current!.value,
+              $self: selfRef.current,
             },
             // eslint-disable-next-line react/no-this-in-sfc
             key: this.key,
@@ -203,8 +206,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           !componentReady && !$silent && !isModuleLoaded(name)
             ? (
               <LoaderNode
-                $name={name}
-                $module={module}
+                $self={selfRef.current}
                 $store={store}
               />
             )

@@ -7,9 +7,9 @@ export default function (props: LoaderNodeProps<Store>) {
     useEffect(() => {
       const dom = document.querySelector('#t')
       if (dom) {
-        dom.innerHTML += [props.$name, props.$module].filter(Boolean).join()
+        dom.innerHTML += [props.$self.name, props.$self.module].filter(Boolean).join()
       }
-    }, [props.$name, props.$module])
+    }, [props.$self])
   }
 
   return (

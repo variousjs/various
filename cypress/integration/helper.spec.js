@@ -41,6 +41,12 @@ describe('helper', () => {
       .eq(0)
       .should('have.text', 'helper-define: true')
 
+    // removeLoadedModules and isModuleLoaded
+    cy.contains('button', 'remove: helper-define').click()
+    cy.contains('h3', 'isModuleLoaded').next().children()
+      .eq(0)
+      .should('have.text', 'helper-define: false')
+
     // getMountedComponents
     cy.contains('h3', 'getMountedComponents').next().should('have.text', 'container,helper')
 

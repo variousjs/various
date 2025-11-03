@@ -57,6 +57,7 @@ export interface CreateComponentProps<P extends object> extends Store {
 }
 
 export type ErrorBoundaryProps = ModuleDefined & {
+  url?: string,
   children: ReactNode,
 }
 
