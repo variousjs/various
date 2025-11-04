@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import Vue from 'vue'
+import type Vue from 'vue'
 import {
   ComponentDefaultProps,
   ModuleDefined,

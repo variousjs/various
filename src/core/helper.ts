@@ -58,8 +58,9 @@ export const defineDependencies: typeof dd = (deps) => {
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isModuleLoaded: typeof im = (name) => window.requirejs.specified(name)
-  && !!window.requirejs.s.contexts._.defined[name]
+export const isModuleLoaded: typeof im = (name) => window.requirejs.defined(name)
+
+export const isModuleSpecified = (name: string) => window.requirejs.specified(name)
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
@@ -273,4 +274,22 @@ export function getSelfInfo(params: ModuleDefined & { url?: string }) {
     module,
     url: url || dependencies[name],
   }
+}
+
+export function loadRequireJS(url: string) {
+  return new Promise<Event>((resolve, reject) => {
+    // @ts-ignore for standalone
+    if (window.requirejs) {
+      resolve(new Event('requirejs exist'))
+      return
+    }
+
+    const script = document.createElement('script')
+
+    script.src = url
+    script.onload = (e) => resolve(e)
+    script.onerror = (e) => reject(e)
+
+    document.head.appendChild(script)
+  })
 }
