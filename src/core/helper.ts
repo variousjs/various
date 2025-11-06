@@ -87,6 +87,10 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
 export const resetDependencyConfig = (name: string, url?: string) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
 
+  if (!window.requirejs) {
+    return
+  }
+
   // ignore multiple custom module url
   if (url && window.requirejs.defined(name)) {
     return
@@ -276,20 +280,7 @@ export function getSelfInfo(params: ModuleDefined & { url?: string }) {
   }
 }
 
-export function loadRequireJS(url: string) {
-  return new Promise<Event>((resolve, reject) => {
-    // @ts-ignore for standalone
-    if (window.requirejs) {
-      resolve(new Event('requirejs exist'))
-      return
-    }
-
-    const script = document.createElement('script')
-
-    script.src = url
-    script.onload = (e) => resolve(e)
-    script.onerror = (e) => reject(e)
-
-    document.head.appendChild(script)
-  })
+export function getClassNameWithModule(self: ModuleDefined, prefix: string) {
+  const { name, module } = self
+  return `${prefix} ${[name, module].filter(Boolean).join('-')}`
 }

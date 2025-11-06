@@ -24,6 +24,7 @@ import {
   isModuleLoaded,
   VariousError,
   getSelfInfo,
+  getClassNameWithModule,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
@@ -213,7 +214,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
             : null
         }
         <div
-          className={`various-component-${getNameWithModule({ name, module })}`}
+          className={getClassNameWithModule({ name, module }, 'various-vue-component')}
           ref={containerDivRef}
         />
       </>

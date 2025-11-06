@@ -6,6 +6,28 @@
     "dist",
     "index.d.ts"
   ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./standalone": {
+      "import": {
+        "types": "./standalone.d.ts",
+        "default": "./dist/standalone.js"
+      },
+      "require": {
+        "types": "./standalone.d.ts",
+        "default": "./dist/standalone.js"
+      }
+    }
+  },
   "unpkg": "dist/index.js",
   "publishConfig": {
     "access": "public"
@@ -16,7 +38,6 @@
     ],
     "excludeAfterRemap": true
   },
-  "types": "index.d.ts",
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "create-empty": "touch docs/dist/empty.js",

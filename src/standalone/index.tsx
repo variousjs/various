@@ -1,0 +1,129 @@
+import React, {
+  ComponentType,
+  FC,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { createComponent as cc, createConfig as con } from '@variousjs/various/standalone'
+import createComponentCore from '../core/create-component'
+import ErrorBoundary from '../core/error-boundary'
+import connector from '../core/connector'
+import { onError, VariousError } from '../core/helper'
+import { defineModules, loadRequireJS } from './helper'
+import { createStore, emit, getUserStore } from '../core/store'
+import {
+  MOUNTED_COMPONENTS_KEY,
+  DEPENDENCIES_KEY,
+  CONFIG_KEY,
+  MESSAGE_KEY,
+} from '../core/config'
+
+createStore({
+  [MOUNTED_COMPONENTS_KEY]: [],
+  [MESSAGE_KEY]: null,
+  [CONFIG_KEY]: {},
+  [DEPENDENCIES_KEY]: {},
+})
+
+const Standalone: FC<Parameters<typeof cc>['0']> = (props) => {
+  const {
+    dependencies,
+    url,
+    name,
+    module,
+    type,
+  } = props
+  const [componentReady, setComponentReady] = useState(false)
+  const componentNode = useRef<ComponentType>()
+  const errorRef = useRef<Error>()
+  const [isError, setIsError] = useState(false)
+
+  useEffect(() => {
+    loadRequireJS(dependencies?.requirejs)
+      .then(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { requirejs, ...rest } = dependencies || {}
+        defineModules(rest)
+
+        setTimeout(() => {
+          componentNode.current = createComponentCore({
+            name,
+            module,
+            url,
+            type,
+          })
+          setComponentReady(true)
+        }, 300)
+      })
+      .catch((e) => {
+        errorRef.current = e
+        setIsError(true)
+      })
+  }, [name, url, module, dependencies, type])
+
+  if (isError) {
+    throw errorRef.current
+  }
+
+  if (!componentReady) {
+    const FallBack = connector.getLoaderComponent()
+    return <FallBack $self={{ name, module, url }} $store={getUserStore()} />
+  }
+
+  const C = componentNode.current!
+
+  return (
+    <C />
+  )
+}
+
+Standalone.displayName = 'various-standalone'
+
+export const createComponent: typeof cc = (args) => {
+  const component: FC = () => (
+    <ErrorBoundary name="standalone" url={args.url} module={args.module}>
+      <Standalone {...args} />
+    </ErrorBoundary>
+  )
+  const updateLng: ReturnType<typeof cc>['updateLng'] = (key, value) => {
+    emit({ [key]: value })
+  }
+
+  component.displayName = 'various-standalone-creator'
+  return Object.assign(component, { updateLng })
+}
+
+export const createConfig: typeof con = (config) => {
+  const {
+    baseDependencies,
+    errorFallback,
+    fallback,
+    lng,
+  } = config
+  const { requirejs, ...rest } = baseDependencies
+
+  if (errorFallback) {
+    connector.setErrorComponent(errorFallback)
+  }
+
+  if (fallback) {
+    connector.setLoaderComponent(fallback)
+  }
+
+  if (lng) {
+    emit({ [lng.key]: lng.defaultValue })
+  }
+
+  loadRequireJS(requirejs)
+    .then(() => {
+      defineModules(rest)
+    })
+    .catch((e) => {
+      onError(new VariousError({
+        name: 'standalone',
+        type: 'CONFIG_ERROR',
+        originalError: e,
+      }))
+    })
+}
