@@ -8,7 +8,7 @@ const C = createComponent({ name: 'create', module: 'A', url: '/dist/create-comp
 const D = createComponent({ type: 'vue3', name: 'createvue', url: '/dist/create-component/c.js' })
 
 export default {
-  Container: () => (
+  Root: () => (
     <>
       <div id="t" />
       <C $silent />

@@ -46,15 +46,13 @@ const Standalone: FC<Parameters<typeof cc>['0']> = (props) => {
         const { requirejs, ...rest } = dependencies || {}
         defineModules(rest)
 
-        setTimeout(() => {
-          componentNode.current = createComponentCore({
-            name,
-            module,
-            url,
-            type,
-          })
-          setComponentReady(true)
-        }, 300)
+        componentNode.current = createComponentCore({
+          name,
+          module,
+          url,
+          type,
+        })
+        setComponentReady(true)
       })
       .catch((e) => {
         errorRef.current = e
@@ -67,7 +65,7 @@ const Standalone: FC<Parameters<typeof cc>['0']> = (props) => {
   }
 
   if (!componentReady) {
-    const FallBack = connector.getLoaderComponent()
+    const FallBack = connector.getFallbackComponent()
     return <FallBack $self={{ name, module, url }} $store={getUserStore()} />
   }
 
@@ -104,11 +102,11 @@ export const createConfig: typeof con = (config) => {
   const { requirejs, ...rest } = baseDependencies
 
   if (errorFallback) {
-    connector.setErrorComponent(errorFallback)
+    connector.setErrorFallbackComponent(errorFallback)
   }
 
   if (fallback) {
-    connector.setLoaderComponent(fallback)
+    connector.setFallbackComponent(fallback)
   }
 
   if (lng) {

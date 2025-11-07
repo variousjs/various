@@ -12,6 +12,6 @@ const C = createComponent({ name: 'i18n', type: 'vue3' })
 
 export default {
   store: { locale: 'jp' },
-  Container: () => (<C />),
+  Root: () => (<C />),
   i18n,
 } as App

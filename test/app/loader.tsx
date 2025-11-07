@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { LoaderNodeProps } from '@variousjs/various'
+import { FallbackProps } from '@variousjs/various'
 import { Store } from '../types'
 
-export default function (props: LoaderNodeProps<Store>) {
+export default function (props: FallbackProps<Store>) {
   if (window.Cypress) {
     useEffect(() => {
       const dom = document.querySelector('#t')

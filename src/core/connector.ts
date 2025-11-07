@@ -1,10 +1,10 @@
 import {
-  LoaderNode,
-  ErrorNode,
+  FallbackNode,
+  ErrorFallbackNode,
   App,
   ModuleDefined,
 } from '@variousjs/various'
-import { Loader, Error } from './default-component'
+import { Fallback, ErrorFallback } from './default-component'
 import {
   PublicActions,
   Store,
@@ -14,9 +14,9 @@ import {
 import { getNameWithModule } from './helper'
 
 class Connector {
-  private loaderComponent: LoaderNode<Store>
+  private fallbackComponent: FallbackNode<Store>
 
-  private errorComponent: ErrorNode<Store>
+  private errorFallbackComponent: ErrorFallbackNode<Store>
 
   private storeActions: Actions<Store>
 
@@ -29,8 +29,8 @@ class Connector {
   private middlewares: App['middlewares']
 
   constructor() {
-    this.loaderComponent = Loader
-    this.errorComponent = Error
+    this.fallbackComponent = Fallback
+    this.errorFallbackComponent = ErrorFallback
     this.storeActions = {}
     this.componentActions = {}
     this.i18nConfigs = {}
@@ -86,20 +86,20 @@ class Connector {
     return this.storeActions
   }
 
-  setLoaderComponent(loaderComponent: LoaderNode<Store>) {
-    this.loaderComponent = loaderComponent
+  setFallbackComponent(fallbackComponent: FallbackNode<Store>) {
+    this.fallbackComponent = fallbackComponent
   }
 
-  getLoaderComponent() {
-    return this.loaderComponent
+  getFallbackComponent() {
+    return this.fallbackComponent
   }
 
-  setErrorComponent(errorComponent: ErrorNode<Store>) {
-    this.errorComponent = errorComponent
+  setErrorFallbackComponent(errorFallbackComponent: ErrorFallbackNode<Store>) {
+    this.errorFallbackComponent = errorFallbackComponent
   }
 
-  getErrorComponent() {
-    return this.errorComponent
+  getErrorFallbackComponent() {
+    return this.errorFallbackComponent
   }
 }
 

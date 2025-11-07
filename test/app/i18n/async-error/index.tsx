@@ -17,7 +17,7 @@ const C = createComponent({ name: 'i18n' })
 
 export default {
   store: { locale: 'jp' },
-  Container: () => (<C setFail={() => emit({ i18nFailSignal: true })} />),
+  Root: () => (<C setFail={() => emit({ i18nFailSignal: true })} />),
   i18n,
   middlewares: {
     onLog(e) {

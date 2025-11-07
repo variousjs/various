@@ -66,7 +66,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const [componentReady, setComponentReady] = useState(false)
     const [isError, setIsError] = useState(false)
 
-    const LoaderNode = connector.getLoaderComponent()
+    const Fallback = connector.getFallbackComponent()
     const { $silent, $componentProps } = props
 
     const mountVue = useCallback(() => {
@@ -206,7 +206,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         {
           !componentReady && !$silent && !isModuleLoaded(name)
             ? (
-              <LoaderNode
+              <Fallback
                 $self={selfRef.current}
                 $store={store}
               />

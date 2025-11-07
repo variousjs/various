@@ -1,15 +1,15 @@
 import { App, createComponent } from '@variousjs/various'
 import actions from './actions'
 import store from './store'
-import Loader from './loader'
+import Fallback from './loader'
 import ErrorNode from './error'
 import middlewares from './middlewares'
 
 const app: App<typeof store> = {
   store,
-  Container: createComponent({ name: 'container' }),
-  Loader,
-  Error: ErrorNode,
+  Root: createComponent({ name: 'container' }),
+  Fallback,
+  ErrorFallback: ErrorNode,
   actions,
   middlewares,
 }
