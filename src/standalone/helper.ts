@@ -11,7 +11,7 @@ export function loadRequireJS(dep?: DependencyType) {
       return
     }
 
-    if (!dep && !window.requirejs) {
+    if (!dep && !window.requirejs && !requirejsPromise) {
       reject(new VariousError({
         name: 'standalone',
         type: 'NOT_DEFINED',
