@@ -1,17 +1,15 @@
 import { DependencyType, createComponent } from '@variousjs/various/standalone'
-import { defineDependencies, isModuleSpecified, VariousError } from '../core/helper'
+import { isModuleSpecified, VariousError } from '../core/helper'
 
 let requirejsPromise: Promise<Event> | undefined
 
 export function loadRequireJS(dep?: DependencyType) {
-  const promise = new Promise<Event>((resolve, reject) => {
-    // @ts-ignore
-    if (window.requirejs) {
-      resolve(new Event('requirejs exist'))
-      return
-    }
+  if (requirejsPromise) {
+    return requirejsPromise
+  }
 
-    if (!dep && !window.requirejs && !requirejsPromise) {
+  const promise = new Promise<Event>((resolve, reject) => {
+    if (!dep) {
       reject(new VariousError({
         name: 'standalone',
         type: 'NOT_DEFINED',
@@ -45,19 +43,15 @@ export function defineModules(
   deps: Parameters<typeof createComponent>['0']['dependencies'],
 ) {
   Object.entries(deps || {}).forEach(([key, value]) => {
-    if (!isModuleSpecified(key)) {
-      switch (true) {
-        case typeof value === 'string':
-          defineDependencies({ [key]: value as string })
-          break
-
-        case typeof value !== 'string':
-          window.define(key, [], () => value)
-          break
-
-        default:
-          break
-      }
+    if (isModuleSpecified(key)) {
+      return
     }
+
+    if (typeof value === 'string') {
+      window.requirejs.config({ paths: { [key]: `${value}#${key}` } })
+      return
+    }
+
+    window.define(key, [], () => value)
   })
 }

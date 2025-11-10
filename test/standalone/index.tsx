@@ -1,40 +1,45 @@
 import React from 'react'
 import * as Vue from 'vue'
-import { createRoot } from 'react-dom/client'
+import ReactDOM, { createRoot } from 'react-dom/client'
+import '@variousjs/requirejs'
 import { createComponent, createConfig } from '../../src/standalone'
 
 createConfig({
   baseDependencies: {
-    requirejs: 'https://cdn.jsdelivr.net/npm/requirejs@2.3.7/require.min.js',
+    requirejs: window.requirejs,
     react: React,
     vue: Vue,
   },
   lng: { key: 'locale', defaultValue: 'zh' },
 })
 
-const url1 = 'https://variousjs.github.io/preview/dist/dino.js'
-const url2 = 'http://127.0.0.1:2333/dist/i18n/vue-async.js'
-const Dino = createComponent({
-  name: 'dino',
-  url: url1,
+const RC = createComponent<{ propsA: string }>({
+  name: 'a',
+  module: 'A',
+  url: '/dist/standalone/a.js',
   dependencies: {
-    // requirejs: 'https://cdn.jsdelivr.net/npm/requirejs@2.3.7/require.min.js',
+    '@variousjs/various': '/dist/index.js',
+    'react-dom/client': ReactDOM,
   },
 })
-const VueC = createComponent({ name: 'vuec', url: url2, type: 'vue3' })
+const VC = createComponent({
+  name: 'b',
+  url: '/dist/standalone/b.js',
+  type: 'vue3',
+})
 
 function App() {
   return (
-    <div>
-      <Dino />
-      <VueC />
+    <div style={{ padding: 20 }}>
+      <RC propsA="propsA" />
       <button
         onClick={() => {
-          VueC.updateLng('locale', 'en')
+          RC.updateLng('locale', 'en')
         }}
       >
         change lng
       </button>
+      <VC />
     </div>
   )
 }
