@@ -16,7 +16,6 @@ const config = {
   },
   entry: {
     loader: path.resolve(__dirname, '../src/loader.ts'),
-    standalone: path.resolve(__dirname, '../test/standalone/index.tsx'),
   },
   output: {
     path: path.resolve(__dirname, '../docs/dist'),
