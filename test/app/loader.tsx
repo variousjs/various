@@ -3,14 +3,14 @@ import { FallbackProps } from '@variousjs/various'
 import { Store } from '../types'
 
 export default function (props: FallbackProps<Store>) {
-  if (window.Cypress) {
-    useEffect(() => {
+  useEffect(() => {
+    if (window.Cypress) {
       const dom = document.querySelector('#t')
       if (dom) {
         dom.innerHTML += [props.$self.name, props.$self.module].filter(Boolean).join()
       }
-    }, [props.$self])
-  }
+    }
+  }, [props.$self])
 
   return (
     <div>...</div>

@@ -87,11 +87,6 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
 export const resetDependencyConfig = (name: string, url?: string) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
 
-  // standalone
-  if (!window.requirejs) {
-    return
-  }
-
   // ignore multiple custom module url
   if (url && window.requirejs.defined(name)) {
     return

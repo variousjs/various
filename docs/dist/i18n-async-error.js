@@ -1,2 +1,169 @@
-define(["react","@variousjs/various"],function(e,n){return function(){"use strict";var r={220:function(e){e.exports=n},959:function(n){n.exports=e}},t={};function o(e){var n=t[e];if(void 0!==n)return n.exports;var i=t[e]={exports:{}};return r[e](i,i.exports,o),i.exports}o.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return o.d(n,{a:n}),n},o.d=function(e,n){for(var r in n)o.o(n,r)&&!o.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:n[r]})},o.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},o.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var i={};o.r(i),o.d(i,{default:function(){return p}});var a=o(959),u=o.n(a),c=o(220);const{createStore:l,subscribe:s,emit:f}=new c.Nycticorax;l({i18nFailSignal:!1});const d=(0,c.createComponent)({name:"i18n"});var p={store:{locale:"jp"},Root:()=>u().createElement(d,{setFail:()=>f({i18nFailSignal:!0})}),i18n:()=>new Promise((e,n)=>{const r=s({i18nFailSignal(e){e&&n(new Error("get i18n Error")),r()}})}),middlewares:{onLog(e){return window.console.log(e.name,e.type),!1}}};return i}()});
+define(["react","@variousjs/various"], function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE__variousjs_various__) { return /******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./test/app/i18n/async-error/store.ts":
+/*!********************************************!*\
+  !*** ./test/app/i18n/async-error/store.ts ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createStore: function() { return /* binding */ createStore; },
+/* harmony export */   emit: function() { return /* binding */ emit; },
+/* harmony export */   subscribe: function() { return /* binding */ subscribe; }
+/* harmony export */ });
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @variousjs/various */ "@variousjs/various");
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_variousjs_various__WEBPACK_IMPORTED_MODULE_0__);
+
+const {
+  createStore,
+  subscribe,
+  emit
+} = new _variousjs_various__WEBPACK_IMPORTED_MODULE_0__.Nycticorax();
+createStore({
+  i18nFailSignal: false
+});
+
+/***/ }),
+
+/***/ "@variousjs/various":
+/*!*************************************!*\
+  !*** external "@variousjs/various" ***!
+  \*************************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__variousjs_various__;
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "react" ***!
+  \************************/
+/***/ (function(module) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+!function() {
+/*!*********************************************!*\
+  !*** ./test/app/i18n/async-error/index.tsx ***!
+  \*********************************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @variousjs/various */ "@variousjs/various");
+/* harmony import */ var _variousjs_various__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_variousjs_various__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store */ "./test/app/i18n/async-error/store.ts");
+
+
+
+const i18n = () => new Promise((_, reject) => {
+  const unsubscribe = (0,_store__WEBPACK_IMPORTED_MODULE_2__.subscribe)({
+    i18nFailSignal(v) {
+      if (v) {
+        reject(new Error('get i18n Error'));
+      }
+      unsubscribe();
+    }
+  });
+});
+const C = (0,_variousjs_various__WEBPACK_IMPORTED_MODULE_1__.createComponent)({
+  name: 'i18n'
+});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  store: {
+    locale: 'jp'
+  },
+  Root: () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(C, {
+    setFail: () => (0,_store__WEBPACK_IMPORTED_MODULE_2__.emit)({
+      i18nFailSignal: true
+    })
+  }),
+  i18n,
+  middlewares: {
+    onLog(e) {
+      window.console.log(e.name, e.type);
+      return false;
+    }
+  }
+});
+}();
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});;
 //# sourceMappingURL=i18n-async-error.js.map

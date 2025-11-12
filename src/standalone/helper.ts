@@ -32,17 +32,15 @@ export function loadRequireJS(dep?: DependencyType) {
     resolve(new Event('requirejs defined'))
   })
 
-  if (!requirejsPromise) {
-    requirejsPromise = promise
-  }
+  requirejsPromise = promise
 
   return requirejsPromise
 }
 
 export function defineModules(
-  deps: Parameters<typeof createComponent>['0']['dependencies'],
+  deps: NonNullable<Parameters<typeof createComponent>['0']['dependencies']>,
 ) {
-  Object.entries(deps || {}).forEach(([key, value]) => {
+  Object.entries(deps).forEach(([key, value]) => {
     if (isModuleSpecified(key)) {
       return
     }

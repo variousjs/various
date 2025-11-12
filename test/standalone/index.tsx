@@ -4,14 +4,37 @@ import ReactDOM, { createRoot } from 'react-dom/client'
 import '@variousjs/requirejs'
 import { createComponent, createConfig } from '../../src/standalone'
 
-createConfig({
-  baseDependencies: {
-    requirejs: window.requirejs,
-    react: React,
-    vue: Vue,
+const query = new URLSearchParams(window.location.search)
+const testType = query.get('type') || 'default'
+
+const baseConfig: Record<string, Parameters<typeof createConfig>['0']> = {
+  default: {
+    baseDependencies: {
+      requirejs: window.requirejs,
+      react: React,
+      vue: Vue,
+      'react-dom/client': ReactDOM,
+    },
+    store: { locale: 'zh', globalB: 'B' },
   },
-  store: { locale: 'zh', globalB: 'B' },
-})
+  depsError: {
+    baseDependencies: {},
+    fallback: () => null,
+    errorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
+  },
+  requirejsPath: {
+    baseDependencies: {
+      requirejs: './libs/require.min.js',
+    },
+  },
+  requirejsPathError: {
+    baseDependencies: {
+      requirejs: '.error/require.min.js',
+    },
+  },
+}
+
+createConfig(baseConfig[testType])
 
 const RC = createComponent<{ propsA: string }>({
   name: 'a',

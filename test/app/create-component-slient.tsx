@@ -17,6 +17,6 @@ export default {
       <D $silent />
     </>
   ),
-  Loader,
+  Fallback: Loader,
   store,
 } as App<Store>
