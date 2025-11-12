@@ -36,8 +36,8 @@ declare module '@variousjs/various/standalone' {
         DependencyType
       >>,
       store?: Record<string, any>,
-      fallback?: FallbackNode<ObjectRecord>,
-      errorFallback?: ErrorFallbackNode<ObjectRecord>,
+      fallback?: FallbackNode<any>,
+      errorFallback?: ErrorFallbackNode<any>,
     },
   ): void
 }
