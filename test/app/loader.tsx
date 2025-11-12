@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import { LoaderNodeProps } from '@variousjs/various'
+import { FallbackProps } from '@variousjs/various'
 import { Store } from '../types'
 
-export default function (props: LoaderNodeProps<Store>) {
-  if (window.Cypress) {
-    useEffect(() => {
+export default function (props: FallbackProps<Store>) {
+  useEffect(() => {
+    if (window.Cypress) {
       const dom = document.querySelector('#t')
       if (dom) {
         dom.innerHTML += [props.$self.name, props.$self.module].filter(Boolean).join()
       }
-    }, [props.$self])
-  }
+    }
+  }, [props.$self])
 
   return (
     <div>...</div>

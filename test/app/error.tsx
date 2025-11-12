@@ -1,8 +1,8 @@
 import React from 'react'
-import { ErrorNode } from '@variousjs/various'
+import { ErrorFallbackNode } from '@variousjs/various'
 import { Store } from '../types'
 
-const errorComponent: ErrorNode<Store> = (props) => {
+const errorComponent: ErrorFallbackNode<Store> = (props) => {
   const {
     $reload,
     $error,

@@ -118,7 +118,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     $self = getSelfInfo({ name, module, url })
 
     render() {
-      const LoaderNode = connector.getLoaderComponent()
+      const Fallback = connector.getFallbackComponent()
       const { $silent, $componentProps, $ref } = this.props
       const { componentReady, isError } = this.state
       const store = getUserStore()
@@ -134,7 +134,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
         }
 
         return (
-          <LoaderNode
+          <Fallback
             $self={this.$self}
             $store={store as Store}
           />

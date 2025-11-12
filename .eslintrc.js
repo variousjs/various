@@ -73,5 +73,6 @@ module.exports = {
     'react/static-property-placement': 0,
     'react/button-has-type': 0,
     'max-classes-per-file': 0,
+    'react/require-default-props': 0,
   },
 }

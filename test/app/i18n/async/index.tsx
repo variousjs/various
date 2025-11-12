@@ -21,6 +21,6 @@ const C = createComponent({ name: 'i18n' }, ['locale'])
 
 export default {
   store: { locale: 'jp' },
-  Container: () => (<C setSuccess={() => emit({ i18nPassSignal: true })} />),
+  Root: () => (<C setSuccess={() => emit({ i18nPassSignal: true })} />),
   i18n,
 } as App

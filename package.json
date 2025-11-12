@@ -1,11 +1,33 @@
 {
   "name": "@variousjs/various",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
     "index.d.ts"
   ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./standalone": {
+      "import": {
+        "types": "./standalone.d.ts",
+        "default": "./dist/standalone.js"
+      },
+      "require": {
+        "types": "./standalone.d.ts",
+        "default": "./dist/standalone.js"
+      }
+    }
+  },
   "unpkg": "dist/index.js",
   "publishConfig": {
     "access": "public"
@@ -16,19 +38,18 @@
     ],
     "excludeAfterRemap": true
   },
-  "types": "index.d.ts",
   "scripts": {
     "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
     "create-empty": "touch docs/dist/empty.js",
-    "test-components": "webpack --config webpack/test-components.js --progress",
+    "test-components": "webpack --config webpack/test-components.js",
     "test-components:build": "NODE_ENV=production webpack --config webpack/test-components.js --progress",
-    "package-core": "webpack --config webpack/package-core.js --progress",
+    "package-core": "webpack --config webpack/package-core.js",
     "package-core:build": "NODE_ENV=production webpack --config webpack/package-core.js --progress",
-    "package-loader": "webpack serve --config webpack/package-loader.js --progress --no-client-overlay",
-    "package-loader:build": "NODE_ENV=production webpack --config webpack/package-loader.js --progress",
+    "entry": "webpack serve --config webpack/entry.js --no-client-overlay",
+    "entry:build": "NODE_ENV=production webpack --config webpack/entry.js --progress",
     "prestart": "mkdir -p docs/dist && npm run create-empty",
-    "start": "npm run test-components & npm run package-core & npm run package-loader",
-    "build": "npm run test-components:build && npm run package-core:build && npm run package-loader:build",
+    "start": "npm run test-components & npm run package-core & npm run entry",
+    "build": "npm run test-components:build && npm run package-core:build && npm run entry:build",
     "prebuild": "npm run lint && rm -rf dist && rm -rf docs/dist",
     "postbuild": "npm run create-empty",
     "prepublishOnly": "npm run build",
@@ -77,6 +98,8 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "start-server-and-test": "^2.0.3",
     "typescript": "^4.9.5",
     "vue": "^3.5.21",

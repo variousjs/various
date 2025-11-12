@@ -25,6 +25,16 @@ const config = {
 }
 const configs = [config]
 
+// standalone
+configs.push({
+  ...config,
+  externals: NODE_ENV === 'development' ? undefined : base.externals,
+  devServer: undefined,
+  entry: {
+    standalone: path.resolve(__dirname, '../test/standalone/index.tsx'),
+  },
+})
+
 if (NODE_ENV === 'production') {
   configs.push(
     {
@@ -43,6 +53,31 @@ if (NODE_ENV === 'production') {
       output: {
         ...config.output,
         path: path.join(__dirname, '../dist'),
+      },
+    },
+
+    // standalone
+    {
+      ...config,
+      entry: {
+        standalone: path.resolve(__dirname, '../src/standalone/index.tsx'),
+      },
+      output: {
+        ...config.output,
+        path: path.join(__dirname, '../dist'),
+        libraryTarget: 'commonjs2',
+      },
+    },
+    {
+      ...config,
+      entry: {
+        'standalone-dev': path.resolve(__dirname, '../src/standalone/index.tsx'),
+      },
+      mode: 'development',
+      output: {
+        ...config.output,
+        path: path.join(__dirname, '../dist'),
+        libraryTarget: 'commonjs2',
       },
     },
   )

@@ -58,8 +58,9 @@ export const defineDependencies: typeof dd = (deps) => {
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isModuleLoaded: typeof im = (name) => window.requirejs.specified(name)
-  && !!window.requirejs.s.contexts._.defined[name]
+export const isModuleLoaded: typeof im = (name) => window.requirejs.defined(name)
+
+export const isModuleSpecified = (name: string) => window.requirejs.specified(name)
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
@@ -273,4 +274,9 @@ export function getSelfInfo(params: ModuleDefined & { url?: string }) {
     module,
     url: url || dependencies[name],
   }
+}
+
+export function getClassNameWithModule(self: ModuleDefined, prefix: string) {
+  const { name, module } = self
+  return `${prefix} ${[name, module].filter(Boolean).join('-')}`
 }

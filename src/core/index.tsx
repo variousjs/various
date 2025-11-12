@@ -11,7 +11,7 @@ import {
 } from './config'
 import connector from './connector'
 import { createI18nConfig } from './i18n'
-import { Container as ContainerNode } from './default-component'
+import { Root as RootComponent } from './default-component'
 import ErrorBoundary from './error-boundary'
 import { Store } from '../types'
 
@@ -45,9 +45,9 @@ export default (config: Config & App<Store>) => {
     root,
     store = {},
     actions = {},
-    Loader: LoaderComponent,
-    Error: ErrorComponent,
-    Container: ContainerComponent = ContainerNode,
+    Fallback,
+    ErrorFallback,
+    Root = RootComponent,
     middlewares,
     i18n,
     ...rest
@@ -59,11 +59,11 @@ export default (config: Config & App<Store>) => {
 
   connector.setStoreActions(actions)
 
-  if (LoaderComponent) {
-    connector.setLoaderComponent(LoaderComponent)
+  if (Fallback) {
+    connector.setFallbackComponent(Fallback)
   }
-  if (ErrorComponent) {
-    connector.setErrorComponent(ErrorComponent)
+  if (ErrorFallback) {
+    connector.setErrorFallbackComponent(ErrorFallback)
   }
 
   createStore({
@@ -74,7 +74,7 @@ export default (config: Config & App<Store>) => {
     [MESSAGE_KEY]: null,
   })
 
-  ContainerComponent.displayName = 'various-container'
+  Root.displayName = 'various-app-root'
 
   class R extends Component<{}, { isError: boolean }> {
     static displayName = 'various-app'
@@ -86,7 +86,7 @@ export default (config: Config & App<Store>) => {
     render() {
       return (
         <ErrorBoundary name="app" url={dependencies.app}>
-          <ContainerComponent />
+          <Root />
         </ErrorBoundary>
       )
     }

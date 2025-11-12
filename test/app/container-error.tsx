@@ -2,7 +2,7 @@ import React from 'react'
 import { App } from '@variousjs/various'
 
 export default {
-  Container: () => (
+  Root: () => (
     // @ts-ignore
     // eslint-disable-next-line no-undef
     <div>{A.b.c}</div>

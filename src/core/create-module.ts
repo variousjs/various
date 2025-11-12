@@ -8,6 +8,7 @@ import {
   resetDependencyConfig,
   VariousError,
   onError,
+  isModuleSpecified,
 } from './helper'
 
 const createModule: typeof cm = (config, logError = true) => {
@@ -27,7 +28,7 @@ const createModule: typeof cm = (config, logError = true) => {
   }
 
   return new Promise<any>((resolve, reject) => {
-    if (!url && !dependencies[name]) {
+    if (!url && !dependencies[name] && !isModuleSpecified(name)) {
       const error = new VariousError({
         name,
         module,

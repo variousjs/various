@@ -16,7 +16,8 @@ describe('app', () => {
 
     // app container error
     cy.visit('/app/container-error.html')
-    cy.contains('div', '[APP_ERROR] A is not defined').should('exist')
+    cy.contains('h3', 'APP_ERROR').should('exist')
+    cy.contains('p', 'A is not defined').should('exist')
 
     // react version error
     cy.readFile('./docs/libs/react.production.min.js').then((res) => {
@@ -30,7 +31,7 @@ describe('app', () => {
     cy.readFile('./docs/libs/vue.js').then((res) => {
       cy.intercept('vue.js', res.replace('"3.5.21', '"2'))
       cy.visit('/app/vue-version.html')
-      cy.contains('div', '[SCRIPT_ERROR] Vue 3+ required, detected an incompatible version').should('exist')
+      cy.contains('p', 'Vue 3+ required, detected an incompatible version').should('exist')
     })
   })
 })

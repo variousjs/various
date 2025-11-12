@@ -46,12 +46,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
   }
 
   render() {
-    const ErrorNode = connector.getErrorComponent()
+    const ErrorFallbackNode = connector.getErrorFallbackComponent()
     const store = getUserStore()
 
     if (this.state.hasError) {
       return (
-        <ErrorNode
+        <ErrorFallbackNode
           $self={this.$self}
           $reload={this.reload}
           $store={store as Store}

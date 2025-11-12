@@ -100,19 +100,21 @@ declare module '@variousjs/various' {
     P extends object = {}
   > = FC<ComponentProps<S, P>> & StaticProps
 
-  export interface ErrorNodeProps<S extends object = ObjectRecord> {
+  export interface ErrorFallbackProps<S extends object = ObjectRecord> {
     $reload: () => void,
     $error: VariousError,
     $store: Readonly<S>,
     $self: ModuleDefined & { url?: string },
   }
-  export type ErrorNode<S extends object = ObjectRecord> = ComponentType<ErrorNodeProps<S>>
+  export type ErrorFallbackNode<
+    S extends object = ObjectRecord
+  > = ComponentType<ErrorFallbackProps<S>>
 
-  export interface LoaderNodeProps<S extends object = ObjectRecord> {
+  export interface FallbackProps<S extends object = ObjectRecord> {
     $store: Readonly<S>,
     $self: ModuleDefined & { url?: string },
   }
-  export type LoaderNode<S extends object = ObjectRecord> = ComponentType<LoaderNodeProps<S>>
+  export type FallbackNode<S extends object = ObjectRecord> = ComponentType<FallbackProps<S>>
 
   type Dispatch<T extends object = ObjectRecord> = (
     nycticorax: {
@@ -158,10 +160,10 @@ declare module '@variousjs/various' {
 
   export interface App<S extends object = ObjectRecord> {
     store?: readonly S,
-    Error?: ErrorNode<S>,
-    Loader?: LoaderNode<S>,
+    ErrorFallback?: ErrorFallbackNode<S>,
+    Fallback?: FallbackNode<S>,
     actions?: Record<string, Dispatch<S>>,
-    Container: ComponentType<any>,
+    Root: ComponentType,
     middlewares?: {
       onLoad?: LoadEvent,
       onError?: ErrorEvent,

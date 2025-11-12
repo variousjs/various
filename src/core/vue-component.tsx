@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import Vue from 'vue'
+import type Vue from 'vue'
 import {
   ComponentDefaultProps,
   ModuleDefined,
@@ -24,6 +24,7 @@ import {
   isModuleLoaded,
   VariousError,
   getSelfInfo,
+  getClassNameWithModule,
 } from './helper'
 import createDispatch from './dispatch'
 import createLogger from './logger'
@@ -65,7 +66,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const [componentReady, setComponentReady] = useState(false)
     const [isError, setIsError] = useState(false)
 
-    const LoaderNode = connector.getLoaderComponent()
+    const Fallback = connector.getFallbackComponent()
     const { $silent, $componentProps } = props
 
     const mountVue = useCallback(() => {
@@ -205,7 +206,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         {
           !componentReady && !$silent && !isModuleLoaded(name)
             ? (
-              <LoaderNode
+              <Fallback
                 $self={selfRef.current}
                 $store={store}
               />
@@ -213,7 +214,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
             : null
         }
         <div
-          className={`various-component-${getNameWithModule({ name, module })}`}
+          className={getClassNameWithModule({ name, module }, 'various-vue-component')}
           ref={containerDivRef}
         />
       </>
