@@ -11,7 +11,7 @@ const message = ref<NS>({})
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious,
+    various: Object as VueVarious<{ globalB: string }>,
     propsB: String,
   },
 
@@ -43,6 +43,7 @@ export default V
 <template>
   <h3>Vue Component</h3>
   <div class="value">
+    <p>global: {{ various?.$store.globalB }}</p>
     <p>props: {{ propsB }}</p>
     <p>info: {{ name }} - {{ url }}</p>
     <p>Trigger: {{ message.trigger }}</p>

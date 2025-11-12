@@ -18,6 +18,7 @@ declare module '@variousjs/various/standalone' {
         'react' | 'vue' | 'requirejs' | (string & {}),
         DependencyType
       >>,
+      storeKeys?: string[],
     },
   ): ComponentType<P & {
     /**
@@ -25,7 +26,7 @@ declare module '@variousjs/various/standalone' {
      */
     $ref?: RefObject<unknown>,
   }> & {
-    updateLng: (key: string, value: string) => void,
+    dispatch: (next: Record<string, any>) => void,
   }
 
    export function createConfig(
@@ -34,7 +35,7 @@ declare module '@variousjs/various/standalone' {
         'react' | 'vue' | 'requirejs',
         DependencyType
       >>,
-      lng?: { key: string, defaultValue: string },
+      store?: Record<string, any>,
       fallback?: LoaderNode<any>,
       errorFallback?: ErrorNode<any>,
     },

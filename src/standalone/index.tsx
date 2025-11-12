@@ -39,6 +39,7 @@ const Standalone: FC<
     type,
     $componentProps,
     $ref,
+    storeKeys,
   } = props
   const [componentReady, setComponentReady] = useState(false)
   const componentNode = useRef<ComponentType<any>>()
@@ -57,14 +58,14 @@ const Standalone: FC<
           module,
           url,
           type,
-        })
+        }, storeKeys)
         setComponentReady(true)
       })
       .catch((e) => {
         errorRef.current = e
         setIsError(true)
       })
-  }, [name, url, module, dependencies, type])
+  }, [name, url, module, dependencies, type, storeKeys])
 
   if (isError) {
     throw errorRef.current
@@ -90,12 +91,12 @@ export const createComponent: typeof cc = (args) => {
       <Standalone $componentProps={props} {...args} />
     </ErrorBoundary>
   )
-  const updateLng: ReturnType<typeof cc>['updateLng'] = (key, value) => {
-    emit({ [key]: value })
+  const dispatch: ReturnType<typeof cc>['dispatch'] = (next) => {
+    emit(next, true)
   }
 
   component.displayName = 'various-standalone-creator'
-  return Object.assign(component, { updateLng })
+  return Object.assign(component, { dispatch })
 }
 
 export const createConfig: typeof con = (config) => {
@@ -103,7 +104,7 @@ export const createConfig: typeof con = (config) => {
     baseDependencies,
     errorFallback,
     fallback,
-    lng,
+    store,
   } = config
   const { requirejs, ...rest } = baseDependencies
 
@@ -115,8 +116,8 @@ export const createConfig: typeof con = (config) => {
     connector.setFallbackComponent(fallback)
   }
 
-  if (lng) {
-    emit({ [lng.key]: lng.defaultValue })
+  if (store) {
+    emit(store)
   }
 
   loadRequireJS(requirejs)

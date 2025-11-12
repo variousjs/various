@@ -10,7 +10,7 @@ createConfig({
     react: React,
     vue: Vue,
   },
-  lng: { key: 'locale', defaultValue: 'zh' },
+  store: { locale: 'zh', globalB: 'B' },
 })
 
 const RC = createComponent<{ propsA: string }>({
@@ -26,6 +26,7 @@ const VC = createComponent<{ propsB: string }>({
   name: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',
+  storeKeys: ['globalB'],
 })
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
       <RC $ref={ref} propsA="propsA" />
       <button
         onClick={() => {
-          RC.updateLng('locale', 'en')
+          RC.dispatch({ locale: 'en' })
         }}
       >
         change lng
