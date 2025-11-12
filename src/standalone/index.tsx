@@ -1,11 +1,13 @@
 import React, {
   ComponentType,
   FC,
+  RefObject,
   useEffect,
   useRef,
   useState,
 } from 'react'
 import { createComponent as cc, createConfig as con } from '@variousjs/various/standalone'
+import { ObjectRecord } from '@variousjs/various'
 import createComponentCore from '../core/create-component'
 import ErrorBoundary from '../core/error-boundary'
 import connector from '../core/connector'
@@ -26,16 +28,20 @@ createStore({
   [DEPENDENCIES_KEY]: {},
 })
 
-const Standalone: FC<Parameters<typeof cc>['0']> = (props) => {
+const Standalone: FC<
+  Parameters<typeof cc>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
+> = (props) => {
   const {
     dependencies,
     url,
     name,
     module,
     type,
+    $componentProps,
+    $ref,
   } = props
   const [componentReady, setComponentReady] = useState(false)
-  const componentNode = useRef<ComponentType>()
+  const componentNode = useRef<ComponentType<any>>()
   const errorRef = useRef<Error>()
   const [isError, setIsError] = useState(false)
 
@@ -72,16 +78,16 @@ const Standalone: FC<Parameters<typeof cc>['0']> = (props) => {
   const C = componentNode.current!
 
   return (
-    <C />
+    <C {...$componentProps} ref={$ref} />
   )
 }
 
 Standalone.displayName = 'various-standalone'
 
 export const createComponent: typeof cc = (args) => {
-  const component: FC = () => (
+  const component: FC = (props: ObjectRecord) => (
     <ErrorBoundary name="standalone" url={args.url} module={args.module}>
-      <Standalone {...args} />
+      <Standalone $componentProps={props} {...args} />
     </ErrorBoundary>
   )
   const updateLng: ReturnType<typeof cc>['updateLng'] = (key, value) => {

@@ -1,5 +1,5 @@
 declare module '@variousjs/various/standalone' {
-  import { ComponentType } from 'react'
+  import { ComponentType, RefObject } from 'react'
   import {
     VariousComponentType,
     ObjectRecord,
@@ -19,7 +19,12 @@ declare module '@variousjs/various/standalone' {
         DependencyType
       >>,
     },
-  ): ComponentType<P> & {
+  ): ComponentType<P & {
+    /**
+     * for React Component only
+     */
+    $ref?: RefObject<unknown>,
+  }> & {
     updateLng: (key: string, value: string) => void,
   }
 

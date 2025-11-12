@@ -4,7 +4,6 @@ import { VueVarious, OnMessage } from '@variousjs/various'
 
 interface NS {
   event?: string,
-  value?: any,
   trigger?: string,
 }
 
@@ -13,10 +12,12 @@ const message = ref<NS>({})
 const V = defineComponent({
   props: {
     various: Object as VueVarious,
+    propsB: String,
   },
 
   data() {
-    return { message }
+    const { $self } = this.$props.various || {}
+    return { message, ...$self }
   },
 
   setup(props) {
@@ -28,10 +29,9 @@ const V = defineComponent({
   }
 })
 
-V.$onMessage = (({ event, value, trigger }) => {
+V.$onMessage = (({ event, trigger }) => {
   const next = {
     event,
-    value,
     trigger: [trigger.name, trigger.module].filter(Boolean).join('.'),
   }
   message.value = next
@@ -43,9 +43,10 @@ export default V
 <template>
   <h3>Vue Component</h3>
   <div class="value">
+    <p>props: {{ propsB }}</p>
+    <p>info: {{ name }} - {{ url }}</p>
     <p>Trigger: {{ message.trigger }}</p>
     <p>Event: {{ message.event }}</p>
-    <p>Value: {{ message.value }}</p>
     <button @click="dispatch">dispatch</button>
   </div>
 </template>

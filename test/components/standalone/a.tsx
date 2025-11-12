@@ -1,27 +1,43 @@
-import React from 'react'
-import { ComponentNode, createLogger } from '@variousjs/various'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import { ComponentProps, createLogger, StaticProps } from '@variousjs/various'
 import en from '../i18n/en.json'
 import zh from '../i18n/zh.json'
 
-export const A = ((props) => {
-  const { $t, $postMessage } = props
-  return (
-    <div>
-      <h3>React Component</h3>
-      <div className="value">
-        <p>greet: {$t('greet', { name: 'C', name2: 'D' })}</p>
-        <button onClick={() => $postMessage('aaa')}>postMessage</button>
-      </div>
-    </div>
-  )
-}) as ComponentNode
+const C = forwardRef<
+  { set:(t: string) => void },
+  ComponentProps<{}, { propsA: string }>
+    >((props, ref) => {
+      const { $t, $postMessage } = props
+      const [text, setText] = useState('')
 
-A.$i18n = () => ({
-  lngStoreKey: 'locale',
-  resources: { zh, en },
-})
+      useImperativeHandle(ref, () => ({
+        set: (t: string) => {
+          setText(t)
+        },
+      }))
 
-A.log = (t: string) => {
-  const logger = createLogger({ name: 'aa' })
-  logger.info(t)
+      return (
+        <div>
+          <h3>React Component</h3>
+          <div className="value">
+            <p>text: {text}</p>
+            <p>props: {props.propsA}</p>
+            <p>greet: {$t('greet', { name: 'C', name2: 'D' })}</p>
+            <button onClick={() => $postMessage('aaa')}>postMessage</button>
+          </div>
+        </div>
+      )
+    })
+
+const staticMethods: StaticProps = {
+  $i18n: () => ({
+    lngStoreKey: 'locale',
+    resources: { zh, en },
+  }),
+  log: (t: string) => {
+    const logger = createLogger({ name: 'aa' })
+    logger.info(t)
+  },
 }
+
+export const A = Object.assign(C, staticMethods)

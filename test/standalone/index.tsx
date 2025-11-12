@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import * as Vue from 'vue'
 import ReactDOM, { createRoot } from 'react-dom/client'
 import '@variousjs/requirejs'
@@ -22,16 +22,18 @@ const RC = createComponent<{ propsA: string }>({
     'react-dom/client': ReactDOM,
   },
 })
-const VC = createComponent({
+const VC = createComponent<{ propsB: string }>({
   name: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',
 })
 
 function App() {
+  const ref = useRef<{ set:(t: string) => void }>(null)
+
   return (
     <div style={{ padding: 20 }}>
-      <RC propsA="propsA" />
+      <RC $ref={ref} propsA="propsA" />
       <button
         onClick={() => {
           RC.updateLng('locale', 'en')
@@ -39,7 +41,14 @@ function App() {
       >
         change lng
       </button>
-      <VC />
+      <button
+        onClick={() => {
+          ref.current?.set('setText')
+        }}
+      >
+        set text
+      </button>
+      <VC propsB="propsB" />
     </div>
   )
 }
