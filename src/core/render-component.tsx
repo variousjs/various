@@ -45,14 +45,12 @@ const renderComponent: typeof rc = async ({
       })
     })
   } catch (e) {
-    const error = e instanceof VariousError
-      ? e
-      : new VariousError({
-        name,
-        module,
-        type: 'SCRIPT_ERROR',
-        originalError: e as Error,
-      })
+    const error = new VariousError({
+      name,
+      module,
+      type: 'SCRIPT_ERROR',
+      originalError: e as Error,
+    })
     onError(error)
     return () => Promise.resolve()
   }
