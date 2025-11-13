@@ -25,8 +25,8 @@ export default () => {
       <div className="value">
         <div id="a-dom" />
         <button
-          onClick={() => {
-            const un = renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
+          onClick={async () => {
+            const un = await renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
             unMounteA.current = un
           }}
         >
@@ -39,8 +39,8 @@ export default () => {
       <div className="value">
         <div id="props-dom" />
         <button
-          onClick={() => {
-            const un = renderComponent({
+          onClick={async () => {
+            const un = await renderComponent({
               name: 'render',
               module: 'WidthProps',
               target: document.querySelector('#props-dom'),
@@ -57,8 +57,8 @@ export default () => {
       <div className="value">
         <div id="global-dom" />
         <button
-          onClick={() => {
-            const un = renderComponent({
+          onClick={async () => {
+            const un = await renderComponent({
               name: 'render',
               module: 'GlobalProps',
               target: document.querySelector('#global-dom'),
@@ -74,8 +74,8 @@ export default () => {
       <div className="value">
         <div id="ref-dom" />
         <button
-          onClick={() => {
-            const un = renderComponent({
+          onClick={async () => {
+            const un = await renderComponent({
               name: 'render',
               module: 'Ref',
               target: document.querySelector('#ref-dom'),
@@ -106,8 +106,8 @@ export default () => {
       <div className="value">
         <div id="custom-dom" />
         <button
-          onClick={() => {
-            const un = renderComponent({
+          onClick={async () => {
+            const un = await renderComponent({
               name: 'render',
               module: 'P',
               target: document.querySelector('#custom-dom'),
@@ -126,8 +126,8 @@ export default () => {
       <div className="value">
         <div id="url-dom" />
         <button
-          onClick={() => {
-            const un = renderComponent({
+          onClick={async () => {
+            const un = await renderComponent({
               name: 'url',
               type: 'vue3',
               url: './dist/render-component/url.js',

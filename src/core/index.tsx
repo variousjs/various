@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { createRoot } from 'react-dom/client'
 import { App, Config } from '@variousjs/various'
 import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
-  ROOT,
   MESSAGE_KEY,
   CONFIG_KEY,
 } from './config'
@@ -39,10 +37,9 @@ export { default as renderComponent } from './render-component'
 // eslint-disable-next-line no-undef
 export const version = VERSION
 
-export default (config: Config & App<Store>) => {
+export const getApp = (config: Config & App<Store>) => {
   const {
     dependencies,
-    root,
     store = {},
     actions = {},
     Fallback,
@@ -76,7 +73,7 @@ export default (config: Config & App<Store>) => {
 
   Root.displayName = 'various-app-root'
 
-  class R extends Component<{}, { isError: boolean }> {
+  return class extends Component {
     static displayName = 'various-app'
 
     componentDidMount() {
@@ -91,6 +88,4 @@ export default (config: Config & App<Store>) => {
       )
     }
   }
-
-  createRoot(document.querySelector(root || ROOT) as Element).render(<R />)
 }

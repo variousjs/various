@@ -6,8 +6,6 @@ export const CONFIG_KEY = Symbol('CONFIG')
 
 export const DEPENDENCIES_KEY = Symbol('DEPENDENCIES')
 
-export const ROOT = '#root'
-
 export const VUE_FUNCTION_OPTIONS = [
   'beforeCreate',
   'created',

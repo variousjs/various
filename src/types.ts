@@ -1,4 +1,5 @@
-import { ComponentType, ReactNode } from 'react'
+import React, { ComponentType, ReactNode } from 'react'
+import ReactDOM from 'react-dom/client'
 import {
   ComponentProps,
   PublicAction,
@@ -65,6 +66,7 @@ export interface ConnectorI18nConfig extends I18nConfig {
   loading?: boolean,
 }
 
-export interface Various { default: (config: Config & App) => void }
+export interface Various { getApp: (config: Config & App) => ComponentType }
 export type AppWithDefault = { default: App }
-export interface ReactWithVersion { version: string }
+export type ReactType = typeof React
+export type ReactDOMType = typeof ReactDOM & { version: string }

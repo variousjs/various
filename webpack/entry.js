@@ -15,7 +15,7 @@ const config = {
     watchFiles: ['../docs'],
   },
   entry: {
-    loader: path.resolve(__dirname, '../src/loader.ts'),
+    loader: path.resolve(__dirname, '../src/loader.tsx'),
   },
   output: {
     path: path.resolve(__dirname, '../docs/dist'),
@@ -47,7 +47,7 @@ if (NODE_ENV === 'production') {
     {
       ...config,
       entry: {
-        'loader-dev': path.resolve(__dirname, '../src/loader.ts'),
+        'loader-dev': path.resolve(__dirname, '../src/loader.tsx'),
       },
       mode: 'development',
       output: {
