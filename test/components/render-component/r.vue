@@ -11,8 +11,8 @@ const V = defineComponent({
     })
 
     return {
-      render() {
-        un = renderComponent({
+      async render() {
+        un = await renderComponent({
           name: 'render',
           module: 'ForVue',
           target: document.querySelector('#vue-dom')

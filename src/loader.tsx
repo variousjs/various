@@ -1,12 +1,18 @@
 import '@variousjs/requirejs'
 import { App, Config } from '@variousjs/various'
-import { Various, AppWithDefault, ReactWithVersion } from './types'
+import {
+  Various,
+  AppWithDefault,
+  ReactType,
+  ReactDOMType,
+} from './types'
 
 const DEFAULT_PACKAGES = {
   react: 'https://unpkg.com/react@18/umd/react.production.min.js',
   'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
   '@variousjs/various': 'https://unpkg.com/@variousjs/various/dist/index.js',
 }
+const ROOT = '#root'
 const REACT_REQUIREMENT_VERSION = 18
 
 const { currentScript } = document
@@ -64,8 +70,8 @@ function loader(config: Config) {
     (
       various: Various,
       entry: { default: App | AppWithDefault },
-      React: ReactWithVersion,
-      ReactDOM: ReactWithVersion,
+      React: ReactType,
+      ReactDOM: ReactDOMType,
     ) => {
       const versionRegex = new RegExp(`^${REACT_REQUIREMENT_VERSION}\\.`)
       if (!versionRegex.test(React.version) || !versionRegex.test(ReactDOM.version)) {
@@ -90,7 +96,9 @@ Important: This application only works with React/ReactDOM ${REACT_REQUIREMENT_V
         beenLoaded: false,
       })
 
-      various.default({ ...config, ...app })
+      const VariousApp = various.getApp({ ...config, ...app })
+      ReactDOM.createRoot(document.querySelector(config.root || ROOT) as Element)
+        .render(<VariousApp />)
     },
     onError,
   )

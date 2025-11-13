@@ -1,12 +1,13 @@
 import React from 'react'
-import { createRoot } from 'react-dom/client'
+import reactDom from 'react-dom/client'
 import { renderComponent as rc } from '@variousjs/various'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
 import { onError, VariousError } from './helper'
 import ErrorBoundary from './error-boundary'
+import createModule from './create-module'
 
-const renderComponent: typeof rc = ({
+const renderComponent: typeof rc = async ({
   name,
   module,
   url,
@@ -16,15 +17,17 @@ const renderComponent: typeof rc = ({
   renderNode,
   onMounted,
 }) => {
-  const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
-    name,
-    module,
-    url,
-    onMounted,
-  })
-
   try {
-    const root = createRoot(target as Element)
+    const ReactDOM = await createModule<typeof reactDom>({ name: 'react-dom' })
+
+    const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
+      name,
+      module,
+      url,
+      onMounted,
+    })
+
+    const root = ReactDOM.createRoot(target as Element)
     const { $silent, $ref, ...rest } = props || {}
     const nextProps: any = { $componentProps: rest, $silent, $ref }
     const node = (
@@ -42,12 +45,13 @@ const renderComponent: typeof rc = ({
       })
     })
   } catch (e) {
-    onError(new VariousError({
+    const error = new VariousError({
       name,
       module,
       type: 'SCRIPT_ERROR',
       originalError: e as Error,
-    }))
+    })
+    onError(error)
     return () => Promise.resolve()
   }
 }

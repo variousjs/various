@@ -72,8 +72,8 @@ export default ((props) => {
       <h3>OnError</h3>
       <div className="value">
         <button
-          onClick={() => {
-            const un = renderComponent({
+          onClick={async () => {
+            const un = await renderComponent({
               name: 'middlewares',
               module: 'A',
               target: document.querySelector('#error'),

@@ -6,7 +6,7 @@ const { NODE_ENV = 'development' } = process.env
 const config = {
   ...base,
   entry: {
-    index: path.resolve(__dirname, '../src/core'),
+    index: path.resolve(__dirname, '../src/core/index.tsx'),
   },
   watch: NODE_ENV === 'development',
   output: {
@@ -30,7 +30,7 @@ if (NODE_ENV === 'production') {
     {
       ...config,
       entry: {
-        'index.dev': path.resolve(__dirname, '../src/core'),
+        'index.dev': path.resolve(__dirname, '../src/core/index.tsx'),
       },
       mode: 'development',
       output: {

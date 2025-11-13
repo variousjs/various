@@ -210,7 +210,7 @@ declare module '@variousjs/various' {
     target: Element | null,
     renderNode?: (children: ReactNode) => ReactNode,
     onMounted?: () => void,
-  }): () => Promise<void>
+  }): Promise<() => Promise<void>>
 
   export type VueVarious<S extends object = ObjectRecord> = PropType<ComponentBuiltinProps<S>>
 

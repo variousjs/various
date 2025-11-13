@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import * as Vue from 'vue'
-import ReactDOM, { createRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import '@variousjs/requirejs'
 import { createComponent, createConfig } from '../../src/standalone'
 
@@ -13,7 +13,7 @@ const baseConfig: Record<string, Parameters<typeof createConfig>['0']> = {
       requirejs: window.requirejs,
       react: React,
       vue: Vue,
-      'react-dom/client': ReactDOM,
+      'test-exist-module': {},
     },
     store: { locale: 'zh', globalB: 'B' },
   },
@@ -42,7 +42,7 @@ const RC = createComponent<{ propsA: string }>({
   url: '/dist/standalone/a.js',
   dependencies: {
     '@variousjs/various': '/dist/index.js',
-    'react-dom/client': ReactDOM,
+    'test-exist-module': {},
   },
 })
 const VC = createComponent<{ propsB: string }>({
