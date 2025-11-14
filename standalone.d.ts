@@ -10,11 +10,6 @@ declare module '@variousjs/various/standalone' {
 
   export type DependencyType = string | object | Function
 
-  /**
-   * ⚠️ REACT STRICT MODE WARNING ⚠️
-   *
-   * Do not the StrictMode wrapper when using this component
-   */
   export function createComponent<P extends object = ObjectRecord>(
     config: ModuleDefined & {
       url: string,
