@@ -51,8 +51,9 @@ const Standalone: FC<
       .then(() => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { requirejs, ...rest } = dependencies || {}
-        defineModules(rest)
-
+        return defineModules(rest)
+      })
+      .then(() => {
         componentNode.current = createComponentCore({
           name,
           module,

@@ -37,9 +37,25 @@ export function loadRequireJS(dep?: DependencyType) {
   return requirejsPromise
 }
 
+const defineAsync = (name: string, factory: Function) => {
+  window.define(name, [], factory)
+  return new Promise<void>((resolve) => {
+    const check = () => {
+      if (window.requirejs.specified(name)) {
+        resolve()
+        return
+      }
+      setTimeout(check, 100)
+    }
+    check()
+  })
+}
+
 export function defineModules(
   deps: NonNullable<Parameters<typeof createComponent>['0']['dependencies']>,
 ) {
+  const defines: { key: string, value?: DependencyType }[] = []
+
   Object.entries(deps).forEach(([key, value]) => {
     if (isModuleSpecified(key)) {
       return
@@ -50,6 +66,8 @@ export function defineModules(
       return
     }
 
-    window.define(key, [], () => value)
+    defines.push({ key, value })
   })
+
+  return Promise.all(defines.map((item) => defineAsync(item.key, () => item.value)))
 }

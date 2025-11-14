@@ -4,7 +4,8 @@
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
-    "index.d.ts"
+    "index.d.ts",
+    "standalone.d.ts"
   ],
   "exports": {
     ".": {
