@@ -61,6 +61,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
     private unSubscribeMessage = () => null as unknown
 
     componentDidMount() {
+      this.isUnMounted = false // fix StrictMode
       this.mountComponent()
     }
 

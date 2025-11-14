@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, StrictMode } from 'react'
 import * as Vue from 'vue'
 import { createRoot } from 'react-dom/client'
 import '@variousjs/requirejs'
@@ -78,5 +78,11 @@ function App() {
 }
 
 const container = document.getElementById('root')
+const node = testType !== 'requirejsPath'
+  ? (
+    <StrictMode>
+      <App />
+    </StrictMode>
+  ) : (<App />)
 const root = createRoot(container!)
-root.render(<App />)
+root.render(node)

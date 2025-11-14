@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import type Vue from 'vue'
+import Vue, { ComponentPublicInstance } from 'vue'
 import {
   ComponentDefaultProps,
   ModuleDefined,
@@ -50,6 +50,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const store = useStore(...storeKeys)
 
     const vueRef = useRef<typeof Vue>()
+    const vmRef = useRef<ComponentPublicInstance>()
     const isVueMounted = useRef(false)
     const errorRef = useRef<Error | ve>()
     const isUnMountedRef = useRef(false)
@@ -121,7 +122,11 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         },
       })
 
-      vueApp.mount(containerDivRef.current!)
+      // fix StrictMode
+      if (!vmRef.current) {
+        vmRef.current = vueApp.mount(containerDivRef.current!)
+      }
+
       isVueMounted.current = true
       unMountVue.current = () => vueApp.unmount()
     }, [$componentProps, store])
@@ -168,14 +173,19 @@ function vueComponent<P extends object>(config: ModuleDefined & {
       }
     }, [mountVue])
 
-    useEffect(() => () => {
-      errorRef.current = undefined
-      ComponentNodeRef.current = undefined
-      isUnMountedRef.current = true
-      updateUnMountComponent({ name, module })
-      unMountVue.current?.()
-      unSubscribeMessageRef.current?.()
-      isVueMounted.current = false
+    useEffect(() => {
+      // fix StrictMode
+      isUnMountedRef.current = false
+
+      return () => {
+        errorRef.current = undefined
+        ComponentNodeRef.current = undefined
+        isUnMountedRef.current = true
+        updateUnMountComponent({ name, module })
+        unMountVue.current?.()
+        unSubscribeMessageRef.current?.()
+        isVueMounted.current = false
+      }
     }, [])
 
     useEffect(() => {
