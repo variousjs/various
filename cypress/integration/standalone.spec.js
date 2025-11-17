@@ -51,19 +51,12 @@ describe('standalone', () => {
   })
 
   it('deps error', () => {
-    cy.visit('/standalone.html?type=depsError')
-    cy.contains('p', 'Error - /dist/standalone/a.js').should('exist')
+    cy.visit('/standalone.html?type=strict')
     cy.contains('p', 'Error - /dist/standalone/b.js').should('exist')
   })
 
-  it('requirejs path', () => {
-    cy.visit('/standalone.html?type=requirejsPath')
-    cy.contains('h3', 'SUBMODULE_LOADING_ERROR').should('exist')
-    cy.contains('h3', 'NOT_DEFINED').should('exist')
-  })
-
-  it('requirejs path error', () => {
-    cy.visit('/standalone.html?type=requirejsPathError')
-    cy.contains('h3', 'SCRIPT_ERROR').should('exist')
+  it('without config', () => {
+    cy.visit('/standalone.html?type=unConfig')
+    cy.contains('p', 'greet: greet').should('exist')
   })
 })

@@ -15,7 +15,7 @@ declare module '@variousjs/various/standalone' {
       url: string,
       type?: VariousComponentType,
       dependencies?: Partial<Record<
-        'react' | 'vue' | 'requirejs' | (string & {}),
+        string,
         DependencyType
       >>,
       storeKeys?: string[],
@@ -32,7 +32,7 @@ declare module '@variousjs/various/standalone' {
    export function createConfig(
     config: {
       baseDependencies: Partial<Record<
-        'react' | 'vue' | 'requirejs' | (string & {}),
+        string,
         DependencyType
       >>,
       store?: Record<string, any>,

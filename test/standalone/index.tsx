@@ -10,31 +10,17 @@ const testType = query.get('type') || 'default'
 const baseConfig: Record<string, Parameters<typeof createConfig>['0']> = {
   default: {
     baseDependencies: {
-      requirejs: window.requirejs,
-      react: React,
+      react: React, // not needs
       vue: Vue,
-      'test-exist-module': {},
     },
     store: { locale: 'zh', globalB: 'B' },
   },
-  depsError: {
+  strict: {
     baseDependencies: {},
     fallback: () => null,
     errorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
   },
-  requirejsPath: {
-    baseDependencies: {
-      requirejs: './libs/require.min.js',
-    },
-  },
-  requirejsPathError: {
-    baseDependencies: {
-      requirejs: '.error/require.min.js',
-    },
-  },
 }
-
-createConfig(baseConfig[testType])
 
 const RC = createComponent<{ propsA: string }>({
   name: 'a',
@@ -42,15 +28,22 @@ const RC = createComponent<{ propsA: string }>({
   url: '/dist/standalone/a.js',
   dependencies: {
     '@variousjs/various': '/dist/index.js',
-    'test-exist-module': {},
   },
 })
 const VC = createComponent<{ propsB: string }>({
   name: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',
+  dependencies: testType === 'strict' ? undefined : {
+    vue: Vue,
+  },
   storeKeys: ['globalB'],
 })
+
+// widthout config
+if (testType !== 'unConfig') {
+  createConfig(baseConfig[testType])
+}
 
 function App() {
   const ref = useRef<{ set:(t: string) => void }>(null)
@@ -78,7 +71,7 @@ function App() {
 }
 
 const container = document.getElementById('root')
-const node = testType !== 'requirejsPath'
+const node = testType === 'strict'
   ? (
     <StrictMode>
       <App />

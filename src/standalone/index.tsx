@@ -1,3 +1,4 @@
+import '@variousjs/requirejs'
 import React, {
   ComponentType,
   FC,
@@ -11,9 +12,13 @@ import { ObjectRecord } from '@variousjs/various'
 import createComponentCore from '../core/create-component'
 import ErrorBoundary from '../core/error-boundary'
 import connector from '../core/connector'
-import { onError, VariousError } from '../core/helper'
-import { defineModules, loadRequireJS } from './helper'
-import { createStore, emit, getUserStore } from '../core/store'
+import { defineModules } from './helper'
+import {
+  createStore,
+  emit,
+  getUserStore,
+  useStore,
+} from '../core/store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
@@ -26,7 +31,10 @@ createStore({
   [MESSAGE_KEY]: null,
   [CONFIG_KEY]: {},
   [DEPENDENCIES_KEY]: {},
+  configReady: undefined,
 })
+
+window.define('react', [], () => React)
 
 const Standalone: FC<
   Parameters<typeof cc>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
@@ -41,18 +49,12 @@ const Standalone: FC<
     $ref,
     storeKeys,
   } = props
+  const { configReady } = useStore('configReady')
   const [componentReady, setComponentReady] = useState(false)
   const componentNode = useRef<ComponentType<any>>()
-  const errorRef = useRef<Error>()
-  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
-    loadRequireJS(dependencies?.requirejs)
-      .then(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { requirejs, ...rest } = dependencies || {}
-        return defineModules(rest)
-      })
+    defineModules(dependencies || {})
       .then(() => {
         componentNode.current = createComponentCore({
           name,
@@ -62,17 +64,9 @@ const Standalone: FC<
         }, storeKeys)
         setComponentReady(true)
       })
-      .catch((e) => {
-        errorRef.current = e
-        setIsError(true)
-      })
   }, [name, url, module, dependencies, type, storeKeys])
 
-  if (isError) {
-    throw errorRef.current
-  }
-
-  if (!componentReady) {
+  if (!componentReady || configReady === false) {
     const FallBack = connector.getFallbackComponent()
     return <FallBack $self={{ name, module, url }} $store={getUserStore()} />
   }
@@ -107,7 +101,8 @@ export const createConfig: typeof con = (config) => {
     fallback,
     store,
   } = config
-  const { requirejs, ...rest } = baseDependencies
+
+  emit({ configReady: false }, true)
 
   if (errorFallback) {
     connector.setErrorFallbackComponent(errorFallback)
@@ -121,15 +116,7 @@ export const createConfig: typeof con = (config) => {
     emit(store)
   }
 
-  loadRequireJS(requirejs)
-    .then(() => {
-      defineModules(rest)
-    })
-    .catch((e) => {
-      onError(new VariousError({
-        name: 'standalone',
-        type: 'CONFIG_ERROR',
-        originalError: e,
-      }))
-    })
+  defineModules(baseDependencies).then(() => {
+    emit({ configReady: true })
+  })
 }

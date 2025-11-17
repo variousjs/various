@@ -29,6 +29,7 @@ export interface Store {
   [MOUNTED_COMPONENTS_KEY]: ModuleDefined[],
   [CONFIG_KEY]: Record<string | symbol, any>,
   [DEPENDENCIES_KEY]: Record<string, string>,
+  configReady?: boolean, // standalone
   [key: string]: any,
 }
 
