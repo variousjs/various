@@ -15,7 +15,7 @@ const baseConfig: Record<string, Parameters<typeof createConfig>['0']> = {
     },
     store: { locale: 'zh', globalB: 'B' },
   },
-  strict: {
+  config: {
     baseDependencies: {},
     fallback: () => null,
     errorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
@@ -34,14 +34,14 @@ const VC = createComponent<{ propsB: string }>({
   name: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',
-  dependencies: testType === 'strict' ? undefined : {
+  dependencies: testType === 'config' ? undefined : {
     vue: Vue,
   },
   storeKeys: ['globalB'],
 })
 
 // widthout config
-if (testType !== 'unConfig') {
+if (testType !== 'strict') {
   createConfig(baseConfig[testType])
 }
 
