@@ -1,7 +1,7 @@
+import '@variousjs/requirejs'
 import React, { useRef, StrictMode } from 'react'
 import * as Vue from 'vue'
 import { createRoot } from 'react-dom/client'
-import '@variousjs/requirejs'
 import { createComponent, createConfig } from '../../src/standalone'
 
 const query = new URLSearchParams(window.location.search)

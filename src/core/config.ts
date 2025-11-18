@@ -6,6 +6,8 @@ export const CONFIG_KEY = Symbol('CONFIG')
 
 export const DEPENDENCIES_KEY = Symbol('DEPENDENCIES')
 
+export const STANDALONE_CONFIG_READY = Symbol('STANDALONE_CONFIG_READY')
+
 export const VUE_FUNCTION_OPTIONS = [
   'beforeCreate',
   'created',

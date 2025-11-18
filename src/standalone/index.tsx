@@ -24,6 +24,7 @@ import {
   DEPENDENCIES_KEY,
   CONFIG_KEY,
   MESSAGE_KEY,
+  STANDALONE_CONFIG_READY,
 } from '../core/config'
 
 createStore({
@@ -31,7 +32,7 @@ createStore({
   [MESSAGE_KEY]: null,
   [CONFIG_KEY]: {},
   [DEPENDENCIES_KEY]: {},
-  configReady: undefined,
+  [STANDALONE_CONFIG_READY]: undefined,
 })
 
 window.define('react', [], () => React)
@@ -49,7 +50,7 @@ const Standalone: FC<
     $ref,
     storeKeys,
   } = props
-  const { configReady } = useStore('configReady')
+  const store = useStore(STANDALONE_CONFIG_READY)
   const [componentReady, setComponentReady] = useState(false)
   const componentNode = useRef<ComponentType<any>>()
 
@@ -66,7 +67,7 @@ const Standalone: FC<
       })
   }, [name, url, module, dependencies, type, storeKeys])
 
-  if (!componentReady || configReady === false) {
+  if (!componentReady || store[STANDALONE_CONFIG_READY] === false) {
     const FallBack = connector.getFallbackComponent()
     return <FallBack $self={{ name, module, url }} $store={getUserStore()} />
   }
@@ -102,7 +103,7 @@ export const createConfig: typeof con = (config) => {
     store,
   } = config
 
-  emit({ configReady: false }, true)
+  emit({ [STANDALONE_CONFIG_READY]: false }, true)
 
   if (errorFallback) {
     connector.setErrorFallbackComponent(errorFallback)
@@ -117,6 +118,6 @@ export const createConfig: typeof con = (config) => {
   }
 
   defineModules(baseDependencies).then(() => {
-    emit({ configReady: true })
+    emit({ [STANDALONE_CONFIG_READY]: true })
   })
 }

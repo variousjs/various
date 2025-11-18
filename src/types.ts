@@ -16,6 +16,7 @@ import type {
   DEPENDENCIES_KEY,
   MOUNTED_COMPONENTS_KEY,
   CONFIG_KEY,
+  STANDALONE_CONFIG_READY,
 } from './core/config'
 
 declare global {
@@ -29,7 +30,7 @@ export interface Store {
   [MOUNTED_COMPONENTS_KEY]: ModuleDefined[],
   [CONFIG_KEY]: Record<string | symbol, any>,
   [DEPENDENCIES_KEY]: Record<string, string>,
-  configReady?: boolean, // standalone
+  [STANDALONE_CONFIG_READY]?: boolean,
   [key: string]: any,
 }
 

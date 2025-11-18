@@ -88,7 +88,14 @@ export const resetDependencyConfig = (name: string, url?: string) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
 
   // ignore multiple custom module url
-  if (url && window.requirejs.defined(name)) {
+  if (url && isModuleLoaded(name)) {
+    return
+  }
+
+  if (!dependencies[name] && url) {
+    window.requirejs.config({
+      paths: { [name]: `${url}#${name}` },
+    })
     return
   }
 
