@@ -13,7 +13,7 @@ const DEFAULT_PACKAGES = {
   '@variousjs/various': 'https://unpkg.com/@variousjs/various/dist/index.js',
 }
 const ROOT = '#root'
-const REACT_REQUIREMENT_VERSION = 18
+const REACT_REQUIREMENT_VERSION = '18|19'
 
 const { currentScript } = document
 const { src } = currentScript as HTMLScriptElement

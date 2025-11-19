@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react'
-import { ComponentNode, createComponent, renderComponent } from '@variousjs/various'
+import {
+  ComponentNode,
+  createComponent,
+  createLogger,
+  renderComponent,
+} from '@variousjs/various'
 
 const M = createComponent({ name: 'middlewares', module: 'B' })
 
@@ -82,6 +87,18 @@ export default ((props) => {
           }}
         >
           render component error
+        </button>
+      </div>
+
+      <h3>Logger Error</h3>
+      <div className="value">
+        <button
+          onClick={() => {
+            const logger = createLogger({ name: 'll' })
+            logger.error(new Error('error'))
+          }}
+        >
+          logger error
         </button>
       </div>
     </>

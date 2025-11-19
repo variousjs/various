@@ -69,5 +69,13 @@ describe('logger', () => {
       'SCRIPT_ERROR',
       Cypress.sinon.match(/Minified React error #299/),
     )
+
+    // Logger Error
+    cy.contains('button', 'logger error').click()
+    cy.get('@console.log').should(
+      'be.calledWith',
+      'unknow',
+      'error',
+    )
   })
 })

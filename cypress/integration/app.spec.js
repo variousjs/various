@@ -20,10 +20,13 @@ describe('app', () => {
     cy.contains('p', 'A is not defined').should('exist')
 
     // react version error
-    cy.readFile('./docs/libs/react.production.min.js').then((res) => {
-      cy.intercept('react.production.min.js', res.replace('18.3.1', '17'))
-      cy.visit('/app/react-version-error.html')
-      cy.contains('p', 'React/ReactDOM Version Requirement').should('exist')
+    cy.readFile('./docs/libs/react.19.js').then((react) => {
+      cy.intercept('react.19.js', react.replaceAll('19.2.0', '17'))
+      cy.readFile('./docs/libs/react-dom.19.js').then((reactDom) => {
+        cy.intercept('react-dom.19.js', reactDom.replaceAll('19.2.0', '17'))
+        cy.visit('/app/react-version-error.html')
+        cy.contains('p', 'React/ReactDOM Version Requirement').should('exist')
+      })
     })
   })
 
