@@ -29,7 +29,9 @@ describe('i18n', () => {
     cy.contains('h3', 'Error').next().contains('button', 'reload').should('exist')
 
     // default text
+    cy.contains('h3', 'Default Text').next().contains('p', 'no-exist').should('exist')
     cy.contains('h3', 'Default Text').next().contains('p', 'default Text').should('exist')
+    cy.contains('h3', 'Default Text').next().contains('p', '2default Text2').should('exist')
     cy.contains('h3', 'Default Text').next().contains('p', 'Json').should('exist')
     cy.contains('h3', 'Default Text').next().contains('p', 'Hello, {name}, {name2}').should('exist')
     cy.contains('h3', 'Default Text').next().contains('p', 'Hello, {name}, {name2}').should('exist')

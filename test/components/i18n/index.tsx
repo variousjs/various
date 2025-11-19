@@ -84,7 +84,9 @@ export class B extends Component<ComponentProps> {
       <>
         <h3>Default Text</h3>
         <div className="value">
+          <p>{$t('no-exist')}</p>
           <p>{$t('no-exist', 'default Text')}</p>
+          <p>{$t('no-exist', {}, '2default Text2')}</p>
           {/* @ts-ignore */}
           <p>{$t('name', [])}</p>
           <p>{$t('greet', {})}</p>

@@ -118,6 +118,6 @@ export const createConfig: typeof con = (config) => {
   }
 
   defineModules(baseDependencies).then(() => {
-    emit({ [STANDALONE_CONFIG_READY]: true })
+    emit({ [STANDALONE_CONFIG_READY]: true }, true)
   })
 }

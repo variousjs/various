@@ -101,18 +101,8 @@ export const resetDependencyConfig = (name: string, url?: string) => {
 
   let path = getUrlHash(dependencies[name])
 
-  // custom module url, but module loaded error
   if (url) {
-    path = `${url}#${name}`
-
-    try {
-      const { registry } = window.requirejs.s.contexts._
-      if (registry?.[name].error) {
-        path = getUrlHash(url)
-      }
-    } catch (e) {
-      // ignore
-    }
+    path = getUrlHash(`${url}#${name}`)
   }
 
   window.requirejs.undef(name)
