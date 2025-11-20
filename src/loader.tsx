@@ -8,8 +8,8 @@ import {
 } from './types'
 
 const DEFAULT_PACKAGES = {
-  react: 'https://unpkg.com/react@18/umd/react.production.min.js',
-  'react-dom': 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
+  react: 'https://unpkg.com/@variousjs/registry@0.1.9/dist/react/19.2.0/index.js',
+  'react-dom': 'https://unpkg.com/@variousjs/registry@0.1.9/dist/react-dom/19.2.0/index.js',
   '@variousjs/various': 'https://unpkg.com/@variousjs/various/dist/index.js',
 }
 const ROOT = '#root'
