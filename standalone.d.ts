@@ -6,6 +6,13 @@ declare module '@variousjs/various/standalone' {
     ModuleDefined,
     FallbackNode,
     ErrorFallbackNode,
+    Dispatch,
+  } from '@variousjs/various'
+
+  export {
+    createDispatch,
+    createLogger,
+    createPostMessage,
   } from '@variousjs/various'
 
   export type DependencyType = string | object | Function
@@ -25,19 +32,18 @@ declare module '@variousjs/various/standalone' {
      * for React Component only
      */
     $ref?: RefObject<unknown>,
-  }> & {
-    dispatch: (next: Record<string, any>) => void,
-  }
+  }>
 
-   export function createConfig(
+   export function createAppConfig<S extends object = ObjectRecord>(
     config: {
-      baseDependencies: Partial<Record<
+      dependencies: Partial<Record<
         string,
         DependencyType
       >>,
-      store?: Record<string, any>,
-      fallback?: FallbackNode<any>,
-      errorFallback?: ErrorFallbackNode<any>,
+      store?: S,
+      actions?: Record<string, Dispatch<S>>,
+      fallback?: FallbackNode<S>,
+      errorFallback?: ErrorFallbackNode<S>,
     },
   ): void
 }

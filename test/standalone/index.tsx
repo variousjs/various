@@ -2,21 +2,36 @@ import '@variousjs/requirejs'
 import React, { useRef, StrictMode } from 'react'
 import * as Vue from 'vue'
 import { createRoot } from 'react-dom/client'
-import { createComponent, createConfig } from '../../src/standalone'
+import {
+  createComponent,
+  createAppConfig,
+  createDispatch,
+  createLogger,
+  createPostMessage,
+} from '../../src/standalone'
 
 const query = new URLSearchParams(window.location.search)
 const testType = query.get('type') || 'default'
 
-const baseConfig: Record<string, Parameters<typeof createConfig>['0']> = {
+const baseConfig: Record<string, Parameters<typeof createAppConfig>['0']> = {
   default: {
-    baseDependencies: {
+    dependencies: {
       react: React, // not needs
       vue: Vue,
     },
     store: { locale: 'zh', globalB: 'B' },
+    actions: {
+      async setLocale({ emit, getStore }, value) {
+        let next = value
+        if (!next) {
+          next = getStore('locale') === 'zh' ? 'en' : 'zh'
+        }
+        emit({ locale: next })
+      },
+    },
   },
   config: {
-    baseDependencies: {},
+    dependencies: {},
     fallback: () => null,
     errorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
   },
@@ -42,7 +57,7 @@ const VC = createComponent<{ propsB: string }>({
 
 // widthout config
 if (testType !== 'strict') {
-  createConfig(baseConfig[testType])
+  createAppConfig(baseConfig[testType])
 }
 
 function App() {
@@ -53,7 +68,8 @@ function App() {
       <RC $ref={ref} propsA="propsA" />
       <button
         onClick={() => {
-          RC.dispatch({ locale: 'en' })
+          const dispatch = createDispatch({ name: 'ot' })
+          dispatch({ name: 'app', action: 'setLocale' })
         }}
       >
         change lng
@@ -64,6 +80,22 @@ function App() {
         }}
       >
         set text
+      </button>
+      <button
+        onClick={() => {
+          const pm = createPostMessage({ name: 'ot' })
+          pm('greet', +new Date())
+        }}
+      >
+        message
+      </button>
+      <button
+        onClick={() => {
+          const log = createLogger({ name: 'ot' })
+          log.info('any')
+        }}
+      >
+        log
       </button>
       <VC propsB="propsB" />
     </div>

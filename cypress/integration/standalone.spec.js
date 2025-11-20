@@ -26,7 +26,7 @@ describe('standalone', () => {
     // $self
     cy.contains('p', 'info: b - /dist/standalone/b.js').should('exist')
 
-    // i18n
+    // i18n & createDispatch
     cy.contains('p', 'greet: 你好，C，D').should('exist')
     cy.contains('button', 'change lng').click()
     cy.contains('p', 'greet: Hello, C, D').should('exist')
@@ -48,6 +48,20 @@ describe('standalone', () => {
       Cypress.sinon.match.any,
       'log',
     )
+
+    // createLogger
+    cy.contains('button', 'log').click()
+    cy.get('@console.info').should(
+      'be.calledWith',
+      '%c ot ',
+      Cypress.sinon.match.any,
+      'any',
+    )
+
+    // createPostMessage
+    cy.contains('button', 'message').click()
+    cy.contains('p', 'Trigger: ot').should('exist')
+    cy.contains('p', 'Event: greet').should('exist')
   })
 
   it('strict and without config', () => {

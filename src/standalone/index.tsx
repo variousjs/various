@@ -7,18 +7,13 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { createComponent as cc, createConfig as con } from '@variousjs/various/standalone'
+import { createComponent as cc } from '@variousjs/various/standalone'
 import { ObjectRecord } from '@variousjs/various'
 import createComponentCore from '../core/create-component'
 import ErrorBoundary from '../core/error-boundary'
 import connector from '../core/connector'
 import { defineModules } from './helper'
-import {
-  createStore,
-  emit,
-  getUserStore,
-  useStore,
-} from '../core/store'
+import { createStore, getUserStore, useStore } from '../core/store'
 import {
   MOUNTED_COMPONENTS_KEY,
   DEPENDENCIES_KEY,
@@ -26,6 +21,9 @@ import {
   MESSAGE_KEY,
   STANDALONE_CONFIG_READY,
 } from '../core/config'
+
+export { createAppConfig } from './helper'
+export { createDispatch, createLogger, createPostMessage } from '../core'
 
 createStore({
   [MOUNTED_COMPONENTS_KEY]: [],
@@ -87,37 +85,7 @@ export const createComponent: typeof cc = (args) => {
       <Standalone $componentProps={props} {...args} />
     </ErrorBoundary>
   )
-  const dispatch: ReturnType<typeof cc>['dispatch'] = (next) => {
-    emit(next, true)
-  }
 
   component.displayName = 'various-standalone-creator'
-  return Object.assign(component, { dispatch })
-}
-
-export const createConfig: typeof con = (config) => {
-  const {
-    baseDependencies,
-    errorFallback,
-    fallback,
-    store,
-  } = config
-
-  emit({ [STANDALONE_CONFIG_READY]: false }, true)
-
-  if (errorFallback) {
-    connector.setErrorFallbackComponent(errorFallback)
-  }
-
-  if (fallback) {
-    connector.setFallbackComponent(fallback)
-  }
-
-  if (store) {
-    emit(store)
-  }
-
-  defineModules(baseDependencies).then(() => {
-    emit({ [STANDALONE_CONFIG_READY]: true }, true)
-  })
+  return component
 }

@@ -1,5 +1,12 @@
-import { DependencyType, createComponent } from '@variousjs/various/standalone'
+import {
+  DependencyType,
+  createComponent,
+  createAppConfig as con,
+} from '@variousjs/various/standalone'
 import { isModuleSpecified } from '../core/helper'
+import { emit } from '../core/store'
+import { STANDALONE_CONFIG_READY } from '../core/config'
+import connector from '../core/connector'
 
 const defineAsync = (name: string, dep?: DependencyType) => new Promise<void>((resolve) => {
   window.define(name, [], () => dep)
@@ -32,4 +39,35 @@ export function defineModules(
   })
 
   return Promise.all(defines.map((item) => defineAsync(item.key, item.value)))
+}
+
+export const createAppConfig: typeof con<any> = (config) => {
+  const {
+    dependencies,
+    errorFallback,
+    fallback,
+    store,
+    actions,
+  } = config
+
+  emit({ [STANDALONE_CONFIG_READY]: false }, true)
+
+  if (errorFallback) {
+    connector.setErrorFallbackComponent(errorFallback)
+  }
+
+  if (fallback) {
+    connector.setFallbackComponent(fallback)
+  }
+  if (actions) {
+    connector.setStoreActions(actions)
+  }
+
+  if (store) {
+    emit(store)
+  }
+
+  defineModules(dependencies).then(() => {
+    emit({ [STANDALONE_CONFIG_READY]: true }, true)
+  })
 }
