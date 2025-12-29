@@ -111,6 +111,6 @@
   },
   "dependencies": {
     "@variousjs/requirejs": "0.0.2",
-    "nycticorax": "^4.1.4"
+    "nycticorax": "^4.2.0"
   }
 }

@@ -73,7 +73,7 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
 
   const unSubscribe = subscribe({
     [MOUNTED_COMPONENTS_KEY](value) {
-      const mountedModules = value as ModuleDefined[]
+      const mountedModules = value
       if (modules.every((n) => hasModule(mountedModules, n))) {
         unSubscribe()
         callback()
