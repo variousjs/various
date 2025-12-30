@@ -39,25 +39,18 @@ module.exports = {
   rules: {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/function-component-definition': 0,
+    'react/no-unstable-nested-components': 0,
+    'class-methods-use-this': 0,
+    'react/class-methods-use-this': 0,
     'import/extensions': 0,
     semi: 'off',
-    '@typescript-eslint/semi': ['error', 'never'],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'react/state-in-constructor': 0,
     'func-names': ['error', 'never'],
     'react/jsx-props-no-spreading': 0,
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
-    '@typescript-eslint/member-delimiter-style': ['error', {
-      multiline: {
-        delimiter: 'comma',
-        requireLast: true,
-      },
-      singleline: {
-        delimiter: 'comma',
-        requireLast: false,
-      },
-    }],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     'import/no-extraneous-dependencies': 0,
@@ -74,5 +67,6 @@ module.exports = {
     'react/button-has-type': 0,
     'max-classes-per-file': 0,
     'react/require-default-props': 0,
+    'react/no-unused-class-component-methods': 0,
   },
 }

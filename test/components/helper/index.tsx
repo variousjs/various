@@ -36,7 +36,7 @@ export default () => {
     try {
       await preloadModules([testPreloadModule])
       setIsLoaded(String(isModuleLoaded(testPreloadModule)))
-    } catch (_) {
+    } catch {
       setIsLoaded('load error')
     }
   }
