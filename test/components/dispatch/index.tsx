@@ -6,7 +6,6 @@ import {
   Nycticorax,
   createComponent,
 } from '@variousjs/various'
-import { Store } from '../../types'
 
 interface S {
   value?: number,
@@ -48,7 +47,7 @@ const A = ((props) => {
       <E />
     </>
   )
-}) as ComponentNode<Store>
+}) as ComponentNode
 
 A.update = (value, trigger) => {
   const { name, module } = trigger

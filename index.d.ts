@@ -63,8 +63,8 @@ declare module '@variousjs/various' {
     update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
-  interface ComponentBuiltinProps<S extends object = ObjectRecord> {
-    $store: Readonly<S>,
+  interface ComponentBuiltinProps<Store extends object = ObjectRecord> {
+    $store: Readonly<Store>,
     $dispatch: $dispatch,
     $postMessage: $postMessage,
     $t: Intl,
@@ -91,14 +91,14 @@ declare module '@variousjs/various' {
   }
 
   export type ComponentProps<
-    S extends object = ObjectRecord,
-    P extends object = ObjectRecord
-  > = ComponentBuiltinProps<S> & P
+    Props extends object = ObjectRecord,
+    Store extends object = ObjectRecord
+  > = ComponentBuiltinProps<Store> & Props
 
   export type ComponentNode<
-    S extends object = {},
-    P extends object = {}
-  > = FC<ComponentProps<S, P>> & StaticProps
+    Props extends object = ObjectRecord,
+    Store extends object = ObjectRecord
+  > = FC<ComponentProps<Props, Store>> & StaticProps
 
   export interface ErrorFallbackProps<S extends object = ObjectRecord> {
     $reload: () => void,

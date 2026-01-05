@@ -187,4 +187,4 @@ export const GlobalProps = ((props) => {
       </button>
     </>
   )
-}) as ComponentNode<Store>
+}) as ComponentNode<{}, Store>

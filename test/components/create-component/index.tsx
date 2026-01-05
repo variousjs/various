@@ -95,7 +95,7 @@ export const A = forwardRef((_, ref) => {
   )
 })
 
-export class B extends Component<ComponentProps<Store>> {
+export class B extends Component<ComponentProps<{}, Store>> {
   render() {
     return (
       <p>name: {this.props.$store.name}</p>
@@ -110,7 +110,7 @@ export const D = () => (
   <div>{A.bind.c}</div>
 )
 
-export const E = (props: ComponentProps<Store>) => (
+export const E = (props: ComponentProps<{}, Store>) => (
   <p>{props.$store.name}</p>
 )
 

@@ -28,7 +28,7 @@ export const A = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode<{}, NS>
+}) as ComponentNode<NS>
 
 A.$onMessage = ({ event, value, trigger }) => {
   emit({

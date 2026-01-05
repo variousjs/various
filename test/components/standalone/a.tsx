@@ -5,7 +5,7 @@ import zh from '../i18n/zh.json'
 
 const C = forwardRef<
   { set:(t: string) => void },
-  ComponentProps<{}, { propsA: string }>
+  ComponentProps<{ propsA: string }>
     >((props, ref) => {
       const { $t, $postMessage } = props
       const [text, setText] = useState('')
