@@ -36,7 +36,7 @@ createStore({
 window.define('react', [], () => React)
 
 const Standalone: FC<
-  Parameters<typeof cc>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
+  Parameters<typeof cc<any, any>>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
 > = (props) => {
   const {
     dependencies,

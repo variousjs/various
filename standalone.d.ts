@@ -17,7 +17,10 @@ declare module '@variousjs/various/standalone' {
 
   export type DependencyType = string | object | Function
 
-  export function createComponent<P extends object = ObjectRecord>(
+  export function createComponent<
+    Props extends object = ObjectRecord,
+    Store extends object = ObjectRecord
+  >(
     config: ModuleDefined & {
       url: string,
       type?: VariousComponentType,
@@ -25,25 +28,25 @@ declare module '@variousjs/various/standalone' {
         string,
         DependencyType
       >>,
-      storeKeys?: string[],
+      storeKeys?: (keyof Store)[],
     },
-  ): ComponentType<P & {
+  ): ComponentType<Props & {
     /**
      * for React Component only
      */
     $ref?: RefObject<unknown>,
   }>
 
-   export function createAppConfig<S extends object = ObjectRecord>(
+   export function createAppConfig<Store extends object = ObjectRecord>(
     config: {
       dependencies: Partial<Record<
         string,
         DependencyType
       >>,
-      store?: S,
-      actions?: Record<string, Dispatch<S>>,
-      fallback?: FallbackNode<S>,
-      errorFallback?: ErrorFallbackNode<S>,
+      store?: Store,
+      actions?: Record<string, Dispatch<Store>>,
+      fallback?: FallbackNode<Store>,
+      errorFallback?: ErrorFallbackNode<Store>,
     },
   ): void
 }

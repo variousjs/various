@@ -100,21 +100,23 @@ declare module '@variousjs/various' {
     Store extends object = ObjectRecord
   > = FC<ComponentProps<Props, Store>> & StaticProps
 
-  export interface ErrorFallbackProps<S extends object = ObjectRecord> {
+  export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
     $reload: () => void,
     $error: VariousError,
-    $store: Readonly<S>,
+    $store: Readonly<Store>,
     $self: ModuleDefined & { url?: string },
   }
   export type ErrorFallbackNode<
-    S extends object = ObjectRecord
-  > = ComponentType<ErrorFallbackProps<S>>
+    Store extends object = ObjectRecord
+  > = ComponentType<ErrorFallbackProps<Store>>
 
-  export interface FallbackProps<S extends object = ObjectRecord> {
-    $store: Readonly<S>,
+  export interface FallbackProps<Store extends object = ObjectRecord> {
+    $store: Readonly<Store>,
     $self: ModuleDefined & { url?: string },
   }
-  export type FallbackNode<S extends object = ObjectRecord> = ComponentType<FallbackProps<S>>
+  export type FallbackNode<
+    Store extends object = ObjectRecord
+  > = ComponentType<FallbackProps<Store>>
 
   type Dispatch<T extends object = ObjectRecord> = (
     nycticorax: {
@@ -158,11 +160,11 @@ declare module '@variousjs/various' {
   export type ErrorEvent = (e: VariousError) => void
   export type LogEvent = (e: LogArgs) => boolean
 
-  export interface App<S extends object = ObjectRecord> {
-    store?: readonly S,
-    ErrorFallback?: ErrorFallbackNode<S>,
-    Fallback?: FallbackNode<S>,
-    actions?: Record<string, Dispatch<S>>,
+  export interface App<Store extends object = ObjectRecord> {
+    store?: readonly Store,
+    ErrorFallback?: ErrorFallbackNode<Store>,
+    Fallback?: FallbackNode<Store>,
+    actions?: Record<string, Dispatch<Store>>,
     Root: ComponentType,
     middlewares?: {
       onLoad?: LoadEvent,
@@ -189,30 +191,32 @@ declare module '@variousjs/various' {
   }
 
   export function createComponent<
-    S extends object = ObjectRecord,
-    P extends object = ObjectRecord
+    Props extends object = ObjectRecord,
+    Store extends object = ObjectRecord
   >(
     config: ModuleDefined & {
       url?: string,
       type?: VariousComponentType,
     },
-    storeKeys?: (keyof S)[],
-  ): ComponentType<ComponentDefaultProps & P>
+    storeKeys?: (keyof Store)[],
+  ): ComponentType<ComponentDefaultProps & Props>
 
   export function createModule<T = unknown> (params: ModuleDefined & {
     url?: string,
   }, logError?: boolean): Promise<T>
 
-  export function renderComponent<P extends object = ObjectRecord>(params: ModuleDefined & {
+  export function renderComponent<Props extends object = ObjectRecord>(params: ModuleDefined & {
     url?: string,
     type?: VariousComponentType,
-    props?: P & ComponentDefaultProps,
+    props?: Props & ComponentDefaultProps,
     target: Element | null,
     renderNode?: (children: ReactNode) => ReactNode,
     onMounted?: () => void,
   }): Promise<() => Promise<void>>
 
-  export type VueVarious<S extends object = ObjectRecord> = PropType<ComponentBuiltinProps<S>>
+  export type VariousComponentProps<
+    Store extends object = ObjectRecord
+  > = PropType<ComponentBuiltinProps<Store>>
 
   export const isModuleLoaded: (name: string) => boolean
   export const removeLoadedModules: (names: string[]) => void
@@ -225,7 +229,7 @@ declare module '@variousjs/various' {
 
   export const version: string
   export function getConfig<C extends object = ObjectRecord>(): C
-  export function getStore<S extends object = ObjectRecord>(): S
+  export function getStore<Store extends object = ObjectRecord>(): Store
 
   export const createDispatch: (m: ModuleDefined) => $dispatch
   export const createPostMessage: (m: ModuleDefined) => $postMessage
