@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { VueVarious, OnMessage } from '@variousjs/various'
+import { VariousComponentProps, OnMessage } from '@variousjs/various'
 
 interface NS {
   event?: string,
@@ -12,7 +12,7 @@ const message = ref<NS>({})
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious,
+    various: Object as VariousComponentProps,
   },
 
   data() {

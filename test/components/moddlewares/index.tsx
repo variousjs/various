@@ -67,7 +67,7 @@ export default ((props) => {
           dispatch block
         </button>
         <button onClick={() => {
-          $dispatch({ name: 'middlewares', module: 'B', action: 'a' })
+          $dispatch({ name: 'middlewares.B', action: 'a' })
         }}
         >
           dispatch changed

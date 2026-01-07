@@ -43,10 +43,39 @@ declare module '@variousjs/various' {
 
   interface Message { event: string, value: any, trigger: ModuleDefined }
 
-  type $dispatch = (args: ModuleDefined & {
-    action: string,
-    value?: any,
-  }) => Promise<any>
+  export interface ActionMap {
+    [name: string]: {
+      [action: string]: {
+        value?: any;
+        result?: any;
+      },
+    },
+  }
+
+  type $dispatch<M extends ActionMap = never> = [M] extends [never]
+    ? {
+      (payload: {
+        name: string,
+        action: string,
+        value?: any,
+      }): Promise<any>
+    }
+    : {
+      <Name extends keyof M, Action extends keyof M[Name]>(
+        payload: {
+          /**
+           * name.module
+           * - e.g. module.B
+           * - e.g. app
+           * - e.g. module.default => module
+           */
+          name: Name,
+          action: Action,
+          value?: M[Name][Action]['value'],
+        }
+      ): Promise<M[Name][Action]['result']>
+    }
+
   type $postMessage = (event: string, value?: any) => void
 
   interface $logger {
@@ -63,9 +92,12 @@ declare module '@variousjs/various' {
     update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
-  interface ComponentBuiltinProps<Store extends object = ObjectRecord> {
+  interface ComponentBuiltinProps<
+    Store extends object = ObjectRecord,
+    Actions extends ActionMap = never,
+  > {
     $store: Readonly<Store>,
-    $dispatch: $dispatch,
+    $dispatch: $dispatch<Actions>,
     $postMessage: $postMessage,
     $t: Intl,
     $logger: $logger,
@@ -92,13 +124,15 @@ declare module '@variousjs/various' {
 
   export type ComponentProps<
     Props extends object = ObjectRecord,
-    Store extends object = ObjectRecord
-  > = ComponentBuiltinProps<Store> & Props
+    Store extends object = ObjectRecord,
+    Actions extends ActionMap = never,
+  > = ComponentBuiltinProps<Store, Actions> & Props
 
   export type ComponentNode<
     Props extends object = ObjectRecord,
-    Store extends object = ObjectRecord
-  > = FC<ComponentProps<Props, Store>> & StaticProps
+    Store extends object = ObjectRecord,
+    Actions extends ActionMap = never,
+  > = FC<ComponentProps<Props, Store, Actions>> & StaticProps
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
     $reload: () => void,
@@ -215,8 +249,9 @@ declare module '@variousjs/various' {
   }): Promise<() => Promise<void>>
 
   export type VariousComponentProps<
-    Store extends object = ObjectRecord
-  > = PropType<ComponentBuiltinProps<Store>>
+    Store extends object = ObjectRecord,
+    Actions extends ActionMap = never,
+  > = PropType<ComponentBuiltinProps<Store, Actions>>
 
   export const isModuleLoaded: (name: string) => boolean
   export const removeLoadedModules: (names: string[]) => void
@@ -231,7 +266,9 @@ declare module '@variousjs/various' {
   export function getConfig<C extends object = ObjectRecord>(): C
   export function getStore<Store extends object = ObjectRecord>(): Store
 
-  export const createDispatch: (m: ModuleDefined) => $dispatch
+  export const createDispatch: <Actions extends ActionMap = never>(
+    m: ModuleDefined,
+  ) => $dispatch<Actions>
   export const createPostMessage: (m: ModuleDefined) => $postMessage
   export const createLogger: (m: ModuleDefined) => $logger
 }

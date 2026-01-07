@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { VueVarious, OnMessage } from '@variousjs/various'
+import { VariousComponentProps, OnMessage } from '@variousjs/various'
 
 interface NS {
   event?: string,
@@ -11,7 +11,7 @@ const message = ref<NS>({})
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious<{ globalB: string }>,
+    various: Object as VariousComponentProps<{ globalB: string }>,
     propsB: String,
   },
 
@@ -23,7 +23,7 @@ const V = defineComponent({
   setup(props) {
     return {
       dispatch() {
-        props.various?.$dispatch({ name: 'a', module: 'A', action: 'log', value: 'log' })
+        props.various?.$dispatch({ name: 'a.A', action: 'log', value: 'log' })
       }
     }
   }

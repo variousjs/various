@@ -63,7 +63,14 @@ const A = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode
+}) as ComponentNode<{}, {}, {
+  app: {
+    setLocale: {
+      // value?: string,
+      result?: string,
+    },
+  },
+}>
 
 A.$i18n = () => ({
   lngStoreKey: 'locale',

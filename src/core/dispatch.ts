@@ -4,16 +4,12 @@ import { dispatch } from './store'
 import { onError, VariousError } from './helper'
 import createLogger from './logger'
 
-const createDispatch: typeof cd = (moduleDefined) => async function (params) {
+const createDispatch: typeof cd<never> = (moduleDefined) => async function (params) {
   const middlewares = connector.getMiddlewares()
   const logger = createLogger(moduleDefined)
 
-  let {
-    name,
-    module,
-    action,
-    value,
-  } = params
+  let [name, module = undefined] = params.name.split('.')
+  let { action, value } = params
 
   if (middlewares?.onDispatch) {
     const check = await middlewares.onDispatch({
