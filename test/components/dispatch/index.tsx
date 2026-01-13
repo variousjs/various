@@ -5,6 +5,7 @@ import {
   ComponentNode,
   Nycticorax,
   createComponent,
+  PublicAction,
 } from '@variousjs/various'
 
 interface S {
@@ -57,6 +58,16 @@ A.update = (value, trigger) => {
 export default A
 
 export class B extends Component<ComponentProps> {
+  static update: PublicAction = (value, trigger) => {
+  }
+
+  static update2: PublicAction<{ value: number, result: Promise<number> }> = (value, trigger) => {
+    if (typeof value !== 'number') {
+      throw new Error('value must be number')
+    }
+    return value
+  }
+
   state = {
     errors: {} as Record<string, Error>,
   }

@@ -43,16 +43,35 @@ declare module '@variousjs/various' {
 
   interface Message { event: string, value: any, trigger: ModuleDefined }
 
-  export interface ActionMap {
-    [name: string]: {
-      [action: string]: {
-        value?: any;
-        result?: any;
-      },
-    },
+  export interface ActionDesc {
+    value: any,
+    result: any,
   }
 
-  type $dispatch<M extends ActionMap = never> = [M] extends [never]
+  export type PublicAction<A extends ActionDesc = never> = (
+    value: [A] extends [never] ? unknown : A['value'],
+    trigger: ModuleDefined,
+  ) => [A] extends [never] ? unknown : A['result']
+
+  export type PublicActionDesc = Record<string, ActionDesc>
+
+  export type StaticMethods<T extends PublicActionDesc = never> =
+    [T] extends [never]
+      ? Record<string, (value: unknown, trigger: ModuleDefined) => unknown>
+      : {
+        [K in keyof T]: T[K] extends { value: infer V; result: infer R }
+        ? (v: V, trigger: ModuleDefined) => R
+        : never
+      }
+
+  export type StaticProps<S extends PublicActionDesc = never> = {
+    $i18n?: I18n,
+    $onMessage?: OnMessage,
+  } & StaticMethods<S>
+
+  export type ComponentPublicActionMap = Record<string, PublicActionDesc>
+
+  type $dispatch<M extends ComponentPublicActionMap = never> = [M] extends [never]
     ? {
       (payload: {
         name: string,
@@ -76,12 +95,12 @@ declare module '@variousjs/various' {
       ): Promise<M[Name][Action]['result']>
     }
 
-  type $postMessage = (event: string, value?: any) => void
+  type $postMessage = (event: string, value?: unknown) => void
 
   interface $logger {
-    info: (message: any, type?: string) => void,
-    warn: (message: any, type?: string) => void,
-    error: (message: any, type?: string) => void,
+    info: (message: unknown, type?: string) => void,
+    warn: (message: unknown, type?: string) => void,
+    error: (message: unknown, type?: string) => void,
   }
 
   export type Intl = ((
@@ -94,7 +113,7 @@ declare module '@variousjs/various' {
 
   interface ComponentBuiltinProps<
     Store extends object = ObjectRecord,
-    Actions extends ActionMap = never,
+    Actions extends ComponentPublicActionMap = never,
   > {
     $store: Readonly<Store>,
     $dispatch: $dispatch<Actions>,
@@ -103,8 +122,6 @@ declare module '@variousjs/various' {
     $logger: $logger,
     $self: ModuleDefined & { url: string },
   }
-
-  export type PublicAction = (value: any, trigger: ModuleDefined) => any
 
   export interface I18nConfig {
     /** app store key */
@@ -116,22 +133,16 @@ declare module '@variousjs/various' {
 
   export type OnMessage = (message: Message) => void
 
-  export interface StaticProps {
-    $i18n?: I18n,
-    $onMessage?: OnMessage,
-    [x: string]: PublicAction,
-  }
-
   export type ComponentProps<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Actions extends ActionMap = never,
+    Actions extends ComponentPublicActionMap = never,
   > = ComponentBuiltinProps<Store, Actions> & Props
 
   export type ComponentNode<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Actions extends ActionMap = never,
+    Actions extends ComponentPublicActionMap = never,
   > = FC<ComponentProps<Props, Store, Actions>> & StaticProps
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
@@ -158,21 +169,21 @@ declare module '@variousjs/various' {
         K extends keyof T ? T[K] : T,
       emit: (next: Partial<T>) => void,
     },
-    value: any,
+    value: unknown,
     trigger: ModuleDefined,
-  ) => Promise<any>
+  ) => Promise<unknown>
 
   interface MessageEventArgs {
     trigger: ModuleDefined,
     event: string,
-    value?: any,
+    value?: unknown,
   }
   type MessageEventRes = boolean | Omit<MessageEventArgs, 'trigger'>
   interface DispatchEventArgs {
     target: ModuleDefined,
     trigger: ModuleDefined,
     action: string,
-    value?: any,
+    value?: unknown,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
   interface LoadEventArgs extends ModuleDefined {
@@ -185,7 +196,7 @@ declare module '@variousjs/various' {
   interface LogArgs extends ModuleDefined {
     level: LogLevel,
     type?: string,
-    message: any,
+    message: unknown,
   }
 
   export type MessageEvent = (e: MessageEventArgs) => Promise<MessageEventRes> | MessageEventRes
@@ -250,7 +261,7 @@ declare module '@variousjs/various' {
 
   export type VariousComponentProps<
     Store extends object = ObjectRecord,
-    Actions extends ActionMap = never,
+    Actions extends ComponentPublicActionMap = never,
   > = PropType<ComponentBuiltinProps<Store, Actions>>
 
   export const isModuleLoaded: (name: string) => boolean
@@ -266,7 +277,7 @@ declare module '@variousjs/various' {
   export function getConfig<C extends object = ObjectRecord>(): C
   export function getStore<Store extends object = ObjectRecord>(): Store
 
-  export const createDispatch: <Actions extends ActionMap = never>(
+  export const createDispatch: <Actions extends ComponentPublicActionMap = never>(
     m: ModuleDefined,
   ) => $dispatch<Actions>
   export const createPostMessage: (m: ModuleDefined) => $postMessage
