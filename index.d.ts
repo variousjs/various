@@ -99,7 +99,12 @@ declare module '@variousjs/various' {
       ): Promise<M[Name][Action]['result']>
     }
 
-  type $postMessage = (event: string, value?: unknown) => void
+  type $postMessage<
+    T extends ObjectRecord = never,
+  > = (
+    event: [T] extends [never] ? string : keyof T,
+    value?: [T] extends [never] ? unknown : T[keyof T],
+  ) => void
 
   interface $logger {
     info: (message: unknown, type?: string) => void,
@@ -115,10 +120,13 @@ declare module '@variousjs/various' {
     update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
-  interface ComponentBuiltinProps<Store extends object = ObjectRecord> {
+  interface ComponentBuiltinProps<
+    Store extends object = ObjectRecord,
+    Messages extends ObjectRecord = never
+  > {
     $store: Readonly<Store>,
     $dispatch: $dispatch,
-    $postMessage: $postMessage,
+    $postMessage: $postMessage<Messages>,
     $t: Intl,
     $logger: $logger,
     $self: ModuleDefined & { url: string },
@@ -137,14 +145,15 @@ declare module '@variousjs/various' {
   export type ComponentProps<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-  > = ComponentBuiltinProps<Store> & Props
+    Messages extends ObjectRecord = never,
+  > = ComponentBuiltinProps<Store, Messages> & Props
 
   export type ComponentNode<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
     Actions extends PublicActionDesc = never,
     Messages extends ObjectRecord = never,
-  > = FC<ComponentProps<Props, Store>> & StaticProps<Actions, Messages>
+  > = FC<ComponentProps<Props, Store, Messages>> & StaticProps<Actions, Messages>
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
     $reload: () => void,
@@ -283,6 +292,8 @@ declare module '@variousjs/various' {
   export const createDispatch: <Actions extends ComponentPublicActionMap = never>(
     m: ModuleDefined,
   ) => $dispatch<Actions>
-  export const createPostMessage: (m: ModuleDefined) => $postMessage
+  export const createPostMessage: <Messages extends ObjectRecord = never>(
+    m: ModuleDefined
+  ) => $postMessage<Messages>
   export const createLogger: (m: ModuleDefined) => $logger
 }

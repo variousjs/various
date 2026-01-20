@@ -19,7 +19,7 @@ interface Messages {
   'B-greet': number,
 }
 
-export const A = ((props) => {
+export const A: ComponentNode<NS, {}, {}, Messages> = (props) => {
   const { event, value, trigger } = props
 
   return (
@@ -32,7 +32,7 @@ export const A = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode<NS, {}, {}, Messages>
+}
 
 A.$onMessage = ({ event, value, trigger }) => {
   emit({
@@ -44,7 +44,7 @@ A.$onMessage = ({ event, value, trigger }) => {
 
 export const MessageA = connect('event', 'trigger', 'value')(A)
 
-export class MessageB extends Component<ComponentProps> {
+export class MessageB extends Component<ComponentProps<{}, {}, Messages>> {
   post = () => {
     this.props.$postMessage('B-greet', +new Date())
   }
