@@ -15,6 +15,10 @@ interface NS {
 const { createStore, emit, connect } = new Nycticorax<NS>()
 createStore({})
 
+interface Messages {
+  'B-greet': number,
+}
+
 export const A = ((props) => {
   const { event, value, trigger } = props
 
@@ -28,7 +32,7 @@ export const A = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode<NS>
+}) as ComponentNode<NS, {}, {}, Messages>
 
 A.$onMessage = ({ event, value, trigger }) => {
   emit({

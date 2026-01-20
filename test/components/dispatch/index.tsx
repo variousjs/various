@@ -7,6 +7,7 @@ import {
   createComponent,
   PublicAction,
 } from '@variousjs/various'
+import { Store } from '../../types'
 
 interface S {
   value?: number,
@@ -18,7 +19,8 @@ createStore({})
 
 const E = createComponent({ name: 'dispatch', module: 'B' })
 
-const A = ((props) => {
+// eslint-disable-next-line no-undef
+const A: ComponentNode<{}, Store, Actions['dispatch'] > = (props) => {
   const { $dispatch, $store } = props
   const { trigger, value } = useStore('trigger', 'value')
 
@@ -48,7 +50,7 @@ const A = ((props) => {
       <E />
     </>
   )
-}) as ComponentNode
+}
 
 A.update = (value, trigger) => {
   const { name, module } = trigger
@@ -59,13 +61,16 @@ export default A
 
 export class B extends Component<ComponentProps> {
   static update: PublicAction = (value, trigger) => {
+    // test types
+    window.console.log(value, trigger)
   }
 
-  static update2: PublicAction<{ value: number, result: Promise<number> }> = (value, trigger) => {
+  static update2: PublicAction<{ value: number, result: Promise<number> }> = (value) => {
+    // test types
     if (typeof value !== 'number') {
       throw new Error('value must be number')
     }
-    return value
+    return Promise.resolve(value)
   }
 
   state = {

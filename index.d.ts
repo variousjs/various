@@ -25,12 +25,12 @@ declare module '@variousjs/various' {
     'DISPATCH' |
     'I18N' | (string & {})
 
-  export interface ComponentDefaultProps {
+  export interface ComponentDefaultProps<Ref = unknown> {
     $silent?: boolean,
     /**
      * for React Component only
      */
-    $ref?: RefObject<unknown>,
+    $ref?: RefObject<Ref>,
     [k: string]: any,
   }
 
@@ -41,7 +41,11 @@ declare module '@variousjs/various' {
     name: ModuleDefined['name'],
   }
 
-  interface Message { event: string, value: any, trigger: ModuleDefined }
+  interface Message<T extends ObjectRecord = never> {
+    event: [T] extends [never] ? string : keyof T,
+    value: [T] extends [never] ? any : T[keyof T],
+    trigger: ModuleDefined,
+  }
 
   export interface ActionDesc {
     value: any,
@@ -64,9 +68,9 @@ declare module '@variousjs/various' {
         : never
       }
 
-  export type StaticProps<S extends PublicActionDesc = never> = {
+  export type StaticProps<S extends PublicActionDesc = never, T extends ObjectRecord = never> = {
     $i18n?: I18n,
-    $onMessage?: OnMessage,
+    $onMessage?: OnMessage<T>,
   } & StaticMethods<S>
 
   export type ComponentPublicActionMap = Record<string, PublicActionDesc>
@@ -111,12 +115,9 @@ declare module '@variousjs/various' {
     update: (config: Partial<I18nConfig>, type?: 'app') => void,
   }
 
-  interface ComponentBuiltinProps<
-    Store extends object = ObjectRecord,
-    Actions extends ComponentPublicActionMap = never,
-  > {
+  interface ComponentBuiltinProps<Store extends object = ObjectRecord> {
     $store: Readonly<Store>,
-    $dispatch: $dispatch<Actions>,
+    $dispatch: $dispatch,
     $postMessage: $postMessage,
     $t: Intl,
     $logger: $logger,
@@ -131,19 +132,19 @@ declare module '@variousjs/various' {
 
   export type I18n = () => I18nConfig | Promise<I18nConfig>
 
-  export type OnMessage = (message: Message) => void
+  export type OnMessage<T extends ObjectRecord = never> = (message: Message<T>) => void
 
   export type ComponentProps<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Actions extends ComponentPublicActionMap = never,
-  > = ComponentBuiltinProps<Store, Actions> & Props
+  > = ComponentBuiltinProps<Store> & Props
 
   export type ComponentNode<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Actions extends ComponentPublicActionMap = never,
-  > = FC<ComponentProps<Props, Store, Actions>> & StaticProps
+    Actions extends PublicActionDesc = never,
+    Messages extends ObjectRecord = never,
+  > = FC<ComponentProps<Props, Store>> & StaticProps<Actions, Messages>
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
     $reload: () => void,
@@ -237,20 +238,23 @@ declare module '@variousjs/various' {
 
   export function createComponent<
     Props extends object = ObjectRecord,
-    Store extends object = ObjectRecord
+    Store extends object = ObjectRecord,
+    Ref = unknown,
   >(
     config: ModuleDefined & {
       url?: string,
       type?: VariousComponentType,
     },
     storeKeys?: (keyof Store)[],
-  ): ComponentType<ComponentDefaultProps & Props>
+  ): ComponentType<ComponentDefaultProps<Ref> & Props>
 
   export function createModule<T = unknown> (params: ModuleDefined & {
     url?: string,
   }, logError?: boolean): Promise<T>
 
-  export function renderComponent<Props extends object = ObjectRecord>(params: ModuleDefined & {
+  export function renderComponent<
+    Props extends object = ObjectRecord
+  >(params: ModuleDefined & {
     url?: string,
     type?: VariousComponentType,
     props?: Props & ComponentDefaultProps,
@@ -260,9 +264,8 @@ declare module '@variousjs/various' {
   }): Promise<() => Promise<void>>
 
   export type VariousComponentProps<
-    Store extends object = ObjectRecord,
-    Actions extends ComponentPublicActionMap = never,
-  > = PropType<ComponentBuiltinProps<Store, Actions>>
+    Store extends object = ObjectRecord
+  > = PropType<ComponentBuiltinProps<Store>>
 
   export const isModuleLoaded: (name: string) => boolean
   export const removeLoadedModules: (names: string[]) => void
