@@ -1,3 +1,5 @@
+import { ComponentPublicActionMap } from '@variousjs/various'
+
 export {}
 
 declare global {
@@ -6,7 +8,7 @@ declare global {
     middlewaresEnabled?: boolean,
   }
 
-  interface Actions {
+  interface Actions extends ComponentPublicActionMap {
     dispatch: {
       update: { value: number, result: void },
     }

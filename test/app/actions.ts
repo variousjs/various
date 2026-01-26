@@ -1,7 +1,7 @@
-import { Dispatch } from '@variousjs/various'
+import { App } from '@variousjs/various'
 import { Store } from '../types'
 
-const actions: Record<string, Dispatch<Store>> = {
+const actions: App<Store>['actions'] = {
   async setName({ emit, getStore }) {
     const next = getStore('name') === 'humpback' ? 'various' : 'humpback'
     emit({ name: next })
@@ -12,7 +12,7 @@ const actions: Record<string, Dispatch<Store>> = {
     if (!next) {
       next = getStore('locale') === 'zh' ? 'en' : 'zh'
     }
-    emit({ locale: next })
+    emit({ locale: next as 'jp' })
   },
 }
 

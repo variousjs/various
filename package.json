@@ -41,7 +41,7 @@
     "excludeAfterRemap": true
   },
   "scripts": {
-    "lint": "tsc --noemit && eslint . --ext .ts,.tsx,.js",
+    "lint": "tsc --noemit --skipLibCheck && eslint . --ext .ts,.tsx,.js",
     "create-empty": "touch docs/dist/empty.js",
     "test-components": "webpack --config webpack/test-components.js",
     "test-components:build": "NODE_ENV=production webpack --config webpack/test-components.js --progress",

@@ -112,6 +112,7 @@ export class B extends Component<ComponentProps> {
               $dispatch({
                 name: 'not exist',
                 action: 'any',
+                value: 1,
               }).catch((e) => this.onError('component', e))
             }}
           >

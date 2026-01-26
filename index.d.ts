@@ -6,7 +6,16 @@ declare module '@variousjs/various' {
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
-  export interface ModuleDefined { name: string, module?: string }
+  export type ModuleDef = {
+    /**
+    * module name
+    * - e.g. A.B
+    * - e.g. B
+    * - e.g. app
+    * - e.g. A.default => A
+    */
+    module: string,
+  }
 
   export type ObjectRecord<T = any> = Record<string, T>
 
@@ -37,73 +46,77 @@ declare module '@variousjs/various' {
   export interface VariousError extends Error {
     type: ErrorType,
     originalError: Error,
-    module?: ModuleDefined['module'],
-    name: ModuleDefined['name'],
+    module?: ModuleDef['module'],
   }
 
   interface Message<T extends ObjectRecord = never> {
     event: [T] extends [never] ? string : keyof T,
-    value: [T] extends [never] ? any : T[keyof T],
-    trigger: ModuleDefined,
+    payload: [T] extends [never] ? any : T[keyof T],
+    trigger: ModuleDef,
   }
 
-  export interface ActionDesc {
-    value: any,
+  export interface ActionDef {
+    payload: any,
     result: any,
   }
 
-  export type PublicAction<A extends ActionDesc = never> = (
-    value: [A] extends [never] ? unknown : A['value'],
-    trigger: ModuleDefined,
+  export type PublicAction<A extends ActionDef = never> = (
+    payload: [A] extends [never] ? unknown : A['payload'],
+    trigger: ModuleDef,
   ) => [A] extends [never] ? unknown : A['result']
 
-  export type PublicActionDesc = Record<string, ActionDesc>
+  export type PublicActionDef = Record<string, ActionDef>
 
-  export type StaticMethods<T extends PublicActionDesc = never> =
+  export type StaticMethods<T extends PublicActionDef = never> =
     [T] extends [never]
-      ? Record<string, (value: unknown, trigger: ModuleDefined) => unknown>
+      ? Record<string, (payload: unknown, trigger: ModuleDef) => unknown>
       : {
-        [K in keyof T]: T[K] extends { value: infer V; result: infer R }
-        ? (v: V, trigger: ModuleDefined) => R
+        [K in keyof T]: T[K] extends { payload: infer V, result: infer R }
+        ? (payload: V, trigger: ModuleDef) => R
         : never
       }
 
-  export type StaticProps<S extends PublicActionDesc = never, T extends ObjectRecord = never> = {
+  export type StaticProps<S extends PublicActionDef = never, T extends ObjectRecord = never> = {
     $i18n?: I18n,
     $onMessage?: OnMessage<T>,
   } & StaticMethods<S>
 
-  export type ComponentPublicActionMap = Record<string, PublicActionDesc>
+  export type ComponentPublicActionMap = {
+    [name: string]: PublicActionDef,
+  }
 
-  type $dispatch<M extends ComponentPublicActionMap = never> = [M] extends [never]
-    ? {
-      (payload: {
+  type $dispatch = <
+    A extends ComponentPublicActionMap = never,
+    Name extends keyof A = keyof A,
+    Action extends keyof A[Name] = keyof A[Name],
+  >(
+    payload: [A] extends [never]
+      ? {
         name: string,
         action: string,
-        value?: any,
-      }): Promise<any>
-    }
-    : {
-      <Name extends keyof M, Action extends keyof M[Name]>(
-        payload: {
-          /**
-           * name.module
-           * - e.g. module.B
-           * - e.g. app
-           * - e.g. module.default => module
-           */
-          name: Name,
-          action: Action,
-          value?: M[Name][Action]['value'],
-        }
-      ): Promise<M[Name][Action]['result']>
-    }
+        payload?: any,
+      }
+      : {
+      /**
+       * name.module
+       * - e.g. module.B
+       * - e.g. app
+       * - e.g. module.default => module
+       */
+      name: Name,
+      action: Action,
+      payload?: A[Name][Action]['payload'],
+    }) => Promise<
+      [A] extends [never]
+        ? any
+        : A[Name][Action]['result']
+    >
 
   type $postMessage<
     T extends ObjectRecord = never,
   > = (
     event: [T] extends [never] ? string : keyof T,
-    value?: [T] extends [never] ? unknown : T[keyof T],
+    payload?: [T] extends [never] ? unknown : T[keyof T],
   ) => void
 
   interface $logger {
@@ -129,7 +142,7 @@ declare module '@variousjs/various' {
     $postMessage: $postMessage<Messages>,
     $t: Intl,
     $logger: $logger,
-    $self: ModuleDefined & { url: string },
+    $self: ModuleDef & { url: string },
   }
 
   export interface I18nConfig {
@@ -151,7 +164,7 @@ declare module '@variousjs/various' {
   export type ComponentNode<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Actions extends PublicActionDesc = never,
+    Actions extends PublicActionDef = never,
     Messages extends ObjectRecord = never,
   > = FC<ComponentProps<Props, Store, Messages>> & StaticProps<Actions, Messages>
 
@@ -159,7 +172,7 @@ declare module '@variousjs/various' {
     $reload: () => void,
     $error: VariousError,
     $store: Readonly<Store>,
-    $self: ModuleDefined & { url?: string },
+    $self: ModuleDef & { url?: string },
   }
   export type ErrorFallbackNode<
     Store extends object = ObjectRecord
@@ -167,7 +180,7 @@ declare module '@variousjs/various' {
 
   export interface FallbackProps<Store extends object = ObjectRecord> {
     $store: Readonly<Store>,
-    $self: ModuleDefined & { url?: string },
+    $self: ModuleDef & { url?: string },
   }
   export type FallbackNode<
     Store extends object = ObjectRecord
@@ -179,31 +192,31 @@ declare module '@variousjs/various' {
         K extends keyof T ? T[K] : T,
       emit: (next: Partial<T>) => void,
     },
-    value: unknown,
-    trigger: ModuleDefined,
+    payload: any,
+    trigger: ModuleDef,
   ) => Promise<unknown>
 
   interface MessageEventArgs {
-    trigger: ModuleDefined,
+    trigger: ModuleDef,
     event: string,
-    value?: unknown,
+    payload?: unknown,
   }
   type MessageEventRes = boolean | Omit<MessageEventArgs, 'trigger'>
   interface DispatchEventArgs {
-    target: ModuleDefined,
-    trigger: ModuleDefined,
+    target: ModuleDef,
+    trigger: ModuleDef,
     action: string,
-    value?: unknown,
+    payload?: unknown,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
-  interface LoadEventArgs extends ModuleDefined {
+  interface LoadEventArgs extends ModuleDef {
     loadStart: number,
     loadEnd: number,
     beenLoaded: boolean,
   }
 
   type LogLevel = 'info' | 'warn' | 'error'
-  interface LogArgs extends ModuleDefined {
+  interface LogArgs extends ModuleDef {
     level: LogLevel,
     type?: string,
     message: unknown,
@@ -216,7 +229,7 @@ declare module '@variousjs/various' {
   export type LogEvent = (e: LogArgs) => boolean
 
   export interface App<Store extends object = ObjectRecord> {
-    store?: readonly Store,
+    store?: Store,
     ErrorFallback?: ErrorFallbackNode<Store>,
     Fallback?: FallbackNode<Store>,
     actions?: Record<string, Dispatch<Store>>,
@@ -238,8 +251,7 @@ declare module '@variousjs/various' {
       react?: string,
       'react-dom'?: string,
       vue?: string,
-      [x: string]: string,
-    },
+    } & Record<string, string>,
     root?: string,
     timeout?: number,
     earlyParallelDependencies?: string[],
@@ -248,22 +260,22 @@ declare module '@variousjs/various' {
   export function createComponent<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Ref = unknown,
+    Ref = unknown
   >(
-    config: ModuleDefined & {
+    config: ModuleDef & {
       url?: string,
       type?: VariousComponentType,
     },
     storeKeys?: (keyof Store)[],
   ): ComponentType<ComponentDefaultProps<Ref> & Props>
 
-  export function createModule<T = unknown> (params: ModuleDefined & {
+  export function createModule<T = unknown> (params: ModuleDef & {
     url?: string,
   }, logError?: boolean): Promise<T>
 
   export function renderComponent<
     Props extends object = ObjectRecord
-  >(params: ModuleDefined & {
+  >(params: ModuleDef & {
     url?: string,
     type?: VariousComponentType,
     props?: Props & ComponentDefaultProps,
@@ -278,10 +290,10 @@ declare module '@variousjs/various' {
 
   export const isModuleLoaded: (name: string) => boolean
   export const removeLoadedModules: (names: string[]) => void
-  export const getMountedComponents: () => ModuleDefined[]
+  export const getMountedComponents: () => ModuleDef[]
   export const preloadModules: (name: string[]) => Promise<void>
   export const onComponentMounted: (
-    name: ModuleDefined | ModuleDefined[], callback: () => void
+    name: ModuleDef | ModuleDef[], callback: () => void
   ) => (() => void) | void
   export const defineDependencies: (deps: Record<string, string>) => void
 
@@ -289,11 +301,9 @@ declare module '@variousjs/various' {
   export function getConfig<C extends object = ObjectRecord>(): C
   export function getStore<Store extends object = ObjectRecord>(): Store
 
-  export const createDispatch: <Actions extends ComponentPublicActionMap = never>(
-    m: ModuleDefined,
-  ) => $dispatch<Actions>
+  export const createDispatch: (m: ModuleDef) => $dispatch
   export const createPostMessage: <Messages extends ObjectRecord = never>(
-    m: ModuleDefined
+    m: ModuleDef
   ) => $postMessage<Messages>
-  export const createLogger: (m: ModuleDefined) => $logger
+  export const createLogger: (m: ModuleDef) => $logger
 }

@@ -3,7 +3,7 @@ declare module '@variousjs/various/standalone' {
   import {
     VariousComponentType,
     ObjectRecord,
-    ModuleDefined,
+    ModuleDef,
     FallbackNode,
     ErrorFallbackNode,
     Dispatch,
@@ -19,9 +19,10 @@ declare module '@variousjs/various/standalone' {
 
   export function createComponent<
     Props extends object = ObjectRecord,
-    Store extends object = ObjectRecord
+    Store extends object = ObjectRecord,
+    Ref = unknown,
   >(
-    config: ModuleDefined & {
+    config: ModuleDef & {
       url: string,
       type?: VariousComponentType,
       dependencies?: Partial<Record<
@@ -34,7 +35,7 @@ declare module '@variousjs/various/standalone' {
     /**
      * for React Component only
      */
-    $ref?: RefObject<unknown>,
+    $ref?: RefObject<Ref>,
   }>
 
    export function createAppConfig<Store extends object = ObjectRecord>(
