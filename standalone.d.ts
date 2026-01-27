@@ -22,7 +22,8 @@ declare module '@variousjs/various/standalone' {
     Store extends object = ObjectRecord,
     Ref = unknown,
   >(
-    config: ModuleDef & {
+    config: {
+      module: ModuleDef,
       url: string,
       type?: VariousComponentType,
       dependencies?: Partial<Record<

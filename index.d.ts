@@ -6,16 +6,14 @@ declare module '@variousjs/various' {
 
   export { default as Nycticorax, Dispatch } from 'nycticorax'
 
-  export type ModuleDef = {
-    /**
-    * module name
-    * - e.g. A.B
-    * - e.g. B
-    * - e.g. app
-    * - e.g. A.default => A
-    */
-    module: string,
-  }
+  /**
+  * module name
+  * - e.g. A.B
+  * - e.g. B
+  * - e.g. app
+  * - e.g. A.default -> A
+  */
+  export type ModuleDef = string
 
   export type ObjectRecord<T = any> = Record<string, T>
 
@@ -46,7 +44,7 @@ declare module '@variousjs/various' {
   export interface VariousError extends Error {
     type: ErrorType,
     originalError: Error,
-    module?: ModuleDef['module'],
+    module: ModuleDef,
   }
 
   interface Message<T extends ObjectRecord = never> {
@@ -120,9 +118,9 @@ declare module '@variousjs/various' {
   ) => void
 
   interface $logger {
-    info: (message: unknown, type?: string) => void,
-    warn: (message: unknown, type?: string) => void,
-    error: (message: unknown, type?: string) => void,
+    info: (message: any, type?: string) => void,
+    warn: (message: any, type?: string) => void,
+    error: (message: any, type?: string) => void,
   }
 
   export type Intl = ((
@@ -142,7 +140,7 @@ declare module '@variousjs/various' {
     $postMessage: $postMessage<Messages>,
     $t: Intl,
     $logger: $logger,
-    $self: ModuleDef & { url: string },
+    $self: { url: string, module: ModuleDef },
   }
 
   export interface I18nConfig {
@@ -172,7 +170,7 @@ declare module '@variousjs/various' {
     $reload: () => void,
     $error: VariousError,
     $store: Readonly<Store>,
-    $self: ModuleDef & { url?: string },
+    $self: { url: string, module: ModuleDef },
   }
   export type ErrorFallbackNode<
     Store extends object = ObjectRecord
@@ -180,7 +178,7 @@ declare module '@variousjs/various' {
 
   export interface FallbackProps<Store extends object = ObjectRecord> {
     $store: Readonly<Store>,
-    $self: ModuleDef & { url?: string },
+    $self: { url: string, module: ModuleDef },
   }
   export type FallbackNode<
     Store extends object = ObjectRecord
@@ -209,14 +207,16 @@ declare module '@variousjs/various' {
     payload?: unknown,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
-  interface LoadEventArgs extends ModuleDef {
+  interface LoadEventArgs {
+    module: ModuleDef,
     loadStart: number,
     loadEnd: number,
     beenLoaded: boolean,
   }
 
   type LogLevel = 'info' | 'warn' | 'error'
-  interface LogArgs extends ModuleDef {
+  interface LogArgs {
+    module: ModuleDef,
     level: LogLevel,
     type?: string,
     message: unknown,
@@ -262,20 +262,23 @@ declare module '@variousjs/various' {
     Store extends object = ObjectRecord,
     Ref = unknown
   >(
-    config: ModuleDef & {
+    config: {
       url?: string,
       type?: VariousComponentType,
+      module: ModuleDef,
     },
     storeKeys?: (keyof Store)[],
   ): ComponentType<ComponentDefaultProps<Ref> & Props>
 
-  export function createModule<T = unknown> (params: ModuleDef & {
+  export function createModule<T = unknown> (params: {
     url?: string,
+    module: ModuleDef,
   }, logError?: boolean): Promise<T>
 
   export function renderComponent<
     Props extends object = ObjectRecord
-  >(params: ModuleDef & {
+  >(params: {
+    module: ModuleDef,
     url?: string,
     type?: VariousComponentType,
     props?: Props & ComponentDefaultProps,
@@ -288,12 +291,13 @@ declare module '@variousjs/various' {
     Store extends object = ObjectRecord
   > = PropType<ComponentBuiltinProps<Store>>
 
-  export const isModuleLoaded: (name: string) => boolean
-  export const removeLoadedModules: (names: string[]) => void
+  export const isModuleLoaded: (module: ModuleDef) => boolean
+  export const removeLoadedModules: (modules: ModuleDef[]) => void
   export const getMountedComponents: () => ModuleDef[]
-  export const preloadModules: (name: string[]) => Promise<void>
+  export const preloadModules: (modules: ModuleDef[]) => Promise<void>
   export const onComponentMounted: (
-    name: ModuleDef | ModuleDef[], callback: () => void
+    module: ModuleDef | ModuleDef[],
+    callback: () => void
   ) => (() => void) | void
   export const defineDependencies: (deps: Record<string, string>) => void
 
@@ -301,9 +305,13 @@ declare module '@variousjs/various' {
   export function getConfig<C extends object = ObjectRecord>(): C
   export function getStore<Store extends object = ObjectRecord>(): Store
 
-  export const createDispatch: (m: ModuleDef) => $dispatch
+  export const createDispatch: (module: ModuleDef) => $dispatch
   export const createPostMessage: <Messages extends ObjectRecord = never>(
-    m: ModuleDef
+    module: ModuleDef
   ) => $postMessage<Messages>
-  export const createLogger: (m: ModuleDef) => $logger
+  export const createLogger: (module: ModuleDef) => $logger
+  export const getModuleInfo: (module: ModuleDef) => {
+    name: string,
+    entry?: string,
+  }
 }

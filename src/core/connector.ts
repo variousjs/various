@@ -2,7 +2,7 @@ import {
   FallbackNode,
   ErrorFallbackNode,
   App,
-  ModuleDefined,
+  ModuleDef,
 } from '@variousjs/various'
 import { Fallback, ErrorFallback } from './default-component'
 import {
@@ -45,12 +45,12 @@ class Connector {
     return this.middlewares
   }
 
-  setI18nConfig(moduleDefined: ModuleDefined, config: ConnectorI18nConfig) {
-    const name = getNameWithModule(moduleDefined)
+  setI18nConfig(moduleDef: ModuleDef, config: ConnectorI18nConfig) {
+    const name = getNameWithModule(moduleDef)
     this.i18nConfigs[name] = { ...this.i18nConfigs[name], ...config }
   }
 
-  getI18nConfig(moduleDefined: ModuleDefined) {
+  getI18nConfig(moduleDefined: ModuleDef) {
     const name = getNameWithModule(moduleDefined)
     return this.i18nConfigs[name]
   }
@@ -63,18 +63,18 @@ class Connector {
     return this.globalI18nConfig
   }
 
-  setComponentActions(moduleDefined: ModuleDefined, actions: PublicActions) {
-    const name = getNameWithModule(moduleDefined)
+  setComponentActions(moduleDef: ModuleDef, actions: PublicActions) {
+    const name = getNameWithModule(moduleDef)
     this.componentActions[name] = actions
   }
 
-  deleteComponentActions(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
+  deleteComponentActions(moduleDef: ModuleDef) {
+    const name = getNameWithModule(moduleDef)
     delete this.componentActions[name]
   }
 
-  getComponentActions(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
+  getComponentActions(moduleDef: ModuleDef) {
+    const name = getNameWithModule(moduleDef)
     return this.componentActions[name]
   }
 

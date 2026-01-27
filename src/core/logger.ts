@@ -1,6 +1,6 @@
 import { createLogger as cl, LogEvent } from '@variousjs/various'
 import connector from './connector'
-import { getNameWithModule, VariousError } from './helper'
+import { VariousError } from './helper'
 
 type LogArgs = Parameters<LogEvent>[0]
 type LogLevel = LogArgs['level']
@@ -21,7 +21,7 @@ const logger = (args: LogArgs) => {
   const color = colorMap[args.level]
 
   const params = [
-    `%c ${getNameWithModule(args)} `,
+    `%c ${args.module} `,
     `background:${color};border:1px solid ${color};padding:1px;border-radius:2px 0 0 2px;color: #fff;`,
   ]
 
@@ -40,15 +40,15 @@ const logger = (args: LogArgs) => {
   window.console[args.level](...params, args.message)
 }
 
-const createLogger: typeof cl = (moduleDefined) => ({
+const createLogger: typeof cl = (module) => ({
   info(message, type) {
     logger({
-      ...moduleDefined, level: 'info', type, message,
+      module, level: 'info', type, message,
     })
   },
   warn(message, type) {
     logger({
-      ...moduleDefined, level: 'warn', type, message,
+      module, level: 'warn', type, message,
     })
   },
   error(message, type) {
@@ -56,7 +56,7 @@ const createLogger: typeof cl = (moduleDefined) => ({
     const error = message instanceof VariousError
       ? message
       : new VariousError({
-        ...moduleDefined,
+        module,
         type: type || 'unknow',
         originalError: message instanceof Error ? message : new Error(message),
       })
@@ -64,7 +64,7 @@ const createLogger: typeof cl = (moduleDefined) => ({
     middlewares?.onError?.(error)
 
     logger({
-      ...moduleDefined, level: 'error', type, message,
+      module, level: 'error', type, message,
     })
   },
 })

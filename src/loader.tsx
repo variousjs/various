@@ -90,7 +90,7 @@ Important: This application only works with React/ReactDOM ${REACT_REQUIREMENT_V
       const loadEnd = +new Date()
 
       app.middlewares?.onLoad?.({
-        name: 'app',
+        module: 'app',
         loadStart,
         loadEnd,
         beenLoaded: false,

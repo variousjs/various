@@ -7,7 +7,7 @@ import {
   OnMessage,
   I18n,
   Dispatch,
-  ModuleDefined,
+  ModuleDef,
   App,
   I18nConfig,
 } from '@variousjs/various'
@@ -27,7 +27,7 @@ declare global {
 
 export interface Store {
   [MESSAGE_KEY]: null | (Parameters<OnMessage>[0] & { timestamp: number }),
-  [MOUNTED_COMPONENTS_KEY]: ModuleDefined[],
+  [MOUNTED_COMPONENTS_KEY]: ModuleDef[],
   [CONFIG_KEY]: Record<string | symbol, any>,
   [DEPENDENCIES_KEY]: Record<string, string>,
   [STANDALONE_CONFIG_READY]?: boolean,
@@ -59,7 +59,8 @@ export interface CreateComponentProps<P extends object> extends Store {
   $componentProps: P,
 }
 
-export type ErrorBoundaryProps = ModuleDefined & {
+export type ErrorBoundaryProps = {
+  module: ModuleDef,
   url?: string,
   children: ReactNode,
 }
