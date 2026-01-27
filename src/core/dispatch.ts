@@ -32,7 +32,7 @@ const createDispatch: typeof cd = (module) => async function (params) {
     }
   }
 
-  if (module === 'app') {
+  if (target === 'app') {
     const storeActions = connector.getStoreActions()
     const storeAction = storeActions[action]
     if (!storeAction) {
@@ -48,7 +48,7 @@ const createDispatch: typeof cd = (module) => async function (params) {
     return dispatch(storeAction, payload, module)
   }
 
-  const componentActions = connector.getComponentActions(module)
+  const componentActions = connector.getComponentActions(target)
 
   if (!componentActions) {
     const errorMessage = 'component is not ready'
