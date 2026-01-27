@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import {
   ComponentDefaultProps,
   VariousError as ve,
-  ModuleDefined,
+  ModuleDef,
 } from '@variousjs/various'
 import {
   checkReactComponent,
-  getNameWithModule,
   updateUnMountComponent,
   updateMountedComponent,
   parseComponentActions,
@@ -27,13 +26,13 @@ import {
   Store,
 } from '../types'
 
-function reactComponent<P extends object>(config: ModuleDefined & {
+function reactComponent<P extends object>(config: {
+  module: ModuleDef,
   url?: string,
   watchKeys?: string[],
   onMounted?: () => void,
 }) {
   const {
-    name,
     module,
     url,
     watchKeys,
@@ -70,26 +69,25 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       this.ComponentNode = null
       this.isUnMounted = true
       this.unSubscribeMessage()
-      updateUnMountComponent({ name, module })
+      updateUnMountComponent(module)
     }
 
     mountComponent = async () => {
       try {
-        const componentNode = await createModule<RequiredComponent>({ name, module, url }, false)
+        const componentNode = await createModule<RequiredComponent>({ module, url }, false)
 
         if (this.isUnMounted) {
           return
         }
 
-        await checkReactComponent(componentNode, { name, module })
+        await checkReactComponent(componentNode, module)
 
-        componentNode.displayName = getNameWithModule({ name, module })
+        componentNode.displayName = module
 
-        updateMountedComponent({ name, module })
+        updateMountedComponent(module)
 
         this.unSubscribeMessage = parseComponentActions({
           componentNode,
-          name,
           module,
           i18nUpdate: () => this.forceUpdate(),
         })
@@ -108,15 +106,15 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       }
     }
 
-    $postMessage = createPostMessage({ name, module })
+    $postMessage = createPostMessage(module)
 
-    $dispatch = createDispatch({ name, module })
+    $dispatch = createDispatch(module)
 
-    $t = createI18n({ name, module }, () => this.forceUpdate())
+    $t = createI18n(module, () => this.forceUpdate())
 
-    $logger = createLogger({ name, module })
+    $logger = createLogger(module)
 
-    $self = getSelfInfo({ name, module, url })
+    $self = getSelfInfo({ module, url })
 
     render() {
       const Fallback = connector.getFallbackComponent()
@@ -130,7 +128,7 @@ function reactComponent<P extends object>(config: ModuleDefined & {
       }
 
       if (!componentReady) {
-        if ($silent || isModuleLoaded(name)) {
+        if ($silent || isModuleLoaded(module)) {
           return null
         }
 

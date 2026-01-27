@@ -8,7 +8,7 @@ import React, {
 import Vue, { ComponentPublicInstance } from 'vue'
 import {
   ComponentDefaultProps,
-  ModuleDefined,
+  ModuleDef,
   VariousError as ve,
   ObjectRecord,
 } from '@variousjs/various'
@@ -16,7 +16,6 @@ import connector from './connector'
 import createModule from './create-module'
 import { getStore, useStore } from './store'
 import {
-  getNameWithModule,
   updateUnMountComponent,
   updateMountedComponent,
   checkVueComponent,
@@ -32,13 +31,13 @@ import { createPostMessage } from './message'
 import { CreateComponentProps, RequiredComponent } from '../types'
 import { createI18n } from './i18n'
 
-function vueComponent<P extends object>(config: ModuleDefined & {
+function vueComponent<P extends object>(config: {
+  module: ModuleDef,
   url?: string,
   watchKeys?: string[],
   onMounted?: () => void,
 }) {
   const {
-    name,
     module,
     url,
     watchKeys,
@@ -55,7 +54,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const errorRef = useRef<Error | ve>()
     const isUnMountedRef = useRef(false)
     const ComponentNodeRef = useRef<RequiredComponent>()
-    const selfRef = useRef(getSelfInfo({ name, module, url }))
+    const selfRef = useRef(getSelfInfo({ module, url }))
 
     const containerDivRef = useRef<HTMLDivElement | null>(null)
     const propsReactiveRef = useRef<{ value: ObjectRecord }>()
@@ -71,10 +70,10 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     const { $silent, $componentProps } = props
 
     const mountVue = useCallback(() => {
-      const $logger = createLogger({ name, module })
-      const $dispatch = createDispatch({ name, module })
-      const $postMessage = createPostMessage({ name, module })
-      const $t = createI18n({ name, module }, () => {
+      const $logger = createLogger(module)
+      const $dispatch = createDispatch(module)
+      const $postMessage = createPostMessage(module)
+      const $t = createI18n(module, () => {
         updateVueComponentRef.current?.()
       })
 
@@ -97,7 +96,6 @@ function vueComponent<P extends object>(config: ModuleDefined & {
           errorRef.current = error.message?.includes('https://react')
             ? new VariousError({
               originalError: new Error('not a valid Vue component'),
-              name,
               module,
               type: 'INVALID_COMPONENT',
             })
@@ -133,22 +131,21 @@ function vueComponent<P extends object>(config: ModuleDefined & {
 
     const mountComponent = useCallback(async () => {
       try {
-        const vue = await createModule<typeof Vue>({ name: 'vue' })
+        const vue = await createModule<typeof Vue>({ module: 'vue' })
         vueRef.current = vue
 
-        const componentNode = await createModule<RequiredComponent>({ name, module, url }, false)
+        const componentNode = await createModule<RequiredComponent>({ module, url }, false)
 
         if (isUnMountedRef.current) {
           return
         }
 
-        await checkVueComponent(componentNode, { name, module })
+        await checkVueComponent(componentNode, module)
 
-        updateMountedComponent({ name, module })
+        updateMountedComponent(module)
 
         unSubscribeMessageRef.current = parseComponentActions({
           componentNode,
-          name,
           module,
           type: 'vue3',
           i18nUpdate() {
@@ -181,7 +178,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
         errorRef.current = undefined
         ComponentNodeRef.current = undefined
         isUnMountedRef.current = true
-        updateUnMountComponent({ name, module })
+        updateUnMountComponent(module)
         unMountVue.current?.()
         unSubscribeMessageRef.current?.()
         isVueMounted.current = false
@@ -214,7 +211,7 @@ function vueComponent<P extends object>(config: ModuleDefined & {
     return (
       <>
         {
-          !componentReady && !$silent && !isModuleLoaded(name)
+          !componentReady && !$silent && !isModuleLoaded(module)
             ? (
               <Fallback
                 $self={selfRef.current}
@@ -224,14 +221,14 @@ function vueComponent<P extends object>(config: ModuleDefined & {
             : null
         }
         <div
-          className={getClassNameWithModule({ name, module }, 'various-vue-component')}
+          className={getClassNameWithModule(module, 'various-vue-component')}
           ref={containerDivRef}
         />
       </>
     )
   }
 
-  V.displayName = getNameWithModule({ name, module })
+  V.displayName = module
 
   const VueComponent: FC<
     CreateComponentProps<P> & ComponentDefaultProps

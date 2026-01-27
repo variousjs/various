@@ -1,6 +1,6 @@
 import {
   Intl,
-  ModuleDefined,
+  ModuleDef,
   I18n,
   I18nConfig,
 } from '@variousjs/various'
@@ -10,7 +10,7 @@ import { getStore, emit } from './store'
 
 export function createI18nConfig(
   method?: I18n,
-  moduleDefined?: ModuleDefined,
+  module?: ModuleDef,
   callback?: () => void,
 ) {
   if (!method) {
@@ -20,16 +20,16 @@ export function createI18nConfig(
   const i18nConfig = method()
 
   if (!isPromiseLike(i18nConfig)) {
-    if (moduleDefined) {
-      connector.setI18nConfig(moduleDefined, i18nConfig)
+    if (module) {
+      connector.setI18nConfig(module, i18nConfig)
     } else {
       connector.setGlobalI18nConfig(i18nConfig)
     }
     return
   }
 
-  if (moduleDefined) {
-    connector.setI18nConfig(moduleDefined, {
+  if (module) {
+    connector.setI18nConfig(module, {
       loading: true,
       lngStoreKey: '',
       resources: {},
@@ -44,8 +44,8 @@ export function createI18nConfig(
 
   i18nConfig
     .then((res) => {
-      if (moduleDefined) {
-        connector.setI18nConfig(moduleDefined, { ...res, loading: false })
+      if (module) {
+        connector.setI18nConfig(module, { ...res, loading: false })
         callback?.()
         return
       }
@@ -58,8 +58,7 @@ export function createI18nConfig(
     })
     .catch((e: Error) => {
       onError(new VariousError({
-        name: moduleDefined?.name || 'app',
-        module: moduleDefined?.module,
+        module: module || 'app',
         type: 'I18N',
         originalError: e,
       }))
@@ -67,11 +66,11 @@ export function createI18nConfig(
 }
 
 export function createI18n(
-  moduleDefined: ModuleDefined,
+  module: ModuleDef,
   updater: () => void,
 ) {
   const ctx: Intl = (key, params, defaultString) => {
-    const i18nConfig = connector.getI18nConfig(moduleDefined) || connector.getGlobalI18nConfig()
+    const i18nConfig = connector.getI18nConfig(module) || connector.getGlobalI18nConfig()
 
     let defaultText = defaultString
     if (defaultText === undefined) {
@@ -80,7 +79,7 @@ export function createI18n(
 
     if (!i18nConfig) {
       onError(new VariousError({
-        ...moduleDefined,
+        module,
         type: 'I18N',
         originalError: new Error('config not exist'),
       }))
@@ -96,7 +95,7 @@ export function createI18n(
 
     if (lngStoreKey === undefined || locale === undefined) {
       onError(new VariousError({
-        ...moduleDefined,
+        module,
         type: 'I18N',
         originalError: new Error('locale key not defined'),
       }))
@@ -107,7 +106,7 @@ export function createI18n(
 
     if (!resource) {
       onError(new VariousError({
-        ...moduleDefined,
+        module,
         type: 'I18N',
         originalError: new Error(`locale resource \`${locale}\` not exist`),
       }))
@@ -116,7 +115,7 @@ export function createI18n(
 
     if (!resource[key]) {
       onError(new VariousError({
-        ...moduleDefined,
+        module,
         type: 'I18N',
         originalError: new Error(`locale key \`${key}\` not exist`),
       }))
@@ -144,13 +143,13 @@ export function createI18n(
   ctx.update = (config, type) => {
     const i18nConfig = type === 'app'
       ? connector.getGlobalI18nConfig()
-      : connector.getI18nConfig(moduleDefined)
+      : connector.getI18nConfig(module)
     const next = { ...i18nConfig, ...config } as I18nConfig
 
     if (type === 'app') {
       connector.setGlobalI18nConfig(next)
     } else {
-      connector.setI18nConfig(moduleDefined, next)
+      connector.setI18nConfig(module, next)
     }
 
     updater()

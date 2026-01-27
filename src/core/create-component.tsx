@@ -7,14 +7,12 @@ import { CreateComponentProps } from '../types'
 
 const createComponent: typeof cc<any, any> = (config, storeKeys) => {
   const {
-    name,
     module,
     url,
     type = 'react',
   } = config
 
   const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
-    name,
     module,
     url,
     watchKeys: storeKeys as string[],
@@ -26,7 +24,7 @@ const createComponent: typeof cc<any, any> = (config, storeKeys) => {
       $componentProps: rest, $silent, $ref,
     } as ComponentDefaultProps & CreateComponentProps<any>
     return (
-      <ErrorBoundary name={name} module={module} url={url}>
+      <ErrorBoundary module={module} url={url}>
         <C {...nextProps} />
       </ErrorBoundary>
     )

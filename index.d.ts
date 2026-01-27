@@ -85,36 +85,30 @@ declare module '@variousjs/various' {
 
   type $dispatch = <
     A extends ComponentPublicActionMap = never,
-    Name extends keyof A = keyof A,
-    Action extends keyof A[Name] = keyof A[Name],
+    Target extends keyof A = keyof A,
+    Action extends keyof A[Target] = keyof A[Target],
   >(
     payload: [A] extends [never]
       ? {
-        name: string,
+        target: Target,
         action: string,
         payload?: any,
       }
       : {
-      /**
-       * name.module
-       * - e.g. module.B
-       * - e.g. app
-       * - e.g. module.default => module
-       */
-      name: Name,
+      target: Target,
       action: Action,
-      payload?: A[Name][Action]['payload'],
-    }) => Promise<
-      [A] extends [never]
-        ? any
-        : A[Name][Action]['result']
-    >
+      payload?: A[Target][Action]['payload'],
+      }) => Promise<
+        [A] extends [never]
+          ? any
+          : A[Target][Action]['result']
+      >
 
   type $postMessage<
     T extends ObjectRecord = never,
   > = (
     event: [T] extends [never] ? string : keyof T,
-    payload?: [T] extends [never] ? unknown : T[keyof T],
+    payload?: [T] extends [never] ? any : T[keyof T],
   ) => void
 
   interface $logger {

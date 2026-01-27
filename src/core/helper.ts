@@ -6,6 +6,7 @@ import {
   defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
+  getModuleInfo as gm,
   ModuleDef,
   OnMessage,
   I18n,
@@ -28,12 +29,19 @@ import { createI18nConfig } from './i18n'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-export const preloadModules: typeof pp = (names) => new Promise<void>((resolve, reject) => {
+export const getModuleInfo: typeof gm = (module) => {
+  const [name, entry] = module.split('.')
+  return { name, entry }
+}
+
+export const preloadModules: typeof pp = (modules) => new Promise<void>((resolve, reject) => {
+  const names = modules.map((m) => getModuleInfo(m).name)
   window.requirejs(names, resolve, reject)
 })
 
-export const removeLoadedModules: typeof rm = (names) => {
-  names.forEach((name) => {
+export const removeLoadedModules: typeof rm = (modules) => {
+  modules.forEach((module) => {
+    const { name } = getModuleInfo(module)
     if (!BASE_DEPENDENCIES.includes(name)) {
       window.requirejs.undef(name)
     }
@@ -55,11 +63,17 @@ export const defineDependencies: typeof dd = (deps) => {
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isModuleLoaded: typeof im = (name) => window.requirejs.defined(name)
+export const isModuleLoaded: typeof im = (module) => {
+  const { name } = getModuleInfo(module)
+  return window.requirejs.defined(name)
+}
 
-export const isModuleSpecified = (name: string) => window.requirejs.specified(name)
+export const isModuleSpecified = (module: ModuleDef) => {
+  const { name } = getModuleInfo(module)
+  return window.requirejs.specified(name)
+}
 
-export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY).map((m) => m.module)
+export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
 export const onComponentMounted: typeof ocm = (module, callback) => {
   const modules = Array.isArray(module) ? module : [module]
@@ -70,8 +84,7 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
 
   const unSubscribe = subscribe({
     [MOUNTED_COMPONENTS_KEY](value) {
-      const mountedModules = value.map((m) => m.module)
-      if (modules.every((n) => mountedModules.includes(n))) {
+      if (modules.every((n) => value.includes(n))) {
         unSubscribe()
         callback()
       }
@@ -81,7 +94,8 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
   return unSubscribe
 }
 
-export const resetDependencyConfig = (name: string, url?: string) => {
+export const resetDependencyConfig = (module: ModuleDef, url?: string) => {
+  const { name } = getModuleInfo(module)
   const dependencies = getStore(DEPENDENCIES_KEY)
 
   // ignore multiple custom module url
@@ -123,10 +137,10 @@ export class VariousError extends Error implements ve {
 
   originalError: Error
 
-  module: string
+  module: ModuleDef
 
   constructor(data: {
-    module: string,
+    module: ModuleDef,
     type: et,
     originalError: Error,
   }) {
@@ -137,7 +151,7 @@ export class VariousError extends Error implements ve {
   }
 }
 
-export function checkReactComponent(component: RequiredComponent, moduleDef: ModuleDef) {
+export function checkReactComponent(component: RequiredComponent, module: ModuleDef) {
   return new Promise<void>((reslove, reject) => {
     if (component.$$typeof || component.prototype?.isReactComponent || typeof component === 'function') {
       reslove()
@@ -145,7 +159,7 @@ export function checkReactComponent(component: RequiredComponent, moduleDef: Mod
     }
 
     reject(new VariousError({
-      ...moduleDef,
+      module,
       originalError: new Error('not a valid React component'),
       type: 'INVALID_COMPONENT',
     }))
@@ -156,7 +170,7 @@ export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLik
   return value != null && typeof (value as any).then === 'function'
 }
 
-export function checkVueComponent(component: RequiredComponent, moduleDef: ModuleDef) {
+export function checkVueComponent(component: RequiredComponent, module: ModuleDef) {
   const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
 
   return new Promise<void>((resolve, reject) => {
@@ -171,7 +185,7 @@ export function checkVueComponent(component: RequiredComponent, moduleDef: Modul
       }
 
       reject(new VariousError({
-        ...moduleDef,
+        module,
         originalError: new Error('not a valid Vue component'),
         type: 'INVALID_COMPONENT',
       }))
@@ -179,7 +193,8 @@ export function checkVueComponent(component: RequiredComponent, moduleDef: Modul
   })
 }
 
-export function parseComponentActions(params: ModuleDef & {
+export function parseComponentActions(params: {
+  module: ModuleDef,
   componentNode: RequiredComponent,
   type?: VariousComponentType,
   i18nUpdate: () => void,
@@ -217,45 +232,41 @@ export function parseComponentActions(params: ModuleDef & {
     })
 
   if (i18nAction) {
-    createI18nConfig(i18nAction, { module }, i18nUpdate)
+    createI18nConfig(i18nAction, module, i18nUpdate)
   }
 
-  connector.setComponentActions({ module }, actions)
+  connector.setComponentActions(module, actions)
 
   if (onMessageAction) {
-    return createOnMessage({ module }, onMessageAction)
+    return createOnMessage(module, onMessageAction)
   }
 
   return () => null
 }
 
-export function updateMountedComponent(moduleDef: ModuleDef) {
+export function updateMountedComponent(module: ModuleDef) {
   const mountedComponents = getMountedComponents()
 
-  if (!mountedComponents.includes(moduleDef.module)) {
-    mountedComponents.push(moduleDef.module)
+  if (!mountedComponents.includes(module)) {
+    mountedComponents.push(module)
   }
 
-  emit({
-    [MOUNTED_COMPONENTS_KEY]: mountedComponents.map((m) => ({ module: m })),
-  }, true)
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
 }
 
-export function updateUnMountComponent(moduleDef: ModuleDef) {
-  const { module } = moduleDef
+export function updateUnMountComponent(module: ModuleDef) {
   let mountedComponents = getMountedComponents()
 
   mountedComponents = mountedComponents.filter((item) => item !== module)
 
-  emit({
-    [MOUNTED_COMPONENTS_KEY]: mountedComponents.map((m) => ({ module: m })),
-  }, true)
-  connector.deleteComponentActions({ module })
+  emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
+  connector.deleteComponentActions(module)
 }
 
-export function getSelfInfo(params: ModuleDef & { url?: string }) {
+export function getSelfInfo(params: { url?: string, module: ModuleDef }) {
   const { module, url } = params
   const dependencies = getStore(DEPENDENCIES_KEY)
+  const { name } = getModuleInfo(module)
 
   return {
     module,
@@ -263,7 +274,7 @@ export function getSelfInfo(params: ModuleDef & { url?: string }) {
   }
 }
 
-export function getClassNameWithModule(self: ModuleDefined, prefix: string) {
-  const { name, module } = self
-  return `${prefix} ${[name, module].filter(Boolean).join('-')}`
+export function getClassNameWithModule(module: ModuleDef, prefix: string) {
+  const { name, entry } = getModuleInfo(module)
+  return `${prefix} ${[name, entry].filter(Boolean).join('-')}`
 }

@@ -11,7 +11,6 @@ import {
   ConnectorI18nConfig,
   Actions,
 } from '../types'
-import { getNameWithModule } from './helper'
 
 class Connector {
   private fallbackComponent: FallbackNode<Store>
@@ -45,14 +44,12 @@ class Connector {
     return this.middlewares
   }
 
-  setI18nConfig(moduleDef: ModuleDef, config: ConnectorI18nConfig) {
-    const name = getNameWithModule(moduleDef)
-    this.i18nConfigs[name] = { ...this.i18nConfigs[name], ...config }
+  setI18nConfig(module: ModuleDef, config: ConnectorI18nConfig) {
+    this.i18nConfigs[module] = { ...this.i18nConfigs[module], ...config }
   }
 
-  getI18nConfig(moduleDefined: ModuleDef) {
-    const name = getNameWithModule(moduleDefined)
-    return this.i18nConfigs[name]
+  getI18nConfig(module: ModuleDef) {
+    return this.i18nConfigs[module]
   }
 
   setGlobalI18nConfig(config: ConnectorI18nConfig) {
@@ -63,19 +60,16 @@ class Connector {
     return this.globalI18nConfig
   }
 
-  setComponentActions(moduleDef: ModuleDef, actions: PublicActions) {
-    const name = getNameWithModule(moduleDef)
-    this.componentActions[name] = actions
+  setComponentActions(module: ModuleDef, actions: PublicActions) {
+    this.componentActions[module] = actions
   }
 
-  deleteComponentActions(moduleDef: ModuleDef) {
-    const name = getNameWithModule(moduleDef)
-    delete this.componentActions[name]
+  deleteComponentActions(module: ModuleDef) {
+    delete this.componentActions[module]
   }
 
-  getComponentActions(moduleDef: ModuleDef) {
-    const name = getNameWithModule(moduleDef)
-    return this.componentActions[name]
+  getComponentActions(module: ModuleDef) {
+    return this.componentActions[module]
   }
 
   setStoreActions(actions: Actions<Store>) {
