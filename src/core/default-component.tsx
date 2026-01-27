@@ -1,16 +1,15 @@
 import React, { ComponentType } from 'react'
 import { FallbackNode, ErrorFallbackNode } from '@variousjs/various'
 import { getClassNameWithModule } from './helper'
-import { Store } from '../types'
 
-export const Fallback: FallbackNode<Store> = (props) => {
+export const Fallback: FallbackNode<any> = (props) => {
   const className = getClassNameWithModule(props.$self.module, 'various-component-fallback')
   return (
     <div className={className}>Loading</div>
   )
 }
 
-export const ErrorFallback: ErrorFallbackNode<Store> = ({ $error, $reload, $self }) => {
+export const ErrorFallback: ErrorFallbackNode<any> = ({ $error, $reload, $self }) => {
   const className = getClassNameWithModule($self.module, 'various-component-error_fallback')
   return (
     <div className={className}>

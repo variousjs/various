@@ -186,19 +186,19 @@ declare module '@variousjs/various' {
     },
     payload: any,
     trigger: ModuleDef,
-  ) => Promise<unknown>
+  ) => Promise<any>
 
   interface MessageEventArgs {
     trigger: ModuleDef,
     event: string,
-    payload?: unknown,
+    payload?: any,
   }
   type MessageEventRes = boolean | Omit<MessageEventArgs, 'trigger'>
   interface DispatchEventArgs {
     target: ModuleDef,
     trigger: ModuleDef,
     action: string,
-    payload?: unknown,
+    payload?: any,
   }
   type DispatchEventRes = boolean | Omit<DispatchEventArgs, 'trigger'>
   interface LoadEventArgs {
@@ -213,7 +213,7 @@ declare module '@variousjs/various' {
     module: ModuleDef,
     level: LogLevel,
     type?: string,
-    message: unknown,
+    message: any,
   }
 
   export type MessageEvent = (e: MessageEventArgs) => Promise<MessageEventRes> | MessageEventRes

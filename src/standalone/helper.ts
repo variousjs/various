@@ -41,23 +41,23 @@ export function defineModules(
   return Promise.all(defines.map((item) => defineAsync(item.key, item.value)))
 }
 
-export const createAppConfig: typeof con<any> = (config) => {
+export const createAppConfig: typeof con = (config) => {
   const {
     dependencies,
-    errorFallback,
-    fallback,
+    ErrorFallback,
+    Fallback,
     store,
     actions,
   } = config
 
   emit({ [STANDALONE_CONFIG_READY]: false }, true)
 
-  if (errorFallback) {
-    connector.setErrorFallbackComponent(errorFallback)
+  if (ErrorFallback) {
+    connector.setErrorFallbackComponent(ErrorFallback)
   }
 
-  if (fallback) {
-    connector.setFallbackComponent(fallback)
+  if (Fallback) {
+    connector.setFallbackComponent(Fallback)
   }
   if (actions) {
     connector.setStoreActions(actions)

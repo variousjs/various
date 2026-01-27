@@ -4,9 +4,7 @@ declare module '@variousjs/various/standalone' {
     VariousComponentType,
     ObjectRecord,
     ModuleDef,
-    FallbackNode,
-    ErrorFallbackNode,
-    Dispatch,
+    App,
   } from '@variousjs/various'
 
   export {
@@ -39,16 +37,17 @@ declare module '@variousjs/various/standalone' {
     $ref?: RefObject<Ref>,
   }>
 
-   export function createAppConfig<Store extends object = ObjectRecord>(
-    config: {
-      dependencies: Partial<Record<
-        string,
-        DependencyType
-      >>,
-      store?: Store,
-      actions?: Record<string, Dispatch<Store>>,
-      fallback?: FallbackNode<Store>,
-      errorFallback?: ErrorFallbackNode<Store>,
-    },
+  export type AppConfig<Store extends object = ObjectRecord> = Pick<
+    App<Store>,
+    'actions' | 'store' | 'Fallback' | 'ErrorFallback'
+  > & {
+    dependencies: Partial<Record<
+      string,
+      DependencyType
+    >>
+  }
+
+  export function createAppConfig<Store extends object = ObjectRecord>(
+    config: AppConfig<Store>
   ): void
 }

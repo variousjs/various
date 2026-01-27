@@ -7,17 +7,16 @@ import {
 import { Fallback, ErrorFallback } from './default-component'
 import {
   PublicActions,
-  Store,
   ConnectorI18nConfig,
   Actions,
 } from '../types'
 
 class Connector {
-  private fallbackComponent: FallbackNode<Store>
+  private fallbackComponent: FallbackNode<any>
 
-  private errorFallbackComponent: ErrorFallbackNode<Store>
+  private errorFallbackComponent: ErrorFallbackNode<any>
 
-  private storeActions: Actions<Store>
+  private storeActions: Actions<any>
 
   private componentActions: Record<string, PublicActions>
 
@@ -72,7 +71,7 @@ class Connector {
     return this.componentActions[module]
   }
 
-  setStoreActions(actions: Actions<Store>) {
+  setStoreActions(actions: Actions<any>) {
     this.storeActions = actions
   }
 
@@ -80,7 +79,7 @@ class Connector {
     return this.storeActions
   }
 
-  setFallbackComponent(fallbackComponent: FallbackNode<Store>) {
+  setFallbackComponent(fallbackComponent: FallbackNode<any>) {
     this.fallbackComponent = fallbackComponent
   }
 
@@ -88,7 +87,7 @@ class Connector {
     return this.fallbackComponent
   }
 
-  setErrorFallbackComponent(errorFallbackComponent: ErrorFallbackNode<Store>) {
+  setErrorFallbackComponent(errorFallbackComponent: ErrorFallbackNode<any>) {
     this.errorFallbackComponent = errorFallbackComponent
   }
 
