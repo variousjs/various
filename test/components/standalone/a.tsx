@@ -29,13 +29,13 @@ const C = forwardRef<
       )
     })
 
-const staticMethods: StaticProps<{ log: { value: string, result: void } }> = {
+const staticMethods: StaticProps<{ log: { payload: string, result: void } }> = {
   $i18n: () => ({
     lngStoreKey: 'locale',
     resources: { zh, en },
   }),
   log: (t) => {
-    const logger = createLogger({ name: 'aa' })
+    const logger = createLogger('aa')
     logger.info(t)
   },
 }

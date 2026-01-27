@@ -6,7 +6,7 @@ export type Store = typeof store
 export type Page = {
   label: string,
   components: {
-    name: string,
+    module: string,
     storeKeys?: string[],
     runtimeCreate?: boolean,
     type?: VariousComponentType,

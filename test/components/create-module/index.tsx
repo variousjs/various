@@ -15,7 +15,7 @@ export default () => {
         <p>Default: {defaultText}</p>
         <button
           onClick={async () => {
-            const text = await createModule<string>({ name: 'create-module', module: 'defaultText', url: './dist/create-module/index.js' })
+            const text = await createModule<string>({ module: 'create-module.defaultText', url: './dist/create-module/index.js' })
             setDefaultText(text)
           }}
         >
@@ -30,7 +30,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'not-defined' }, true)
+              await createModule({ module: 'not-defined' }, true)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -52,7 +52,7 @@ export default () => {
           onClick={async () => {
             try {
               // empty create by npm script
-              await createModule({ name: 'empty', url: './dist/empty.js' }, false)
+              await createModule({ module: 'empty', url: './dist/empty.js' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -73,7 +73,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'create-module', module: 'subModuleNotDefined' }, false)
+              await createModule({ module: 'create-module.subModuleNotDefined' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -94,7 +94,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'stack-exceeded', url: './dist/create-module/stack-exceeded.js' }, false)
+              await createModule({ module: 'stack-exceeded', url: './dist/create-module/stack-exceeded.js' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -115,7 +115,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'timeout', url: './dist/create-module/timeout.js' }, false)
+              await createModule({ module: 'timeout', url: './dist/create-module/timeout.js' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -136,7 +136,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'sub', url: './dist/create-module/sub-not-define.js' }, false)
+              await createModule({ module: 'sub', url: './dist/create-module/sub-not-define.js' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
@@ -157,7 +157,7 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ name: 'sub-error', url: './dist/create-module/sub-error.js' }, false)
+              await createModule({ module: 'sub-error', url: './dist/create-module/sub-error.js' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({

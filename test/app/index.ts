@@ -7,7 +7,7 @@ import middlewares from './middlewares'
 
 const app: App<typeof store> = {
   store,
-  Root: createComponent({ name: 'container' }),
+  Root: createComponent({ module: 'container' }),
   Fallback,
   ErrorFallback: ErrorNode,
   actions,

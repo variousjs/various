@@ -7,8 +7,8 @@ const actions: App<Store>['actions'] = {
     emit({ name: next })
   },
 
-  async setLocale({ emit, getStore }, value) {
-    let next = value
+  async setLocale({ emit, getStore }, payload) {
+    let next = payload
     if (!next) {
       next = getStore('locale') === 'zh' ? 'en' : 'zh'
     }

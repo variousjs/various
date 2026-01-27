@@ -17,7 +17,7 @@ const i18n: I18n = () => new Promise((resolve) => {
   })
 })
 
-const C = createComponent({ name: 'i18n' }, ['locale'])
+const C = createComponent({ module: 'i18n' }, ['locale'])
 
 export default {
   store: { locale: 'jp' },

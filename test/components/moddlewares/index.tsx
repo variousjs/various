@@ -6,7 +6,7 @@ import {
   renderComponent,
 } from '@variousjs/various'
 
-const M = createComponent({ name: 'middlewares', module: 'B' })
+const M = createComponent({ module: 'middlewares.B' })
 
 export default ((props) => {
   const { $logger, $postMessage, $dispatch } = props
@@ -32,8 +32,7 @@ export default ((props) => {
         <button
           onClick={() => {
             renderComponent({
-              name: 'middlewares',
-              module: 'A',
+              module: 'middlewares.A',
               target: document.querySelector('#onload'),
             })
           }}
@@ -61,13 +60,13 @@ export default ((props) => {
       <h3>onDispatch</h3>
       <div className="value">
         <button onClick={() => {
-          $dispatch({ name: 'any', action: 'block' })
+          $dispatch({ target: 'any', action: 'block' })
         }}
         >
           dispatch block
         </button>
         <button onClick={() => {
-          $dispatch({ name: 'middlewares.B', action: 'a' })
+          $dispatch({ target: 'middlewares.B', action: 'a' })
         }}
         >
           dispatch changed
@@ -79,8 +78,7 @@ export default ((props) => {
         <button
           onClick={async () => {
             const un = await renderComponent({
-              name: 'middlewares',
-              module: 'A',
+              module: 'middlewares.A',
               target: document.querySelector('#error'),
             })
             setTimeout(un)
@@ -94,7 +92,7 @@ export default ((props) => {
       <div className="value">
         <button
           onClick={() => {
-            const logger = createLogger({ name: 'll' })
+            const logger = createLogger('ll')
             logger.error(new Error('error'))
           }}
         >

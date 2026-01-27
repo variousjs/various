@@ -4,8 +4,8 @@ import Loader from './loader'
 import store from './store'
 import { Store } from '../types'
 
-const C = createComponent({ name: 'create', module: 'A', url: '/dist/create-component/index.js' })
-const D = createComponent({ type: 'vue3', name: 'createvue', url: '/dist/create-component/c.js' })
+const C = createComponent({ module: 'create.A', url: '/dist/create-component/index.js' })
+const D = createComponent({ type: 'vue3', module: 'createvue', url: '/dist/create-component/c.js' })
 
 export default {
   Root: () => (

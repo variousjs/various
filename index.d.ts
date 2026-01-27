@@ -59,15 +59,15 @@ declare module '@variousjs/various' {
   }
 
   export type PublicAction<A extends ActionDef = never> = (
-    payload: [A] extends [never] ? unknown : A['payload'],
+    payload: [A] extends [never] ? any : A['payload'],
     trigger: ModuleDef,
-  ) => [A] extends [never] ? unknown : A['result']
+  ) => [A] extends [never] ? any : A['result']
 
   export type PublicActionDef = Record<string, ActionDef>
 
   export type StaticMethods<T extends PublicActionDef = never> =
     [T] extends [never]
-      ? Record<string, (payload: unknown, trigger: ModuleDef) => unknown>
+      ? Record<string, (payload: any, trigger: ModuleDef) => any>
       : {
         [K in keyof T]: T[K] extends { payload: infer V, result: infer R }
         ? (payload: V, trigger: ModuleDef) => R

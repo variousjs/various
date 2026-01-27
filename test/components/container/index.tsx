@@ -13,10 +13,9 @@ type CMap = Record<string, ReturnType<typeof createComponent>>
 const $config = getConfig() as Config & { pages: Page[] }
 const componentsMap = $config.pages.reduce((prev, current) => {
   const currentComs = current.components.reduce((p, c) => {
-    const [name, module] = c.name.split('.')
-    if (!prev[c.name] && !p[c.name] && !c.runtimeCreate) {
+    if (!prev[c.module] && !p[c.module] && !c.runtimeCreate) {
       // eslint-disable-next-line no-param-reassign
-      p[c.name] = createComponent({ name, module, type: c.type }, c.storeKeys)
+      p[c.module] = createComponent({ module: c.module, type: c.type }, c.storeKeys)
     }
     return p
   }, {} as CMap)
@@ -57,14 +56,13 @@ class Container extends Component {
                         <>
                           {
                             components.map((com, i) => {
-                              const [name, module] = com.name.split('.')
                               const C = com.runtimeCreate
-                                ? memo(createComponent({ name, module, type: com.type }))
-                                : componentsMap[com.name]
+                                ? memo(createComponent({ module: com.module, type: com.type }))
+                                : componentsMap[com.module]
 
                               return (
                                 // eslint-disable-next-line react/no-array-index-key
-                                <div key={`${com.name}-${i}`} className="component">
+                                <div key={`${com.module}-${i}`} className="component">
                                   <C />
                                 </div>
                               )

@@ -38,15 +38,14 @@ const baseConfig: Record<string, Parameters<typeof createAppConfig>['0']> = {
 }
 
 const RC = createComponent<{ propsA: string }>({
-  name: 'a',
-  module: 'A',
+  module: 'a.A',
   url: '/dist/standalone/a.js',
   dependencies: {
     '@variousjs/various': '/dist/index.js',
   },
 })
 const VC = createComponent<{ propsB: string }, { globalB: string }>({
-  name: 'b',
+  module: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',
   dependencies: testType === 'config' ? undefined : {
@@ -68,8 +67,8 @@ function App() {
       <RC $ref={ref} propsA="propsA" />
       <button
         onClick={() => {
-          const dispatch = createDispatch({ name: 'ot' })
-          dispatch({ name: 'app', action: 'setLocale' })
+          const dispatch = createDispatch('ot')
+          dispatch({ target: 'app', action: 'setLocale' })
         }}
       >
         change lng
@@ -83,7 +82,7 @@ function App() {
       </button>
       <button
         onClick={() => {
-          const pm = createPostMessage({ name: 'ot' })
+          const pm = createPostMessage('ot')
           pm('greet', +new Date())
         }}
       >
@@ -91,7 +90,7 @@ function App() {
       </button>
       <button
         onClick={() => {
-          const log = createLogger({ name: 'ot' })
+          const log = createLogger('ot')
           log.info('any')
         }}
       >

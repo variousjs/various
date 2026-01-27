@@ -7,7 +7,7 @@ export default function (props: FallbackProps<Store>) {
     if (window.Cypress) {
       const dom = document.querySelector('#t')
       if (dom) {
-        dom.innerHTML += [props.$self.name, props.$self.module].filter(Boolean).join()
+        dom.innerHTML += props.$self.module
       }
     }
   }, [props.$self])

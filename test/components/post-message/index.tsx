@@ -8,7 +8,7 @@ import {
 
 interface NS {
   event?: string,
-  value?: any,
+  payload?: any,
   trigger?: string,
 }
 
@@ -20,7 +20,7 @@ interface Messages {
 }
 
 export const A: ComponentNode<NS, {}, {}, Messages> = (props) => {
-  const { event, value, trigger } = props
+  const { event, payload, trigger } = props
 
   return (
     <>
@@ -28,21 +28,21 @@ export const A: ComponentNode<NS, {}, {}, Messages> = (props) => {
       <div className="value">
         <p>Trigger: {trigger}</p>
         <p>Event: {event}</p>
-        <p>Value: {value}</p>
+        <p>Payload: {payload}</p>
       </div>
     </>
   )
 }
 
-A.$onMessage = ({ event, value, trigger }) => {
+A.$onMessage = ({ event, payload, trigger }) => {
   emit({
     event,
-    value,
-    trigger: [trigger.name, trigger.module].filter(Boolean).join('.'),
+    payload,
+    trigger,
   })
 }
 
-export const MessageA = connect('event', 'trigger', 'value')(A)
+export const MessageA = connect('event', 'trigger', 'payload')(A)
 
 export class MessageB extends Component<ComponentProps<{}, {}, Messages>> {
   post = () => {
@@ -50,7 +50,7 @@ export class MessageB extends Component<ComponentProps<{}, {}, Messages>> {
   }
 
   createPost = () => {
-    const post = createPostMessage({ name: 'custom' })
+    const post = createPostMessage('custom')
     post('custom-greet', +new Date())
   }
 

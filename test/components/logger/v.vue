@@ -22,7 +22,7 @@ const V = defineComponent({
       },
 
       createLog() {
-        const logger = createLogger({ name: 'custom' })
+        const logger = createLogger('custom')
         logger.info('hello', 'greet')
       },
     }

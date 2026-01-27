@@ -8,14 +8,14 @@ import {
 import zh from './zh.json'
 import en from './en.json'
 
-const Mb = createComponent({ name: 'i18n', module: 'B' })
-const Mc = createComponent({ name: 'i18n', module: 'NoConfig' })
-const Md = createComponent({ name: 'i18n', module: 'NoResource' })
-const Me = createComponent({ name: 'i18n', module: 'NoKey' })
-const Mf = createComponent({ name: 'i18n', module: 'NoLocale' })
-const Mg = createComponent({ name: 'i18n', module: 'Async' })
-const Mh = createComponent({ name: 'i18n', module: 'ConfigError' })
-const Mi = createComponent({ name: 'i18n', module: 'Update' })
+const Mb = createComponent({ module: 'i18n.B' })
+const Mc = createComponent({ module: 'i18n.NoConfig' })
+const Md = createComponent({ module: 'i18n.NoResource' })
+const Me = createComponent({ module: 'i18n.NoKey' })
+const Mf = createComponent({ module: 'i18n.NoLocale' })
+const Mg = createComponent({ module: 'i18n.Async' })
+const Mh = createComponent({ module: 'i18n.ConfigError' })
+const Mi = createComponent({ module: 'i18n.Update' })
 
 const A = ((props) => {
   const { $t, $dispatch } = props
@@ -26,7 +26,7 @@ const A = ((props) => {
       <div className="value">
         <p>name: {$t('name')}</p>
         <p>greet: {$t('greet', { name: 'A', name2: 'B' })}</p>
-        <button onClick={() => $dispatch({ name: 'app', action: 'setLocale' })}>change locale</button>
+        <button onClick={() => $dispatch({ target: 'app', action: 'setLocale' })}>change locale</button>
       </div>
 
       <h3>Error</h3>
@@ -63,14 +63,7 @@ const A = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode<{}, {}, {
-  app: {
-    setLocale: {
-      // value?: string,
-      result?: string,
-    },
-  },
-}>
+}) as ComponentNode
 
 A.$i18n = () => ({
   lngStoreKey: 'locale',

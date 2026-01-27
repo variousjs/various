@@ -10,19 +10,18 @@ import {
 import { Store } from '../../types'
 
 interface S {
-  value?: number,
+  payload?: number,
   trigger?: string,
 }
 
 const { createStore, emit, useStore } = new Nycticorax<S>()
 createStore({})
 
-const E = createComponent({ name: 'dispatch', module: 'B' })
+const E = createComponent({ module: 'dispatch.B' })
 
-// eslint-disable-next-line no-undef
-const A: ComponentNode<{}, Store, Actions['dispatch'] > = (props) => {
+const A: ComponentNode<{}, Store, { update: { payload: number, result: void } }> = (props) => {
   const { $dispatch, $store } = props
-  const { trigger, value } = useStore('trigger', 'value')
+  const { trigger, payload } = useStore('trigger', 'payload')
 
   return (
     <>
@@ -30,17 +29,17 @@ const A: ComponentNode<{}, Store, Actions['dispatch'] > = (props) => {
       <div className="value">
         <p>store: {$store.name}</p>
         <p>trigger: {trigger}</p>
-        <p>value: {value}</p>
+        <p>payload: {payload}</p>
         <button
           onClick={() => {
-            $dispatch({ name: 'app', action: 'setName' })
+            $dispatch({ target: 'app', action: 'setName' })
           }}
         >
           dispatch app
         </button>
         <button
           onClick={() => {
-            $dispatch({ name: 'dispatch-v', action: 'update', value: new Date() })
+            $dispatch({ target: 'dispatch-v', action: 'update', payload: new Date() })
           }}
         >
           dispatch vue
@@ -52,9 +51,8 @@ const A: ComponentNode<{}, Store, Actions['dispatch'] > = (props) => {
   )
 }
 
-A.update = (value, trigger) => {
-  const { name, module } = trigger
-  emit({ value, trigger: [name, module].filter(Boolean).join('.') })
+A.update = (payload, trigger) => {
+  emit({ payload, trigger })
 }
 
 export default A
@@ -65,7 +63,7 @@ export class B extends Component<ComponentProps> {
     window.console.log(value, trigger)
   }
 
-  static update2: PublicAction<{ value: number, result: Promise<number> }> = (value) => {
+  static update2: PublicAction<{ payload: number, result: Promise<number> }> = (value) => {
     // test types
     if (typeof value !== 'number') {
       throw new Error('value must be number')
@@ -77,7 +75,7 @@ export class B extends Component<ComponentProps> {
     errors: {} as Record<string, Error>,
   }
 
-  localDispatch = createDispatch({ name: 'local' })
+  localDispatch = createDispatch('local')
 
   onError = (name: string, e: any) => {
     this.setState((pre: any) => ({ errors: { ...pre.errors, [name]: e } }))
@@ -95,7 +93,7 @@ export class B extends Component<ComponentProps> {
           <button
             onClick={() => {
               this.localDispatch({
-                name: 'app',
+                target: 'app',
                 action: 'not exist',
               }).catch((e) => this.onError('app', e))
             }}
@@ -110,9 +108,9 @@ export class B extends Component<ComponentProps> {
           <button
             onClick={() => {
               $dispatch({
-                name: 'not exist',
+                target: 'not exist',
                 action: 'any',
-                value: 1,
+                payload: 1,
               }).catch((e) => this.onError('component', e))
             }}
           >
@@ -126,7 +124,7 @@ export class B extends Component<ComponentProps> {
           <button
             onClick={() => {
               $dispatch({
-                name: 'dispatch',
+                target: 'dispatch',
                 action: 'not-exist',
               }).catch((e) => this.onError('action', e))
             }}
