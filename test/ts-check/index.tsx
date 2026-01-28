@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component } from 'react'
 import {
-  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n,
+  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n, DefineActions,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
 interface GlobalStoreProps { b: number }
-type SelfActions = { update: { payload: number, result: void } }
 interface GlobalMessages { greet: number, next: string }
+
+type SelfActions = DefineActions<{
+  update: { payload: number, result: void },
+}>
 
 export const A: ComponentNode<
   SelfProps,

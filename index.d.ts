@@ -53,7 +53,7 @@ declare module '@variousjs/various' {
     trigger: ModuleDef,
   }
 
-  export interface ActionDef {
+  interface ActionDef {
     payload: any,
     result: any,
   }
@@ -63,7 +63,9 @@ declare module '@variousjs/various' {
     trigger: ModuleDef,
   ) => [A] extends [never] ? any : A['result']
 
-  export type PublicActionDef = Record<string, ActionDef>
+  type PublicActionDef = Record<string, ActionDef>
+
+  export type DefineActions<T extends PublicActionDef> = T
 
   export type StaticMethods<T extends PublicActionDef = never> =
     [T] extends [never]
