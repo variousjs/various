@@ -44,7 +44,7 @@ module.exports = {
     'class-methods-use-this': 0,
     'react/class-methods-use-this': 0,
     'import/extensions': 0,
-    semi: 'off',
+    semi: ['error', 'never'],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'react/state-in-constructor': 0,
