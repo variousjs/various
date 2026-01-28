@@ -47,15 +47,13 @@ declare module '@variousjs/various' {
     module: ModuleDef,
   }
 
-  interface Message<T extends ObjectRecord = never> {
-    event: [T] extends [never] ? string : keyof T,
-    payload: [T] extends [never] ? any : T[keyof T],
-    trigger: ModuleDef,
-  }
-
   interface ActionDef {
     payload: any,
     result: any,
+  }
+
+  interface MessageDef {
+    payload: any,
   }
 
   export type PublicAction<A extends ActionDef = never> = (
@@ -65,7 +63,17 @@ declare module '@variousjs/various' {
 
   type PublicActionDef = Record<string, ActionDef>
 
+  type MessagesDef = Record<string, MessageDef>
+
   export type DefineActions<T extends PublicActionDef> = T
+
+  export type DefineMessages<T extends MessagesDef> = T
+
+  interface Message<T extends MessagesDef = never> {
+    event: [T] extends [never] ? string : keyof T,
+    payload: [T] extends [never] ? any : T[keyof T]['payload'],
+    trigger: ModuleDef,
+  }
 
   export type StaticMethods<T extends PublicActionDef = never> =
     [T] extends [never]
@@ -76,7 +84,7 @@ declare module '@variousjs/various' {
         : never
       }
 
-  export type StaticProps<S extends PublicActionDef = never, T extends ObjectRecord = never> = {
+  export type StaticProps<S extends PublicActionDef = never, T extends MessagesDef = never> = {
     $i18n?: I18n,
     $onMessage?: OnMessage<T>,
   } & StaticMethods<S>
@@ -106,12 +114,9 @@ declare module '@variousjs/various' {
           : A[Target][Action]['result']
       >
 
-  type $postMessage<
-    T extends ObjectRecord = never,
-  > = (
-    event: [T] extends [never] ? string : keyof T,
-    payload?: [T] extends [never] ? any : T[keyof T],
-  ) => void
+  type $postMessage<T extends MessagesDef = never> = [T] extends [never]
+    ? (event: string, payload?: any) => void
+    : <K extends keyof T>(event: K, payload?: T[K]['payload']) => void
 
   interface $logger {
     info: (message: any, type?: string) => void,
@@ -129,7 +134,7 @@ declare module '@variousjs/various' {
 
   interface ComponentBuiltinProps<
     Store extends object = ObjectRecord,
-    Messages extends ObjectRecord = never
+    Messages extends MessagesDef = never
   > {
     $store: Readonly<Store>,
     $dispatch: $dispatch,
@@ -147,19 +152,19 @@ declare module '@variousjs/various' {
 
   export type I18n = () => I18nConfig | Promise<I18nConfig>
 
-  export type OnMessage<T extends ObjectRecord = never> = (message: Message<T>) => void
+  export type OnMessage<T extends MessagesDef = never> = (message: Message<T>) => void
 
   export type ComponentProps<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
-    Messages extends ObjectRecord = never,
+    Messages extends MessagesDef = never,
   > = ComponentBuiltinProps<Store, Messages> & Props
 
   export type ComponentNode<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
     Actions extends PublicActionDef = never,
-    Messages extends ObjectRecord = never,
+    Messages extends MessagesDef = never,
   > = FC<ComponentProps<Props, Store, Messages>> & StaticProps<Actions, Messages>
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
@@ -302,7 +307,7 @@ declare module '@variousjs/various' {
   export function getStore<Store extends object = ObjectRecord>(): Store
 
   export const createDispatch: (module: ModuleDef) => $dispatch
-  export const createPostMessage: <Messages extends ObjectRecord = never>(
+  export const createPostMessage: <Messages extends MessagesDef = never>(
     module: ModuleDef
   ) => $postMessage<Messages>
   export const createLogger: (module: ModuleDef) => $logger

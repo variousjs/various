@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component } from 'react'
 import {
-  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n, DefineActions,
+  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n, DefineActions, DefineMessages,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
 interface GlobalStoreProps { b: number }
-interface GlobalMessages { greet: number, next: string }
-
+type GlobalMessages = DefineMessages<{
+  greet: { payload: number },
+  next: { payload: string },
+}>
 type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
@@ -24,12 +26,12 @@ export const A: ComponentNode<
   const { b } = $store
 
   $postMessage('greet', b) // 'greet' / number
-  $postMessage('next', 0)
+  $postMessage('next', 'next')
 
   return null
 }
 
-// event: 'greet' | 'next' / payload: number / trigger: string
+// event: 'greet' | 'next' / payload: number | string / trigger: string
 // @ts-ignore
 A.$onMessage = ({ event, payload, trigger }) => {}
 A.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
@@ -47,7 +49,7 @@ export class B extends Component<ComponentProps<
   // @ts-ignore
   static update: PublicAction<SelfActions['update']> = (payload, trigger) => {}
 
-  // event: 'greet' | 'next' / payload: number / trigger: string
+  // event: 'greet' | 'next' / payload: number | string / trigger: string
   // @ts-ignore
   static $onMessage: OnMessage<GlobalMessages> = ({ event, payload, trigger }) => {}
 
@@ -60,7 +62,7 @@ export class B extends Component<ComponentProps<
     const { b } = $store
 
     $postMessage('greet', b) // 'greet' / number
-    $postMessage('next', 0)
+    $postMessage('next', '')
 
     return null
   }
