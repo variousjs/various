@@ -289,8 +289,9 @@ declare module '@variousjs/various' {
   }): Promise<() => Promise<void>>
 
   export type VariousComponentProps<
-    Store extends object = ObjectRecord
-  > = PropType<ComponentBuiltinProps<Store>>
+    Store extends object = ObjectRecord,
+    Messages extends MessagesDef = never,
+  > = PropType<ComponentBuiltinProps<Store, Messages>>
 
   export const isModuleLoaded: (module: ModuleDef) => boolean
   export const removeLoadedModules: (modules: ModuleDef[]) => void
