@@ -12,10 +12,18 @@ type GlobalMessages = DefineMessages<{
 type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
+type GlobalActions = {
+  ca: DefineActions<{
+    next: { payload: string, result: number },
+  }>,
+  cb: DefineActions<{
+    update: { payload: string, result: string },
+  }>,
+}
 
 const V = defineComponent({
   props: {
-    various: Object as VariousComponentProps<GlobalStoreProps, GlobalMessages>,
+    various: Object as VariousComponentProps<GlobalStoreProps, GlobalMessages, GlobalActions>,
   },
 
   setup(props) {
@@ -27,6 +35,12 @@ const V = defineComponent({
       msg() {
         // 'next' / string
         props.various?.$postMessage({ event: 'next', payload: 'a' })
+      },
+      async dispatch() {
+        // 'ca' / 'next' / string
+        const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
+        // res: number
+        window.console.log(res)
       }
     }
   }
@@ -65,6 +79,12 @@ export const M = defineComponent({
       msg() {
         // string / any
         props.various?.$postMessage({ event: 'next', payload: b })
+      },
+      async dispatch() {
+        // string / string / any
+        const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
+        // res: any
+        window.console.log(res)
       }
     }
   }

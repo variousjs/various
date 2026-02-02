@@ -16,7 +16,10 @@ type SelfActions = DefineActions<{
 type GlobalActions = {
   ca: DefineActions<{
     update: { payload: number, result: void },
-    next: { payload: string, result: number },
+    next?: { payload: string, result: number },
+  }>,
+  cb: DefineActions<{
+    update: { payload: string, result: string },
   }>,
 }
 
@@ -25,7 +28,7 @@ const typedPostMessage = createPostMessage<GlobalMessages>('typed')
 export const A: ComponentNode<
   SelfProps,
   GlobalStoreProps,
-  SelfActions,
+  GlobalActions['ca'],
   GlobalMessages,
   GlobalActions
 > = (props) => {
@@ -101,11 +104,19 @@ const unTypedPostMessage = createPostMessage('unTyped')
 
 export const C = ((props) => {
   // a: any / b: any
-  const { $store, a, $postMessage } = props
+  const {
+    $store, a, $postMessage, $dispatch,
+  } = props
   const { b } = $store
 
   $postMessage({ event: 'greet', payload: b }) // string / any
   unTypedPostMessage({ event: 'next', payload: a }) // string / any
+
+  // string / string / any
+  $dispatch({ target: 'dispatch', action: 'update', payload: 1 }).then((res) => {
+    // res: any
+    window.console.log(res)
+  })
 
   return null
 }) as ComponentNode
