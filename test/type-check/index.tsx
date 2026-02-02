@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Component } from 'react'
+import React, { Component } from 'react'
 import {
-  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n, DefineActions, DefineMessages,
+  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n,
+  DefineActions, DefineMessages, createPostMessage,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
@@ -13,6 +14,8 @@ type GlobalMessages = DefineMessages<{
 type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
+
+const typedPostMessage = createPostMessage<GlobalMessages>('typed')
 
 export const A: ComponentNode<
   SelfProps,
@@ -26,7 +29,7 @@ export const A: ComponentNode<
   const { b } = $store
 
   $postMessage('greet', b) // 'greet' / number
-  $postMessage('next', 'next')
+  typedPostMessage('next', 'next') // 'next' / string
 
   return null
 }
@@ -74,6 +77,8 @@ export class B extends Component<ComponentProps<
   --------------------------------------
 */
 
+const unTypedPostMessage = createPostMessage('unTyped')
+
 export const C = ((props) => {
   // a: any / b: any
   // @ts-ignore
@@ -81,7 +86,7 @@ export const C = ((props) => {
   const { b } = $store
 
   $postMessage('greet', b) // string / any
-  $postMessage('next', 0)
+  unTypedPostMessage('next', 0) // string / any
 
   return null
 }) as ComponentNode
@@ -94,6 +99,9 @@ C.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
 // payload: any / trigger: string
 // @ts-ignore ts(6198)
 C.update = (payload, trigger) => {}
+
+// @ts-ignore
+export const C1: ComponentNode<{}, {}, {}> = (props) => <div>1</div>
 
 export class D extends Component<ComponentProps> {
   // payload: any / trigger: string

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import {
-  VariousComponentProps, PublicAction, DefineMessages, DefineActions, OnMessage, I18n,
+  VariousComponentProps, PublicAction, DefineMessages, DefineActions, OnMessage, I18n, StaticProps,
 } from '@variousjs/various'
 
 interface GlobalStoreProps { b: number }
@@ -32,14 +32,17 @@ const V = defineComponent({
   }
 })
 
-// payload: number / trigger: string
-// @ts-ignore
-V.update = ((payload, trigger) => {}) as PublicAction<SelfActions['update']>
+const staticProps: StaticProps<SelfActions, GlobalMessages> = {
+  // payload: number / trigger: string
+  // @ts-ignore
+  update: (payload, trigger) => {},
+  // event: 'greet' | 'next' / payload: number | string / trigger: string
+  // @ts-ignore
+  $onMessage: ({ event, payload, trigger }) => {},
+  $i18n: () => ({ lngStoreKey: 'locale', resources: {} }),
+}
 
-// event: 'greet' | 'next' / payload: number | string / trigger: string
-// @ts-ignore
-V.$onMessage = (({ event, payload, trigger }) => {}) as OnMessage<GlobalMessages>
-V.$i18n = (() => ({ lngStoreKey: 'locale', resources: {} })) as I18n
+export default Object.assign(V, staticProps)
 
 /*
   --------------------------------------
@@ -74,6 +77,4 @@ M.update = ((payload, trigger) => {}) as PublicAction
 // @ts-ignore
 M.$onMessage = (({ event, payload, trigger }) => {}) as OnMessage
 M.$i18n = (() => ({ lngStoreKey: 'locale', resources: {} })) as I18n
-
-export default V
 </script>
