@@ -15,8 +15,8 @@ interface NS {
 const { createStore, emit, connect } = new Nycticorax<NS>()
 createStore({})
 
-interface Messages {
-  'B-greet': number,
+type Messages = {
+  'B-greet': { payload: number },
 }
 
 export const A: ComponentNode<NS, {}, {}, Messages> = (props) => {
