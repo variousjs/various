@@ -14,6 +14,12 @@ type GlobalMessages = DefineMessages<{
 type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
+type GlobalActions = {
+  ca: DefineActions<{
+    update: { payload: number, result: void },
+    next: { payload: string, result: number },
+  }>,
+}
 
 const typedPostMessage = createPostMessage<GlobalMessages>('typed')
 
@@ -21,15 +27,20 @@ export const A: ComponentNode<
   SelfProps,
   GlobalStoreProps,
   SelfActions,
-  GlobalMessages
+  GlobalMessages,
+  GlobalActions
 > = (props) => {
   // a: string / b: number
-  // @ts-ignore
-  const { $store, a, $postMessage } = props
+  const {
+    // @ts-ignore
+    $store, a, $postMessage, $dispatch,
+  } = props
   const { b } = $store
 
   $postMessage('greet', b) // 'greet' / number
   typedPostMessage('next', 'next') // 'next' / string
+
+  $dispatch({ target: 'ca', action: 'update', payload: 1 }) // 'ca' / 'update' / number
 
   return null
 }
@@ -46,7 +57,8 @@ A.update = (payload, trigger) => {}
 export class B extends Component<ComponentProps<
   SelfProps,
   GlobalStoreProps,
-  GlobalMessages
+  GlobalMessages,
+  GlobalActions
 >> {
   // payload: number / trigger: string
   // @ts-ignore
@@ -60,12 +72,18 @@ export class B extends Component<ComponentProps<
 
   render() {
     // a: string / b: number
-    // @ts-ignore
-    const { $store, a, $postMessage } = this.props
+    const {
+      // @ts-ignore
+      $store, a, $postMessage, $dispatch,
+    } = this.props
     const { b } = $store
 
     $postMessage('greet', b) // 'greet' / number
     $postMessage('next', '')
+
+    // res: number
+    // @ts-ignore
+    $dispatch({ target: 'ca', action: 'next' }).then((res) => {})
 
     return null
   }
@@ -92,12 +110,12 @@ export const C = ((props) => {
 }) as ComponentNode
 
 // event: string / payload: any / trigger: string
-// @ts-ignore ts(6198)
+// @ts-ignore
 C.$onMessage = ({ event, payload, trigger }) => {}
 C.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
 
 // payload: any / trigger: string
-// @ts-ignore ts(6198)
+// @ts-ignore
 C.update = (payload, trigger) => {}
 
 // @ts-ignore

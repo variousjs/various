@@ -156,7 +156,7 @@ declare module '@variousjs/various' {
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
     Messages extends MessagesDef = never,
-    Actions extends ComponentPublicActionMap = never,
+    Actions extends ComponentPublicActionMap = never
   > = ComponentBuiltinProps<Store, Messages, Actions> & Props
 
   export type ComponentNode<
@@ -164,7 +164,7 @@ declare module '@variousjs/various' {
     Store extends object = ObjectRecord,
     SelfActions extends PublicActionDef = never,
     Messages extends MessagesDef = never,
-    Actions extends ComponentPublicActionMap = never,
+    Actions extends ComponentPublicActionMap = never
   > = FC<ComponentProps<Props, Store, Messages, Actions>> & StaticProps<SelfActions, Messages>
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
