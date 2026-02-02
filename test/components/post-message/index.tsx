@@ -46,12 +46,12 @@ export const MessageA = connect('event', 'trigger', 'payload')(A)
 
 export class MessageB extends Component<ComponentProps<{}, {}, Messages>> {
   post = () => {
-    this.props.$postMessage('B-greet', +new Date())
+    this.props.$postMessage({ event: 'B-greet', payload: +new Date() })
   }
 
   createPost = () => {
     const post = createPostMessage('custom')
-    post('custom-greet', +new Date())
+    post({ event: 'custom-greet', payload: +new Date() })
   }
 
   render() {

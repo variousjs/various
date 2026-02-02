@@ -23,7 +23,7 @@ const C = forwardRef<
             <p>text: {text}</p>
             <p>props: {props.propsA}</p>
             <p>greet: {$t('greet', { name: 'C', name2: 'D' })}</p>
-            <button onClick={() => $postMessage('aaa')}>postMessage</button>
+            <button onClick={() => $postMessage({ event: 'aaa' })}>postMessage</button>
           </div>
         </div>
       )

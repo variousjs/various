@@ -44,13 +44,13 @@ export default ((props) => {
       <h3>onMessage</h3>
       <div className="value">
         <button onClick={() => {
-          $postMessage('block')
+          $postMessage({ event: 'block' })
         }}
         >
           postMessage block
         </button>
         <button onClick={() => {
-          $postMessage('next')
+          $postMessage({ event: 'next' })
         }}
         >
           postMessage changed

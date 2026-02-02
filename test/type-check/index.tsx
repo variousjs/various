@@ -37,8 +37,8 @@ export const A: ComponentNode<
   } = props
   const { b } = $store
 
-  $postMessage('greet', b) // 'greet' / number
-  typedPostMessage('next', 'next') // 'next' / string
+  $postMessage({ event: 'greet', payload: b }) // 'greet' / number
+  typedPostMessage({ event: 'next', payload: 'next' }) // 'next' / string
 
   $dispatch({ target: 'ca', action: 'update', payload: 1 }) // 'ca' / 'update' / number
 
@@ -78,8 +78,8 @@ export class B extends Component<ComponentProps<
     } = this.props
     const { b } = $store
 
-    $postMessage('greet', b) // 'greet' / number
-    $postMessage('next', '')
+    $postMessage({ event: 'greet', payload: b }) // 'greet' / number
+    $postMessage({ event: 'next', payload: '' }) // 'next' / string
 
     // res: number
     // @ts-ignore
@@ -103,8 +103,8 @@ export const C = ((props) => {
   const { $store, a, $postMessage } = props
   const { b } = $store
 
-  $postMessage('greet', b) // string / any
-  unTypedPostMessage('next', 0) // string / any
+  $postMessage({ event: 'greet', payload: b }) // string / any
+  unTypedPostMessage({ event: 'next', payload: 0 }) // string / any
 
   return null
 }) as ComponentNode
@@ -138,8 +138,8 @@ export class D extends Component<ComponentProps> {
     const { $store, a, $postMessage } = this.props
     const { b } = $store
 
-    $postMessage('greet', b) // string / any
-    $postMessage('next', 0)
+    $postMessage({ event: 'greet', payload: b }) // string / any
+    $postMessage({ event: 'next', payload: 0 }) // string / any
 
     return null
   }

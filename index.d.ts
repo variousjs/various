@@ -103,7 +103,7 @@ declare module '@variousjs/various' {
     }
     : {
       <T extends keyof M, A extends keyof M[T]>(
-        payload: {
+        params: {
           target: T,
           action: A,
           payload?: M[T][A]['payload'],
@@ -112,8 +112,8 @@ declare module '@variousjs/various' {
     }
 
   type $postMessage<T extends MessagesDef = never> = [T] extends [never]
-    ? (event: string, payload?: any) => void
-    : <K extends keyof T>(event: K, payload?: T[K]['payload']) => void
+    ? (params: { event: string, payload?: any }) => void
+    : <K extends keyof T>(params: { event: K, payload?: T[K]['payload'] }) => void
 
   interface $logger {
     info: (message: any, type?: string) => void,

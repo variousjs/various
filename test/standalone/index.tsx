@@ -91,7 +91,7 @@ function App() {
       <button
         onClick={() => {
           const pm = createPostMessage('ot')
-          pm('greet', +new Date())
+          pm({ event: 'greet', payload: +new Date() })
         }}
       >
         message

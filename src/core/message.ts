@@ -4,7 +4,7 @@ import createLogger from './logger'
 import { emit, subscribe } from './store'
 import { MESSAGE_KEY } from './config'
 
-export const createPostMessage: typeof cpm<never> = (module) => async (event, payload) => {
+export const createPostMessage: typeof cpm<never> = (module) => async ({ event, payload }) => {
   const middlewares = connector.getMiddlewares()
   const logger = createLogger(module)
 
