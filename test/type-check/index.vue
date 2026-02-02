@@ -20,13 +20,13 @@ const V = defineComponent({
 
   setup(props) {
     // b: number
-    // @ts-ignore
     const { b } = props.various?.$store || {}
+    window.console.log(b)
 
     return {
       msg() {
         // 'next' / string
-        props.various?.$postMessage('next', 'a')
+        props.various?.$postMessage({ event: 'next', payload: 'a' })
       }
     }
   }
@@ -34,11 +34,13 @@ const V = defineComponent({
 
 const staticProps: StaticProps<SelfActions, GlobalMessages> = {
   // payload: number / trigger: string
-  // @ts-ignore
-  update: (payload, trigger) => {},
+  update: ({ payload, trigger }) => {
+    window.console.log(payload, trigger)
+  },
   // event: 'greet' | 'next' / payload: number | string / trigger: string
-  // @ts-ignore
-  $onMessage: ({ event, payload, trigger }) => {},
+  $onMessage: ({ event, payload, trigger }) => {
+    window.console.log(event, payload, trigger)
+  },
   $i18n: () => ({ lngStoreKey: 'locale', resources: {} }),
 }
 
@@ -57,24 +59,25 @@ export const M = defineComponent({
 
   setup(props) {
     // b: any
-    // @ts-ignore
     const { b } = props.various?.$store || {}
 
     return {
       msg() {
         // string / any
-        props.various?.$postMessage('next', 'a')
+        props.various?.$postMessage({ event: 'next', payload: b })
       }
     }
   }
 })
 
 // payload: any / trigger: string
-// @ts-ignore
-M.update = ((payload, trigger) => {}) as PublicAction
+M.update = (({ payload, trigger }) => {
+  window.console.log(payload, trigger)
+}) as PublicAction
 
 // event: string / payload: any / trigger: string
-// @ts-ignore
-M.$onMessage = (({ event, payload, trigger }) => {}) as OnMessage
+M.$onMessage = (({ event, payload, trigger }) => {
+  window.console.log(event, payload, trigger)
+}) as OnMessage
 M.$i18n = (() => ({ lngStoreKey: 'locale', resources: {} })) as I18n
 </script>

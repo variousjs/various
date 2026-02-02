@@ -22,7 +22,7 @@ const V = defineComponent({
   setup(props) {
     return {
       post() {
-        props.various?.$postMessage('Vue-greet', +new Date())
+        props.various?.$postMessage({ event: 'Vue-greet', payload: +new Date() })
       }
     }
   }

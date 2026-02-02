@@ -70,7 +70,7 @@ const createDispatch: typeof cd<never> = (module) => async function (params) {
     throw error
   }
 
-  return Promise.resolve(componentAction(payload, module))
+  return Promise.resolve(componentAction({ payload, trigger: module }))
 }
 
 export default createDispatch

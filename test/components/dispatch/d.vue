@@ -28,7 +28,7 @@ const V = defineComponent({
   }
 })
 
-V.update = ((payload, trigger) => {
+V.update = (({ payload, trigger }) => {
   const next = {
     payload,
     trigger,

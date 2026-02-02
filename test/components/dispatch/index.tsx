@@ -5,7 +5,6 @@ import {
   ComponentNode,
   Nycticorax,
   createComponent,
-  PublicAction,
 } from '@variousjs/various'
 import { Store } from '../../types'
 
@@ -51,26 +50,13 @@ const A: ComponentNode<{}, Store, { update: { payload: number, result: void } }>
   )
 }
 
-A.update = (payload, trigger) => {
+A.update = ({ payload, trigger }) => {
   emit({ payload, trigger })
 }
 
 export default A
 
 export class B extends Component<ComponentProps> {
-  static update: PublicAction = (value, trigger) => {
-    // test types
-    window.console.log(value, trigger)
-  }
-
-  static update2: PublicAction<{ payload: number, result: Promise<number> }> = (value) => {
-    // test types
-    if (typeof value !== 'number') {
-      throw new Error('value must be number')
-    }
-    return Promise.resolve(value)
-  }
-
   state = {
     errors: {} as Record<string, Error>,
   }
