@@ -1,14 +1,14 @@
-import { ModuleDefined, OnMessage, createPostMessage as cpm } from '@variousjs/various'
+import { ModuleDef, OnMessage, createPostMessage as cpm } from '@variousjs/various'
 import connector from './connector'
 import createLogger from './logger'
 import { emit, subscribe } from './store'
 import { MESSAGE_KEY } from './config'
 
-export const createPostMessage: typeof cpm = (moduleDefined) => async (event, value) => {
+export const createPostMessage: typeof cpm<never> = (module) => async ({ event, payload }) => {
   const middlewares = connector.getMiddlewares()
-  const logger = createLogger(moduleDefined)
+  const logger = createLogger(module)
 
-  let next = { trigger: moduleDefined, event, value }
+  let next = { trigger: module, event, payload }
 
   if (middlewares?.onMessage) {
     const check = await middlewares.onMessage(next)
@@ -27,17 +27,17 @@ export const createPostMessage: typeof cpm = (moduleDefined) => async (event, va
     [MESSAGE_KEY]: {
       timestamp: +new Date(),
       event: next.event,
-      trigger: moduleDefined,
-      value: next.value,
+      trigger: module,
+      payload: next.payload,
     },
   })
 }
 
-export const createOnMessage = (moduleDefined: ModuleDefined, onMessage: OnMessage) => subscribe({
+export const createOnMessage = (module: ModuleDef, onMessage: OnMessage) => subscribe({
   [MESSAGE_KEY](v) {
-    const { trigger, value, event } = v!
-    if (moduleDefined.name !== trigger.name || moduleDefined.module !== trigger.module) {
-      onMessage({ event, value, trigger })
+    const { trigger, payload, event } = v!
+    if (module !== trigger) {
+      onMessage({ event, payload, trigger })
     }
   },
 })

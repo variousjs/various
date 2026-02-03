@@ -6,7 +6,8 @@ import {
   defineDependencies as dd,
   VariousError as ve,
   ErrorType as et,
-  ModuleDefined,
+  getModuleInfo as gm,
+  ModuleDef,
   OnMessage,
   I18n,
   VariousComponentType,
@@ -28,15 +29,19 @@ import { createI18nConfig } from './i18n'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-const hasModule = (modules: ModuleDefined[], module: ModuleDefined) => modules
-  .some((c) => c.name === module.name && c.module === module.module)
+export const getModuleInfo: typeof gm = (module) => {
+  const [name, entry] = module.split('.')
+  return { name, entry }
+}
 
-export const preloadModules: typeof pp = (names) => new Promise<void>((resolve, reject) => {
+export const preloadModules: typeof pp = (modules) => new Promise<void>((resolve, reject) => {
+  const names = modules.map((m) => getModuleInfo(m).name)
   window.requirejs(names, resolve, reject)
 })
 
-export const removeLoadedModules: typeof rm = (names) => {
-  names.forEach((name) => {
+export const removeLoadedModules: typeof rm = (modules) => {
+  modules.forEach((module) => {
+    const { name } = getModuleInfo(module)
     if (!BASE_DEPENDENCIES.includes(name)) {
       window.requirejs.undef(name)
     }
@@ -58,23 +63,28 @@ export const defineDependencies: typeof dd = (deps) => {
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isModuleLoaded: typeof im = (name) => window.requirejs.defined(name)
+export const isModuleLoaded: typeof im = (module) => {
+  const { name } = getModuleInfo(module)
+  return window.requirejs.defined(name)
+}
 
-export const isModuleSpecified = (name: string) => window.requirejs.specified(name)
+export const isModuleSpecified = (module: ModuleDef) => {
+  const { name } = getModuleInfo(module)
+  return window.requirejs.specified(name)
+}
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
 
 export const onComponentMounted: typeof ocm = (module, callback) => {
   const modules = Array.isArray(module) ? module : [module]
 
-  if (modules.every((m) => hasModule(getMountedComponents(), m))) {
+  if (modules.every((m) => getMountedComponents().includes(m))) {
     callback()
   }
 
   const unSubscribe = subscribe({
     [MOUNTED_COMPONENTS_KEY](value) {
-      const mountedModules = value
-      if (modules.every((n) => hasModule(mountedModules, n))) {
+      if (modules.every((n) => value.includes(n))) {
         unSubscribe()
         callback()
       }
@@ -84,7 +94,8 @@ export const onComponentMounted: typeof ocm = (module, callback) => {
   return unSubscribe
 }
 
-export const resetDependencyConfig = (name: string, url?: string) => {
+export const resetDependencyConfig = (module: ModuleDef, url?: string) => {
+  const { name } = getModuleInfo(module)
   const dependencies = getStore(DEPENDENCIES_KEY)
 
   // ignore multiple custom module url
@@ -110,18 +121,14 @@ export const resetDependencyConfig = (name: string, url?: string) => {
     paths: { [name]: path },
   })
 }
-export const getNameWithModule = (moduleDefined: ModuleDefined) => {
-  const { name, module } = moduleDefined
-  return module ? `${name}.${module}` : name
-}
 
 export function getConfig<C extends object = {}>() {
   return getStore(CONFIG_KEY) as C
 }
 
 export const onError = (e: VariousError) => {
-  const { name, module, type } = e
-  const logger = createLogger({ name, module })
+  const { module, type } = e
+  const logger = createLogger(module)
   logger.error(e, type)
 }
 
@@ -130,13 +137,10 @@ export class VariousError extends Error implements ve {
 
   originalError: Error
 
-  module?: string
-
-  name: string
+  module: ModuleDef
 
   constructor(data: {
-    name: string,
-    module?: string,
+    module: ModuleDef,
     type: et,
     originalError: Error,
   }) {
@@ -144,11 +148,10 @@ export class VariousError extends Error implements ve {
     this.type = data.type
     this.originalError = data.originalError
     this.module = data.module
-    this.name = data.name
   }
 }
 
-export function checkReactComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
+export function checkReactComponent(component: RequiredComponent, module: ModuleDef) {
   return new Promise<void>((reslove, reject) => {
     if (component.$$typeof || component.prototype?.isReactComponent || typeof component === 'function') {
       reslove()
@@ -156,7 +159,7 @@ export function checkReactComponent(component: RequiredComponent, moduleDefined:
     }
 
     reject(new VariousError({
-      ...moduleDefined,
+      module,
       originalError: new Error('not a valid React component'),
       type: 'INVALID_COMPONENT',
     }))
@@ -167,7 +170,7 @@ export function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLik
   return value != null && typeof (value as any).then === 'function'
 }
 
-export function checkVueComponent(component: RequiredComponent, moduleDefined: ModuleDefined) {
+export function checkVueComponent(component: RequiredComponent, module: ModuleDef) {
   const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
 
   return new Promise<void>((resolve, reject) => {
@@ -182,7 +185,7 @@ export function checkVueComponent(component: RequiredComponent, moduleDefined: M
       }
 
       reject(new VariousError({
-        ...moduleDefined,
+        module,
         originalError: new Error('not a valid Vue component'),
         type: 'INVALID_COMPONENT',
       }))
@@ -190,14 +193,14 @@ export function checkVueComponent(component: RequiredComponent, moduleDefined: M
   })
 }
 
-export function parseComponentActions(params: ModuleDefined & {
+export function parseComponentActions(params: {
+  module: ModuleDef,
   componentNode: RequiredComponent,
   type?: VariousComponentType,
   i18nUpdate: () => void,
 }) {
   const {
     componentNode,
-    name,
     module,
     type,
     i18nUpdate,
@@ -229,51 +232,49 @@ export function parseComponentActions(params: ModuleDefined & {
     })
 
   if (i18nAction) {
-    createI18nConfig(i18nAction, { name, module }, i18nUpdate)
+    createI18nConfig(i18nAction, module, i18nUpdate)
   }
 
-  connector.setComponentActions({ name, module }, actions)
+  connector.setComponentActions(module, actions)
 
   if (onMessageAction) {
-    return createOnMessage({ name, module }, onMessageAction)
+    return createOnMessage(module, onMessageAction)
   }
 
   return () => null
 }
 
-export function updateMountedComponent(moduleDefined: ModuleDefined) {
+export function updateMountedComponent(module: ModuleDef) {
   const mountedComponents = getMountedComponents()
 
-  if (!hasModule(mountedComponents, moduleDefined)) {
-    mountedComponents.push(moduleDefined)
+  if (!mountedComponents.includes(module)) {
+    mountedComponents.push(module)
   }
 
   emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
 }
 
-export function updateUnMountComponent(moduleDefined: ModuleDefined) {
-  const { name, module } = moduleDefined
+export function updateUnMountComponent(module: ModuleDef) {
   let mountedComponents = getMountedComponents()
 
-  mountedComponents = mountedComponents
-    .filter((item) => item.name !== name || item.module !== module)
+  mountedComponents = mountedComponents.filter((item) => item !== module)
 
   emit({ [MOUNTED_COMPONENTS_KEY]: mountedComponents }, true)
-  connector.deleteComponentActions({ name, module })
+  connector.deleteComponentActions(module)
 }
 
-export function getSelfInfo(params: ModuleDefined & { url?: string }) {
-  const { name, module, url } = params
+export function getSelfInfo(params: { url?: string, module: ModuleDef }) {
+  const { module, url } = params
   const dependencies = getStore(DEPENDENCIES_KEY)
+  const { name } = getModuleInfo(module)
 
   return {
-    name,
     module,
     url: url || dependencies[name],
   }
 }
 
-export function getClassNameWithModule(self: ModuleDefined, prefix: string) {
-  const { name, module } = self
-  return `${prefix} ${[name, module].filter(Boolean).join('-')}`
+export function getClassNameWithModule(module: ModuleDef, prefix: string) {
+  const { name, entry } = getModuleInfo(module)
+  return `${prefix} ${[name, entry].filter(Boolean).join('-')}`
 }

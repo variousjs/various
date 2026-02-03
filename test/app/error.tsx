@@ -12,7 +12,7 @@ const errorComponent: ErrorFallbackNode<Store> = (props) => {
 
   return (
     <>
-      <h3>{[$self.name, $self.module].filter(Boolean).join('.')}</h3>
+      <h3>{$self.module}</h3>
       <div className="value">
         <p>{`[${$error.type}]:${$error.message}`}</p>
         <button onClick={$reload}>

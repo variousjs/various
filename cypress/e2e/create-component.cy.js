@@ -82,6 +82,6 @@ describe('create component', () => {
 
   it('props slient', () => {
     cy.visit('/app/create-component-slient.html')
-    cy.get('#t').should('have.text', 'create,Acreatevue')
+    cy.get('#t').should('have.text', 'create.Acreatevue')
   })
 })

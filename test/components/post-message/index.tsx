@@ -1,22 +1,26 @@
 import React, { Component } from 'react'
 import {
-  ComponentProps,
-  ComponentNode,
+  VariousProps,
+  VariousFC,
   Nycticorax,
   createPostMessage,
 } from '@variousjs/various'
 
 interface NS {
   event?: string,
-  value?: any,
+  payload?: any,
   trigger?: string,
 }
 
 const { createStore, emit, connect } = new Nycticorax<NS>()
 createStore({})
 
-export const A = ((props) => {
-  const { event, value, trigger } = props
+type Messages = {
+  'B-greet': { payload: number },
+}
+
+export const A: VariousFC<NS, {}, {}, Messages> = (props) => {
+  const { event, payload, trigger } = props
 
   return (
     <>
@@ -24,30 +28,30 @@ export const A = ((props) => {
       <div className="value">
         <p>Trigger: {trigger}</p>
         <p>Event: {event}</p>
-        <p>Value: {value}</p>
+        <p>Payload: {payload}</p>
       </div>
     </>
   )
-}) as ComponentNode<{}, NS>
+}
 
-A.$onMessage = ({ event, value, trigger }) => {
+A.$onMessage = ({ event, payload, trigger }) => {
   emit({
     event,
-    value,
-    trigger: [trigger.name, trigger.module].filter(Boolean).join('.'),
+    payload,
+    trigger,
   })
 }
 
-export const MessageA = connect('event', 'trigger', 'value')(A)
+export const MessageA = connect('event', 'trigger', 'payload')(A)
 
-export class MessageB extends Component<ComponentProps> {
+export class MessageB extends Component<VariousProps<{}, {}, Messages>> {
   post = () => {
-    this.props.$postMessage('B-greet', +new Date())
+    this.props.$postMessage({ event: 'B-greet', payload: +new Date() })
   }
 
   createPost = () => {
-    const post = createPostMessage({ name: 'custom' })
-    post('custom-greet', +new Date())
+    const post = createPostMessage('custom')
+    post({ event: 'custom-greet', payload: +new Date() })
   }
 
   render() {

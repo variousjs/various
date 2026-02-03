@@ -3,10 +3,8 @@ declare module '@variousjs/various/standalone' {
   import {
     VariousComponentType,
     ObjectRecord,
-    ModuleDefined,
-    FallbackNode,
-    ErrorFallbackNode,
-    Dispatch,
+    ModuleDef,
+    App,
   } from '@variousjs/various'
 
   export {
@@ -17,33 +15,39 @@ declare module '@variousjs/various/standalone' {
 
   export type DependencyType = string | object | Function
 
-  export function createComponent<P extends object = ObjectRecord>(
-    config: ModuleDefined & {
+  export function createComponent<
+    Props extends object = ObjectRecord,
+    Store extends object = ObjectRecord,
+    Ref = unknown,
+  >(
+    config: {
+      module: ModuleDef,
       url: string,
       type?: VariousComponentType,
       dependencies?: Partial<Record<
         string,
         DependencyType
       >>,
-      storeKeys?: string[],
+      storeKeys?: (keyof Store)[],
     },
-  ): ComponentType<P & {
+  ): ComponentType<Props & {
     /**
      * for React Component only
      */
-    $ref?: RefObject<unknown>,
+    $ref?: RefObject<Ref>,
   }>
 
-   export function createAppConfig<S extends object = ObjectRecord>(
-    config: {
-      dependencies: Partial<Record<
-        string,
-        DependencyType
-      >>,
-      store?: S,
-      actions?: Record<string, Dispatch<S>>,
-      fallback?: FallbackNode<S>,
-      errorFallback?: ErrorFallbackNode<S>,
-    },
+  export type AppConfig<Store extends object = ObjectRecord> = Pick<
+    App<Store>,
+    'actions' | 'store' | 'Fallback' | 'ErrorFallback'
+  > & {
+    dependencies: Partial<Record<
+      string,
+      DependencyType
+    >>
+  }
+
+  export function createAppConfig<Store extends object = ObjectRecord>(
+    config: AppConfig<Store>
   ): void
 }

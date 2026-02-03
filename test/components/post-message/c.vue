@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { VueVarious, OnMessage } from '@variousjs/various'
+import { VariousComponentProps, OnMessage } from '@variousjs/various'
 
 interface NS {
   event?: string,
-  value?: any,
+  payload?: any,
   trigger?: string,
 }
 
@@ -12,7 +12,7 @@ const message = ref<NS>({})
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious,
+    various: Object as VariousComponentProps,
   },
 
   data() {
@@ -22,17 +22,17 @@ const V = defineComponent({
   setup(props) {
     return {
       post() {
-        props.various?.$postMessage('Vue-greet', +new Date())
+        props.various?.$postMessage({ event: 'Vue-greet', payload: +new Date() })
       }
     }
   }
 })
 
-V.$onMessage = (({ event, value, trigger }) => {
+V.$onMessage = (({ event, payload, trigger }) => {
   const next = {
     event,
-    value,
-    trigger: [trigger.name, trigger.module].filter(Boolean).join('.'),
+    payload,
+    trigger,
   }
   message.value = next
 }) as OnMessage
@@ -45,7 +45,7 @@ export default V
   <div class="value">
     <p>Trigger: {{ message.trigger }}</p>
     <p>Event: {{ message.event }}</p>
-    <p>Value: {{ message.value }}</p>
+    <p>Payload: {{ message.payload }}</p>
     <button @click="post">Vue Post</button>
   </div>
 </template>

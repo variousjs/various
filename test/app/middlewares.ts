@@ -22,7 +22,7 @@ export default {
     if (e.module === 'B') {
       return
     }
-    window.console.log(e.name, e.module, e.beenLoaded)
+    window.console.log(e.module, e.beenLoaded)
   },
 
   onMessage(e) {

@@ -6,25 +6,28 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { ComponentProps, createComponent } from '@variousjs/various'
+import { VariousProps, createComponent, getModuleInfo } from '@variousjs/various'
 import { Store } from '../../types'
 
-const Ma = createComponent({ name: 'create', module: 'A' })
-const Mb = createComponent<Store>({ name: 'create', module: 'B' }, ['name'])
-const Mc = createComponent<Store, { name: string }>({ name: 'create-vue-c', url: './dist/create-component/c.js', type: 'vue3' }, ['name'])
-const Md = createComponent({ name: 'create', module: 'A', type: 'vue3' })
-const Me = createComponent({ name: 'create-react-vue', url: './dist/create-component/c.js' })
-const Mf = createComponent({ name: 'create', module: 'C' })
-const Mg = createComponent({ name: 'create', module: 'B', type: 'vue3' })
-const Mh = createComponent({ name: 'create', module: 'D' })
-const Mi = createComponent({ name: 'create-vue-e', url: './dist/create-component/e.js', type: 'vue3' })
-const Mj = createComponent({ name: 'create', module: 'Ref' })
+const Ma = createComponent({ module: 'create.A' })
+const Mb = createComponent<{}, Store>({ module: 'create.B' }, ['name'])
+const Mc = createComponent<{ name: string }, Store>({ module: 'create-vue-c', url: './dist/create-component/c.js', type: 'vue3' }, ['name'])
+const Md = createComponent({ module: 'create.A', type: 'vue3' })
+const Me = createComponent({ module: 'create-react-vue', url: './dist/create-component/c.js' })
+const Mf = createComponent({ module: 'create.C' })
+const Mg = createComponent({ module: 'create.B', type: 'vue3' })
+const Mh = createComponent({ module: 'create.D' })
+const Mi = createComponent({ module: 'create-vue-e', url: './dist/create-component/e.js', type: 'vue3' })
+const Mj = createComponent({ module: 'create.Ref' })
 
-export default (props: ComponentProps) => {
-  const { name } = props.$self
+export default (props: VariousProps) => {
+  const { module } = props.$self
   const maRef = useRef<any>(null)
   const [num, setNum] = useState(0)
-  const RuntimeCreate = useMemo(() => createComponent({ name, module: 'E' }), [name])
+  const RuntimeCreate = useMemo(() => {
+    const { name } = getModuleInfo(module)
+    return createComponent({ module: `${name}.E` })
+  }, [module])
   const ref = useRef<any>(null)
 
   return (
@@ -52,7 +55,7 @@ export default (props: ComponentProps) => {
       <h3>Watch Store</h3>
       <div className="value">
         <Mb />
-        <button onClick={() => props.$dispatch({ name: 'app', action: 'setName' })}>dispatch</button>
+        <button onClick={() => props.$dispatch({ target: 'app', action: 'setName' })}>dispatch</button>
       </div>
 
       <h3>Vue & URL</h3>
@@ -95,7 +98,7 @@ export const A = forwardRef((_, ref) => {
   )
 })
 
-export class B extends Component<ComponentProps<Store>> {
+export class B extends Component<VariousProps<{}, Store>> {
   render() {
     return (
       <p>name: {this.props.$store.name}</p>
@@ -110,7 +113,7 @@ export const D = () => (
   <div>{A.bind.c}</div>
 )
 
-export const E = (props: ComponentProps<Store>) => (
+export const E = (props: VariousProps<{}, Store>) => (
   <p>{props.$store.name}</p>
 )
 

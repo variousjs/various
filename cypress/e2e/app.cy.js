@@ -20,9 +20,9 @@ describe('app', () => {
     cy.contains('p', 'A is not defined').should('exist')
 
     // react version error
-    cy.readFile('./docs/libs/react.19.js').then((react) => {
+    cy.readFile('./public/libs/react.19.js').then((react) => {
       cy.intercept('react.19.js', react.replaceAll('19.2.0', '17'))
-      cy.readFile('./docs/libs/react-dom.19.js').then((reactDom) => {
+      cy.readFile('./public/libs/react-dom.19.js').then((reactDom) => {
         cy.intercept('react-dom.19.js', reactDom.replaceAll('19.2.0', '17'))
         cy.visit('/app/react-version-error.html')
         cy.contains('p', 'React/ReactDOM Version Requirement').should('exist')
@@ -31,7 +31,7 @@ describe('app', () => {
   })
 
   it('vue version error test', () => {
-    cy.readFile('./docs/libs/vue.js').then((res) => {
+    cy.readFile('./public/libs/vue.js').then((res) => {
       cy.intercept('vue.js', res.replace('"3.5.21', '"2'))
       cy.visit('/app/vue-version.html')
       cy.contains('p', 'Vue 3+ required, detected an incompatible version').should('exist')

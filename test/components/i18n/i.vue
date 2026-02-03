@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VueVarious, I18n } from '@variousjs/various'
+import { VariousComponentProps, I18n } from '@variousjs/various'
 import zh from './zh.json'
 import en from './en.json'
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious,
+    various: Object as VariousComponentProps,
   },
 
   setup(props) {

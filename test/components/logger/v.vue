@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VueVarious, createLogger } from '@variousjs/various'
+import { VariousComponentProps, createLogger } from '@variousjs/various'
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious,
+    various: Object as VariousComponentProps,
   },
 
   setup(props) {
@@ -22,7 +22,7 @@ const V = defineComponent({
       },
 
       createLog() {
-        const logger = createLogger({ name: 'custom' })
+        const logger = createLogger('custom')
         logger.info('hello', 'greet')
       },
     }

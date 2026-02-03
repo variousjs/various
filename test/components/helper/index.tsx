@@ -13,7 +13,7 @@ import {
 } from '@variousjs/various'
 
 const testPreloadModule = 'helper-define'
-const testOnMountedModule = { name: 'helper', module: 'Waiting' }
+const testOnMountedModule = 'helper.Waiting'
 
 export default () => {
   const [isLoaded, setIsLoaded] = useState('false')
@@ -22,15 +22,9 @@ export default () => {
   const [isHelperMounted, setIsHelperMounted] = useState(false)
   const [canMount, setCanMount] = useState(false)
 
-  const MountNode = useMemo(() => createComponent(testOnMountedModule), [])
+  const MountNode = useMemo(() => createComponent({ module: testOnMountedModule }), [])
 
-  const mountedComponents = getMountedComponents()
-    .map((m) => {
-      const { name, module } = m
-      return [name, module].filter(Boolean).join('.')
-    })
-    .sort()
-    .join()
+  const mountedComponents = getMountedComponents().sort().join()
 
   const preload = async () => {
     try {
@@ -48,13 +42,13 @@ export default () => {
 
   useEffect(() => {
     setIsPreloadLoaded(String(isModuleLoaded('preload')))
-    const un2 = onComponentMounted([{ ...testOnMountedModule }, { name: 'no-exist' }], () => {
+    const un2 = onComponentMounted([testOnMountedModule, 'no-exist'], () => {
       // will not trigger
     })
-    const un0 = onComponentMounted({ ...testOnMountedModule, module: undefined }, () => {
+    const un0 = onComponentMounted('helper', () => {
       setIsHelperMounted(true)
     })
-    const un1 = onComponentMounted([{ ...testOnMountedModule }], () => {
+    const un1 = onComponentMounted([testOnMountedModule], () => {
       setIsMounted(true)
       un2?.()
     })
@@ -110,7 +104,7 @@ export default () => {
       <div className="value">
         <p>helper: {String(isHelperMounted)}</p>
         <p>Waiting: {String(isMounted)}</p>
-        <button onClick={() => setCanMount(true)}>Mount: {testOnMountedModule.module}</button>
+        <button onClick={() => setCanMount(true)}>Mount: {testOnMountedModule}</button>
         { canMount && <MountNode /> }
       </div>
     </>

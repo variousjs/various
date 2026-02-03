@@ -8,7 +8,6 @@ import ErrorBoundary from './error-boundary'
 import createModule from './create-module'
 
 const renderComponent: typeof rc = async ({
-  name,
   module,
   url,
   target,
@@ -18,10 +17,9 @@ const renderComponent: typeof rc = async ({
   onMounted,
 }) => {
   try {
-    const ReactDOM = await createModule<typeof reactDom>({ name: 'react-dom' })
+    const ReactDOM = await createModule<typeof reactDom>({ module: 'react-dom' })
 
     const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
-      name,
       module,
       url,
       onMounted,
@@ -31,7 +29,7 @@ const renderComponent: typeof rc = async ({
     const { $silent, $ref, ...rest } = props || {}
     const nextProps: any = { $componentProps: rest, $silent, $ref }
     const node = (
-      <ErrorBoundary name={name} module={module} url={url}>
+      <ErrorBoundary module={module} url={url}>
         <C {...nextProps} />
       </ErrorBoundary>
     )
@@ -46,7 +44,6 @@ const renderComponent: typeof rc = async ({
     })
   } catch (e) {
     const error = new VariousError({
-      name,
       module,
       type: 'SCRIPT_ERROR',
       originalError: e as Error,

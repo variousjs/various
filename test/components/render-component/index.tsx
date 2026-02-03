@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { renderComponent, ComponentNode } from '@variousjs/various'
+import { renderComponent, VariousFC } from '@variousjs/various'
 import { HashRouter, useLocation } from 'react-router-dom'
 import { Store } from '../../types'
 
@@ -26,7 +26,7 @@ export default () => {
         <div id="a-dom" />
         <button
           onClick={async () => {
-            const un = await renderComponent({ name: 'render', module: 'A', target: document.querySelector('#a-dom') })
+            const un = await renderComponent({ module: 'render.A', target: document.querySelector('#a-dom') })
             unMounteA.current = un
           }}
         >
@@ -41,8 +41,7 @@ export default () => {
         <button
           onClick={async () => {
             const un = await renderComponent({
-              name: 'render',
-              module: 'WidthProps',
+              module: 'render.WidthProps',
               target: document.querySelector('#props-dom'),
               props: { foo: 'bar' },
             })
@@ -59,8 +58,7 @@ export default () => {
         <button
           onClick={async () => {
             const un = await renderComponent({
-              name: 'render',
-              module: 'GlobalProps',
+              module: 'render.GlobalProps',
               target: document.querySelector('#global-dom'),
             })
             unMountedRef.current.push(un)
@@ -76,8 +74,7 @@ export default () => {
         <button
           onClick={async () => {
             const un = await renderComponent({
-              name: 'render',
-              module: 'Ref',
+              module: 'render.Ref',
               target: document.querySelector('#ref-dom'),
               props: { $ref: ref },
               onMounted() {
@@ -108,8 +105,7 @@ export default () => {
         <button
           onClick={async () => {
             const un = await renderComponent({
-              name: 'render',
-              module: 'P',
+              module: 'render.P',
               target: document.querySelector('#custom-dom'),
               renderNode(children) {
                 return <HashRouter>{children}</HashRouter>
@@ -128,7 +124,7 @@ export default () => {
         <button
           onClick={async () => {
             const un = await renderComponent({
-              name: 'url',
+              module: 'url',
               type: 'vue3',
               url: './dist/render-component/url.js',
               target: document.querySelector('#url-dom'),
@@ -180,11 +176,11 @@ export const GlobalProps = ((props) => {
       <p>name: {$store.name}</p>
       <button
         onClick={() => {
-          $dispatch({ name: 'app', action: 'setName' })
+          $dispatch({ target: 'app', action: 'setName' })
         }}
       >
         dispatch
       </button>
     </>
   )
-}) as ComponentNode<Store>
+}) as VariousFC<{}, Store>

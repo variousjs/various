@@ -28,6 +28,7 @@ export {
   onComponentMounted,
   defineDependencies,
   removeLoadedModules,
+  getModuleInfo,
 } from './helper'
 
 export { default as createModule } from './create-module'
@@ -82,7 +83,7 @@ export const getApp = (config: Config & App<Store>) => {
 
     render() {
       return (
-        <ErrorBoundary name="app" url={dependencies.app}>
+        <ErrorBoundary module="app" url={dependencies.app}>
           <Root />
         </ErrorBoundary>
       )

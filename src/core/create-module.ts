@@ -9,12 +9,14 @@ import {
   VariousError,
   onError,
   isModuleSpecified,
+  getModuleInfo,
 } from './helper'
 
 const createModule: typeof cm = (config, logError = true) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const middlewares = connector.getMiddlewares()
-  const { name, module, url } = config
+  const { url, module } = config
+  const { name, entry } = getModuleInfo(module)
   const loadStart = +new Date()
 
   const logOnError = (e: VariousError) => {
@@ -24,13 +26,12 @@ const createModule: typeof cm = (config, logError = true) => {
   }
 
   if (url) {
-    resetDependencyConfig(name, url)
+    resetDependencyConfig(module, url)
   }
 
   return new Promise<any>((resolve, reject) => {
-    if (!url && !dependencies[name] && !isModuleSpecified(name)) {
+    if (!url && !dependencies[name] && !isModuleSpecified(module)) {
       const error = new VariousError({
-        name,
         module,
         type: 'NOT_DEFINED',
         originalError: new Error(`module "${name}" not defined`),
@@ -45,39 +46,36 @@ const createModule: typeof cm = (config, logError = true) => {
       const loadEnd = +new Date()
 
       middlewares?.onLoad?.({
-        name,
         module,
         loadStart,
         loadEnd,
-        beenLoaded: isModuleLoaded(name),
+        beenLoaded: isModuleLoaded(module),
       })
 
       if (!C) {
         const error = new VariousError({
-          name,
           module,
           type: 'INVALID_MODULE',
           originalError: new Error(`module "${name}" invalid`),
         })
 
-        resetDependencyConfig(name)
+        resetDependencyConfig(module)
         logOnError(error)
         reject(error)
         return
       }
 
       const defaultModule = 'default' in C ? C.default : C
-      const actualModule = !module ? defaultModule : C[module]
+      const actualModule = !entry ? defaultModule : C[entry]
 
-      if (actualModule === undefined && module) {
+      if (actualModule === undefined && entry) {
         const error = new VariousError({
-          name,
           module,
           type: 'SUBMODULE_NOT_DEFINED',
-          originalError: new Error(`submodule "${module}" not defined`),
+          originalError: new Error(`submodule "${entry}" not defined`),
         })
 
-        resetDependencyConfig(name)
+        resetDependencyConfig(module)
         logOnError(error)
         reject(error)
         return
@@ -87,7 +85,7 @@ const createModule: typeof cm = (config, logError = true) => {
     }, (e: RequireError) => {
       const [requireModule] = e.requireModules
 
-      resetDependencyConfig(name, url)
+      resetDependencyConfig(module, url)
       resetDependencyConfig(requireModule)
 
       let errorType: VariousError['type'] = 'LOADING_ERROR'
@@ -101,8 +99,7 @@ const createModule: typeof cm = (config, logError = true) => {
       }
 
       const error = new VariousError({
-        name,
-        module: requireModule === name ? undefined : requireModule,
+        module: requireModule,
         type: errorType,
         originalError: e,
       })

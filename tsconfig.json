@@ -15,8 +15,7 @@
     "removeComments": true,
     "stripInternal": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
     "strictPropertyInitialization": false
   },
-  "exclude": ["dist", "docs"]
+  "exclude": ["dist", "public"]
 }

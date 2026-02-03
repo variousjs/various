@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { VueVarious, PublicAction } from '@variousjs/various'
+import { VariousComponentProps, PublicAction } from '@variousjs/various'
 import { Store } from '../../types'
 
 interface NS {
-  value?: string,
+  payload?: string,
   trigger?: string,
 }
 
@@ -12,7 +12,7 @@ const message = ref<NS>({})
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious<Store>,
+    various: Object as VariousComponentProps<Store>,
   },
 
   data() {
@@ -22,16 +22,16 @@ const V = defineComponent({
   setup(props) {
     return {
       dispatch() {
-        props.various?.$dispatch({ name: 'dispatch', action: 'update', value: +new Date() })
+        props.various?.$dispatch({ target: 'dispatch', action: 'update', payload: +new Date() })
       }
     }
   }
 })
 
-V.update = ((value, trigger) => {
+V.update = (({ payload, trigger }) => {
   const next = {
-    value,
-    trigger: [trigger.name, trigger.module].filter(Boolean).join('.'),
+    payload,
+    trigger,
   }
   message.value = next
 }) as PublicAction
@@ -44,7 +44,7 @@ export default V
   <div class="value">
     <p>store: {{ various?.$store.name }}</p>
     <p>Trigger: {{ message.trigger }}</p>
-    <p>Value: {{ message.value }}</p>
+    <p>Value: {{ message.payload }}</p>
     <button @click="dispatch">dispatch react</button>
   </div>
 </template>

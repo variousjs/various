@@ -2,6 +2,7 @@ import '@variousjs/requirejs'
 import React, { useRef, StrictMode } from 'react'
 import * as Vue from 'vue'
 import { createRoot } from 'react-dom/client'
+import { AppConfig } from '@variousjs/various/standalone'
 import {
   createComponent,
   createAppConfig,
@@ -13,7 +14,12 @@ import {
 const query = new URLSearchParams(window.location.search)
 const testType = query.get('type') || 'default'
 
-const baseConfig: Record<string, Parameters<typeof createAppConfig>['0']> = {
+interface Store {
+  locale?: string
+  globalB: string
+}
+
+const baseConfig: Record<string, AppConfig<Store>> = {
   default: {
     dependencies: {
       react: React, // not needs
@@ -21,8 +27,10 @@ const baseConfig: Record<string, Parameters<typeof createAppConfig>['0']> = {
     },
     store: { locale: 'zh', globalB: 'B' },
     actions: {
-      async setLocale({ emit, getStore }, value) {
-        let next = value
+      // payload specific string
+      async setLocale({ emit, getStore }, payload: string | undefined, trigger) {
+        window.console.log(trigger)
+        let next = payload
         if (!next) {
           next = getStore('locale') === 'zh' ? 'en' : 'zh'
         }
@@ -32,21 +40,20 @@ const baseConfig: Record<string, Parameters<typeof createAppConfig>['0']> = {
   },
   config: {
     dependencies: {},
-    fallback: () => null,
-    errorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
+    Fallback: () => null,
+    ErrorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
   },
 }
 
 const RC = createComponent<{ propsA: string }>({
-  name: 'a',
-  module: 'A',
+  module: 'a.A',
   url: '/dist/standalone/a.js',
   dependencies: {
     '@variousjs/various': '/dist/index.js',
   },
 })
-const VC = createComponent<{ propsB: string }>({
-  name: 'b',
+const VC = createComponent<{ propsB: string }, { globalB: string }>({
+  module: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',
   dependencies: testType === 'config' ? undefined : {
@@ -68,8 +75,8 @@ function App() {
       <RC $ref={ref} propsA="propsA" />
       <button
         onClick={() => {
-          const dispatch = createDispatch({ name: 'ot' })
-          dispatch({ name: 'app', action: 'setLocale' })
+          const dispatch = createDispatch('ot')
+          dispatch({ target: 'app', action: 'setLocale' })
         }}
       >
         change lng
@@ -83,15 +90,15 @@ function App() {
       </button>
       <button
         onClick={() => {
-          const pm = createPostMessage({ name: 'ot' })
-          pm('greet', +new Date())
+          const pm = createPostMessage('ot')
+          pm({ event: 'greet', payload: +new Date() })
         }}
       >
         message
       </button>
       <button
         onClick={() => {
-          const log = createLogger({ name: 'ot' })
+          const log = createLogger('ot')
           log.info('any')
         }}
       >

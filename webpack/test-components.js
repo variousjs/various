@@ -48,7 +48,7 @@ const config = {
   watch: NODE_ENV === 'development',
   entry: components,
   output: {
-    path: path.resolve(__dirname, '../docs/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     filename: '[name].js',
     libraryTarget: 'amd',
   },

@@ -13,7 +13,7 @@ const i18n: I18n = () => new Promise((_, reject) => {
   })
 })
 
-const C = createComponent({ name: 'i18n' })
+const C = createComponent({ module: 'i18n' })
 
 export default {
   store: { locale: 'jp' },
@@ -21,7 +21,7 @@ export default {
   i18n,
   middlewares: {
     onLog(e) {
-      window.console.log(e.name, e.type)
+      window.console.log(e.module, e.type)
       return false
     },
   },

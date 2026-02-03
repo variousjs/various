@@ -10,15 +10,15 @@ const config = {
     port: 2333,
     host: '0.0.0.0',
     static: {
-      directory: path.join(__dirname, '../docs'),
+      directory: path.join(__dirname, '../public'),
     },
-    watchFiles: ['../docs'],
+    watchFiles: ['../public'],
   },
   entry: {
     loader: path.resolve(__dirname, '../src/loader.tsx'),
   },
   output: {
-    path: path.resolve(__dirname, '../docs/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
   },

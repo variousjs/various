@@ -25,8 +25,7 @@ describe('logger', () => {
     cy.contains('button', 'render component').click()
     cy.get('@console.log').should(
       'be.calledWith',
-      'middlewares',
-      'A',
+      'middlewares.A',
       true,
     )
 

@@ -2,23 +2,21 @@ import {
   FallbackNode,
   ErrorFallbackNode,
   App,
-  ModuleDefined,
+  ModuleDef,
 } from '@variousjs/various'
 import { Fallback, ErrorFallback } from './default-component'
 import {
   PublicActions,
-  Store,
   ConnectorI18nConfig,
   Actions,
 } from '../types'
-import { getNameWithModule } from './helper'
 
 class Connector {
-  private fallbackComponent: FallbackNode<Store>
+  private fallbackComponent: FallbackNode<any>
 
-  private errorFallbackComponent: ErrorFallbackNode<Store>
+  private errorFallbackComponent: ErrorFallbackNode<any>
 
-  private storeActions: Actions<Store>
+  private storeActions: Actions<any>
 
   private componentActions: Record<string, PublicActions>
 
@@ -45,14 +43,12 @@ class Connector {
     return this.middlewares
   }
 
-  setI18nConfig(moduleDefined: ModuleDefined, config: ConnectorI18nConfig) {
-    const name = getNameWithModule(moduleDefined)
-    this.i18nConfigs[name] = { ...this.i18nConfigs[name], ...config }
+  setI18nConfig(module: ModuleDef, config: ConnectorI18nConfig) {
+    this.i18nConfigs[module] = { ...this.i18nConfigs[module], ...config }
   }
 
-  getI18nConfig(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    return this.i18nConfigs[name]
+  getI18nConfig(module: ModuleDef) {
+    return this.i18nConfigs[module]
   }
 
   setGlobalI18nConfig(config: ConnectorI18nConfig) {
@@ -63,22 +59,19 @@ class Connector {
     return this.globalI18nConfig
   }
 
-  setComponentActions(moduleDefined: ModuleDefined, actions: PublicActions) {
-    const name = getNameWithModule(moduleDefined)
-    this.componentActions[name] = actions
+  setComponentActions(module: ModuleDef, actions: PublicActions) {
+    this.componentActions[module] = actions
   }
 
-  deleteComponentActions(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    delete this.componentActions[name]
+  deleteComponentActions(module: ModuleDef) {
+    delete this.componentActions[module]
   }
 
-  getComponentActions(moduleDefined: ModuleDefined) {
-    const name = getNameWithModule(moduleDefined)
-    return this.componentActions[name]
+  getComponentActions(module: ModuleDef) {
+    return this.componentActions[module]
   }
 
-  setStoreActions(actions: Actions<Store>) {
+  setStoreActions(actions: Actions<any>) {
     this.storeActions = actions
   }
 
@@ -86,7 +79,7 @@ class Connector {
     return this.storeActions
   }
 
-  setFallbackComponent(fallbackComponent: FallbackNode<Store>) {
+  setFallbackComponent(fallbackComponent: FallbackNode<any>) {
     this.fallbackComponent = fallbackComponent
   }
 
@@ -94,7 +87,7 @@ class Connector {
     return this.fallbackComponent
   }
 
-  setErrorFallbackComponent(errorFallbackComponent: ErrorFallbackNode<Store>) {
+  setErrorFallbackComponent(errorFallbackComponent: ErrorFallbackNode<any>) {
     this.errorFallbackComponent = errorFallbackComponent
   }
 

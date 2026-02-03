@@ -36,12 +36,11 @@ createStore({
 window.define('react', [], () => React)
 
 const Standalone: FC<
-  Parameters<typeof cc>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
+  Parameters<typeof cc<any, any>>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
 > = (props) => {
   const {
     dependencies,
     url,
-    name,
     module,
     type,
     $componentProps,
@@ -56,18 +55,17 @@ const Standalone: FC<
     defineModules(dependencies || {})
       .then(() => {
         componentNode.current = createComponentCore({
-          name,
           module,
           url,
           type,
         }, storeKeys)
         setComponentReady(true)
       })
-  }, [name, url, module, dependencies, type, storeKeys])
+  }, [url, module, dependencies, type, storeKeys])
 
   if (!componentReady || store[STANDALONE_CONFIG_READY] === false) {
     const FallBack = connector.getFallbackComponent()
-    return <FallBack $self={{ name, module, url }} $store={getUserStore()} />
+    return <FallBack $self={{ module, url }} $store={getUserStore()} />
   }
 
   const C = componentNode.current!
@@ -81,7 +79,7 @@ Standalone.displayName = 'various-standalone'
 
 export const createComponent: typeof cc = (args) => {
   const component: FC = (props: ObjectRecord) => (
-    <ErrorBoundary name="standalone" url={args.url} module={args.module}>
+    <ErrorBoundary url={args.url} module={args.module}>
       <Standalone $componentProps={props} {...args} />
     </ErrorBoundary>
   )

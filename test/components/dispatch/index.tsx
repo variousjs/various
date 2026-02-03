@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import {
   createDispatch,
-  ComponentProps,
-  ComponentNode,
+  VariousProps,
+  VariousFC,
   Nycticorax,
   createComponent,
 } from '@variousjs/various'
 import { Store } from '../../types'
 
 interface S {
-  value?: number,
+  payload?: number,
   trigger?: string,
 }
 
 const { createStore, emit, useStore } = new Nycticorax<S>()
 createStore({})
 
-const E = createComponent({ name: 'dispatch', module: 'B' })
+const E = createComponent({ module: 'dispatch.B' })
 
-const A = ((props) => {
+const A: VariousFC<{}, Store, { update: { payload: number, result: void } }> = (props) => {
   const { $dispatch, $store } = props
-  const { trigger, value } = useStore('trigger', 'value')
+  const { trigger, payload } = useStore('trigger', 'payload')
 
   return (
     <>
@@ -28,17 +28,17 @@ const A = ((props) => {
       <div className="value">
         <p>store: {$store.name}</p>
         <p>trigger: {trigger}</p>
-        <p>value: {value}</p>
+        <p>payload: {payload}</p>
         <button
           onClick={() => {
-            $dispatch({ name: 'app', action: 'setName' })
+            $dispatch({ target: 'app', action: 'setName' })
           }}
         >
           dispatch app
         </button>
         <button
           onClick={() => {
-            $dispatch({ name: 'dispatch-v', action: 'update', value: new Date() })
+            $dispatch({ target: 'dispatch-v', action: 'update', payload: new Date() })
           }}
         >
           dispatch vue
@@ -48,21 +48,20 @@ const A = ((props) => {
       <E />
     </>
   )
-}) as ComponentNode<Store>
+}
 
-A.update = (value, trigger) => {
-  const { name, module } = trigger
-  emit({ value, trigger: [name, module].filter(Boolean).join('.') })
+A.update = ({ payload, trigger }) => {
+  emit({ payload, trigger })
 }
 
 export default A
 
-export class B extends Component<ComponentProps> {
+export class B extends Component<VariousProps> {
   state = {
     errors: {} as Record<string, Error>,
   }
 
-  localDispatch = createDispatch({ name: 'local' })
+  localDispatch = createDispatch('local')
 
   onError = (name: string, e: any) => {
     this.setState((pre: any) => ({ errors: { ...pre.errors, [name]: e } }))
@@ -80,7 +79,7 @@ export class B extends Component<ComponentProps> {
           <button
             onClick={() => {
               this.localDispatch({
-                name: 'app',
+                target: 'app',
                 action: 'not exist',
               }).catch((e) => this.onError('app', e))
             }}
@@ -95,8 +94,9 @@ export class B extends Component<ComponentProps> {
           <button
             onClick={() => {
               $dispatch({
-                name: 'not exist',
+                target: 'not exist',
                 action: 'any',
+                payload: 1,
               }).catch((e) => this.onError('component', e))
             }}
           >
@@ -110,7 +110,7 @@ export class B extends Component<ComponentProps> {
           <button
             onClick={() => {
               $dispatch({
-                name: 'dispatch',
+                target: 'dispatch',
                 action: 'not-exist',
               }).catch((e) => this.onError('action', e))
             }}

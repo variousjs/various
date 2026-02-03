@@ -21,21 +21,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
   private error?: ve
 
   componentDidCatch(e: Error | VariousError) {
-    const { name, module } = this.props
+    const { module } = this.props
     const error = e instanceof VariousError
       ? e
       : new VariousError({
-        name,
         module,
-        type: name === 'app' ? 'APP_ERROR' : 'SCRIPT_ERROR',
+        type: module === 'app' ? 'APP_ERROR' : 'SCRIPT_ERROR',
         originalError: e,
       })
 
     this.setState({ hasError: true })
     this.error = error
     onError(error)
-    resetDependencyConfig(this.props.name)
-    updateUnMountComponent({ name, module })
+    resetDependencyConfig(module)
+    updateUnMountComponent(module)
   }
 
   $self = getSelfInfo(this.props)

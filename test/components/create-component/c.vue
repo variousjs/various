@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VueVarious } from '@variousjs/various'
+import { VariousComponentProps } from '@variousjs/various'
 import { Store } from '../../types'
 
 const V = defineComponent({
   props: {
-    various: Object as VueVarious<Store>,
+    various: Object as VariousComponentProps<Store>,
     name: String,
   },
 })
