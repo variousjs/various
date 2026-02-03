@@ -1,7 +1,7 @@
 import React from 'react'
-import { ComponentProps } from '@variousjs/various'
+import { VariousProps } from '@variousjs/various'
 
-export default (props: ComponentProps & { setSuccess: () => void }) => {
+export default (props: VariousProps & { setSuccess: () => void }) => {
   const { $t, setSuccess } = props
 
   return (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
-  ComponentProps,
-  ComponentNode,
+  VariousProps,
+  VariousFC,
   Nycticorax,
   createPostMessage,
 } from '@variousjs/various'
@@ -19,7 +19,7 @@ type Messages = {
   'B-greet': { payload: number },
 }
 
-export const A: ComponentNode<NS, {}, {}, Messages> = (props) => {
+export const A: VariousFC<NS, {}, {}, Messages> = (props) => {
   const { event, payload, trigger } = props
 
   return (
@@ -44,7 +44,7 @@ A.$onMessage = ({ event, payload, trigger }) => {
 
 export const MessageA = connect('event', 'trigger', 'payload')(A)
 
-export class MessageB extends Component<ComponentProps<{}, {}, Messages>> {
+export class MessageB extends Component<VariousProps<{}, {}, Messages>> {
   post = () => {
     this.props.$postMessage({ event: 'B-greet', payload: +new Date() })
   }

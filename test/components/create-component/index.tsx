@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { ComponentProps, createComponent, getModuleInfo } from '@variousjs/various'
+import { VariousProps, createComponent, getModuleInfo } from '@variousjs/various'
 import { Store } from '../../types'
 
 const Ma = createComponent({ module: 'create.A' })
@@ -20,7 +20,7 @@ const Mh = createComponent({ module: 'create.D' })
 const Mi = createComponent({ module: 'create-vue-e', url: './dist/create-component/e.js', type: 'vue3' })
 const Mj = createComponent({ module: 'create.Ref' })
 
-export default (props: ComponentProps) => {
+export default (props: VariousProps) => {
   const { module } = props.$self
   const maRef = useRef<any>(null)
   const [num, setNum] = useState(0)
@@ -98,7 +98,7 @@ export const A = forwardRef((_, ref) => {
   )
 })
 
-export class B extends Component<ComponentProps<{}, Store>> {
+export class B extends Component<VariousProps<{}, Store>> {
   render() {
     return (
       <p>name: {this.props.$store.name}</p>
@@ -113,7 +113,7 @@ export const D = () => (
   <div>{A.bind.c}</div>
 )
 
-export const E = (props: ComponentProps<{}, Store>) => (
+export const E = (props: VariousProps<{}, Store>) => (
   <p>{props.$store.name}</p>
 )
 

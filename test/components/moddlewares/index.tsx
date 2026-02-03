@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {
-  ComponentNode,
+  VariousFC,
   createComponent,
   createLogger,
   renderComponent,
@@ -101,12 +101,12 @@ export default ((props) => {
       </div>
     </>
   )
-}) as ComponentNode
+}) as VariousFC
 
 export const A = () => null
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const B = ((_) => null) as ComponentNode
+export const B = ((_) => null) as VariousFC
 B.$onMessage = (e) => {
   window.console.log(e.event)
 }

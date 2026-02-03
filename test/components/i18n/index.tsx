@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
-  ComponentProps,
-  ComponentNode,
+  VariousProps,
+  VariousFC,
   createComponent,
   I18n,
 } from '@variousjs/various'
@@ -63,7 +63,7 @@ const A = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode
+}) as VariousFC
 
 A.$i18n = () => ({
   lngStoreKey: 'locale',
@@ -72,7 +72,7 @@ A.$i18n = () => ({
 
 export default A
 
-export class B extends Component<ComponentProps> {
+export class B extends Component<VariousProps> {
   static $i18n: I18n = () => ({
     lngStoreKey: 'locale',
     resources: { zh, en },
@@ -97,28 +97,28 @@ export class B extends Component<ComponentProps> {
   }
 }
 
-export const NoConfig = (props: ComponentProps) => (
+export const NoConfig = (props: VariousProps) => (
   <p>{props.$t('no-config')}</p>
 )
 
 export const NoResource = ((props) => (
   <p>{props.$t('no-resources')}</p>
-)) as ComponentNode
+)) as VariousFC
 NoResource.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
 
 export const ConfigError = ((props) => (
   <p>{props.$t('error')}</p>
-)) as ComponentNode
+)) as VariousFC
 ConfigError.$i18n = () => { throw new Error('get i18n config error') }
 
 export const NoKey = ((props) => (
   <p>{props.$t('no-key')}</p>
-)) as ComponentNode
+)) as VariousFC
 NoKey.$i18n = () => ({ lngStoreKey: 'locale', resources: { zh, en } })
 
 export const NoLocale = ((props) => (
   <p>{props.$t('no-locale')}</p>
-)) as ComponentNode
+)) as VariousFC
 NoLocale.$i18n = () => ({ lngStoreKey: 'no-exist', resources: {} })
 
 let resolveFn = (() => null) as any
@@ -130,7 +130,7 @@ export const Async = ((props) => {
       <button onClick={() => resolveFn()}>get resources</button>
     </>
   )
-}) as ComponentNode
+}) as VariousFC
 Async.$i18n = async () => {
   await new Promise((r) => {
     resolveFn = r
@@ -163,4 +163,4 @@ export const Update = ((props) => {
       </div>
     </>
   )
-}) as ComponentNode
+}) as VariousFC

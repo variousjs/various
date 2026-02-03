@@ -84,12 +84,12 @@ declare module '@variousjs/various' {
         : never
       }
 
-  export type StaticProps<S extends PublicActionDef = never, T extends MessagesDef = never> = {
+  export type ComponentStatics<S extends PublicActionDef = never, T extends MessagesDef = never> = {
     $i18n?: I18n,
     $onMessage?: OnMessage<T>,
   } & StaticMethods<S>
 
-  export type ComponentPublicActionMap = {
+  type ComponentPublicActionMap = {
     [name: string]: PublicActionDef,
   }
 
@@ -152,20 +152,20 @@ declare module '@variousjs/various' {
 
   export type OnMessage<T extends MessagesDef = never> = (message: Message<T>) => void
 
-  export type ComponentProps<
+  export type VariousProps<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
     Messages extends MessagesDef = never,
     Actions extends ComponentPublicActionMap = never
   > = ComponentBuiltinProps<Store, Messages, Actions> & Props
 
-  export type ComponentNode<
+  export type VariousFC<
     Props extends object = ObjectRecord,
     Store extends object = ObjectRecord,
     SelfActions extends PublicActionDef = never,
     Messages extends MessagesDef = never,
     Actions extends ComponentPublicActionMap = never
-  > = FC<ComponentProps<Props, Store, Messages, Actions>> & StaticProps<SelfActions, Messages>
+  > = FC<VariousProps<Props, Store, Messages, Actions>> & ComponentStatics<SelfActions, Messages>
 
   export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
     $reload: () => void,

@@ -1,7 +1,7 @@
 import React, { ComponentType, ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  ComponentProps,
+  VariousProps,
   PublicAction,
   Config,
   OnMessage,
@@ -44,7 +44,7 @@ export interface RequireError extends Error {
   originalError: Error,
 }
 
-export type RequiredComponent = ComponentType<ComponentProps>
+export type RequiredComponent = ComponentType<VariousProps>
   & Actions<Store>
   & PublicActions
   & { $onMessage: OnMessage, $i18n: I18n }

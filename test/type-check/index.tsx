@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  ComponentNode, ComponentProps, PublicAction, OnMessage, I18n,
+  VariousFC, VariousProps, PublicAction, OnMessage, I18n,
   DefineActions, DefineMessages, createPostMessage,
 } from '@variousjs/various'
 
@@ -25,7 +25,7 @@ type GlobalActions = {
 
 const typedPostMessage = createPostMessage<GlobalMessages>('typed')
 
-export const A: ComponentNode<
+export const A: VariousFC<
   SelfProps,
   GlobalStoreProps,
   GlobalActions['ca'],
@@ -57,7 +57,7 @@ A.update = ({ payload, trigger }) => {
   window.console.log(payload, trigger)
 }
 
-export class B extends Component<ComponentProps<
+export class B extends Component<VariousProps<
   SelfProps,
   GlobalStoreProps,
   GlobalMessages,
@@ -119,7 +119,7 @@ export const C = ((props) => {
   })
 
   return null
-}) as ComponentNode
+}) as VariousFC
 
 // event: string / payload: any / trigger: string
 C.$onMessage = ({ event, payload, trigger }) => {
@@ -132,9 +132,9 @@ C.update = ({ payload, trigger }) => {
   window.console.log(payload, trigger)
 }
 
-export const C1: ComponentNode<{}, {}, {}> = () => <div>1</div>
+export const C1: VariousFC<{}, {}, {}> = () => <div>1</div>
 
-export class D extends Component<ComponentProps> {
+export class D extends Component<VariousProps> {
   // payload: any / trigger: string
   static update: PublicAction = ({ payload, trigger }) => {
     window.console.log(payload, trigger)

@@ -1,7 +1,7 @@
 import React from 'react'
-import { ComponentProps } from '@variousjs/various'
+import { VariousProps } from '@variousjs/various'
 
-const L = (props: ComponentProps) => {
+const L = (props: VariousProps) => {
   const { $logger } = props
   return (
     <>

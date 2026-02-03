@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {
   createDispatch,
-  ComponentProps,
-  ComponentNode,
+  VariousProps,
+  VariousFC,
   Nycticorax,
   createComponent,
 } from '@variousjs/various'
@@ -18,7 +18,7 @@ createStore({})
 
 const E = createComponent({ module: 'dispatch.B' })
 
-const A: ComponentNode<{}, Store, { update: { payload: number, result: void } }> = (props) => {
+const A: VariousFC<{}, Store, { update: { payload: number, result: void } }> = (props) => {
   const { $dispatch, $store } = props
   const { trigger, payload } = useStore('trigger', 'payload')
 
@@ -56,7 +56,7 @@ A.update = ({ payload, trigger }) => {
 
 export default A
 
-export class B extends Component<ComponentProps> {
+export class B extends Component<VariousProps> {
   state = {
     errors: {} as Record<string, Error>,
   }

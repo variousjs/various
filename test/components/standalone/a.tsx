@@ -1,11 +1,11 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { ComponentProps, createLogger, StaticProps } from '@variousjs/various'
+import { VariousProps, createLogger, ComponentStatics } from '@variousjs/various'
 import en from '../i18n/en.json'
 import zh from '../i18n/zh.json'
 
 const C = forwardRef<
   { set:(t: string) => void },
-  ComponentProps<{ propsA: string }>
+  VariousProps<{ propsA: string }>
     >((props, ref) => {
       const { $t, $postMessage } = props
       const [text, setText] = useState('')
@@ -29,7 +29,7 @@ const C = forwardRef<
       )
     })
 
-const staticMethods: StaticProps<{ log: { payload: string, result: void } }> = {
+const staticMethods: ComponentStatics<{ log: { payload: string, result: void } }> = {
   $i18n: () => ({
     lngStoreKey: 'locale',
     resources: { zh, en },

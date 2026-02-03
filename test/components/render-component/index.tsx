@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { renderComponent, ComponentNode } from '@variousjs/various'
+import { renderComponent, VariousFC } from '@variousjs/various'
 import { HashRouter, useLocation } from 'react-router-dom'
 import { Store } from '../../types'
 
@@ -183,4 +183,4 @@ export const GlobalProps = ((props) => {
       </button>
     </>
   )
-}) as ComponentNode<{}, Store>
+}) as VariousFC<{}, Store>

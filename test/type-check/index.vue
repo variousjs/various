@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import {
-  VariousComponentProps, PublicAction, DefineMessages, DefineActions, OnMessage, I18n, StaticProps,
+  VariousComponentProps, PublicAction, DefineMessages, DefineActions, OnMessage, I18n, ComponentStatics,
 } from '@variousjs/various'
 
 interface GlobalStoreProps { b: number }
@@ -46,7 +46,7 @@ const V = defineComponent({
   }
 })
 
-const staticProps: StaticProps<SelfActions, GlobalMessages> = {
+const staticProps: ComponentStatics<SelfActions, GlobalMessages> = {
   // payload: number / trigger: string
   update: ({ payload, trigger }) => {
     window.console.log(payload, trigger)
