@@ -10,7 +10,7 @@ const config = {
   },
   watch: NODE_ENV === 'development',
   output: {
-    path: path.resolve(__dirname, '../docs/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     publicPath: '/dist/',
     filename: '[name].js',
     libraryTarget: 'amd',

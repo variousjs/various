@@ -17,5 +17,5 @@
     "resolveJsonModule": true,
     "strictPropertyInitialization": false
   },
-  "exclude": ["dist", "docs"]
+  "exclude": ["dist", "public"]
 }
