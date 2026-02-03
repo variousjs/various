@@ -80,7 +80,7 @@ declare module '@variousjs/various' {
       ? Record<string, (params: { payload: any, trigger: ModuleDef }) => any>
       : {
         [K in keyof T]: T[K] extends { payload: infer V, result: infer R }
-        ? (params: { event: K, payload?: V, trigger: ModuleDef }) => R
+        ? (params: { payload?: V, trigger: ModuleDef }) => R
         : never
       }
 

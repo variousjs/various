@@ -59,7 +59,7 @@ describe('helper', () => {
       .should('have.text', 'Waiting: false')
 
     // onComponentMounted mount component
-    cy.contains('button', 'Mount: Waiting').click()
+    cy.contains('button', 'Mount: helper.Waiting').click()
     cy.contains('h3', 'onComponentMounted').next().children()
       .eq(1)
       .should('have.text', 'Waiting: true')

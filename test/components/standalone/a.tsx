@@ -36,7 +36,7 @@ const staticMethods: StaticProps<{ log: { payload: string, result: void } }> = {
   }),
   log: (t) => {
     const logger = createLogger('aa')
-    logger.info(t)
+    logger.info(t.payload)
   },
 }
 
