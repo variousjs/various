@@ -17,8 +17,8 @@ declare module '@variousjs/various/standalone' {
 
   export function createComponent<
     Props extends object = ObjectRecord,
-    Store extends object = ObjectRecord,
     Ref = unknown,
+    Store extends object = ObjectRecord
   >(
     config: {
       module: ModuleDef,
@@ -28,6 +28,9 @@ declare module '@variousjs/various/standalone' {
         string,
         DependencyType
       >>,
+      /**
+      * set store keys if component created before store initialization
+      */
       storeKeys?: (keyof Store)[],
     },
   ): ComponentType<Props & {

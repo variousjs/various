@@ -52,7 +52,7 @@ const RC = createComponent<{ propsA: string }>({
     '@variousjs/various': '/dist/index.js',
   },
 })
-const VC = createComponent<{ propsB: string }, { globalB: string }>({
+const VC = createComponent<{ propsB: string }, any, { globalB: string }>({
   module: 'b',
   url: '/dist/standalone/b.js',
   type: 'vue3',

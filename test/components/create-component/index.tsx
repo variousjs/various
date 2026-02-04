@@ -10,8 +10,8 @@ import { VariousProps, createComponent, getModuleInfo } from '@variousjs/various
 import { Store } from '../../types'
 
 const Ma = createComponent({ module: 'create.A' })
-const Mb = createComponent<{}, Store>({ module: 'create.B' }, ['name'])
-const Mc = createComponent<{ name: string }, Store>({ module: 'create-vue-c', url: './dist/create-component/c.js', type: 'vue3' }, ['name'])
+const Mb = createComponent<{}, any, Store>({ module: 'create.B' }, ['name'])
+const Mc = createComponent<{ name: string }, any, Store>({ module: 'create-vue-c', url: './dist/create-component/c.js', type: 'vue3' }, ['name'])
 const Md = createComponent({ module: 'create.A', type: 'vue3' })
 const Me = createComponent({ module: 'create-react-vue', url: './dist/create-component/c.js' })
 const Mf = createComponent({ module: 'create.C' })

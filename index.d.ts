@@ -115,7 +115,7 @@ declare module '@variousjs/various' {
     ? (params: { event: string, payload?: any }) => void
     : <K extends keyof T>(params: { event: K, payload?: T[K]['payload'] }) => void
 
-  interface $logger {
+  type $logger = {
     info: (message: any, type?: string) => void,
     warn: (message: any, type?: string) => void,
     error: (message: any, type?: string) => void,
@@ -260,14 +260,17 @@ declare module '@variousjs/various' {
 
   export function createComponent<
     Props extends object = ObjectRecord,
-    Store extends object = ObjectRecord,
-    Ref = unknown
+    Ref = unknown,
+    Store extends object = ObjectRecord
   >(
     config: {
       url?: string,
       type?: VariousComponentType,
       module: ModuleDef,
     },
+    /**
+    * set store keys if component created before store initialization
+    */
     storeKeys?: (keyof Store)[],
   ): ComponentType<ComponentDefaultProps<Ref> & Props>
 
