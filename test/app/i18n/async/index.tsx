@@ -8,7 +8,6 @@ const i18n: I18n = () => new Promise((resolve) => {
     i18nPassSignal(v) {
       if (v) {
         resolve({
-          lngStoreKey: 'locale',
           resources: { jp },
         })
       }
@@ -20,7 +19,7 @@ const i18n: I18n = () => new Promise((resolve) => {
 const C = createComponent({ module: 'i18n' }, ['locale'])
 
 export default {
-  store: { locale: 'jp' },
+  // store: { locale: 'jp' },
   Root: () => (<C setSuccess={() => emit({ i18nPassSignal: true })} />),
   i18n,
 } as App

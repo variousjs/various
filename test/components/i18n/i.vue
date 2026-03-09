@@ -13,14 +13,14 @@ const V = defineComponent({
     return {
       t: props.various?.$t || (() => null),
       update() {
-        props.various?.$t.update({ lngStoreKey: 'no-exist' })
+        // props.various?.$t.update({ lngStoreKey: 'no-exist' })
       },
     }
   }
 })
 
 V.$i18n = (() => {
-  return { lngStoreKey: 'locale', resources: { zh, en } }
+  return { resources: { zh, en } }
 }) as I18n
 
 export default V
@@ -31,6 +31,6 @@ export default V
   <div class="value">
     <p>name: {{ t('name') }}</p>
     <p>greet: {{ t('greet', { name: 'C', name2: 'D' }) }}</p>
-    <button @click="update">vue update lngStoreKey</button>
+    <button @click="update">vue update i18n</button>
   </div>
 </template>

@@ -140,11 +140,10 @@ declare module '@variousjs/various' {
     $t: Intl,
     $logger: $logger,
     $self: { url: string, module: ModuleDef },
+    $locale: string,
   }
 
   export interface I18nConfig {
-    /** app store key */
-    lngStoreKey: string,
     resources: Record<string, Record<string, string>>,
   }
 
@@ -172,6 +171,7 @@ declare module '@variousjs/various' {
     $error: VariousError,
     $store: Readonly<Store>,
     $self: { url: string, module: ModuleDef },
+    $locale: string,
   }
   export type ErrorFallbackNode<
     Store extends object = ObjectRecord
@@ -180,6 +180,7 @@ declare module '@variousjs/various' {
   export interface FallbackProps<Store extends object = ObjectRecord> {
     $store: Readonly<Store>,
     $self: { url: string, module: ModuleDef },
+    $locale: string,
   }
   export type FallbackNode<
     Store extends object = ObjectRecord
@@ -253,6 +254,7 @@ declare module '@variousjs/various' {
       'react-dom'?: string,
       vue?: string,
     } & Record<string, string>,
+    defaultLocale?: string,
     root?: string,
     timeout?: number,
     earlyParallelDependencies?: string[],

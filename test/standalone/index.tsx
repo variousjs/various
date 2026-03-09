@@ -15,7 +15,6 @@ const query = new URLSearchParams(window.location.search)
 const testType = query.get('type') || 'default'
 
 interface Store {
-  locale?: string
   globalB: string
 }
 
@@ -25,17 +24,8 @@ const baseConfig: Record<string, AppConfig<Store>> = {
       react: React, // not needs
       vue: Vue,
     },
-    store: { locale: 'zh', globalB: 'B' },
+    store: { globalB: 'B' },
     actions: {
-      // payload specific string
-      async setLocale({ emit, getStore }, payload: string | undefined, trigger) {
-        window.console.log(trigger)
-        let next = payload
-        if (!next) {
-          next = getStore('locale') === 'zh' ? 'en' : 'zh'
-        }
-        emit({ locale: next })
-      },
     },
   },
   config: {

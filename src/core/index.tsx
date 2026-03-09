@@ -6,6 +6,8 @@ import {
   DEPENDENCIES_KEY,
   MESSAGE_KEY,
   CONFIG_KEY,
+  LOCALE_KEY,
+  DEFAULT_LOCALE,
 } from './config'
 import connector from './connector'
 import { createI18nConfig } from './i18n'
@@ -48,6 +50,7 @@ export const getApp = (config: Config & App<Store>) => {
     Root = RootComponent,
     middlewares,
     i18n,
+    defaultLocale = DEFAULT_LOCALE,
     ...rest
   } = config
 
@@ -70,6 +73,7 @@ export const getApp = (config: Config & App<Store>) => {
     [CONFIG_KEY]: rest,
     [DEPENDENCIES_KEY]: dependencies,
     [MESSAGE_KEY]: null,
+    [LOCALE_KEY]: defaultLocale,
   })
 
   Root.displayName = 'various-app-root'

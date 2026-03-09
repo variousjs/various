@@ -66,7 +66,6 @@ const A = ((props) => {
 }) as VariousFC
 
 A.$i18n = () => ({
-  lngStoreKey: 'locale',
   resources: { zh, en },
 })
 
@@ -74,7 +73,6 @@ export default A
 
 export class B extends Component<VariousProps> {
   static $i18n: I18n = () => ({
-    lngStoreKey: 'locale',
     resources: { zh, en },
   })
 
@@ -104,7 +102,7 @@ export const NoConfig = (props: VariousProps) => (
 export const NoResource = ((props) => (
   <p>{props.$t('no-resources')}</p>
 )) as VariousFC
-NoResource.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
+NoResource.$i18n = () => ({ resources: {} })
 
 export const ConfigError = ((props) => (
   <p>{props.$t('error')}</p>
@@ -114,12 +112,12 @@ ConfigError.$i18n = () => { throw new Error('get i18n config error') }
 export const NoKey = ((props) => (
   <p>{props.$t('no-key')}</p>
 )) as VariousFC
-NoKey.$i18n = () => ({ lngStoreKey: 'locale', resources: { zh, en } })
+NoKey.$i18n = () => ({ resources: { zh, en } })
 
 export const NoLocale = ((props) => (
   <p>{props.$t('no-locale')}</p>
 )) as VariousFC
-NoLocale.$i18n = () => ({ lngStoreKey: 'no-exist', resources: {} })
+NoLocale.$i18n = () => ({ resources: {} })
 
 let resolveFn = (() => null) as any
 export const Async = ((props) => {
@@ -135,7 +133,7 @@ Async.$i18n = async () => {
   await new Promise((r) => {
     resolveFn = r
   })
-  return { lngStoreKey: 'locale', resources: { zh, en } }
+  return { resources: { zh, en } }
 }
 
 export const Update = ((props) => {
@@ -146,13 +144,6 @@ export const Update = ((props) => {
       <h3>Update</h3>
       <div className="value">
         <p>{$t('name')}</p>
-        <button
-          onClick={() => {
-            $t.update({ lngStoreKey: 'locale' })
-          }}
-        >
-          update lngStoreKey
-        </button>
         <button
           onClick={() => {
             $t.update({ resources: { zh, en } })

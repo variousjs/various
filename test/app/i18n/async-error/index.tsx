@@ -16,7 +16,7 @@ const i18n: I18n = () => new Promise((_, reject) => {
 const C = createComponent({ module: 'i18n' })
 
 export default {
-  store: { locale: 'jp' },
+  // store: { locale: 'jp' },
   Root: () => (<C setFail={() => emit({ i18nFailSignal: true })} />),
   i18n,
   middlewares: {

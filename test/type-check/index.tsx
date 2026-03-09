@@ -50,7 +50,7 @@ export const A: VariousFC<
 A.$onMessage = ({ event, payload, trigger }) => {
   window.console.log(event, payload, trigger)
 }
-A.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
+A.$i18n = () => ({ resources: {} })
 
 // payload: number / trigger: string
 A.update = ({ payload, trigger }) => {
@@ -73,7 +73,7 @@ export class B extends Component<VariousProps<
     window.console.log(event, payload, trigger)
   }
 
-  static $i18n: I18n = () => ({ lngStoreKey: 'locale', resources: {} })
+  static $i18n: I18n = () => ({ resources: {} })
 
   render() {
     // a: string / b: number
@@ -125,7 +125,7 @@ export const C = ((props) => {
 C.$onMessage = ({ event, payload, trigger }) => {
   window.console.log(event, payload, trigger)
 }
-C.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
+C.$i18n = () => ({ resources: {} })
 
 // payload: any / trigger: string
 C.update = ({ payload, trigger }) => {
@@ -145,7 +145,7 @@ export class D extends Component<VariousProps> {
     window.console.log(event, payload, trigger)
   }
 
-  static $i18n: I18n = () => ({ lngStoreKey: 'locale', resources: {} })
+  static $i18n: I18n = () => ({ resources: {} })
 
   render() {
     // a: any / b: any

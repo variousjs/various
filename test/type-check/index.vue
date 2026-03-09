@@ -55,7 +55,7 @@ const staticProps: ComponentStatics<SelfActions, GlobalMessages> = {
   $onMessage: ({ event, payload, trigger }) => {
     window.console.log(event, payload, trigger)
   },
-  $i18n: () => ({ lngStoreKey: 'locale', resources: {} }),
+  $i18n: () => ({ resources: {} }),
 }
 
 export default Object.assign(V, staticProps)
@@ -99,5 +99,5 @@ M.update = (({ payload, trigger }) => {
 M.$onMessage = (({ event, payload, trigger }) => {
   window.console.log(event, payload, trigger)
 }) as OnMessage
-M.$i18n = (() => ({ lngStoreKey: 'locale', resources: {} })) as I18n
+M.$i18n = (() => ({ resources: {} })) as I18n
 </script>

@@ -25,7 +25,7 @@ V.$i18n = (async () => {
   await new Promise((r) => {
     resolveFn = r
   })
-  return { lngStoreKey: 'locale', resources: { zh, en } }
+  return { resources: { zh, en } }
 }) as I18n
 
 export default V

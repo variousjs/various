@@ -30,6 +30,7 @@ import createLogger from './logger'
 import { createPostMessage } from './message'
 import { CreateComponentProps, RequiredComponent } from '../types'
 import { createI18n } from './i18n'
+import { LOCALE_KEY } from './config'
 
 function vueComponent<P extends object>(config: {
   module: ModuleDef,
@@ -47,6 +48,7 @@ function vueComponent<P extends object>(config: {
 
   const V: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => {
     const store = useStore(...storeKeys)
+    const locale = getStore(LOCALE_KEY)
 
     const vueRef = useRef<typeof Vue>()
     const vmRef = useRef<ComponentPublicInstance>()
@@ -59,6 +61,7 @@ function vueComponent<P extends object>(config: {
     const containerDivRef = useRef<HTMLDivElement | null>(null)
     const propsReactiveRef = useRef<{ value: ObjectRecord }>()
     const storeReactiveRef = useRef<{ value: ObjectRecord }>()
+    const localeReactiveRef = useRef<{ value: string }>()
     const unMountVue = useRef<() => void>()
     const unSubscribeMessageRef = useRef<() => void>()
     const updateVueComponentRef = useRef<() => void>()
@@ -79,6 +82,7 @@ function vueComponent<P extends object>(config: {
 
       propsReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...$componentProps })
       storeReactiveRef.current = vueRef.current!.ref<ObjectRecord>({ ...store })
+      localeReactiveRef.current = vueRef.current!.ref<string>(locale)
 
       const vueApp = vueRef.current!.createApp({
         setup() {
@@ -113,6 +117,7 @@ function vueComponent<P extends object>(config: {
               $t,
               $store: storeReactiveRef.current!.value,
               $self: selfRef.current,
+              $locale: localeReactiveRef.current!.value,
             },
             // eslint-disable-next-line react/no-this-in-sfc
             key: this.key,
@@ -127,7 +132,7 @@ function vueComponent<P extends object>(config: {
 
       isVueMounted.current = true
       unMountVue.current = () => vueApp.unmount()
-    }, [$componentProps, store])
+    }, [$componentProps, store, locale])
 
     const mountComponent = useCallback(async () => {
       try {
@@ -216,6 +221,7 @@ function vueComponent<P extends object>(config: {
               <Fallback
                 $self={selfRef.current}
                 $store={store}
+                $locale={locale}
               />
             )
             : null
