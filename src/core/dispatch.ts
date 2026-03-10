@@ -48,7 +48,7 @@ const createDispatch: typeof cd<never> = (module) => async function (params) {
       connector.setGlobalI18nConfig(payload)
       emit({ [LOCALE_KEY]: undefined }, true)
       emit({ [LOCALE_KEY]: locale }, true)
-      return payload
+      return locale
     }
 
     if (!storeAction) {

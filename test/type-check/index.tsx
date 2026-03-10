@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   VariousFC, VariousProps, PublicAction, OnMessage, I18n,
-  DefineActions, DefineMessages, createPostMessage,
+  DefineActions, DefineMessages, createPostMessage, DefineAppActions,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
@@ -14,6 +14,10 @@ type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
 type GlobalActions = {
+  // app: DefineAppActions<{
+  //     update: { payload: number, result: void },
+  // }>,
+  app: DefineAppActions,
   ca: DefineActions<{
     update: { payload: number, result: void },
     next?: { payload: string, result: number },
@@ -42,6 +46,10 @@ export const A: VariousFC<
   typedPostMessage({ event: 'next', payload: a }) // 'next' / string
 
   $dispatch({ target: 'ca', action: 'update', payload: 1 }) // 'ca' / 'update' / number
+
+  $dispatch({ target: 'app', action: 'getLocale' }).then((res) => {
+    window.console.log(res)
+  })
 
   return null
 }

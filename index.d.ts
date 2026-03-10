@@ -111,6 +111,21 @@ declare module '@variousjs/various' {
       ): Promise<M[T][A]['result']>
     }
 
+  export type DefineAppActions<T extends PublicActionDef = {}> = DefineActions<{
+    setLocale: {
+      payload: string,
+      result: string,
+    },
+    getLocale: {
+      payload: undefined,
+      result: string,
+    },
+    updateI18nConfig: {
+      payload: Partial<I18nConfig>,
+      result: string,
+    },
+  } & T>
+
   type $postMessage<T extends MessagesDef = never> = [T] extends [never]
     ? (params: { event: string, payload?: any }) => void
     : <K extends keyof T>(params: { event: K, payload?: T[K]['payload'] }) => void
@@ -126,7 +141,7 @@ declare module '@variousjs/various' {
     paramsOrDefaultText?: Record<string, string | number> | string,
     defaultText?: string,
   ) => string) & {
-    update: (config: Partial<I18nConfig>, type?: 'app') => void,
+    update: (config: Partial<I18nConfig>) => void,
   }
 
   interface ComponentBuiltinProps<
