@@ -209,6 +209,12 @@ function vueComponent<P extends object>(config: {
       }
     }, [store])
 
+    useEffect(() => {
+      if (localeReactiveRef.current) {
+        localeReactiveRef.current.value = locale
+      }
+    }, [locale])
+
     if (isError) {
       throw errorRef.current
     }

@@ -13,7 +13,6 @@ const V = defineComponent({
     return {
       t: props.various?.$t || (() => null),
       update() {
-        // props.various?.$t.update({ lngStoreKey: 'no-exist' })
         props.various?.$dispatch({ target: 'app', action: 'setLocale', payload: props.various.$locale === 'zh' ? 'en' : 'zh' })
       },
     }
@@ -32,6 +31,6 @@ export default V
   <div class="value">
     <p>name: {{ t('name') }}</p>
     <p>greet: {{ t('greet', { name: 'C', name2: 'D' }) }}</p>
-    <button @click="update">vue update i18n</button>
+    <button @click="update">vue update locale</button>
   </div>
 </template>
