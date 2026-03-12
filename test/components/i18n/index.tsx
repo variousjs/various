@@ -18,7 +18,7 @@ const Mh = createComponent({ module: 'i18n.ConfigError' })
 const Mi = createComponent({ module: 'i18n.Update' })
 
 const A = ((props) => {
-  const { $t, $dispatch } = props
+  const { $t, $dispatch, $locale } = props
 
   return (
     <>
@@ -26,7 +26,13 @@ const A = ((props) => {
       <div className="value">
         <p>name: {$t('name')}</p>
         <p>greet: {$t('greet', { name: 'A', name2: 'B' })}</p>
-        <button onClick={() => $dispatch({ target: 'app', action: 'setLocale' })}>change locale</button>
+        <button
+          onClick={() => {
+            $dispatch({ target: 'app', action: 'setLocale', payload: $locale === 'zh' ? 'en' : 'zh' })
+          }}
+        >
+          change locale
+        </button>
       </div>
 
       <h3>Error</h3>

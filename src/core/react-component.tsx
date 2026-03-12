@@ -159,7 +159,7 @@ function reactComponent<P extends object>(config: {
     }
   }
 
-  const Connected = connect(...storeKeys)(R)
+  const Connected = connect(...storeKeys, LOCALE_KEY)(R)
   Connected.displayName = 'various-connector'
 
   return Connected

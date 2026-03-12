@@ -14,6 +14,7 @@ const V = defineComponent({
       t: props.various?.$t || (() => null),
       update() {
         // props.various?.$t.update({ lngStoreKey: 'no-exist' })
+        props.various?.$dispatch({ target: 'app', action: 'setLocale', payload: props.various.$locale === 'zh' ? 'en' : 'zh' })
       },
     }
   }

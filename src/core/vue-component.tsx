@@ -47,8 +47,8 @@ function vueComponent<P extends object>(config: {
   const storeKeys = (watchKeys || Object.keys(getStore()))
 
   const V: FC<CreateComponentProps<P> & ComponentDefaultProps> = (props) => {
-    const store = useStore(...storeKeys)
-    const locale = getStore(LOCALE_KEY)
+    const store = useStore(...storeKeys, LOCALE_KEY)
+    const locale = store[LOCALE_KEY]
 
     const vueRef = useRef<typeof Vue>()
     const vmRef = useRef<ComponentPublicInstance>()

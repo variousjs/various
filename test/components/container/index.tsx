@@ -22,6 +22,22 @@ const componentsMap = $config.pages.reduce((prev, current) => {
   return { ...prev, ...currentComs }
 }, {} as CMap)
 
+const PageRenderer = memo(({ components }: { components: Page['components'] }) => (
+  <>
+    {components.map((com, i) => {
+      const C = com.runtimeCreate
+        ? memo(createComponent({ module: com.module, type: com.type }))
+        : componentsMap[com.module]
+      return (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={`${com.module}-${i}`} className="component">
+          <C />
+        </div>
+      )
+    })}
+  </>
+))
+
 class Container extends Component {
   render() {
     return (
@@ -52,25 +68,9 @@ class Container extends Component {
                       key={path}
                       exact
                       path={path}
-                      component={() => (
-                        <>
-                          {
-                            components.map((com, i) => {
-                              const C = com.runtimeCreate
-                                ? memo(createComponent({ module: com.module, type: com.type }))
-                                : componentsMap[com.module]
-
-                              return (
-                                // eslint-disable-next-line react/no-array-index-key
-                                <div key={`${com.module}-${i}`} className="component">
-                                  <C />
-                                </div>
-                              )
-                            })
-                          }
-                        </>
-                      )}
-                    />
+                    >
+                      <PageRenderer components={components} />
+                    </Route>
                   )
                 })
               }
