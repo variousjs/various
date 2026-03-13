@@ -10,7 +10,6 @@ const i18n: I18n = () => ({
 const C = createComponent({ module: 'i18n', type: 'vue3' })
 
 export default {
-  // store: { locale: 'jp' },
   Root: () => (<C />),
   i18n,
 } as App

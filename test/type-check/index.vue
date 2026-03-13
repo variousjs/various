@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue'
 import {
   VariousComponentProps, PublicAction, DefineMessages, DefineActions, OnMessage, I18n, ComponentStatics,
+  DefineAppActions,
 } from '@variousjs/various'
 
 interface GlobalStoreProps { b: number }
@@ -13,6 +14,9 @@ type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
 type GlobalActions = {
+  app: DefineAppActions<{
+    set: { payload: string, result: void },
+  }>,
   ca: DefineActions<{
     next: { payload: string, result: number },
   }>,
@@ -41,6 +45,9 @@ const V = defineComponent({
         const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
         // res: number
         window.console.log(res)
+
+        // i18n
+        props.various?.$dispatch({ target: 'app', action: 'updateI18nConfig', payload: { resources: { zh: { name: 'C' } } } })
       }
     }
   }

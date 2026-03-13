@@ -11,9 +11,11 @@ const V = defineComponent({
     return {
       t: props.various?.$t || (() => null),
       update() {
-        props.various?.$t.update({ resources: {
-          jp: { title: 'update JP' },
-        } }, 'app')
+        props.various?.$dispatch({
+          target: 'app',
+          action: 'updateI18nConfig',
+          payload: { resources: { jp: { title: 'update JP' } } },
+        })
       },
     }
   }
