@@ -5,7 +5,7 @@ import {
 } from '@variousjs/various/standalone'
 import { isModuleSpecified } from '../core/helper'
 import { emit } from '../core/store'
-import { STANDALONE_CONFIG_READY } from '../core/config'
+import { STANDALONE_CONFIG_READY, LOCALE_KEY, DEFAULT_LOCALE } from '../core/config'
 import connector from '../core/connector'
 
 const defineAsync = (name: string, dep?: DependencyType) => new Promise<void>((resolve) => {
@@ -48,9 +48,13 @@ export const createAppConfig: typeof con = (config) => {
     Fallback,
     store,
     actions,
+    i18n,
   } = config
 
-  emit({ [STANDALONE_CONFIG_READY]: false }, true)
+  emit({
+    [STANDALONE_CONFIG_READY]: false,
+    [LOCALE_KEY]: i18n?.defaultLocale || DEFAULT_LOCALE,
+  }, true)
 
   if (ErrorFallback) {
     connector.setErrorFallbackComponent(ErrorFallback)

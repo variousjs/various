@@ -67,8 +67,9 @@ function App() {
     <div style={{ padding: 20 }}>
       <RC $ref={ref} propsA="propsA" />
       <button
-        onClick={() => {
+        onClick={async () => {
           const dispatch = createDispatch('ot')
+          // const locale = await dispatch({ target: 'app', action: 'getLocale' })
           dispatch({ target: 'app', action: 'setLocale', payload: 'en' })
         }}
       >

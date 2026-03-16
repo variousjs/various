@@ -20,6 +20,8 @@ import {
   CONFIG_KEY,
   MESSAGE_KEY,
   STANDALONE_CONFIG_READY,
+  LOCALE_KEY,
+  DEFAULT_LOCALE,
 } from '../core/config'
 
 export { createAppConfig } from './helper'
@@ -65,7 +67,13 @@ const Standalone: FC<
 
   if (!componentReady || store[STANDALONE_CONFIG_READY] === false) {
     const FallBack = connector.getFallbackComponent()
-    return <FallBack $self={{ module, url }} $store={getUserStore()} />
+    return (
+      <FallBack
+        $self={{ module, url }}
+        $store={getUserStore()}
+        $locale={store[LOCALE_KEY] || DEFAULT_LOCALE}
+      />
+    )
   }
 
   const C = componentNode.current!

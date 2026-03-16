@@ -32,7 +32,7 @@ export interface Store {
   [CONFIG_KEY]: Record<string | symbol, any>,
   [DEPENDENCIES_KEY]: Record<string, string>,
   [STANDALONE_CONFIG_READY]?: boolean,
-  [LOCALE_KEY]: string,
+  [LOCALE_KEY]?: string,
   [key: string]: any,
 }
 
