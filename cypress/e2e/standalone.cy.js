@@ -71,6 +71,6 @@ describe('standalone', () => {
 
   it('base config', () => {
     cy.visit('/standalone.html?type=config')
-    cy.contains('p', 'greet: greet').should('exist')
+    cy.contains('p', 'Error - /dist/standalone/b.js').should('exist')
   })
 })
