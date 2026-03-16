@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   VariousFC, VariousProps, PublicAction, OnMessage, I18n,
-  DefineActions, DefineMessages, createPostMessage,
+  DefineActions, DefineMessages, createPostMessage, DefineAppActions,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
@@ -14,6 +14,10 @@ type SelfActions = DefineActions<{
   update: { payload: number, result: void },
 }>
 type GlobalActions = {
+  // app: DefineAppActions<{
+  //     update: { payload: number, result: void },
+  // }>,
+  app: DefineAppActions,
   ca: DefineActions<{
     update: { payload: number, result: void },
     next?: { payload: string, result: number },
@@ -43,6 +47,10 @@ export const A: VariousFC<
 
   $dispatch({ target: 'ca', action: 'update', payload: 1 }) // 'ca' / 'update' / number
 
+  $dispatch({ target: 'app', action: 'getLocale' }).then((res) => {
+    window.console.log(res)
+  })
+
   return null
 }
 
@@ -50,7 +58,7 @@ export const A: VariousFC<
 A.$onMessage = ({ event, payload, trigger }) => {
   window.console.log(event, payload, trigger)
 }
-A.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
+A.$i18n = () => ({ resources: {} })
 
 // payload: number / trigger: string
 A.update = ({ payload, trigger }) => {
@@ -73,7 +81,7 @@ export class B extends Component<VariousProps<
     window.console.log(event, payload, trigger)
   }
 
-  static $i18n: I18n = () => ({ lngStoreKey: 'locale', resources: {} })
+  static $i18n: I18n = () => ({ resources: {} })
 
   render() {
     // a: string / b: number
@@ -125,7 +133,7 @@ export const C = ((props) => {
 C.$onMessage = ({ event, payload, trigger }) => {
   window.console.log(event, payload, trigger)
 }
-C.$i18n = () => ({ lngStoreKey: 'locale', resources: {} })
+C.$i18n = () => ({ resources: {} })
 
 // payload: any / trigger: string
 C.update = ({ payload, trigger }) => {
@@ -145,7 +153,7 @@ export class D extends Component<VariousProps> {
     window.console.log(event, payload, trigger)
   }
 
-  static $i18n: I18n = () => ({ lngStoreKey: 'locale', resources: {} })
+  static $i18n: I18n = () => ({ resources: {} })
 
   render() {
     // a: any / b: any

@@ -7,6 +7,7 @@ import {
 import connector from './connector'
 import { VariousError, onError, isPromiseLike } from './helper'
 import { getStore, emit } from './store'
+import { LOCALE_KEY } from './config'
 
 export function createI18nConfig(
   method?: I18n,
@@ -31,13 +32,11 @@ export function createI18nConfig(
   if (module) {
     connector.setI18nConfig(module, {
       loading: true,
-      lngStoreKey: '',
       resources: {},
     })
   } else {
     connector.setGlobalI18nConfig({
       loading: true,
-      lngStoreKey: '',
       resources: {},
     })
   }
@@ -50,10 +49,10 @@ export function createI18nConfig(
         return
       }
 
-      const locale = getStore(res.lngStoreKey)
+      const locale = getStore(LOCALE_KEY)
 
-      emit({ [res.lngStoreKey]: undefined }, true)
-      emit({ [res.lngStoreKey]: locale }, true)
+      emit({ [LOCALE_KEY]: undefined }, true)
+      emit({ [LOCALE_KEY]: locale }, true)
       connector.setGlobalI18nConfig({ ...res, loading: false })
     })
     .catch((e: Error) => {
@@ -90,17 +89,8 @@ export function createI18n(
       return defaultText
     }
 
-    const { lngStoreKey, resources } = i18nConfig
-    const locale: string | undefined = getStore(lngStoreKey)
-
-    if (lngStoreKey === undefined || locale === undefined) {
-      onError(new VariousError({
-        module,
-        type: 'I18N',
-        originalError: new Error('locale key not defined'),
-      }))
-      return defaultText
-    }
+    const { resources } = i18nConfig
+    const locale = getStore(LOCALE_KEY)
 
     const resource = resources?.[locale]
 
@@ -140,18 +130,11 @@ export function createI18n(
     }, text)
   }
 
-  ctx.update = (config, type) => {
-    const i18nConfig = type === 'app'
-      ? connector.getGlobalI18nConfig()
-      : connector.getI18nConfig(module)
+  ctx.update = (config) => {
+    const i18nConfig = connector.getI18nConfig(module)
     const next = { ...i18nConfig, ...config } as I18nConfig
 
-    if (type === 'app') {
-      connector.setGlobalI18nConfig(next)
-    } else {
-      connector.setI18nConfig(module, next)
-    }
-
+    connector.setI18nConfig(module, next)
     updater()
   }
 

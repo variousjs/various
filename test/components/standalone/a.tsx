@@ -31,7 +31,6 @@ const C = forwardRef<
 
 const staticMethods: ComponentStatics<{ log: { payload: string, result: void } }> = {
   $i18n: () => ({
-    lngStoreKey: 'locale',
     resources: { zh, en },
   }),
   log: (t) => {

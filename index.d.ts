@@ -111,6 +111,21 @@ declare module '@variousjs/various' {
       ): Promise<M[T][A]['result']>
     }
 
+  export type DefineAppActions<T extends PublicActionDef = {}> = DefineActions<{
+    setLocale: {
+      payload: string,
+      result: string,
+    },
+    getLocale: {
+      payload: undefined,
+      result: string,
+    },
+    updateI18nConfig: {
+      payload: Partial<I18nConfig>,
+      result: string,
+    },
+  } & T>
+
   type $postMessage<T extends MessagesDef = never> = [T] extends [never]
     ? (params: { event: string, payload?: any }) => void
     : <K extends keyof T>(params: { event: K, payload?: T[K]['payload'] }) => void
@@ -126,7 +141,7 @@ declare module '@variousjs/various' {
     paramsOrDefaultText?: Record<string, string | number> | string,
     defaultText?: string,
   ) => string) & {
-    update: (config: Partial<I18nConfig>, type?: 'app') => void,
+    update: (config: Partial<I18nConfig>) => void,
   }
 
   interface ComponentBuiltinProps<
@@ -140,15 +155,19 @@ declare module '@variousjs/various' {
     $t: Intl,
     $logger: $logger,
     $self: { url: string, module: ModuleDef },
+    $locale: string,
   }
 
   export interface I18nConfig {
-    /** app store key */
-    lngStoreKey: string,
     resources: Record<string, Record<string, string>>,
   }
 
   export type I18n = () => I18nConfig | Promise<I18nConfig>
+
+  export type GlobalI18n = {
+    defaultLocale?: string, // en
+    getResources?: () => I18nConfig | Promise<I18nConfig>
+  }
 
   export type OnMessage<T extends MessagesDef = never> = (message: Message<T>) => void
 
@@ -172,6 +191,7 @@ declare module '@variousjs/various' {
     $error: VariousError,
     $store: Readonly<Store>,
     $self: { url: string, module: ModuleDef },
+    $locale: string,
   }
   export type ErrorFallbackNode<
     Store extends object = ObjectRecord
@@ -180,6 +200,7 @@ declare module '@variousjs/various' {
   export interface FallbackProps<Store extends object = ObjectRecord> {
     $store: Readonly<Store>,
     $self: { url: string, module: ModuleDef },
+    $locale: string,
   }
   export type FallbackNode<
     Store extends object = ObjectRecord
@@ -242,7 +263,7 @@ declare module '@variousjs/various' {
       onDispatch?: DispatchEvent,
       onLog?: LogEvent,
     },
-    i18n?: I18n,
+    i18n?: GlobalI18n,
   }
 
   export interface Config {

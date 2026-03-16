@@ -7,15 +7,10 @@ const actions: App<Store>['actions'] = {
     emit({ name: next })
   },
 
-  // payload specific string
-  async setLocale({ emit, getStore }, payload: string | undefined, trigger) {
+  // type-check: payload specific string
+  async setAction({ emit }, payload: string | undefined, trigger) {
     window.console.log(trigger)
-
-    let next = payload
-    if (!next) {
-      next = getStore('locale') === 'zh' ? 'en' : 'zh'
-    }
-    emit({ locale: next as 'jp' })
+    emit({ name: payload })
   },
 }
 

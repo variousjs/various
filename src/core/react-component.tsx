@@ -19,6 +19,7 @@ import createDispatch from './dispatch'
 import createLogger from './logger'
 import { createI18n } from './i18n'
 import createModule from './create-module'
+import { LOCALE_KEY } from './config'
 import {
   CreateComponentState,
   CreateComponentProps,
@@ -121,6 +122,7 @@ function reactComponent<P extends object>(config: {
       const { $silent, $componentProps, $ref } = this.props
       const { componentReady, isError } = this.state
       const store = getUserStore()
+      const locale = getStore(LOCALE_KEY)
       const ComponentNode = this.ComponentNode as RequiredComponent
 
       if (isError) {
@@ -136,6 +138,7 @@ function reactComponent<P extends object>(config: {
           <Fallback
             $self={this.$self}
             $store={store as Store}
+            $locale={locale}
           />
         )
       }
@@ -150,12 +153,13 @@ function reactComponent<P extends object>(config: {
           $t={this.$t}
           $logger={this.$logger}
           ref={$ref}
+          $locale={locale}
         />
       )
     }
   }
 
-  const Connected = connect(...storeKeys)(R)
+  const Connected = connect(...storeKeys, LOCALE_KEY)(R)
   Connected.displayName = 'various-connector'
 
   return Connected

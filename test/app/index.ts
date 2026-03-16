@@ -12,6 +12,9 @@ const app: App<typeof store> = {
   ErrorFallback: ErrorNode,
   actions,
   middlewares,
+  i18n: {
+    defaultLocale: 'zh',
+  },
 }
 
 export default app

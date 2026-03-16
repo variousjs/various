@@ -2,7 +2,6 @@ import React from 'react'
 import { I18n, App, createComponent } from '@variousjs/various'
 
 const i18n: I18n = () => ({
-  lngStoreKey: 'locale',
   resources: {
     jp: { title: 'Jpabn' },
   },
@@ -11,7 +10,9 @@ const i18n: I18n = () => ({
 const C = createComponent({ module: 'i18n', type: 'vue3' })
 
 export default {
-  store: { locale: 'jp' },
   Root: () => (<C />),
-  i18n,
+  i18n: {
+    defaultLocale: 'jp',
+    getResources: i18n,
+  },
 } as App

@@ -6,7 +6,17 @@ export const CONFIG_KEY = Symbol('CONFIG')
 
 export const DEPENDENCIES_KEY = Symbol('DEPENDENCIES')
 
+export const LOCALE_KEY = Symbol('LOCALE')
+
 export const STANDALONE_CONFIG_READY = Symbol('STANDALONE_CONFIG_READY')
+
+export const DEFAULT_LOCALE = 'en'
+
+export enum I18NActions {
+  SetLocale = 'setLocale',
+  GetLocale = 'getLocale',
+  UpdateI18nConfig = 'updateI18nConfig',
+}
 
 export const VUE_FUNCTION_OPTIONS = [
   'beforeCreate',

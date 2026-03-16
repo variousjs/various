@@ -7,7 +7,8 @@ const errorComponent: ErrorFallbackNode<Store> = (props) => {
     $reload,
     $error,
     $self,
-    $store,
+    // $store,
+    $locale,
   } = props
 
   return (
@@ -16,7 +17,7 @@ const errorComponent: ErrorFallbackNode<Store> = (props) => {
       <div className="value">
         <p>{`[${$error.type}]:${$error.message}`}</p>
         <button onClick={$reload}>
-          {$store.locale === 'zh' ? '刷新' : 'reload'}
+          {$locale === 'zh' ? '刷新' : 'reload'}
         </button>
       </div>
     </>

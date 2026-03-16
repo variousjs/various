@@ -9,7 +9,8 @@ import {
 } from './helper'
 import connector from './connector'
 import { ErrorBoundaryProps, Store } from '../types'
-import { getUserStore } from './store'
+import { getUserStore, getStore } from './store'
+import { LOCALE_KEY } from './config'
 
 class ErrorBoundary extends Component<ErrorBoundaryProps> {
   static displayName = 'various-error-boundary'
@@ -47,6 +48,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
   render() {
     const ErrorFallbackNode = connector.getErrorFallbackComponent()
     const store = getUserStore()
+    const locale = getStore(LOCALE_KEY)
 
     if (this.state.hasError) {
       return (
@@ -55,6 +57,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
           $reload={this.reload}
           $store={store as Store}
           $error={this.error!}
+          $locale={locale}
         />
       )
     }
