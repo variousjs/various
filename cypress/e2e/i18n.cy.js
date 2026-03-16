@@ -44,18 +44,16 @@ describe('i18n', () => {
     // update config
     cy.contains('h3', 'Update').next().contains('p', 'name').should('exist')
     cy.contains('button', 'update resources').click()
-    cy.contains('button', 'update lngStoreKey').click()
-    cy.contains('h3', 'Update').next().contains('p', 'Json').should('exist')
 
     // update config vue
-    cy.contains('button', 'vue update lngStoreKey').click()
-    cy.contains('h3', 'Vue Component').next().contains('p', 'greet: greet').should('exist')
-    cy.contains('h3', 'Vue Component').next().contains('p', 'name: name').should('exist')
+    cy.contains('button', 'vue update locale').click()
+    cy.contains('h3', 'Vue Component').next().contains('p', 'greet: 你好，C，D').should('exist')
+    cy.contains('h3', 'Vue Component').next().contains('p', 'name: 张三').should('exist')
 
     // async config vue
     cy.contains('button', 'vue async get config').click()
-    cy.contains('h3', 'Vue Async Component').next().contains('p', 'greet: Hello, C, D').should('exist')
-    cy.contains('h3', 'Vue Async Component').next().contains('p', 'name: Json').should('exist')
+    cy.contains('h3', 'Vue Async Component').next().contains('p', 'greet: 你好，C，D').should('exist')
+    cy.contains('h3', 'Vue Async Component').next().contains('p', 'name: 张三').should('exist')
   })
 
   it('app config', () => {

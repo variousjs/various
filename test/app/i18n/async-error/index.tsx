@@ -17,7 +17,10 @@ const C = createComponent({ module: 'i18n' })
 
 export default {
   Root: () => (<C setFail={() => emit({ i18nFailSignal: true })} />),
-  i18n,
+  i18n: {
+    defaultLocale: 'jp',
+    getResources: i18n,
+  },
   middlewares: {
     onLog(e) {
       window.console.log(e.module, e.type)

@@ -164,6 +164,11 @@ declare module '@variousjs/various' {
 
   export type I18n = () => I18nConfig | Promise<I18nConfig>
 
+  export type GlobalI18n = {
+    defaultLocale?: string, // en
+    getResources?: () => I18nConfig | Promise<I18nConfig>
+  }
+
   export type OnMessage<T extends MessagesDef = never> = (message: Message<T>) => void
 
   export type VariousProps<
@@ -258,7 +263,7 @@ declare module '@variousjs/various' {
       onDispatch?: DispatchEvent,
       onLog?: LogEvent,
     },
-    i18n?: I18n,
+    i18n?: GlobalI18n,
   }
 
   export interface Config {
@@ -269,7 +274,6 @@ declare module '@variousjs/various' {
       'react-dom'?: string,
       vue?: string,
     } & Record<string, string>,
-    defaultLocale?: string,
     root?: string,
     timeout?: number,
     earlyParallelDependencies?: string[],

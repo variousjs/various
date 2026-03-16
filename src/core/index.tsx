@@ -50,7 +50,6 @@ export const getApp = (config: Config & App<Store>) => {
     Root = RootComponent,
     middlewares,
     i18n,
-    defaultLocale = DEFAULT_LOCALE,
     ...rest
   } = config
 
@@ -73,7 +72,7 @@ export const getApp = (config: Config & App<Store>) => {
     [CONFIG_KEY]: rest,
     [DEPENDENCIES_KEY]: dependencies,
     [MESSAGE_KEY]: null,
-    [LOCALE_KEY]: defaultLocale,
+    [LOCALE_KEY]: i18n?.defaultLocale || DEFAULT_LOCALE,
   })
 
   Root.displayName = 'various-app-root'
@@ -82,7 +81,7 @@ export const getApp = (config: Config & App<Store>) => {
     static displayName = 'various-app'
 
     componentDidMount() {
-      createI18nConfig(i18n)
+      createI18nConfig(i18n?.getResources)
     }
 
     render() {

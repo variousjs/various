@@ -25,6 +25,9 @@ const baseConfig: Record<string, AppConfig<Store>> = {
       vue: Vue,
     },
     store: { globalB: 'B' },
+    i18n: {
+      defaultLocale: 'zh',
+    },
     actions: {
     },
   },
@@ -66,7 +69,7 @@ function App() {
       <button
         onClick={() => {
           const dispatch = createDispatch('ot')
-          dispatch({ target: 'app', action: 'setLocale' })
+          dispatch({ target: 'app', action: 'setLocale', payload: 'en' })
         }}
       >
         change lng

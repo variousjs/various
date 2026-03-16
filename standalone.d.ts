@@ -42,7 +42,7 @@ declare module '@variousjs/various/standalone' {
 
   export type AppConfig<Store extends object = ObjectRecord> = Pick<
     App<Store>,
-    'actions' | 'store' | 'Fallback' | 'ErrorFallback'
+    'actions' | 'store' | 'Fallback' | 'ErrorFallback' | 'i18n'
   > & {
     dependencies: Partial<Record<
       string,

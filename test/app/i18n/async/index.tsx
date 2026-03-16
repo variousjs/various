@@ -20,5 +20,8 @@ const C = createComponent({ module: 'i18n' }, ['locale'])
 
 export default {
   Root: () => (<C setSuccess={() => emit({ i18nPassSignal: true })} />),
-  i18n,
+  i18n: {
+    defaultLocale: 'jp',
+    getResources: i18n,
+  },
 } as App
