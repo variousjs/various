@@ -69,8 +69,8 @@ function App() {
       <button
         onClick={async () => {
           const dispatch = createDispatch('ot')
-          // const locale = await dispatch({ target: 'app', action: 'getLocale' })
-          dispatch({ target: 'app', action: 'setLocale', payload: 'en' })
+          const locale = await dispatch({ target: 'app', action: 'getLocale' })
+          dispatch({ target: 'app', action: 'setLocale', payload: locale === 'zh' ? 'en' : 'zh' })
         }}
       >
         change lng

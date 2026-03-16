@@ -13,7 +13,19 @@ const V = defineComponent({
     return {
       t: props.various?.$t || (() => null),
       update() {
-        props.various?.$dispatch({ target: 'app', action: 'setLocale', payload: props.various.$locale === 'zh' ? 'en' : 'zh' })
+        props.various?.$dispatch({
+          target: 'app',
+          action: 'setLocale',
+          payload: props.various.$locale === 'zh' ? 'en' : 'zh'
+        })
+      },
+      updateConfig() {
+        props.various?.$t.update({
+          resources: {
+            zh: { name: '章四' },
+            en: { name: 'alice' },
+          }
+        })
       },
     }
   }
@@ -32,5 +44,6 @@ export default V
     <p>name: {{ t('name') }}</p>
     <p>greet: {{ t('greet', { name: 'C', name2: 'D' }) }}</p>
     <button @click="update">vue update locale</button>
+    <button @click="updateConfig">vue update config</button>
   </div>
 </template>

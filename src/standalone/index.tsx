@@ -33,6 +33,7 @@ createStore({
   [CONFIG_KEY]: {},
   [DEPENDENCIES_KEY]: {},
   [STANDALONE_CONFIG_READY]: undefined,
+  [LOCALE_KEY]: DEFAULT_LOCALE,
 })
 
 window.define('react', [], () => React)
@@ -71,7 +72,7 @@ const Standalone: FC<
       <FallBack
         $self={{ module, url }}
         $store={getUserStore()}
-        $locale={store[LOCALE_KEY] || DEFAULT_LOCALE}
+        $locale={store[LOCALE_KEY]}
       />
     )
   }

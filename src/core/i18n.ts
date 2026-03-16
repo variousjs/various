@@ -90,11 +90,7 @@ export function createI18n(
     }
 
     const { resources } = i18nConfig
-    const locale: string | undefined = getStore(LOCALE_KEY)
-
-    if (!locale) {
-      return defaultText
-    }
+    const locale = getStore(LOCALE_KEY)
 
     const resource = resources?.[locale]
 

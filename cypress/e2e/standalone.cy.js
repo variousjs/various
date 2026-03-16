@@ -66,7 +66,7 @@ describe('standalone', () => {
 
   it('strict and without config', () => {
     cy.visit('/standalone.html?type=strict')
-    cy.contains('p', 'greet: greet').should('exist')
+    cy.contains('p', 'greet: Hello, C, D').should('exist')
   })
 
   it('base config', () => {
