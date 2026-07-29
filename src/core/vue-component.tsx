@@ -5,7 +5,8 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import Vue, { ComponentPublicInstance } from 'vue'
+import * as Vue from 'vue'
+import type { ComponentPublicInstance } from 'vue'
 import {
   ComponentDefaultProps,
   ModuleDef,
@@ -95,7 +96,7 @@ function vueComponent<P extends object>(config: {
           }
         },
 
-        errorCaptured(e) {
+        errorCaptured(e: unknown) {
           const error = e as Error
           errorRef.current = error.message?.includes('https://react')
             ? new VariousError({
