@@ -16,7 +16,7 @@ export function createCoreConfig(mode: string): UserConfig {
   const outputDir = (isProd || devVariant) ? 'dist' : 'public/dist'
   const entryName = devVariant ? 'index.dev' : 'index'
 
-  const base = createBaseConfig()
+  const base = createBaseConfig(mode)
   return {
     ...base,
     plugins: [...(base.plugins || []), cjsToAmd()],

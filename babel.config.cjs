@@ -1,10 +1,3 @@
-const { NODE_ENV } = process.env
-const plugins = ['@babel/plugin-transform-runtime']
-
-if (NODE_ENV !== 'production') {
-  plugins.push('babel-plugin-istanbul')
-}
-
 module.exports = {
   presets: [
     [
@@ -15,7 +8,6 @@ module.exports = {
         targets: {
           browsers: '> 1%',
         },
-        // debug: true,
       },
     ],
     '@babel/preset-react',
@@ -27,5 +19,5 @@ module.exports = {
       },
     ],
   ],
-  plugins,
+  plugins: ['@babel/plugin-transform-runtime'],
 }

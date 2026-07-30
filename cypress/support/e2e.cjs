@@ -1,4 +1,4 @@
-import '@cypress/code-coverage/support'
+require('@cypress/code-coverage/support')
 
 beforeEach(() => {
   cy.intercept({ url: '/dist/**/*.js', middleware: true }, (req) => {

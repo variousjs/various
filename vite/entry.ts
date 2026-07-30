@@ -17,7 +17,7 @@ export function createLoaderConfig(mode: string): UserConfig {
   const outputDir = (isProd || devVariant) ? 'dist' : 'public/dist'
   const entryName = devVariant ? 'loader-dev' : 'loader'
 
-  const base = createBaseConfig()
+  const base = createBaseConfig(mode)
   return {
     ...base,
     build: {
@@ -40,7 +40,7 @@ export function createLoaderConfig(mode: string): UserConfig {
 // Builds standalone module for npm package (CJS format).
 // Matches webpack/entry.js production: entry src/standalone/index.tsx, libraryTarget 'commonjs2'
 export function createStandaloneConfig(): UserConfig {
-  const base = createBaseConfig()
+  const base = createBaseConfig('production')
   return {
     ...base,
     build: {
@@ -63,7 +63,7 @@ export function createStandaloneConfig(): UserConfig {
 // Builds standalone test entry for dev server (bundled, no externals).
 // Matches webpack/entry.js development: entry test/standalone/index.tsx, externals undefined
 export function createStandaloneDevConfig(): UserConfig {
-  const base = createBaseConfig()
+  const base = createBaseConfig('development')
   return {
     ...base,
     build: {

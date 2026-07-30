@@ -48,7 +48,7 @@ function scanComponentEntries(): Record<string, string> {
 // Matches webpack/test-components.js: libraryTarget 'amd', multi-entry
 export function createComponentsConfig(mode: string): UserConfig {
   const isProd = mode === 'production'
-  const base = createBaseConfig()
+  const base = createBaseConfig(mode)
 
   return {
     ...base,

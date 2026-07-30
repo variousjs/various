@@ -1,6 +1,7 @@
 {
   "name": "@variousjs/various",
   "version": "5.3.0",
+  "type": "module",
   "description": "RequireJS(AMD) + React",
   "files": [
     "dist",
@@ -94,9 +95,6 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@vitejs/plugin-vue": "^6.0.8",
-    "@vue/compiler-sfc": "^3.5.22",
-    "babel-loader": "^10.0.0",
-    "babel-plugin-istanbul": "^7.0.1",
     "cypress": "^15.8.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -111,11 +109,8 @@
     "start-server-and-test": "^2.0.3",
     "typescript": "^5.3.3",
     "vite": "^8.1.5",
-    "vue": "^3.5.21",
-    "vue-loader": "^17.4.2",
-    "webpack": "^5.104.1",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
+    "vite-plugin-istanbul": "^9.0.1",
+    "vue": "^3.5.21"
   },
   "dependencies": {
     "@variousjs/requirejs": "0.0.2",

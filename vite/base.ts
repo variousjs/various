@@ -1,5 +1,6 @@
 import { type UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import istanbul from 'vite-plugin-istanbul'
 import pkg from '../package.json'
 
 // Preserved from webpack/base.js externals (lines 11-22)
@@ -34,9 +35,24 @@ export const GLOBALS: Record<string, string> = {
   '@variousjs/various/standalone': 'VariousStandalone',
 }
 
-export function createBaseConfig(): UserConfig {
+export function createBaseConfig(mode?: string): UserConfig {
+  // Instrument app code in dev mode for cypress coverage.
+  // Skip for standalone (npm package, TARGET=standalone) and production builds.
+  const enableCoverage = mode === 'development' && process.env.TARGET !== 'standalone'
+
   return {
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      ...(enableCoverage ? [
+        istanbul({
+          include: ['src/**/*', 'test/components/**/*', 'test/app/**/*'],
+          exclude: ['node_modules/**', 'cypress/**'],
+          cypress: true,
+          forceBuildInstrument: true,
+          requireEnv: false,
+        }),
+      ] : []),
+    ],
     define: {
       VERSION: JSON.stringify(pkg.version),
     },
