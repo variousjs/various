@@ -5,6 +5,7 @@ import {
   EXTERNALS,
   STANDALONE_EXTERNALS,
   GLOBALS,
+  onwarn,
 } from './base'
 
 const ROOT = process.cwd()
@@ -25,6 +26,7 @@ export function createLoaderConfig(mode: string): UserConfig {
       outDir: path.resolve(ROOT, outputDir),
       minify: isProd,
       rollupOptions: {
+        onwarn,
         external: EXTERNALS,
         input: { [entryName]: path.resolve(ROOT, 'src/loader.tsx') },
         output: {
@@ -48,6 +50,7 @@ export function createStandaloneConfig(): UserConfig {
       outDir: path.resolve(ROOT, 'dist'),
       minify: false,
       rollupOptions: {
+        onwarn,
         external: STANDALONE_EXTERNALS,
         input: { standalone: path.resolve(ROOT, 'src/standalone/index.tsx') },
         output: {
@@ -71,6 +74,7 @@ export function createStandaloneDevConfig(): UserConfig {
       outDir: path.resolve(ROOT, 'public/dist'),
       minify: false,
       rollupOptions: {
+        onwarn,
         input: { standalone: path.resolve(ROOT, 'test/standalone/index.tsx') },
         output: {
           format: 'iife',

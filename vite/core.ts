@@ -1,6 +1,6 @@
 import path from 'path'
 import { type UserConfig } from 'vite'
-import { createBaseConfig, EXTERNALS } from './base'
+import { createBaseConfig, EXTERNALS, onwarn } from './base'
 import { cjsToAmd } from './cjs-to-amd'
 
 const ROOT = process.cwd()
@@ -25,6 +25,7 @@ export function createCoreConfig(mode: string): UserConfig {
       outDir: path.resolve(ROOT, outputDir),
       minify: isProd,
       rollupOptions: {
+        onwarn,
         external: EXTERNALS,
         input: { [entryName]: path.resolve(ROOT, 'src/core/index.tsx') },
         preserveEntrySignatures: 'strict',

@@ -35,6 +35,18 @@ export const GLOBALS: Record<string, string> = {
   '@variousjs/various/standalone': 'VariousStandalone',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function onwarn(warning: any, warn: (w: any) => void) {
+  // INVALID_ANNOTATION: istanbul instrumentation disrupts @__PURE__ comment positions
+  // EVAL: requirejs uses eval() for fromText (harmless, only in @variousjs/requirejs)
+  if (
+    warning.code === 'COMMENT_ANCHOR_NOT_FOUND'
+    || warning.code === 'INVALID_ANNOTATION'
+    || (warning.code === 'EVAL' && warning.id?.includes('@variousjs/requirejs'))
+  ) return
+  warn(warning)
+}
+
 export function createBaseConfig(mode?: string): UserConfig {
   // Instrument app code in dev mode for cypress coverage.
   // Skip for standalone (npm package, TARGET=standalone) and production builds.

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { type UserConfig } from 'vite'
-import { createBaseConfig, EXTERNALS } from './base'
+import { createBaseConfig, EXTERNALS, onwarn } from './base'
 import { cjsToAmd } from './cjs-to-amd'
 import { inlineChunks } from './inline-chunks'
 
@@ -58,6 +58,7 @@ export function createComponentsConfig(mode: string): UserConfig {
       outDir: path.resolve(ROOT, 'public/dist'),
       minify: isProd,
       rollupOptions: {
+        onwarn,
         external: EXTERNALS,
         input: scanComponentEntries(),
         preserveEntrySignatures: 'strict',
