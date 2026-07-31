@@ -81,8 +81,6 @@
   },
   "homepage": "https://github.com/variousjs/various#readme",
   "devDependencies": {
-    "@babel/core": "^8.0.1",
-    "@babel/preset-env": "^8.0.2",
     "@cypress/code-coverage": "^4.0.3",
     "@types/node": "^26.1.2",
     "@types/react": "^18.3.31",
