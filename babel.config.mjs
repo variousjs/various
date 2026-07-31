@@ -1,10 +1,8 @@
-module.exports = {
+export default {
   presets: [
     [
-      '@babel/env',
+      '@babel/preset-env',
       {
-        useBuiltIns: 'usage',
-        corejs: 3,
         targets: {
           browsers: '> 1%',
         },
