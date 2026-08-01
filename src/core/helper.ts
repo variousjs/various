@@ -26,6 +26,15 @@ import { PublicActions, RequiredComponent } from '../types'
 import connector from './connector'
 import { createOnMessage } from './message'
 import { createI18nConfig } from './i18n'
+import {
+  setModuleUrl,
+  getModuleUrl,
+  importModule,
+  isModuleDefined,
+  isModuleSpecified as isSpecified,
+  deleteModule,
+  setModule,
+} from './system'
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
@@ -34,16 +43,16 @@ export const getModuleInfo: typeof gm = (module) => {
   return { name, entry }
 }
 
-export const preloadModules: typeof pp = (modules) => new Promise<void>((resolve, reject) => {
+export const preloadModules: typeof pp = (modules) => {
   const names = modules.map((m) => getModuleInfo(m).name)
-  window.requirejs(names, resolve, reject)
-})
+  return Promise.all(names.map((n) => importModule(n))).then(() => undefined)
+}
 
 export const removeLoadedModules: typeof rm = (modules) => {
   modules.forEach((module) => {
     const { name } = getModuleInfo(module)
     if (!BASE_DEPENDENCIES.includes(name)) {
-      window.requirejs.undef(name)
+      deleteModule(name)
     }
   })
 }
@@ -54,23 +63,23 @@ export const defineDependencies: typeof dd = (deps) => {
 
   Object.keys(deps).forEach((name) => {
     if (!BASE_DEPENDENCIES.includes(name)) {
-      next[name] = `${deps[name]}#${name}`
-      window.requirejs.undef(name)
+      next[name] = deps[name]
+      deleteModule(name)
+      setModuleUrl(name, deps[name])
     }
   })
 
-  window.requirejs.config({ paths: next })
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
 export const isModuleLoaded: typeof im = (module) => {
   const { name } = getModuleInfo(module)
-  return window.requirejs.defined(name)
+  return isModuleDefined(name)
 }
 
 export const isModuleSpecified = (module: ModuleDef) => {
   const { name } = getModuleInfo(module)
-  return window.requirejs.specified(name)
+  return isSpecified(name)
 }
 
 export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
@@ -99,27 +108,23 @@ export const resetDependencyConfig = (module: ModuleDef, url?: string) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
 
   // ignore multiple custom module url
-  if (url && isModuleLoaded(name)) {
+  if (url && isModuleDefined(name)) {
     return
   }
 
   if (!dependencies[name] && url) {
-    window.requirejs.config({
-      paths: { [name]: `${url}#${name}` },
-    })
+    setModuleUrl(name, url)
     return
   }
 
-  let path = getUrlHash(dependencies[name])
+  let moduleUrl = getUrlHash(dependencies[name])
 
   if (url) {
-    path = getUrlHash(`${url}#${name}`)
+    moduleUrl = getUrlHash(url)
   }
 
-  window.requirejs.undef(name)
-  window.requirejs.config({
-    paths: { [name]: path },
-  })
+  deleteModule(name)
+  setModuleUrl(name, moduleUrl)
 }
 
 export function getConfig<C extends object = {}>() {
@@ -174,8 +179,9 @@ export function checkVueComponent(component: RequiredComponent, module: ModuleDe
   const versionRegex = new RegExp(`^${VUE_VERSION}\\.`)
 
   return new Promise<void>((resolve, reject) => {
-    window.requirejs(['vue'], (Vue: { version: string }) => {
-      if (!versionRegex.test(Vue.version)) {
+    importModule<{ version: string, default: { version: string } }>('vue').then((Vue) => {
+      const vueObj = (Vue.default || Vue) as { version: string }
+      if (!versionRegex.test(vueObj.version)) {
         reject(new Error(`Vue ${VUE_VERSION}+ required, detected an incompatible version`))
       }
 
@@ -189,7 +195,7 @@ export function checkVueComponent(component: RequiredComponent, module: ModuleDe
         originalError: new Error('not a valid Vue component'),
         type: 'INVALID_COMPONENT',
       }))
-    })
+    }).catch(reject)
   })
 }
 
@@ -270,7 +276,7 @@ export function getSelfInfo(params: { url?: string, module: ModuleDef }) {
 
   return {
     module,
-    url: url || dependencies[name],
+    url: url || dependencies[name] || getModuleUrl(name) || '',
   }
 }
 
@@ -278,3 +284,6 @@ export function getClassNameWithModule(module: ModuleDef, prefix: string) {
   const { name, entry } = getModuleInfo(module)
   return `${prefix} ${[name, entry].filter(Boolean).join('-')}`
 }
+
+// Re-export setModule for standalone use
+export { setModule }

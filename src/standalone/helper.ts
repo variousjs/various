@@ -4,20 +4,14 @@ import {
   createAppConfig as con,
 } from '@variousjs/various/standalone'
 import { isModuleSpecified } from '../core/helper'
+import { setModule, setModuleUrl } from '../core/system'
 import { emit } from '../core/store'
 import { STANDALONE_CONFIG_READY, LOCALE_KEY, DEFAULT_LOCALE } from '../core/config'
 import connector from '../core/connector'
 
 const defineAsync = (name: string, dep?: DependencyType) => new Promise<void>((resolve) => {
-  window.define(name, [], () => dep)
-  const check = () => {
-    if (window.requirejs.specified(name)) {
-      resolve()
-      return
-    }
-    setTimeout(check, 100)
-  }
-  check()
+  setModule(name, dep)
+  resolve()
 })
 
 export function defineModules(
@@ -31,7 +25,7 @@ export function defineModules(
     }
 
     if (typeof value === 'string') {
-      window.requirejs.config({ paths: { [key]: `${value}#${key}` } })
+      setModuleUrl(key, value)
       return
     }
 

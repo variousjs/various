@@ -38,11 +38,9 @@ export const GLOBALS: Record<string, string> = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function onwarn(warning: any, warn: (w: any) => void) {
   // INVALID_ANNOTATION: istanbul instrumentation disrupts @__PURE__ comment positions
-  // EVAL: requirejs uses eval() for fromText (harmless, only in @variousjs/requirejs)
   if (
     warning.code === 'COMMENT_ANCHOR_NOT_FOUND'
     || warning.code === 'INVALID_ANNOTATION'
-    || (warning.code === 'EVAL' && warning.id?.includes('@variousjs/requirejs'))
   ) return
   warn(warning)
 }

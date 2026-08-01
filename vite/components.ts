@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { type UserConfig } from 'vite'
 import { createBaseConfig, EXTERNALS, onwarn } from './base'
-import { cjsToAmd } from './cjs-to-amd'
+import { cjsToSystem } from './cjs-to-system'
 import { inlineChunks } from './inline-chunks'
 
 const ROOT = process.cwd()
@@ -42,17 +42,16 @@ function scanComponentEntries(): Record<string, string> {
   return components
 }
 
-// Builds test components as AMD modules.
-// CJS output is wrapped in define([deps], factory) by cjsToAmd plugin.
+// Builds test components as SystemJS modules.
+// CJS output is wrapped in System.register([deps], factory) by cjsToSystem plugin.
 // Shared chunks are inlined by inlineChunks plugin so each module is self-contained.
-// Matches webpack/test-components.js: libraryTarget 'amd', multi-entry
 export function createComponentsConfig(mode: string): UserConfig {
   const isProd = mode === 'production'
   const base = createBaseConfig(mode)
 
   return {
     ...base,
-    plugins: [...(base.plugins || []), inlineChunks(), cjsToAmd()],
+    plugins: [...(base.plugins || []), inlineChunks(), cjsToSystem()],
     build: {
       ...base.build,
       outDir: path.resolve(ROOT, 'public/dist'),

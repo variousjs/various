@@ -1,4 +1,3 @@
-import '@variousjs/requirejs'
 import React, { useRef, StrictMode } from 'react'
 import * as Vue from 'vue'
 import { createRoot } from 'react-dom/client'

@@ -2,7 +2,7 @@ import path from 'path'
 import { type Plugin } from 'vite'
 
 // Inlines shared chunks (assets/*.js) into entry files so each component
-// is self-contained and loadable by RequireJS without relative require() calls.
+// is self-contained and loadable by SystemJS without relative require() calls.
 export function inlineChunks(): Plugin {
   return {
     name: 'inline-chunks',

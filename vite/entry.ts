@@ -63,6 +63,28 @@ export function createStandaloneConfig(): UserConfig {
   }
 }
 
+// Builds standalone module as ESM for npm consumers.
+export function createStandaloneESMConfig(): UserConfig {
+  const base = createBaseConfig('production')
+  return {
+    ...base,
+    build: {
+      ...base.build,
+      outDir: path.resolve(ROOT, 'dist'),
+      minify: false,
+      rollupOptions: {
+        onwarn,
+        external: STANDALONE_EXTERNALS,
+        input: { standalone: path.resolve(ROOT, 'src/standalone/index.tsx') },
+        output: {
+          format: 'es',
+          entryFileNames: 'standalone.mjs',
+        },
+      },
+    },
+  }
+}
+
 // Builds standalone test entry for dev server (bundled, no externals).
 // Matches webpack/entry.js development: entry test/standalone/index.tsx, externals undefined
 export function createStandaloneDevConfig(): UserConfig {

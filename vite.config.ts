@@ -1,6 +1,11 @@
 import { defineConfig } from 'vite'
-import { createCoreConfig } from './vite/core'
-import { createLoaderConfig, createStandaloneConfig, createStandaloneDevConfig } from './vite/entry'
+import { createCoreConfig, createCoreESMConfig } from './vite/core'
+import {
+  createLoaderConfig,
+  createStandaloneConfig,
+  createStandaloneESMConfig,
+  createStandaloneDevConfig,
+} from './vite/entry'
 import { createComponentsConfig } from './vite/components'
 import { createServeConfig } from './vite/serve'
 
@@ -12,10 +17,14 @@ export default defineConfig(({ mode }) => {
   switch (target) {
     case 'core':
       return createCoreConfig(mode)
+    case 'core-esm':
+      return createCoreESMConfig(mode)
     case 'loader':
       return createLoaderConfig(mode)
     case 'standalone':
       return createStandaloneConfig()
+    case 'standalone-esm':
+      return createStandaloneESMConfig()
     case 'standalone-dev':
       return createStandaloneDevConfig()
     case 'components':
@@ -23,6 +32,6 @@ export default defineConfig(({ mode }) => {
     case 'serve':
       return createServeConfig()
     default:
-      throw new Error(`Unknown TARGET: ${target}. Use: core, loader, standalone, standalone-dev, components, serve`)
+      throw new Error(`Unknown TARGET: ${target}. Use: core, core-esm, loader, standalone, standalone-esm, standalone-dev, components, serve`)
   }
 })

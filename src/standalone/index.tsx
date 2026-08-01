@@ -1,4 +1,4 @@
-import '@variousjs/requirejs'
+import 'systemjs/dist/system.js'
 import React, {
   ComponentType,
   FC,
@@ -13,6 +13,7 @@ import createComponentCore from '../core/create-component'
 import ErrorBoundary from '../core/error-boundary'
 import connector from '../core/connector'
 import { defineModules } from './helper'
+import { setModule } from '../core/helper'
 import { createStore, getUserStore, useStore } from '../core/store'
 import {
   MOUNTED_COMPONENTS_KEY,
@@ -36,7 +37,8 @@ createStore({
   [LOCALE_KEY]: DEFAULT_LOCALE,
 })
 
-window.define('react', [], () => React)
+// Register local React as SystemJS module so remote components import the same instance
+setModule('react', React)
 
 const Standalone: FC<
   Parameters<typeof cc<any, any, any>>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
