@@ -1,7 +1,7 @@
 import path from 'path'
 import { type UserConfig } from 'vite'
-import { createBaseConfig, EXTERNALS, onwarn } from './base'
-import { cjsToSystem } from './cjs-to-system'
+import { createBaseConfig, EXTERNALS, onwarn } from './base.js'
+import { cjsToSystem } from './cjs-to-system.js'
 
 const ROOT = process.cwd()
 

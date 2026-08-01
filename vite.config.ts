@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite'
-import { createCoreConfig, createCoreESMConfig } from './vite/core'
+import { createCoreConfig, createCoreESMConfig } from './vite/core.js'
 import {
   createLoaderConfig,
   createStandaloneConfig,
   createStandaloneESMConfig,
   createStandaloneDevConfig,
-} from './vite/entry'
-import { createComponentsConfig } from './vite/components'
-import { createServeConfig } from './vite/serve'
+} from './vite/entry.js'
+import { createComponentsConfig } from './vite/components.js'
+import { createServeConfig } from './vite/serve.js'
 
 // Dispatcher: selects build config based on TARGET env var.
 // Usage: TARGET=core vite build   /   TARGET=serve vite

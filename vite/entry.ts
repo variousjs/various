@@ -6,7 +6,7 @@ import {
   STANDALONE_EXTERNALS,
   GLOBALS,
   onwarn,
-} from './base'
+} from './base.js'
 
 const ROOT = process.cwd()
 

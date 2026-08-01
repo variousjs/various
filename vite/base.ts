@@ -1,7 +1,7 @@
 import { type UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import istanbul from 'vite-plugin-istanbul'
-import pkg from '../package.json'
+import pkg from '../package.json' with { type: 'json' }
 
 // Preserved from webpack/base.js externals (lines 11-22)
 export const EXTERNALS = [

@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import { type UserConfig } from 'vite'
-import { createBaseConfig, EXTERNALS, onwarn } from './base'
-import { cjsToSystem } from './cjs-to-system'
-import { inlineChunks } from './inline-chunks'
+import { createBaseConfig, EXTERNALS, onwarn } from './base.js'
+import { cjsToSystem } from './cjs-to-system.js'
+import { inlineChunks } from './inline-chunks.js'
 
 const ROOT = process.cwd()
 
