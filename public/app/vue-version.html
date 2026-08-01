@@ -7,10 +7,11 @@
 <script>
 var VARIOUS_CONFIG = {
   dependencies: {
-    react: '/libs/react.19.js',
-    'react-dom': '/libs/react-dom.19.js',
-    'react-router-dom': '/libs/react-router-dom.min.js',
-    'vue': '/libs/vue.js',
+    react: 'https://esm.sh/react@19.2.0',
+    'react-dom': 'https://esm.sh/react-dom@19.2.0?deps=react@19.2.0',
+    'react-dom/client': 'https://esm.sh/react-dom@19.2.0/client?deps=react@19.2.0',
+    'react-router-dom': 'https://esm.sh/react-router-dom@5.3.4?deps=react@19.2.0,react-dom@19.2.0',
+    'vue': 'https://esm.sh/vue@3.5.40',
 
     app: '/dist/vue-version.js',
   },
