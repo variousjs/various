@@ -52,7 +52,7 @@ const createModule: typeof cm = (config, logError = true) => {
         beenLoaded: isModuleLoaded(module),
       })
 
-      if (!C) {
+      if (!C || (typeof C === 'object' && Object.keys(C).length === 0)) {
         const error = new VariousError({
           module,
           type: 'INVALID_MODULE',

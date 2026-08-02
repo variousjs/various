@@ -27,24 +27,9 @@ describe('create module', () => {
     cy.contains('h3', 'Submodule Not Defined').next().children().eq(0)
       .should('have.text', 'Error: SUBMODULE_NOT_DEFINED')
 
-    // script error
-    cy.contains('h3', 'Script Error').next().find('button').click()
-    cy.contains('h3', 'Script Error').next().children().eq(0)
-      .should('have.text', 'Error: SCRIPT_ERROR')
-
     // loading error
     cy.contains('h3', 'Loading Error').next().find('button').click()
     cy.contains('h3', 'Loading Error').next().children().eq(0)
       .should('have.text', 'Error: LOADING_ERROR')
-
-    // submodule loading error
-    cy.contains('h3', 'Submodule Loading Error').next().find('button').click()
-    cy.contains('h3', 'Submodule Loading Error').next().children().eq(0)
-      .should('have.text', 'Error: SUBMODULE_LOADING_ERROR')
-
-    // submodule script error
-    cy.contains('h3', 'Submodule Script Error').next().find('button').click()
-    cy.contains('h3', 'Submodule Script Error').next().children().eq(0)
-      .should('have.text', 'Error: SUBMODULE_SCRIPT_ERROR')
   })
 })

@@ -43,7 +43,7 @@
   },
   "scripts": {
     "lint": "tsc --noemit --skipLibCheck && eslint . --ext .ts,.tsx,.js",
-    "create-empty": "touch public/dist/empty.js",
+    "create-empty": "echo 'System.register([],function(_export,_context){return{execute:function(){}};});' > public/dist/empty.js",
     "dev:core": "TARGET=core vite build --watch --mode development",
     "dev:loader": "TARGET=loader vite build --watch --mode development",
     "dev:standalone": "TARGET=standalone-dev vite build --watch --mode development",

@@ -1,3 +1,4 @@
+/* global System */
 import {
   DependencyType,
   createComponent,
@@ -9,10 +10,18 @@ import { emit } from '../core/store'
 import { STANDALONE_CONFIG_READY, LOCALE_KEY, DEFAULT_LOCALE } from '../core/config'
 import connector from '../core/connector'
 
-const defineAsync = (name: string, dep?: DependencyType) => new Promise<void>((resolve) => {
+const defineAsync = (name: string, dep?: DependencyType) => {
+  if (typeof dep === 'string') {
+    // URL-based dependency: load via System.import and register in registry
+    // so component modules can find it via require()
+    return System.import(dep).then((mod: any) => {
+      setModule(name, mod.default || mod)
+    })
+  }
+  // Module instance: register directly
   setModule(name, dep)
-  resolve()
-})
+  return Promise.resolve()
+}
 
 export function defineModules(
   deps: NonNullable<Parameters<typeof createComponent>['0']['dependencies']>,
@@ -26,7 +35,6 @@ export function defineModules(
 
     if (typeof value === 'string') {
       setModuleUrl(key, value)
-      return
     }
 
     defines.push({ key, value })
