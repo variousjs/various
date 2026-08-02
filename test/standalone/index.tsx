@@ -54,6 +54,15 @@ const VC = createComponent<{ propsB: string }, any, { globalB: string }>({
   storeKeys: ['globalB'],
 })
 
+// Component created WITHOUT an explicit url: the URL is registered via
+// defineModules (setModuleUrl), so getSelfInfo falls through to getModuleUrl.
+const CC = createComponent({
+  module: 'c',
+  dependencies: {
+    c: '/dist/standalone/c.js',
+  },
+})
+
 // widthout config
 if (testType !== 'strict') {
   createAppConfig(baseConfig[testType])
@@ -98,6 +107,7 @@ function App() {
         log
       </button>
       <VC propsB="propsB" />
+      {testType === 'default' && <CC />}
     </div>
   )
 }

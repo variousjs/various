@@ -72,7 +72,7 @@ const Standalone: FC<
     const FallBack = connector.getFallbackComponent()
     return (
       <FallBack
-        $self={{ module, url }}
+        $self={{ module, url: url || '' }}
         $store={getUserStore()}
         $locale={store[LOCALE_KEY]}
       />

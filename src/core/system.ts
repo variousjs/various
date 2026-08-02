@@ -27,11 +27,6 @@ export async function importModule<T = any>(name: string): Promise<T> {
   throw new Error(`module "${name}" not defined`)
 }
 
-// Load module by URL directly
-export async function importUrl<T = any>(url: string): Promise<T> {
-  return System.import(url) as Promise<T>
-}
-
 // Check if module is loaded (in SystemJS registry)
 export function isModuleDefined(name: string): boolean {
   if (System.has(name)) return true
@@ -72,9 +67,4 @@ export function setModule(name: string, mod: any): void {
   } else {
     System.set(name, mod)
   }
-}
-
-// Preload multiple modules by name
-export async function preloadModules(names: string[]): Promise<void> {
-  await Promise.all(names.map((n) => importModule(n)))
 }

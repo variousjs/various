@@ -41,7 +41,6 @@ const ESM_LIBRARIES = new Set([
 ])
 
 function registerModule(name: string, mod: any): void {
-  if (!mod) return
   const ns: Record<string, any> = { default: mod }
   if (typeof mod === 'object') {
     Object.keys(mod).forEach((k) => { ns[k] = mod[k] })

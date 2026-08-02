@@ -26,6 +26,9 @@ describe('standalone', () => {
     // $self
     cy.contains('p', 'info: b - /dist/standalone/b.js').should('exist')
 
+    // getModuleUrl: component without explicit url resolves via setModuleUrl
+    cy.contains('p', 'self url: /dist/standalone/c.js').should('exist')
+
     // i18n & createDispatch
     cy.contains('p', 'greet: 你好，C，D').should('exist')
     cy.contains('button', 'change lng').click()

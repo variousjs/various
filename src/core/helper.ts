@@ -183,6 +183,7 @@ export function checkVueComponent(component: RequiredComponent, module: ModuleDe
       const vueObj = (Vue.default || Vue) as { version: string }
       if (!versionRegex.test(vueObj.version)) {
         reject(new Error(`Vue ${VUE_VERSION}+ required, detected an incompatible version`))
+        return
       }
 
       if (typeof component?.render === 'function' || typeof component?.setup === 'function') {

@@ -10,6 +10,10 @@ describe('app', () => {
     cy.visit('/app/error.html')
     cy.contains('p', '[APP_ERROR]').should('exist')
 
+    // ESM library loading error - loadESM script.onerror path
+    cy.visit('/app/esm-error.html')
+    cy.contains('p', '[APP_ERROR]').should('exist')
+
     // app default config
     cy.visit('/app/default-config.html')
     cy.contains('div', 'App Container is not defined').should('exist')

@@ -136,7 +136,10 @@ export default () => {
         <button
           onClick={async () => {
             try {
-              await createModule({ module: 'sub', url: './dist/create-module/sub-not-define.js' }, false)
+              // No url: module loaded by name from registered dependencies.
+              // stack-exceeded is registered in app config and throws during
+              // evaluation, triggering SUBMODULE_LOADING_ERROR.
+              await createModule({ module: 'stack-exceeded' }, false)
             } catch (e) {
               const error = e as VariousError
               setErrors((pre) => ({
