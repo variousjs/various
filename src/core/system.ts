@@ -51,6 +51,26 @@ export function getModuleUrl(name: string): string | undefined {
   return moduleUrls.get(name)
 }
 
+// Returns all registered module URL mappings (for import map generation)
+export function getAllModuleUrls(): Record<string, string> {
+  const result: Record<string, string> = {}
+  moduleUrls.forEach((url, name) => {
+    result[name] = url
+  })
+  return result
+}
+
+// Returns names of modules injected via setModule (not loaded from URL)
+export function getInjectedModuleNames(): string[] {
+  const result: string[] = []
+  moduleRegistry.forEach((_, name) => {
+    if (!moduleUrls.has(name)) {
+      result.push(name)
+    }
+  })
+  return result
+}
+
 // Load module by name (looks up url from registry, then native import)
 export async function importModule<T = any>(name: string): Promise<T> {
   const url = moduleUrls.get(name)
@@ -99,4 +119,22 @@ export function setModule(name: string, mod: any): void {
   } else {
     moduleRegistry.set(name, mod)
   }
+}
+
+// Create a blob URL for a registered module so ESM components can import it
+// via import map (e.g. standalone mode where react/vue are passed as objects)
+export function createModuleBlobUrl(name: string): string | null {
+  const mod = moduleRegistry.get(name)
+  if (!mod) return null
+  const realMod = typeof mod === 'object' && 'default' in mod ? mod : { default: mod }
+  const keys = Object.keys(realMod).filter(
+    (k) => k !== 'default' && /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k),
+  )
+  const lines = [
+    `const m = window.__various.modules.get(${JSON.stringify(name)});`,
+    'export default m.default || m;',
+    ...keys.map((k) => `export const ${k} = m[${JSON.stringify(k)}];`),
+  ]
+  const blob = new Blob([lines.join('\n')], { type: 'application/javascript' })
+  return URL.createObjectURL(blob)
 }

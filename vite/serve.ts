@@ -42,15 +42,28 @@ export function createServeConfig(): UserConfig {
             next()
           })
 
-          // Serve index.html directly without Vite transformation
+          // Serve HTML files directly without Vite transformation
           // (prevents /@vite/client injection which breaks import maps)
           server.middlewares.use((req, res, next) => {
             const { url } = req
-            if (!url || (url !== '/' && url !== '/index.html')) {
+            if (!url) {
               next()
               return
             }
-            const filePath = path.join(process.cwd(), 'public', 'index.html')
+            const cleanUrl = url.split('?')[0]
+            // Map URL paths to HTML files in public/
+            const htmlMap: Record<string, string> = {
+              '/': 'index.html',
+              '/index.html': 'index.html',
+              '/standalone': 'standalone.html',
+              '/standalone.html': 'standalone.html',
+            }
+            const htmlFile = htmlMap[cleanUrl]
+            if (!htmlFile) {
+              next()
+              return
+            }
+            const filePath = path.join(process.cwd(), 'public', htmlFile)
             try {
               const html = readFileSync(filePath, 'utf-8')
               res.setHeader('Content-Type', 'text/html')
