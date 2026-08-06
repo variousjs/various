@@ -6,11 +6,11 @@ describe('app', () => {
   })
 
   it('test', () => {
-    // app loading error - SystemJS produces a different error message than RequireJS
+    // app loading error - native import() failure
     cy.visit('/app/error.html')
     cy.contains('p', '[APP_ERROR]').should('exist')
 
-    // ESM library loading error - loadESM script.onerror path
+    // ESM library loading error - native import() failure
     cy.visit('/app/esm-error.html')
     cy.contains('p', '[APP_ERROR]').should('exist')
 

@@ -1,4 +1,3 @@
-import 'systemjs/dist/system.js'
 import React, {
   ComponentType,
   FC,
@@ -37,7 +36,7 @@ createStore({
   [LOCALE_KEY]: DEFAULT_LOCALE,
 })
 
-// Register local React as SystemJS module so remote components import the same instance
+// Register local React so remote components import the same instance
 setModule('react', React)
 
 const Standalone: FC<

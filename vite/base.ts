@@ -23,24 +23,14 @@ export const STANDALONE_EXTERNALS = [
   '@variousjs/various/standalone',
 ]
 
-// IIFE globals mapping (for loader build, matches externals)
-export const GLOBALS: Record<string, string> = {
-  react: 'React',
-  'react-dom/client': 'ReactDOM',
-  'react-router-dom': 'ReactRouterDOM',
-  '@variousjs/various': 'Various',
-  vue: 'Vue',
-  'sub-m': 'subM',
-  'stack-exceeded': 'stackExceeded',
-  '@variousjs/various/standalone': 'VariousStandalone',
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function onwarn(warning: any, warn: (w: any) => void) {
   // INVALID_ANNOTATION: istanbul instrumentation disrupts @__PURE__ comment positions
+  // EMPTY_IMPORT_META:
+  //  vite preload helper uses import.meta.url in IIFE format (dead code, modulePreload is false)
   if (
     warning.code === 'COMMENT_ANCHOR_NOT_FOUND'
     || warning.code === 'INVALID_ANNOTATION'
+    || warning.code === 'EMPTY_IMPORT_META'
   ) return
   warn(warning)
 }

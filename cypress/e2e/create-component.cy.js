@@ -71,10 +71,16 @@ describe('create component', () => {
   })
 
   it('reload', () => {
-    const t = "System.register([],function(_export,_context){return{setters:[],execute:function(){var R=System.get('react');var React=R?(R.default!==undefined?R.default:R):null;_export({default:function(){return React.createElement('div',{style:{fontSize:50,margin:0}},'Ggggggg')}});}};})"
+    const t = "import React from 'react'; export default function() { return React.createElement('div', {style:{fontSize:50,margin:0}}, 'Ggggggg'); }"
 
     cy.contains('p', '[SCRIPT_ERROR]:A is not defined').then(() => {
-      cy.intercept('/dist/create-component/reload.js?*', t)
+      cy.intercept('/dist/create-component/reload.js?*', (req) => {
+        req.reply({
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/javascript' },
+          body: t,
+        })
+      })
       cy.contains('p', '[SCRIPT_ERROR]:A is not defined').next().click()
       cy.contains('div', 'Ggggggg').should('exist')
     })

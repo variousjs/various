@@ -1,20 +1,19 @@
-/* global System */
 import {
   DependencyType,
   createComponent,
   createAppConfig as con,
 } from '@variousjs/various/standalone'
 import { isModuleSpecified } from '../core/helper'
-import { setModule, setModuleUrl } from '../core/system'
+import { setModule, setModuleUrl, importModule } from '../core/system'
 import { emit } from '../core/store'
 import { STANDALONE_CONFIG_READY, LOCALE_KEY, DEFAULT_LOCALE } from '../core/config'
 import connector from '../core/connector'
 
 const defineAsync = (name: string, dep?: DependencyType) => {
   if (typeof dep === 'string') {
-    // URL-based dependency: load via System.import and register in registry
-    // so component modules can find it via require()
-    return System.import(dep).then((mod: any) => {
+    // URL-based dependency: load via native import and register in registry
+    // so component modules can find it via importModule
+    return importModule(dep).then((mod: any) => {
       setModule(name, mod.default || mod)
     })
   }
