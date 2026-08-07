@@ -102,13 +102,15 @@ const Standalone: FC<
 Standalone.displayName = 'various-standalone'
 
 export const createComponent: typeof cc = (args) => {
-  // Pre-register string URL dependencies so they're included in the import map
-  // created by createAppConfig (browser only supports one import map, added
-  // before any import() call)
+  // Pre-register all dependencies so they're included in the import map
+  // created by createAppConfig or the first useEffect (browser only supports
+  // one import map, added before any import() call)
   if (args.dependencies) {
     Object.entries(args.dependencies).forEach(([key, value]) => {
       if (typeof value === 'string') {
         setModuleUrl(key, value)
+      } else {
+        setModule(key, value)
       }
     })
   }

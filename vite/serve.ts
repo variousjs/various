@@ -95,14 +95,24 @@ export function createServeConfig(): UserConfig {
               return
             }
             const cleanUrl = url.split('?')[0]
-            // Map URL paths to HTML files in public/
-            const htmlMap: Record<string, string> = {
-              '/': 'index.html',
-              '/index.html': 'index.html',
-              '/standalone': 'standalone.html',
-              '/standalone.html': 'standalone.html',
+            // Resolve HTML file path from URL:
+            // / -> index.html, /standalone -> standalone.html,
+            // /app/error.html -> app/error.html
+            let candidates: string[]
+            if (cleanUrl === '/') {
+              candidates = ['index.html']
+            } else if (cleanUrl.endsWith('.html')) {
+              candidates = [cleanUrl.slice(1)]
+            } else {
+              candidates = [`${cleanUrl.slice(1)}.html`, `${cleanUrl.slice(1)}/index.html`]
             }
-            const htmlFile = htmlMap[cleanUrl]
+            const htmlFile = candidates.find((c) => {
+              try {
+                return statSync(path.join(process.cwd(), 'public', c)).isFile()
+              } catch {
+                return false
+              }
+            })
             if (!htmlFile) {
               next()
               return

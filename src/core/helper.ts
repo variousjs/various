@@ -64,7 +64,11 @@ export const defineDependencies: typeof dd = (deps) => {
   Object.keys(deps).forEach((name) => {
     if (!BASE_DEPENDENCIES.includes(name)) {
       next[name] = deps[name]
-      deleteModule(name)
+      // Only delete if URL changed (preserves preloaded modules with same URL)
+      const currentUrl = getModuleUrl(name)
+      if (currentUrl !== deps[name]) {
+        deleteModule(name)
+      }
       setModuleUrl(name, deps[name])
     }
   })

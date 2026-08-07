@@ -96,7 +96,7 @@ async function loader(config: Config) {
 
   // Provide require() shim for CJS dependencies (e.g. nycticorax) that call
   // require('react') internally. Resolves from the module registry.
-  const { modules: regModules } = getRegistry()
+  const { modules: regModules, urls: regUrls } = getRegistry()
   const requireShim = (name: string) => {
     if (regModules.has(name)) {
       const mod = regModules.get(name)
@@ -129,6 +129,9 @@ async function loader(config: Config) {
     parallels.map((name) => {
       const url = allDeps[name]
       if (url && !BASE_LIBRARIES.has(name)) {
+        // Register URL before loading so defineDependencies can detect
+        // same URL and skip deletion (keeps preloaded modules in registry)
+        regUrls.set(name, url)
         return import(/* @vite-ignore */ url).then((mod) => {
           setModule(name, mod)
         })
@@ -195,4 +198,4 @@ Important: This application only works with React/ReactDOM ${REACT_REQUIREMENT_V
     .render(React.createElement(VariousApp))
 }
 
-loader(window.VARIOUS_CONFIG)
+loader(window.VARIOUS_CONFIG).catch(onError)
