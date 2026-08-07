@@ -94,18 +94,7 @@ async function loader(config: Config) {
   // This allows components to use bare specifiers like `import 'react'`.
   createImportMap(allDeps)
 
-  // Provide require() shim for CJS dependencies (e.g. nycticorax) that call
-  // require('react') internally. Resolves from the module registry.
-  const { modules: regModules, urls: regUrls } = getRegistry()
-  const requireShim = (name: string) => {
-    if (regModules.has(name)) {
-      const mod = regModules.get(name)
-      return mod && typeof mod === 'object' && 'default' in mod ? mod.default : mod
-    }
-    return undefined
-  }
-  // eslint-disable-next-line semi-style
-  ;(window as any).require = requireShim
+  const { urls: regUrls } = getRegistry()
 
   const dependencieNames = Object.keys(dependencies)
   const parallels = earlyParallelDependencies

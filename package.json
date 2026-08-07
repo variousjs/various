@@ -107,6 +107,6 @@
     "vue": "^3.5.40"
   },
   "dependencies": {
-    "nycticorax": "^4.2.0"
+    "nycticorax": "^4.2.1"
   }
 }
