@@ -45,8 +45,11 @@
     "dev:standalone": "TARGET=standalone-dev vite build --watch --mode development",
     "dev:components": "TARGET=components vite build --watch --mode development",
     "dev:serve": "TARGET=serve vite --mode development",
+    "_dev-all": "npm run dev:core & npm run dev:loader & npm run dev:standalone & npm run dev:components & npm run dev:serve",
     "prestart": "mkdir -p public/dist && npm run create-empty",
-    "start": "npm run dev:core & npm run dev:loader & npm run dev:standalone & npm run dev:components & npm run dev:serve",
+    "start": "npm run _dev-all",
+    "prestart:ci": "mkdir -p public/dist && npm run create-empty",
+    "start:ci": "COVERAGE=1 npm run _dev-all",
     "build:core": "TARGET=core vite build && cp dist/index.js public/dist/index.js",
     "build:core:dev": "TARGET=core DEV_VARIANT=true vite build --mode development",
     "build:loader": "TARGET=loader vite build && cp dist/loader.js public/dist/loader.js",
@@ -59,7 +62,7 @@
     "postbuild": "npm run create-empty",
     "prepublishOnly": "npm run build",
     "cy:run": "rm -rf .nyc_output && cypress run",
-    "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
+    "ci": "start-server-and-test start:ci http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
   },
   "repository": {

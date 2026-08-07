@@ -38,7 +38,11 @@ export function onwarn(warning: any, warn: (w: any) => void) {
 export function createBaseConfig(mode?: string): UserConfig {
   // Instrument app code in dev mode for cypress coverage.
   // Skip for standalone (npm package, TARGET=standalone) and production builds.
-  const enableCoverage = mode === 'development' && process.env.TARGET !== 'standalone'
+  // Only enabled when COVERAGE=1 (npm run start:ci) to avoid the AST transform
+  // overhead during everyday development (npm start).
+  const enableCoverage = mode === 'development'
+    && process.env.TARGET !== 'standalone'
+    && !!process.env.COVERAGE
 
   return {
     plugins: [
