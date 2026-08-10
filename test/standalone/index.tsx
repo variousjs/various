@@ -9,6 +9,7 @@ import {
   createLogger,
   createPostMessage,
 } from '../../src/standalone'
+import { setModule as setModuleDirect } from '../../src/core/system'
 
 const query = new URLSearchParams(window.location.search)
 const testType = query.get('type') || 'default'
@@ -34,6 +35,19 @@ const baseConfig: Record<string, AppConfig<Store>> = {
     dependencies: {},
     Fallback: () => null,
     ErrorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
+  },
+  deps: {
+    dependencies: {
+      // String dep not pre-registered by createComponent -> covers defineAsync string path
+      'helper-dep': '/dist/standalone/c.js',
+      // Object dep not pre-registered -> covers ensureImportMap blob URL + defineAsync object path
+      'helper-obj': { value: 'test' },
+      // Undefined dep -> covers value === undefined branch
+      'helper-undef': undefined,
+    },
+    store: { globalB: 'B' },
+    i18n: { defaultLocale: 'zh' },
+    actions: {},
   },
 }
 
@@ -65,6 +79,10 @@ const CC = createComponent({
 
 // widthout config
 if (testType !== 'strict') {
+  if (testType === 'deps') {
+    // Inject a null module to cover createModuleBlobUrl's null guard (system.ts L127)
+    setModuleDirect('null-dep', null)
+  }
   createAppConfig(baseConfig[testType])
 }
 

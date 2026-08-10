@@ -76,4 +76,12 @@ describe('standalone', () => {
     cy.visit('/standalone.html?type=config')
     cy.contains('p', 'Error - /dist/standalone/b.js').should('exist')
   })
+
+  it('dependency loading paths', () => {
+    cy.visit('/standalone.html?type=deps')
+    // Components still render correctly with extra deps loaded
+    cy.contains('p', 'props: propsA').should('exist')
+    cy.contains('p', 'props: propsB').should('exist')
+    cy.contains('p', 'global: B').should('exist')
+  })
 })

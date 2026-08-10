@@ -61,7 +61,7 @@
     "prebuild": "npm run lint && rm -rf dist && rm -rf public/dist && mkdir -p public/dist",
     "postbuild": "npm run create-empty",
     "prepublishOnly": "npm run build",
-    "cy:run": "rm -rf .nyc_output && cypress run",
+    "cy:run": "rm -rf .nyc_output coverage && cypress run",
     "ci": "start-server-and-test start:ci http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
   },
