@@ -130,21 +130,18 @@ async function loader(config: Config) {
   )
 
   // Step 3: Load core
-  const variousMod = await import(/* @vite-ignore */ corePath) as any
+  const variousMod = await import(/* @vite-ignore */ corePath)
   setModule('@variousjs/various', variousMod)
 
   // Step 4: Load app entry
-  const entryMod = await import(/* @vite-ignore */ allDeps.app) as any
+  const entryMod = await import(/* @vite-ignore */ allDeps.app)
 
   const various = variousMod.default || variousMod
   const entry = entryMod.default || entryMod
 
-  const React = (libMods[libEntries.indexOf('react')] as any)?.default
-  const ReactDOM = (libMods[libEntries.indexOf('react-dom')] as any)?.default
-  const reactDomClientIdx = libEntries.indexOf('react-dom/client')
-  const ReactDOMClient = reactDomClientIdx >= 0
-    ? (libMods[reactDomClientIdx] as any)?.default
-    : ReactDOM
+  const React = (libMods[libEntries.indexOf('react')])?.default
+  const ReactDOM = (libMods[libEntries.indexOf('react-dom')])?.default
+  const ReactDOMClient = (libMods[libEntries.indexOf('react-dom/client')])?.default
 
   const versionRegex = new RegExp(`^${REACT_REQUIREMENT_VERSION}\\.`)
   if (!React || !ReactDOM
