@@ -17,7 +17,7 @@ const renderComponent: typeof rc = async ({
   onMounted,
 }) => {
   try {
-    const ReactDOM = await createModule<typeof reactDom>({ module: 'react-dom' })
+    const ReactDOM = await createModule<typeof reactDom>({ module: 'react-dom/client' })
 
     const C = (type === 'vue3' ? createVueComponent : createReactComponent)({
       module,

@@ -22,7 +22,7 @@ declare module '@variousjs/various/standalone' {
   >(
     config: {
       module: ModuleDef,
-      url: string,
+      url?: string,
       type?: VariousComponentType,
       dependencies?: Partial<Record<
         string,

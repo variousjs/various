@@ -1,8 +1,8 @@
 {
   "name": "@variousjs/various",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "type": "module",
-  "description": "RequireJS(AMD) + React",
+  "description": "ESM micro-frontend framework",
   "files": [
     "dist",
     "index.d.ts",
@@ -13,16 +13,12 @@
       "import": {
         "types": "./index.d.ts",
         "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./index.d.ts",
-        "default": "./dist/index.js"
       }
     },
     "./standalone": {
       "import": {
         "types": "./standalone.d.ts",
-        "default": "./dist/standalone.js"
+        "default": "./dist/standalone.mjs"
       },
       "require": {
         "types": "./standalone.d.ts",
@@ -43,26 +39,30 @@
   },
   "scripts": {
     "lint": "tsc --noemit --skipLibCheck && eslint . --ext .ts,.tsx,.js",
-    "create-empty": "touch public/dist/empty.js",
+    "create-empty": "echo 'export {}' > public/dist/empty.js",
     "dev:core": "TARGET=core vite build --watch --mode development",
     "dev:loader": "TARGET=loader vite build --watch --mode development",
     "dev:standalone": "TARGET=standalone-dev vite build --watch --mode development",
     "dev:components": "TARGET=components vite build --watch --mode development",
     "dev:serve": "TARGET=serve vite --mode development",
+    "_dev-all": "npm run dev:core & npm run dev:loader & npm run dev:standalone & npm run dev:components & npm run dev:serve",
     "prestart": "mkdir -p public/dist && npm run create-empty",
-    "start": "npm run dev:core & npm run dev:loader & npm run dev:standalone & npm run dev:components & npm run dev:serve",
+    "start": "npm run _dev-all",
+    "prestart:ci": "mkdir -p public/dist && npm run create-empty",
+    "start:ci": "COVERAGE=1 npm run _dev-all",
     "build:core": "TARGET=core vite build && cp dist/index.js public/dist/index.js",
     "build:core:dev": "TARGET=core DEV_VARIANT=true vite build --mode development",
     "build:loader": "TARGET=loader vite build && cp dist/loader.js public/dist/loader.js",
     "build:loader:dev": "TARGET=loader DEV_VARIANT=true vite build --mode development",
     "build:standalone": "TARGET=standalone vite build --mode development",
+    "build:standalone:esm": "TARGET=standalone-esm vite build --mode development",
     "build:components": "TARGET=components vite build",
-    "build": "npm run build:core && npm run build:core:dev && npm run build:loader && npm run build:loader:dev && npm run build:standalone && npm run build:components",
+    "build": "npm run build:core && npm run build:core:dev && npm run build:loader && npm run build:loader:dev && npm run build:standalone && npm run build:standalone:esm && npm run build:components",
     "prebuild": "npm run lint && rm -rf dist && rm -rf public/dist && mkdir -p public/dist",
     "postbuild": "npm run create-empty",
     "prepublishOnly": "npm run build",
-    "cy:run": "rm -rf .nyc_output && cypress run",
-    "ci": "start-server-and-test start http://127.0.0.1:2333 cy:run",
+    "cy:run": "rm -rf .nyc_output coverage && cypress run",
+    "ci": "start-server-and-test start:ci http://127.0.0.1:2333 cy:run",
     "cypress": "cypress open"
   },
   "repository": {
@@ -70,8 +70,8 @@
     "url": "git+https://github.com/variousjs/various.git"
   },
   "keywords": [
-    "requirejs",
-    "amd",
+    "esm",
+    "micro-frontend",
     "react"
   ],
   "author": "LoeiFy <LoeiFy@gmail.com>",
@@ -86,7 +86,6 @@
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "@types/react-router-dom": "^5.3.3",
-    "@types/requirejs": "^2.1.37",
     "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@typescript-eslint/parser": "^8.65.0",
     "@vitejs/plugin-vue": "^6.0.8",
@@ -108,11 +107,6 @@
     "vue": "^3.5.40"
   },
   "dependencies": {
-    "@variousjs/requirejs": "0.0.2",
-    "nycticorax": "^4.2.0"
-  },
-  "overrides": {
-    "qs": "6.14.1",
-    "js-yaml": "4.1.1"
+    "nycticorax": "^4.2.1"
   }
 }

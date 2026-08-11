@@ -2,16 +2,14 @@ import path from 'path'
 import { type UserConfig } from 'vite'
 import {
   createBaseConfig,
-  EXTERNALS,
   STANDALONE_EXTERNALS,
-  GLOBALS,
   onwarn,
-} from './base'
+} from './base.js'
 
 const ROOT = process.cwd()
 
 // Builds the page loader script (loaded via <script src>).
-// Matches webpack/entry.js: entry src/loader.tsx, default library type (IIFE)
+// IIFE format with inlineDynamicImports to support native import() calls.
 export function createLoaderConfig(mode: string): UserConfig {
   const devVariant = process.env.DEV_VARIANT === 'true'
   const isProd = mode === 'production'
@@ -25,14 +23,13 @@ export function createLoaderConfig(mode: string): UserConfig {
       ...base.build,
       outDir: path.resolve(ROOT, outputDir),
       minify: isProd,
+      modulePreload: false,
       rollupOptions: {
         onwarn,
-        external: EXTERNALS,
         input: { [entryName]: path.resolve(ROOT, 'src/loader.tsx') },
         output: {
           format: 'iife',
           entryFileNames: '[name].js',
-          globals: GLOBALS,
         },
       },
     },
@@ -57,6 +54,28 @@ export function createStandaloneConfig(): UserConfig {
           format: 'cjs',
           entryFileNames: '[name].js',
           exports: 'named',
+        },
+      },
+    },
+  }
+}
+
+// Builds standalone module as ESM for npm consumers.
+export function createStandaloneESMConfig(): UserConfig {
+  const base = createBaseConfig('production')
+  return {
+    ...base,
+    build: {
+      ...base.build,
+      outDir: path.resolve(ROOT, 'dist'),
+      minify: false,
+      rollupOptions: {
+        onwarn,
+        external: STANDALONE_EXTERNALS,
+        input: { standalone: path.resolve(ROOT, 'src/standalone/index.tsx') },
+        output: {
+          format: 'es',
+          entryFileNames: 'standalone.mjs',
         },
       },
     },

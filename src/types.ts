@@ -22,7 +22,6 @@ import type {
 
 declare global {
   export const VERSION: string
-  interface Require { s: any }
   interface Window { VARIOUS_CONFIG: Config }
 }
 
@@ -39,12 +38,6 @@ export interface Store {
 export type Actions<S extends object> = Record<string, Dispatch<S>>
 
 export type PublicActions = Record<string, PublicAction>
-
-export interface RequireError extends Error {
-  requireType: string,
-  requireModules: string[],
-  originalError: Error,
-}
 
 export type RequiredComponent = ComponentType<VariousProps>
   & Actions<Store>

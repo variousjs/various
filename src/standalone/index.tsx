@@ -1,4 +1,3 @@
-import '@variousjs/requirejs'
 import React, {
   ComponentType,
   FC,
@@ -13,6 +12,8 @@ import createComponentCore from '../core/create-component'
 import ErrorBoundary from '../core/error-boundary'
 import connector from '../core/connector'
 import { defineModules } from './helper'
+import { setModule } from '../core/helper'
+import { setModuleUrl } from '../core/system'
 import { createStore, getUserStore, useStore } from '../core/store'
 import {
   MOUNTED_COMPONENTS_KEY,
@@ -36,7 +37,8 @@ createStore({
   [LOCALE_KEY]: DEFAULT_LOCALE,
 })
 
-window.define('react', [], () => React)
+// Register local React so remote components import the same instance
+setModule('react', React)
 
 const Standalone: FC<
   Parameters<typeof cc<any, any, any>>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
@@ -70,7 +72,7 @@ const Standalone: FC<
     const FallBack = connector.getFallbackComponent()
     return (
       <FallBack
-        $self={{ module, url }}
+        $self={{ module, url: url || '' }}
         $store={getUserStore()}
         $locale={store[LOCALE_KEY]}
       />
@@ -87,6 +89,19 @@ const Standalone: FC<
 Standalone.displayName = 'various-standalone'
 
 export const createComponent: typeof cc = (args) => {
+  // Pre-register all dependencies so they're included in the import map
+  // created by createAppConfig or the first useEffect (browser only supports
+  // one import map, added before any import() call)
+  if (args.dependencies) {
+    Object.entries(args.dependencies).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        setModuleUrl(key, value)
+      } else {
+        setModule(key, value)
+      }
+    })
+  }
+
   const component: FC = (props: ObjectRecord) => (
     <ErrorBoundary url={args.url} module={args.module}>
       <Standalone $componentProps={props} {...args} />

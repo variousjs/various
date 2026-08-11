@@ -28,7 +28,6 @@ declare module '@variousjs/various' {
     'APP_ERROR' |
     'INVALID_MODULE' |
     'SUBMODULE_NOT_DEFINED' |
-    'SUBMODULE_SCRIPT_ERROR' |
     'DISPATCH' |
     'I18N' | (string & {})
 

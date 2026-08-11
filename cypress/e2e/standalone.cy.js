@@ -26,6 +26,9 @@ describe('standalone', () => {
     // $self
     cy.contains('p', 'info: b - /dist/standalone/b.js').should('exist')
 
+    // getModuleUrl: component without explicit url resolves via setModuleUrl
+    cy.contains('p', 'self url: /dist/standalone/c.js').should('exist')
+
     // i18n & createDispatch
     cy.contains('p', 'greet: 你好，C，D').should('exist')
     cy.contains('button', 'change lng').click()
@@ -72,5 +75,13 @@ describe('standalone', () => {
   it('base config', () => {
     cy.visit('/standalone.html?type=config')
     cy.contains('p', 'Error - /dist/standalone/b.js').should('exist')
+  })
+
+  it('dependency loading paths', () => {
+    cy.visit('/standalone.html?type=deps')
+    // Components still render correctly with extra deps loaded
+    cy.contains('p', 'props: propsA').should('exist')
+    cy.contains('p', 'props: propsB').should('exist')
+    cy.contains('p', 'global: B').should('exist')
   })
 })

@@ -1,4 +1,3 @@
-import '@variousjs/requirejs'
 import React, { useRef, StrictMode } from 'react'
 import * as Vue from 'vue'
 import { createRoot } from 'react-dom/client'
@@ -10,6 +9,7 @@ import {
   createLogger,
   createPostMessage,
 } from '../../src/standalone'
+import { setModule as setModuleDirect } from '../../src/core/system'
 
 const query = new URLSearchParams(window.location.search)
 const testType = query.get('type') || 'default'
@@ -36,6 +36,19 @@ const baseConfig: Record<string, AppConfig<Store>> = {
     Fallback: () => null,
     ErrorFallback: ({ $self }) => <p>Error - {$self.url}</p>,
   },
+  deps: {
+    dependencies: {
+      // String dep not pre-registered by createComponent -> covers defineAsync string path
+      'helper-dep': '/dist/standalone/c.js',
+      // Object dep not pre-registered -> covers ensureImportMap blob URL + defineAsync object path
+      'helper-obj': { value: 'test' },
+      // Undefined dep -> covers value === undefined branch
+      'helper-undef': undefined,
+    },
+    store: { globalB: 'B' },
+    i18n: { defaultLocale: 'zh' },
+    actions: {},
+  },
 }
 
 const RC = createComponent<{ propsA: string }>({
@@ -55,8 +68,21 @@ const VC = createComponent<{ propsB: string }, any, { globalB: string }>({
   storeKeys: ['globalB'],
 })
 
+// Component created WITHOUT an explicit url: the URL is registered via
+// defineModules (setModuleUrl), so getSelfInfo falls through to getModuleUrl.
+const CC = createComponent({
+  module: 'c',
+  dependencies: {
+    c: '/dist/standalone/c.js',
+  },
+})
+
 // widthout config
 if (testType !== 'strict') {
+  if (testType === 'deps') {
+    // Inject a null module to cover createModuleBlobUrl's null guard (system.ts L127)
+    setModuleDirect('null-dep', null)
+  }
   createAppConfig(baseConfig[testType])
 }
 
@@ -99,6 +125,7 @@ function App() {
         log
       </button>
       <VC propsB="propsB" />
+      {testType === 'default' && <CC />}
     </div>
   )
 }

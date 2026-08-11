@@ -1,16 +1,16 @@
 import { createModule as cm, ObjectRecord } from '@variousjs/various'
-import { RequireError } from '../types'
 import { DEPENDENCIES_KEY } from './config'
 import { getStore } from './store'
 import connector from './connector'
 import {
+  VariousError,
   isModuleLoaded,
   resetDependencyConfig,
-  VariousError,
   onError,
   isModuleSpecified,
   getModuleInfo,
 } from './helper'
+import { importModule } from './system'
 
 const createModule: typeof cm = (config, logError = true) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
@@ -42,7 +42,7 @@ const createModule: typeof cm = (config, logError = true) => {
       return
     }
 
-    window.requirejs([name], (C?: ObjectRecord) => {
+    importModule<ObjectRecord>(name).then((C?: ObjectRecord) => {
       const loadEnd = +new Date()
 
       middlewares?.onLoad?.({
@@ -52,7 +52,7 @@ const createModule: typeof cm = (config, logError = true) => {
         beenLoaded: isModuleLoaded(module),
       })
 
-      if (!C) {
+      if (!C || (typeof C === 'object' && Object.keys(C).length === 0)) {
         const error = new VariousError({
           module,
           type: 'INVALID_MODULE',
@@ -82,24 +82,17 @@ const createModule: typeof cm = (config, logError = true) => {
       }
 
       resolve(actualModule)
-    }, (e: RequireError) => {
-      const [requireModule] = e.requireModules
-
+    }).catch((e: Error) => {
       resetDependencyConfig(module, url)
-      resetDependencyConfig(requireModule)
 
       let errorType: VariousError['type'] = 'LOADING_ERROR'
 
-      if (requireModule !== name) {
+      if (!url && e.message && !e.message.includes(name)) {
         errorType = 'SUBMODULE_LOADING_ERROR'
       }
 
-      if (!e.message.includes('https://requirejs.org/docs/errors.html')) {
-        errorType = requireModule === name ? 'SCRIPT_ERROR' : 'SUBMODULE_SCRIPT_ERROR'
-      }
-
       const error = new VariousError({
-        module: requireModule,
+        module: name,
         type: errorType,
         originalError: e,
       })

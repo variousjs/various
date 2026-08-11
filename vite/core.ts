@@ -1,14 +1,10 @@
 import path from 'path'
 import { type UserConfig } from 'vite'
-import { createBaseConfig, EXTERNALS, onwarn } from './base'
-import { cjsToAmd } from './cjs-to-amd'
+import { createBaseConfig, EXTERNALS, onwarn } from './base.js'
 
 const ROOT = process.cwd()
 
-// Builds the framework core (@variousjs/various) as an AMD module.
-// CJS output is wrapped in define([deps], factory) by cjsToAmd plugin
-// so RequireJS can properly resolve and preload dependencies.
-// Matches webpack/package-core.js: libraryTarget 'amd', entry src/core/index.tsx
+// Builds the framework core (@variousjs/various) as an ESM module.
 export function createCoreConfig(mode: string): UserConfig {
   const devVariant = process.env.DEV_VARIANT === 'true'
   const isProd = mode === 'production'
@@ -19,7 +15,6 @@ export function createCoreConfig(mode: string): UserConfig {
   const base = createBaseConfig(mode)
   return {
     ...base,
-    plugins: [...(base.plugins || []), cjsToAmd()],
     build: {
       ...base.build,
       outDir: path.resolve(ROOT, outputDir),
@@ -30,7 +25,7 @@ export function createCoreConfig(mode: string): UserConfig {
         input: { [entryName]: path.resolve(ROOT, 'src/core/index.tsx') },
         preserveEntrySignatures: 'strict',
         output: {
-          format: 'cjs',
+          format: 'es',
           entryFileNames: '[name].js',
         },
       },
