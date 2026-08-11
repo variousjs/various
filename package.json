@@ -2,7 +2,7 @@
   "name": "@variousjs/various",
   "version": "6.0.0",
   "type": "module",
-  "description": "ESM micro-frontend framework",
+  "description": "React-based ESM micro-frontend framework",
   "files": [
     "dist",
     "index.d.ts",
