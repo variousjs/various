@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { createModule, VariousError } from '@variousjs/various'
+import { createModule, defineDependencies, VariousError } from '@variousjs/various'
 
 export default () => {
   const [defaultText, setDefaultText] = useState<string>()
+  const [dynamicValue, setDynamicValue] = useState<string>()
   const [errors, setErrors] = useState<Record<string, {
     type: string,
     msg: string,
@@ -81,6 +82,27 @@ export default () => {
                 subModuleNotDefined: { type: error.type, msg: error.message },
               }))
             }
+          }}
+        >
+          Create
+        </button>
+      </div>
+
+      <h3>Dynamic Defined</h3>
+      <div className="value">
+        <p>Value: {dynamicValue}</p>
+        <button
+          onClick={async () => {
+            // 'sub-m' is not in the app config dependencies, so it is absent
+            // from the initial import map. defineDependencies appends a new
+            // import map at runtime (multiple import maps), letting
+            // sub-not-define.js resolve `import sub from 'sub-m'` on load.
+            defineDependencies({ 'sub-m': './dist/create-module/sub-m.js' })
+            const value = await createModule<string>({
+              module: 'sub-dynamic',
+              url: './dist/create-module/sub-not-define.js',
+            })
+            setDynamicValue(value)
           }}
         >
           Create

@@ -57,6 +57,33 @@ export const removeLoadedModules: typeof rm = (modules) => {
   })
 }
 
+// Append a new import map for dynamically registered dependencies.
+// Requires multiple import maps support (Chrome 133+ / Safari 18.4+):
+// the browser merges new <script type="importmap"> entries into the global
+// map, so modules loaded afterwards can resolve these bare specifiers.
+// Already-resolvable names are skipped: the merge algorithm forbids
+// redefining mappings that were already defined or resolved.
+function appendImportMap(deps: Record<string, string>) {
+  const additions: Record<string, string> = {}
+
+  Object.entries(deps).forEach(([name, url]) => {
+    if (BASE_DEPENDENCIES.includes(name)) return
+    try {
+      import.meta.resolve(name)
+    } catch {
+      // Not in any import map yet -> add it
+      additions[name] = url
+    }
+  })
+
+  if (Object.keys(additions).length === 0) return
+
+  const script = document.createElement('script')
+  script.type = 'importmap'
+  script.textContent = JSON.stringify({ imports: additions })
+  document.head.appendChild(script)
+}
+
 export const defineDependencies: typeof dd = (deps) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const next = {} as Record<string, string>
@@ -72,6 +99,8 @@ export const defineDependencies: typeof dd = (deps) => {
       setModuleUrl(name, deps[name])
     }
   })
+
+  appendImportMap(deps)
 
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
