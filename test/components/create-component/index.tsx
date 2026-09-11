@@ -19,6 +19,7 @@ const Mg = createComponent({ module: 'create.B', type: 'vue3' })
 const Mh = createComponent({ module: 'create.D' })
 const Mi = createComponent({ module: 'create-vue-e', url: './dist/create-component/e.js', type: 'vue3' })
 const Mj = createComponent({ module: 'create.Ref' })
+// const Switch = createComponent({ module: 'switch', url: 'https://unpkg.com/react-switch@7.1.0/dist/index.prod.mjs' })
 
 export default (props: VariousProps) => {
   const { module } = props.$self
@@ -32,6 +33,8 @@ export default (props: VariousProps) => {
 
   return (
     <>
+      {/* <Switch onChange={(e) => console.log(e)} /> */}
+
       <h3>Create Component</h3>
       <div className="value">
         <Ma $ref={maRef} />
