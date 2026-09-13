@@ -1,9 +1,9 @@
-import {
+import type {
   Intl,
   ModuleDef,
   I18n,
   I18nConfig,
-} from '@variousjs/various'
+} from '../public/types'
 import connector from './connector'
 import { VariousError, onError, isPromiseLike } from './helper'
 import { getStore, emit } from './store'

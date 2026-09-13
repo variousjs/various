@@ -1,4 +1,4 @@
-import type { App, Config } from '@variousjs/various'
+import type { App, Config } from './public/types'
 
 const DEFAULT_PACKAGES = {
   react: 'https://esm.sh/react@19.2.0',

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import {
+import type {
   ComponentDefaultProps,
   VariousError as ve,
   ModuleDef,
-} from '@variousjs/various'
+} from '../public/types'
 import {
   checkReactComponent,
   updateUnMountComponent,

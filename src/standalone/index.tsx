@@ -6,8 +6,11 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { createComponent as cc } from '@variousjs/various/standalone'
-import { ObjectRecord } from '@variousjs/various'
+import type {
+  StandaloneCreateComponent,
+  StandaloneComponentConfig,
+  ObjectRecord,
+} from '../public/types'
 import createComponentCore from '../core/create-component'
 import ErrorBoundary from '../core/error-boundary'
 import connector from '../core/connector'
@@ -41,7 +44,7 @@ createStore({
 setModule('react', React)
 
 const Standalone: FC<
-  Parameters<typeof cc<any, any, any>>['0'] & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
+  StandaloneComponentConfig & { $componentProps: ObjectRecord, $ref?: RefObject<unknown> }
 > = (props) => {
   const {
     dependencies,
@@ -88,7 +91,7 @@ const Standalone: FC<
 
 Standalone.displayName = 'various-standalone'
 
-export const createComponent: typeof cc = (args) => {
+export const createComponent: StandaloneCreateComponent = (args) => {
   // Pre-register all dependencies so they're included in the import map
   // created by createAppConfig or the first useEffect (browser only supports
   // one import map, added before any import() call)
@@ -104,7 +107,8 @@ export const createComponent: typeof cc = (args) => {
 
   const component: FC = (props: ObjectRecord) => (
     <ErrorBoundary url={args.url} module={args.module}>
-      <Standalone $componentProps={props} {...args} />
+      {/* args.storeKeys is (keyof Store)[]; the inner component treats it as string[] */}
+      <Standalone $componentProps={props} {...(args as StandaloneComponentConfig)} />
     </ErrorBoundary>
   )
 

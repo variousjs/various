@@ -1,5 +1,8 @@
 import React, { ComponentType } from 'react'
-import { FallbackNode, ErrorFallbackNode } from '@variousjs/various'
+import type {
+  FallbackNode,
+  ErrorFallbackNode,
+} from '../public/types'
 import { getClassNameWithModule } from './helper'
 
 export const Fallback: FallbackNode<any> = (props) => {
