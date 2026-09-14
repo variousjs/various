@@ -56,11 +56,10 @@
     "build:standalone:esm": "TARGET=standalone-esm vite build --mode development",
     "build:components": "TARGET=components vite build",
     "build:types": "tsc -p tsconfig.types.json",
-    "check:types": "tsc -p tsconfig.consumer-check.json",
-    "check:hints": "node test/type-check/verify.js",
+    "check:types": "vue-tsc -p tsconfig.consumer-check.json",
     "build": "npm run build:core && npm run build:core:dev && npm run build:loader && npm run build:loader:dev && npm run build:standalone && npm run build:standalone:esm && npm run build:components && npm run build:types",
     "prebuild": "npm run lint && rm -rf dist && rm -rf public/dist && mkdir -p public/dist",
-    "postbuild": "npm run create-empty && npm run check:types && npm run check:hints",
+    "postbuild": "npm run create-empty && npm run check:types",
     "prepublishOnly": "npm run build",
     "cy:run": "rm -rf .nyc_output coverage && cypress run",
     "ci": "start-server-and-test start:ci http://127.0.0.1:2333 cy:run",
@@ -105,7 +104,8 @@
     "typescript": "^5.9.3",
     "vite": "^8.1.5",
     "vite-plugin-istanbul": "^9.0.1",
-    "vue": "^3.5.40"
+    "vue": "^3.5.40",
+    "vue-tsc": "^3.3.11"
   },
   "dependencies": {
     "nycticorax": "^4.2.1"

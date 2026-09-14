@@ -22,5 +22,5 @@
       "@variousjs/various/standalone": ["./src/public/standalone.ts"]
     }
   },
-  "exclude": ["dist", "public"]
+  "exclude": ["dist", "public", "test/type-check"]
 }
