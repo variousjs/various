@@ -31,7 +31,7 @@ const V = defineComponent({
   },
 
   setup(props) {
-    // b: number
+    // b: number | undefined
     const { b } = props.various?.$store || {}
     window.console.log(b)
 
@@ -43,10 +43,10 @@ const V = defineComponent({
       async dispatch() {
         // 'ca' / 'next' / string
         const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
-        // res: number
+        // res: number | undefined
         window.console.log(res)
 
-        // i18n
+        // 'app' / 'updateI18nConfig' / Partial<I18nConfig>
         props.various?.$dispatch({ target: 'app', action: 'updateI18nConfig', payload: { resources: { zh: { name: 'C' } } } })
       }
     }
@@ -54,7 +54,7 @@ const V = defineComponent({
 })
 
 const staticProps: ComponentStatics<SelfActions, GlobalMessages> = {
-  // payload: number / trigger: string
+  // payload?: number / trigger: string
   update: ({ payload, trigger }) => {
     window.console.log(payload, trigger)
   },

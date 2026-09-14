@@ -103,9 +103,9 @@ type $dispatch<M extends ComponentPublicActionMap = never> = [M] extends [never]
       params: {
         target: T,
         action: A,
-        payload?: M[T][A]['payload'],
+        payload?: NonNullable<M[T][A]>['payload'],
       }
-    ): Promise<M[T][A]['result']>
+    ): Promise<NonNullable<M[T][A]>['result']>
   }
 
 export type DefineAppActions<T extends PublicActionDef = {}> = DefineActions<{

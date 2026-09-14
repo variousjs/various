@@ -47,7 +47,8 @@ export const A: VariousFC<
 
   $dispatch({ target: 'ca', action: 'update', payload: 1 }) // 'ca' / 'update' / number
 
-  $dispatch({ target: 'app', action: 'getLocale' }).then((res) => {
+  $dispatch({ target: 'app', action: 'getLocale' }).then((res) => { // 'app' / 'getLocale'
+    // res: string
     window.console.log(res)
   })
 
@@ -60,7 +61,7 @@ A.$onMessage = ({ event, payload, trigger }) => {
 }
 A.$i18n = () => ({ resources: {} })
 
-// payload: number / trigger: string
+// payload?: number / trigger: string
 A.update = ({ payload, trigger }) => {
   window.console.log(payload, trigger)
 }
