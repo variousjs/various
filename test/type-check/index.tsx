@@ -44,11 +44,15 @@ export const A: VariousFC<
   type _a = Expect<Equal<typeof a, string>>
   type _b = Expect<Equal<typeof b, number>>
 
+  // Negative probes: one representative per API constraint. The payload rules
+  // belong to the $postMessage<M>/$dispatch<M> type constructors, shared by
+  // every consumer path, so probes live only here (later usages need no probes).
   $postMessage({ event: 'greet', payload: b })
   // @ts-expect-error payload for event 'greet' must be number
   $postMessage({ event: 'greet', payload: a })
-  typedPostMessage({ event: 'next', payload: a })
+  typedPostMessage({ event: 'next', payload: a }) // legal call, no probe needed
 
+  // same minimal-set rule for the $dispatch<M> payload constraint
   $dispatch({ target: 'ca', action: 'update', payload: 1 })
   // @ts-expect-error payload for action 'update' must be number
   $dispatch({ target: 'ca', action: 'update', payload: 'x' })
@@ -105,6 +109,10 @@ export class B extends Component<VariousProps<
     type _a = Expect<Equal<typeof a, string>>
     type _b = Expect<Equal<typeof b, number>>
 
+    // no probes here: same $postMessage/$dispatch types as A (VariousFC wraps
+    // VariousProps, both wired via ComponentBuiltinProps); if the Messages
+    // wiring regressed, $dispatch would turn untyped and the `res` assertion
+    // below would fail
     $postMessage({ event: 'greet', payload: b })
     $postMessage({ event: 'next', payload: a })
 
@@ -121,6 +129,8 @@ export class B extends Component<VariousProps<
   --------------------------------------
   default types
   --------------------------------------
+  Untyped API accepts anything, so there is nothing to probe negatively:
+  the assertions below pin the loose types (any / string) instead.
 */
 
 const unTypedPostMessage = createPostMessage('unTyped')

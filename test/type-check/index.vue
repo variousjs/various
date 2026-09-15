@@ -25,6 +25,11 @@ type GlobalActions = {
   }>,
 }
 
+// No negative probes in this file: $postMessage/$dispatch are the same
+// $postMessage<M>/$dispatch<M> constructors already probed in index.tsx
+// (wired via PropType<ComponentBuiltinProps>); if the Messages wiring
+// regressed here, $dispatch would turn untyped and the `res` assertion
+// in dispatch() below would fail.
 const V = defineComponent({
   props: {
     various: Object as VariousComponentProps<GlobalStoreProps, GlobalMessages, GlobalActions>,
