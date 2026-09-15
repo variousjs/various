@@ -1,17 +1,17 @@
 import React, { ComponentType, ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
-import {
+import type { Dispatch } from 'nycticorax'
+import type {
   VariousProps,
   PublicAction,
   Config,
   OnMessage,
   I18n,
-  Dispatch,
   ModuleDef,
   App,
   I18nConfig,
-} from '@variousjs/various'
-import type {
+} from './public/types'
+import {
   MESSAGE_KEY,
   DEPENDENCIES_KEY,
   MOUNTED_COMPONENTS_KEY,
@@ -20,9 +20,13 @@ import type {
   LOCALE_KEY,
 } from './core/config'
 
-declare global {
-  export const VERSION: string
-  interface Window { VARIOUS_CONFIG: Config }
+export {
+  MESSAGE_KEY,
+  DEPENDENCIES_KEY,
+  MOUNTED_COMPONENTS_KEY,
+  CONFIG_KEY,
+  STANDALONE_CONFIG_READY,
+  LOCALE_KEY,
 }
 
 export interface Store {

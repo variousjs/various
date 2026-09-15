@@ -1,9 +1,9 @@
-import {
+import type {
   FallbackNode,
   ErrorFallbackNode,
   App,
   ModuleDef,
-} from '@variousjs/various'
+} from '../public/types'
 import { Fallback, ErrorFallback } from './default-component'
 import {
   PublicActions,

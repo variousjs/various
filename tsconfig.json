@@ -16,7 +16,11 @@
     "removeComments": true,
     "stripInternal": true,
     "resolveJsonModule": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "paths": {
+      "@variousjs/various": ["./src/public/index.ts"],
+      "@variousjs/various/standalone": ["./src/public/standalone.ts"]
+    }
   },
-  "exclude": ["dist", "public"]
+  "exclude": ["dist", "public", "test/type-check"]
 }

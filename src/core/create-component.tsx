@@ -1,11 +1,14 @@
 import React from 'react'
-import { createComponent as cc, ComponentDefaultProps } from '@variousjs/various'
+import type {
+  CreateComponent,
+  ComponentDefaultProps,
+} from '../public/types'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
 import ErrorBoundary from './error-boundary'
 import { CreateComponentProps } from '../types'
 
-const createComponent: typeof cc<any, any> = (config, storeKeys) => {
+const createComponent: CreateComponent = (config, storeKeys) => {
   const {
     module,
     url,

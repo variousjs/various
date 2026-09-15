@@ -1,10 +1,13 @@
-import { ModuleDef, OnMessage, createPostMessage as cpm } from '@variousjs/various'
+import type { ModuleDef, OnMessage, CreatePostMessage } from '../public/types'
 import connector from './connector'
 import createLogger from './logger'
 import { emit, subscribe } from './store'
 import { MESSAGE_KEY } from './config'
 
-export const createPostMessage: typeof cpm<never> = (module) => async ({ event, payload }) => {
+const postMessageCreator = (module: ModuleDef) => async ({ event, payload }: {
+  event: string,
+  payload?: any,
+}) => {
   const middlewares = connector.getMiddlewares()
   const logger = createLogger(module)
 
@@ -32,6 +35,9 @@ export const createPostMessage: typeof cpm<never> = (module) => async ({ event, 
     },
   })
 }
+
+// cast: same rationale as createDispatch in dispatch.ts
+export const createPostMessage: CreatePostMessage = postMessageCreator as CreatePostMessage
 
 export const createOnMessage = (module: ModuleDef, onMessage: OnMessage) => subscribe({
   [MESSAGE_KEY](v) {

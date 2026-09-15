@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig.consumer-check.json",
+  "include": [".", "../global.d.ts", "../../src/globals.d.ts"]
+}

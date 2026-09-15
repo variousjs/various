@@ -1,11 +1,15 @@
-import { createDispatch as cd } from '@variousjs/various'
+import type { ModuleDef, CreateDispatch } from '../public/types'
 import connector from './connector'
 import { dispatch, emit, getStore } from './store'
 import { onError, VariousError } from './helper'
 import createLogger from './logger'
 import { I18NActions, LOCALE_KEY } from './config'
 
-const createDispatch: typeof cd<never> = (module) => async function (params) {
+const dispatchCreator = (module: ModuleDef) => async function (params: {
+  target: string,
+  action: string,
+  payload?: any,
+}) {
   const middlewares = connector.getMiddlewares()
   const logger = createLogger(module)
 
@@ -92,5 +96,9 @@ const createDispatch: typeof cd<never> = (module) => async function (params) {
 
   return Promise.resolve(componentAction({ payload, trigger: module }))
 }
+
+// cast: $dispatch<M> is satisfied for every valid M (string keys at call sites);
+// the constraint-instantiated comparison fails only on number keys of the index signature
+export const createDispatch: CreateDispatch = dispatchCreator as CreateDispatch
 
 export default createDispatch

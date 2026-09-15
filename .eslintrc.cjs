@@ -69,4 +69,15 @@ module.exports = {
     'react/require-default-props': 0,
     'react/no-unused-class-component-methods': 0,
   },
+  overrides: [
+    {
+      // type-level assertions (Expect/Equal) are intentionally unused aliases,
+      // and the assertion helpers are ambient globals from assert.d.ts
+      files: ['test/type-check/**'],
+      rules: {
+        'no-undef': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
+  ],
 }

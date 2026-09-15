@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "noUnusedLocals": false,
+    "paths": {
+      "@variousjs/various": ["./dist/types/public/index.d.ts"],
+      "@variousjs/various/standalone": ["./dist/types/public/standalone.d.ts"]
+    }
+  },
+  "include": ["test", "src/globals.d.ts"],
+  "exclude": ["dist", "public"]
+}

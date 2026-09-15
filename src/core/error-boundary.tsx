@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { VariousError as ve } from '@variousjs/various'
+import type { VariousError as ve } from '../public/types'
 import {
   onError,
   VariousError,

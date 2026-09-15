@@ -7,12 +7,12 @@ import React, {
 } from 'react'
 import * as Vue from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import {
+import type {
   ComponentDefaultProps,
   ModuleDef,
   VariousError as ve,
   ObjectRecord,
-} from '@variousjs/various'
+} from '../public/types'
 import connector from './connector'
 import createModule from './create-module'
 import { getStore, useStore } from './store'

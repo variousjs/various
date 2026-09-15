@@ -25,28 +25,30 @@ type GlobalActions = {
   }>,
 }
 
+// No negative probes in this file: $postMessage/$dispatch are the same
+// $postMessage<M>/$dispatch<M> constructors already probed in index.tsx
+// (wired via PropType<ComponentBuiltinProps>); if the Messages wiring
+// regressed here, $dispatch would turn untyped and the `res` assertion
+// in dispatch() below would fail.
 const V = defineComponent({
   props: {
     various: Object as VariousComponentProps<GlobalStoreProps, GlobalMessages, GlobalActions>,
   },
 
   setup(props) {
-    // b: number
     const { b } = props.various?.$store || {}
+    type _b = Expect<Equal<typeof b, number | undefined>>
     window.console.log(b)
 
     return {
       msg() {
-        // 'next' / string
         props.various?.$postMessage({ event: 'next', payload: 'a' })
       },
       async dispatch() {
-        // 'ca' / 'next' / string
         const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
-        // res: number
+        type _r = Expect<Equal<typeof res, number | undefined>>
         window.console.log(res)
 
-        // i18n
         props.various?.$dispatch({ target: 'app', action: 'updateI18nConfig', payload: { resources: { zh: { name: 'C' } } } })
       }
     }
@@ -54,12 +56,15 @@ const V = defineComponent({
 })
 
 const staticProps: ComponentStatics<SelfActions, GlobalMessages> = {
-  // payload: number / trigger: string
   update: ({ payload, trigger }) => {
+    type _p = Expect<Equal<typeof payload, number | undefined>>
+    type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(payload, trigger)
   },
-  // event: 'greet' | 'next' / payload: number | string / trigger: string
   $onMessage: ({ event, payload, trigger }) => {
+    type _e = Expect<Equal<typeof event, 'greet' | 'next'>>
+    type _p = Expect<Equal<typeof payload, number | string>>
+    type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(event, payload, trigger)
   },
   $i18n: () => ({ resources: {} }),
@@ -79,31 +84,32 @@ export const M = defineComponent({
   },
 
   setup(props) {
-    // b: any
     const { b } = props.various?.$store || {}
+    type _b = Expect<Equal<typeof b, any>>
 
     return {
       msg() {
-        // string / any
         props.various?.$postMessage({ event: 'next', payload: b })
       },
       async dispatch() {
-        // string / string / any
         const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
-        // res: any
+        type _r = Expect<Equal<typeof res, any>>
         window.console.log(res)
       }
     }
   }
 })
 
-// payload: any / trigger: string
 M.update = (({ payload, trigger }) => {
+  type _p = Expect<Equal<typeof payload, any>>
+  type _t = Expect<Equal<typeof trigger, string>>
   window.console.log(payload, trigger)
 }) as PublicAction
 
-// event: string / payload: any / trigger: string
 M.$onMessage = (({ event, payload, trigger }) => {
+  type _e = Expect<Equal<typeof event, string>>
+  type _p = Expect<Equal<typeof payload, any>>
+  type _t = Expect<Equal<typeof trigger, string>>
   window.console.log(event, payload, trigger)
 }) as OnMessage
 M.$i18n = (() => ({ resources: {} })) as I18n

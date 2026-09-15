@@ -1,13 +1,13 @@
 import React from 'react'
 import reactDom from 'react-dom/client'
-import { renderComponent as rc } from '@variousjs/various'
+import type { RenderComponent } from '../public/types'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
 import { onError, VariousError } from './helper'
 import ErrorBoundary from './error-boundary'
 import createModule from './create-module'
 
-const renderComponent: typeof rc = async ({
+const renderComponent: RenderComponent = async ({
   module,
   url,
   target,

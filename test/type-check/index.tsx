@@ -36,32 +36,46 @@ export const A: VariousFC<
   GlobalMessages,
   GlobalActions
 > = (props) => {
-  // a: string / b: number
   const {
     $store, a, $postMessage, $dispatch,
   } = props
   const { b } = $store
 
-  $postMessage({ event: 'greet', payload: b }) // 'greet' / number
-  typedPostMessage({ event: 'next', payload: a }) // 'next' / string
+  type _a = Expect<Equal<typeof a, string>>
+  type _b = Expect<Equal<typeof b, number>>
 
-  $dispatch({ target: 'ca', action: 'update', payload: 1 }) // 'ca' / 'update' / number
+  // Negative probes: one representative per API constraint. The payload rules
+  // belong to the $postMessage<M>/$dispatch<M> type constructors, shared by
+  // every consumer path, so probes live only here (later usages need no probes).
+  $postMessage({ event: 'greet', payload: b })
+  // @ts-expect-error payload for event 'greet' must be number
+  $postMessage({ event: 'greet', payload: a })
+  typedPostMessage({ event: 'next', payload: a }) // legal call, no probe needed
+
+  // same minimal-set rule for the $dispatch<M> payload constraint
+  $dispatch({ target: 'ca', action: 'update', payload: 1 })
+  // @ts-expect-error payload for action 'update' must be number
+  $dispatch({ target: 'ca', action: 'update', payload: 'x' })
 
   $dispatch({ target: 'app', action: 'getLocale' }).then((res) => {
+    type _r = Expect<Equal<typeof res, string>>
     window.console.log(res)
   })
 
   return null
 }
 
-// event: 'greet' | 'next' / payload: number | string / trigger: string
 A.$onMessage = ({ event, payload, trigger }) => {
+  type _e = Expect<Equal<typeof event, 'greet' | 'next'>>
+  type _p = Expect<Equal<typeof payload, number | string>>
+  type _t = Expect<Equal<typeof trigger, string>>
   window.console.log(event, payload, trigger)
 }
 A.$i18n = () => ({ resources: {} })
 
-// payload: number / trigger: string
 A.update = ({ payload, trigger }) => {
+  type _p = Expect<Equal<typeof payload, number | undefined>>
+  type _t = Expect<Equal<typeof trigger, string>>
   window.console.log(payload, trigger)
 }
 
@@ -71,30 +85,39 @@ export class B extends Component<VariousProps<
   GlobalMessages,
   GlobalActions
 >> {
-  // payload: number / trigger: string
   static update: PublicAction<SelfActions['update']> = ({ payload, trigger }) => {
+    type _p = Expect<Equal<typeof payload, number>>
+    type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(payload, trigger)
   }
 
-  // event: 'greet' | 'next' / payload: number | string / trigger: string
   static $onMessage: OnMessage<GlobalMessages> = ({ event, payload, trigger }) => {
+    type _e = Expect<Equal<typeof event, 'greet' | 'next'>>
+    type _p = Expect<Equal<typeof payload, number | string>>
+    type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(event, payload, trigger)
   }
 
   static $i18n: I18n = () => ({ resources: {} })
 
   render() {
-    // a: string / b: number
     const {
       $store, a, $postMessage, $dispatch,
     } = this.props
     const { b } = $store
 
-    $postMessage({ event: 'greet', payload: b }) // 'greet' / number
-    $postMessage({ event: 'next', payload: a }) // 'next' / string
+    type _a = Expect<Equal<typeof a, string>>
+    type _b = Expect<Equal<typeof b, number>>
 
-    // res: number
+    // no probes here: same $postMessage/$dispatch types as A (VariousFC wraps
+    // VariousProps, both wired via ComponentBuiltinProps); if the Messages
+    // wiring regressed, $dispatch would turn untyped and the `res` assertion
+    // below would fail
+    $postMessage({ event: 'greet', payload: b })
+    $postMessage({ event: 'next', payload: a })
+
     $dispatch({ target: 'ca', action: 'next' }).then((res) => {
+      type _r = Expect<Equal<typeof res, number>>
       window.console.log(res)
     })
 
@@ -106,62 +129,76 @@ export class B extends Component<VariousProps<
   --------------------------------------
   default types
   --------------------------------------
+  Untyped API accepts anything, so there is nothing to probe negatively:
+  the assertions below pin the loose types (any / string) instead.
 */
 
 const unTypedPostMessage = createPostMessage('unTyped')
 
 export const C = ((props) => {
-  // a: any / b: any
   const {
     $store, a, $postMessage, $dispatch,
   } = props
   const { b } = $store
 
-  $postMessage({ event: 'greet', payload: b }) // string / any
-  unTypedPostMessage({ event: 'next', payload: a }) // string / any
+  type _a = Expect<Equal<typeof a, any>>
+  type _b = Expect<Equal<typeof b, any>>
+  type _pe = Expect<Equal<Parameters<typeof $postMessage>[0]['event'], string>>
+  type _dt = Expect<Equal<Parameters<typeof $dispatch>[0]['target'], string>>
+  type _da = Expect<Equal<Parameters<typeof $dispatch>[0]['action'], string>>
 
-  // string / string / any
+  $postMessage({ event: 'greet', payload: b })
+  unTypedPostMessage({ event: 'next', payload: a })
+
   $dispatch({ target: 'dispatch', action: 'update', payload: 1 }).then((res) => {
-    // res: any
+    type _r = Expect<Equal<typeof res, any>>
     window.console.log(res)
   })
 
   return null
 }) as VariousFC
 
-// event: string / payload: any / trigger: string
 C.$onMessage = ({ event, payload, trigger }) => {
+  type _e = Expect<Equal<typeof event, string>>
+  type _p = Expect<Equal<typeof payload, any>>
+  type _t = Expect<Equal<typeof trigger, string>>
   window.console.log(event, payload, trigger)
 }
 C.$i18n = () => ({ resources: {} })
 
-// payload: any / trigger: string
 C.update = ({ payload, trigger }) => {
+  type _p = Expect<Equal<typeof payload, any>>
+  type _t = Expect<Equal<typeof trigger, string>>
   window.console.log(payload, trigger)
 }
 
 export const C1: VariousFC<{}, {}, {}> = () => <div>1</div>
 
 export class D extends Component<VariousProps> {
-  // payload: any / trigger: string
   static update: PublicAction = ({ payload, trigger }) => {
+    type _p = Expect<Equal<typeof payload, any>>
+    type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(payload, trigger)
   }
 
-  // event: string / payload: any / trigger: string
   static $onMessage: OnMessage = ({ event, payload, trigger }) => {
+    type _e = Expect<Equal<typeof event, string>>
+    type _p = Expect<Equal<typeof payload, any>>
+    type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(event, payload, trigger)
   }
 
   static $i18n: I18n = () => ({ resources: {} })
 
   render() {
-    // a: any / b: any
     const { $store, a, $postMessage } = this.props
     const { b } = $store
 
-    $postMessage({ event: 'greet', payload: b }) // string / any
-    $postMessage({ event: 'next', payload: a }) // string / any
+    type _a = Expect<Equal<typeof a, any>>
+    type _b = Expect<Equal<typeof b, any>>
+
+    $postMessage({ event: 'greet', payload: b })
+    $postMessage({ event: 'next', payload: a })
 
     return null
   }

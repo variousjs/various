@@ -1,4 +1,4 @@
-import { createLogger as cl, LogEvent } from '@variousjs/various'
+import type { CreateLogger, LogEvent } from '../public/types'
 import connector from './connector'
 import { VariousError } from './helper'
 
@@ -40,7 +40,7 @@ const logger = (args: LogArgs) => {
   window.console[args.level](...params, args.message)
 }
 
-const createLogger: typeof cl = (module) => ({
+const createLogger: CreateLogger = (module) => ({
   info(message, type) {
     logger({
       module, level: 'info', type, message,

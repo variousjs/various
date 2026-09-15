@@ -1,4 +1,4 @@
-import { createModule as cm, ObjectRecord } from '@variousjs/various'
+import type { ObjectRecord, CreateModule } from '../public/types'
 import { DEPENDENCIES_KEY } from './config'
 import { getStore } from './store'
 import connector from './connector'
@@ -12,7 +12,7 @@ import {
 } from './helper'
 import { importModule } from './system'
 
-const createModule: typeof cm = (config, logError = true) => {
+const createModule: CreateModule = (config, logError = true) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const middlewares = connector.getMiddlewares()
   const { url, module } = config

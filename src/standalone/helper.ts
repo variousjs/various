@@ -1,8 +1,8 @@
-import {
+import type {
   DependencyType,
-  createComponent,
-  createAppConfig as con,
-} from '@variousjs/various/standalone'
+  StandaloneComponentConfig,
+  CreateAppConfig,
+} from '../public/types'
 import { isModuleSpecified } from '../core/helper'
 import {
   setModule,
@@ -72,7 +72,7 @@ function ensureImportMap(
 }
 
 export function defineModules(
-  deps: NonNullable<Parameters<typeof createComponent>['0']['dependencies']>,
+  deps: NonNullable<StandaloneComponentConfig['dependencies']>,
 ) {
   const defines: { key: string, value?: DependencyType }[] = []
 
@@ -97,7 +97,7 @@ export function defineModules(
   return Promise.all(defines.map((item) => defineAsync(item.key, item.value)))
 }
 
-export const createAppConfig: typeof con = (config) => {
+export const createAppConfig: CreateAppConfig = (config) => {
   const {
     dependencies,
     ErrorFallback,

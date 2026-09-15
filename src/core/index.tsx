@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { App, Config } from '@variousjs/various'
+import type { App, Config } from '../public/types'
 import { createStore } from './store'
 import {
   MOUNTED_COMPONENTS_KEY,

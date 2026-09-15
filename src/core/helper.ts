@@ -1,17 +1,18 @@
-import {
-  onComponentMounted as ocm,
-  isModuleLoaded as im,
-  preloadModules as pp,
-  removeLoadedModules as rm,
-  defineDependencies as dd,
-  VariousError as ve,
-  ErrorType as et,
-  getModuleInfo as gm,
+import type {
   ModuleDef,
   OnMessage,
   I18n,
   VariousComponentType,
-} from '@variousjs/various'
+  ErrorType,
+  ObjectRecord,
+  GetModuleInfo,
+  PreloadModules,
+  RemoveLoadedModules,
+  DefineDependencies,
+  IsModuleLoaded,
+  OnComponentMounted,
+  VariousError as VariousErrorShape,
+} from '../public/types'
 import { getStore, subscribe, emit } from './store'
 import createLogger from './logger'
 import {
@@ -38,17 +39,17 @@ import {
 
 const getUrlHash = (url: string) => `${url}?${+new Date()}`
 
-export const getModuleInfo: typeof gm = (module) => {
+export const getModuleInfo: GetModuleInfo = (module) => {
   const [name, entry] = module.split('.')
   return { name, entry }
 }
 
-export const preloadModules: typeof pp = (modules) => {
+export const preloadModules: PreloadModules = (modules) => {
   const names = modules.map((m) => getModuleInfo(m).name)
   return Promise.all(names.map((n) => importModule(n))).then(() => undefined)
 }
 
-export const removeLoadedModules: typeof rm = (modules) => {
+export const removeLoadedModules: RemoveLoadedModules = (modules) => {
   modules.forEach((module) => {
     const { name } = getModuleInfo(module)
     if (!BASE_DEPENDENCIES.includes(name)) {
@@ -84,7 +85,7 @@ function appendImportMap(deps: Record<string, string>) {
   document.head.appendChild(script)
 }
 
-export const defineDependencies: typeof dd = (deps) => {
+export const defineDependencies: DefineDependencies = (deps) => {
   const dependencies = getStore(DEPENDENCIES_KEY)
   const next = {} as Record<string, string>
 
@@ -105,7 +106,7 @@ export const defineDependencies: typeof dd = (deps) => {
   emit({ [DEPENDENCIES_KEY]: { ...dependencies, ...next } }, true)
 }
 
-export const isModuleLoaded: typeof im = (module) => {
+export const isModuleLoaded: IsModuleLoaded = (module) => {
   const { name } = getModuleInfo(module)
   return isModuleDefined(name)
 }
@@ -115,9 +116,9 @@ export const isModuleSpecified = (module: ModuleDef) => {
   return isSpecified(name)
 }
 
-export const getMountedComponents = () => getStore(MOUNTED_COMPONENTS_KEY)
+export const getMountedComponents = (): ModuleDef[] => getStore(MOUNTED_COMPONENTS_KEY)
 
-export const onComponentMounted: typeof ocm = (module, callback) => {
+export const onComponentMounted: OnComponentMounted = (module, callback) => {
   const modules = Array.isArray(module) ? module : [module]
 
   if (modules.every((m) => getMountedComponents().includes(m))) {
@@ -160,7 +161,7 @@ export const resetDependencyConfig = (module: ModuleDef, url?: string) => {
   setModuleUrl(name, moduleUrl)
 }
 
-export function getConfig<C extends object = {}>() {
+export function getConfig<C extends object = ObjectRecord>() {
   return getStore(CONFIG_KEY) as C
 }
 
@@ -170,8 +171,8 @@ export const onError = (e: VariousError) => {
   logger.error(e, type)
 }
 
-export class VariousError extends Error implements ve {
-  type: et
+export class VariousError extends Error implements VariousErrorShape {
+  type: ErrorType
 
   originalError: Error
 
@@ -179,7 +180,7 @@ export class VariousError extends Error implements ve {
 
   constructor(data: {
     module: ModuleDef,
-    type: et,
+    type: ErrorType,
     originalError: Error,
   }) {
     super(data.originalError.message)
