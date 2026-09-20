@@ -5,7 +5,9 @@ import {
   Route,
   Link,
 } from 'react-router-dom'
-import { getConfig, createComponent, Config } from '@variousjs/various'
+import {
+  getConfig, createComponent, Config, VariousProps,
+} from '@variousjs/various'
 import { Page } from '../../types'
 
 type CMap = Record<string, ReturnType<typeof createComponent>>
@@ -38,7 +40,7 @@ const PageRenderer = memo(({ components }: { components: Page['components'] }) =
   </>
 ))
 
-class Container extends Component {
+class Container extends Component<VariousProps> {
   render() {
     return (
       <HashRouter>

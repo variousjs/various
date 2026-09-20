@@ -86,6 +86,23 @@ describe('create component', () => {
     })
   })
 
+  it('not defined reload', () => {
+    const message = '[NOT_DEFINED]:module "createNil" not defined'
+
+    // module "createNil" is not registered anywhere, so it fails before loading
+    cy.contains('h3', 'createNil').next().children()
+      .eq(0)
+      .should('have.text', message)
+
+    // Reload keeps NOT_DEFINED: resetDependencyConfig must not register a
+    // "undefined?<timestamp>" url, otherwise the reload turns into an import
+    // of "http://<host>/undefined?<ts>" and reports SUBMODULE_LOADING_ERROR
+    cy.contains('p', message).next().click()
+    cy.contains('h3', 'createNil').next().children()
+      .eq(0)
+      .should('have.text', message)
+  })
+
   it('props slient', () => {
     cy.visit('/app/create-component-slient.html')
     cy.get('#t').should('have.text', 'create.Acreatevue')

@@ -151,6 +151,14 @@ export const resetDependencyConfig = (module: ModuleDef, url?: string) => {
     return
   }
 
+  // Module has no URL configured (e.g. never defined): nothing to reset.
+  // Writing a URL here would make isModuleSpecified() pass and turn the
+  // next load into an import of "undefined?<timestamp>" (from
+  // getUrlHash(undefined)) instead of the NOT_DEFINED error.
+  if (!dependencies[name]) {
+    return
+  }
+
   let moduleUrl = getUrlHash(dependencies[name])
 
   if (url) {
