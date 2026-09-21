@@ -41,4 +41,21 @@ describe('render component', () => {
     cy.contains('button', 'vue render').click()
     cy.get('#vue-dom').should('have.text', 'this will render by vue component')
   })
+
+  it('error fallback locale & store', () => {
+    // render component that throws
+    cy.contains('button', 'render error').click()
+    cy.get('#error-dom').contains('p', '[SCRIPT_ERROR]:render error').should('exist')
+
+    // store is live in error fallback
+    cy.get('#error-dom').contains('p', 'store name: humpback').should('exist')
+    cy.contains('button', 'global').click()
+    cy.get('#global-dom').contains('button', 'dispatch').click()
+    cy.get('#error-dom').contains('p', 'store name: various').should('exist')
+
+    // locale is live in error fallback
+    cy.get('#error-dom').contains('button', '刷新').should('exist')
+    cy.contains('button', 'change locale').click()
+    cy.get('#error-dom').contains('button', 'reload').should('exist')
+  })
 })

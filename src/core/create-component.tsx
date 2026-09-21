@@ -5,7 +5,7 @@ import type {
 } from '../public/types'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
-import ErrorBoundary from './error-boundary'
+import { createErrorBoundary } from './error-boundary'
 import { CreateComponentProps } from '../types'
 
 const createComponent: CreateComponent = (config, storeKeys) => {
@@ -20,6 +20,8 @@ const createComponent: CreateComponent = (config, storeKeys) => {
     url,
     watchKeys: storeKeys as string[],
   })
+
+  const ErrorBoundary = createErrorBoundary()
 
   const component = (props: ComponentDefaultProps) => {
     const { $silent, $ref, ...rest } = props || {}

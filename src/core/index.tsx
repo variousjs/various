@@ -12,7 +12,7 @@ import {
 import connector from './connector'
 import { createI18nConfig } from './i18n'
 import { Root as RootComponent } from './default-component'
-import ErrorBoundary from './error-boundary'
+import { createErrorBoundary } from './error-boundary'
 import { Store } from '../types'
 
 export { default as Nycticorax } from 'nycticorax'
@@ -76,6 +76,8 @@ export const getApp = (config: Config & App<Store>) => {
   })
 
   Root.displayName = 'various-app-root'
+
+  const ErrorBoundary = createErrorBoundary()
 
   return class extends Component {
     static displayName = 'various-app'
