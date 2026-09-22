@@ -1,4 +1,5 @@
 import { App } from '@variousjs/various'
+import { getStrategy, strategyReady, updateStrategy } from './middleware-strategy'
 import { Store } from '../types'
 
 const actions: App<Store>['actions'] = {
@@ -11,6 +12,17 @@ const actions: App<Store>['actions'] = {
   async setAction({ emit }, payload: string | undefined, trigger) {
     window.console.log(trigger)
     emit({ name: payload })
+  },
+
+  // middleware strategy hot-update entries; the app bundle stays stable and
+  // only the strategy module is "redeployed"
+  async updateMiddlewares() {
+    return updateStrategy()
+  },
+
+  async getMiddlewaresVersion() {
+    await strategyReady()
+    return getStrategy().version ?? 'pass-through'
   },
 }
 

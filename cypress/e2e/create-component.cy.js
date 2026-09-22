@@ -81,7 +81,7 @@ describe('create component', () => {
           body: t,
         })
       })
-      cy.contains('p', '[SCRIPT_ERROR]:A is not defined').next().click()
+      cy.contains('h3', 'create-reload').next().contains('button', '刷新').click()
       cy.contains('div', 'Ggggggg').should('exist')
     })
   })
@@ -97,7 +97,8 @@ describe('create component', () => {
     // Reload keeps NOT_DEFINED: resetDependencyConfig must not register a
     // "undefined?<timestamp>" url, otherwise the reload turns into an import
     // of "http://<host>/undefined?<ts>" and reports SUBMODULE_LOADING_ERROR
-    cy.contains('p', message).next().click()
+    // same fallback structure: scope the reload button from the module <h3>
+    cy.contains('h3', 'createNil').next().contains('button', '刷新').click()
     cy.contains('h3', 'createNil').next().children()
       .eq(0)
       .should('have.text', message)

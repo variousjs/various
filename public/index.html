@@ -36,6 +36,11 @@ var VARIOUS_CONFIG = {
     dispatch: './dist/dispatch/index.js',
     'dispatch-v': './dist/dispatch/d.js',
     'middlewares': './dist/moddlewares/index.js',
+    'middleware-strategy': './dist/middleware-strategy/index.js',
+    'middleware-strategy-next': './dist/middleware-strategy/next.js',
+    'dynamic-middlewares': './dist/dynamic-middlewares/index.js',
+    'auth-service': './dist/auth-service/index.js',
+    'auth-consumer': './dist/auth-consumer/index.js',
     'app-config': './dist/app/index.js',
   },
   pages: [
@@ -109,6 +114,21 @@ var VARIOUS_CONFIG = {
         { module: 'middlewares' },
       ],
       path: '/middlewares',
+    },
+    {
+      label: 'DynamicMiddlewares',
+      components: [
+        { module: 'dynamic-middlewares' },
+      ],
+      path: '/dynamic-middlewares',
+    },
+    {
+      label: 'AuthService',
+      components: [
+        { module: 'auth-service' },
+        { module: 'auth-consumer' },
+      ],
+      path: '/auth',
     },
     {
       label: 'App',
