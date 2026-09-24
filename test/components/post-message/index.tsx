@@ -19,7 +19,7 @@ type Messages = {
   'B-greet': { payload: number },
 }
 
-export const A: VariousFC<NS, {}, {}, Messages> = (props) => {
+export const A = ((props) => {
   const { event, payload, trigger } = props
 
   return (
@@ -32,7 +32,7 @@ export const A: VariousFC<NS, {}, {}, Messages> = (props) => {
       </div>
     </>
   )
-}
+}) as VariousFC<NS, never, {}, Messages>
 
 A.$onMessage = ({ event, payload, trigger }) => {
   emit({

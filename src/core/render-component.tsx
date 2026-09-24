@@ -4,7 +4,7 @@ import type { RenderComponent } from '../public/types'
 import createReactComponent from './react-component'
 import createVueComponent from './vue-component'
 import { onError, VariousError } from './helper'
-import ErrorBoundary from './error-boundary'
+import { createErrorBoundary } from './error-boundary'
 import createModule from './create-module'
 
 const renderComponent: RenderComponent = async ({
@@ -24,6 +24,8 @@ const renderComponent: RenderComponent = async ({
       url,
       onMounted,
     })
+
+    const ErrorBoundary = createErrorBoundary()
 
     const root = ReactDOM.createRoot(target as Element)
     const { $silent, $ref, ...rest } = props || {}

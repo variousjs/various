@@ -1,54 +1,19 @@
 import { App } from '@variousjs/various'
+import { getStrategy } from './middleware-strategy'
 
+// Stable delegate shell: middleware logic lives in independently deployable
+// strategy modules (see ./middleware-strategy). Updating middlewares only
+// redeploys a strategy module, never this app bundle. Every hook reads the
+// cached strategy synchronously and fails open while it is absent — hooks
+// must not await, because loading a strategy module itself fires onLoad.
 export default {
-  onLog(e) {
-    if (!window.middlewaresEnabled) {
-      return true
-    }
-    if (e.level === 'info') {
-      window.console.log('block by onLog middleware')
-      return false
-    }
-    if (e.level === 'error') {
-      return false
-    }
-    return true
-  },
+  onLog: (e) => getStrategy().onLog?.(e) ?? true,
 
-  onLoad(e) {
-    if (!window.middlewaresEnabled) {
-      return
-    }
-    if (e.module === 'B') {
-      return
-    }
-    window.console.log(e.module, e.beenLoaded)
-  },
+  onLoad: (e) => getStrategy().onLoad?.(e),
 
-  onMessage(e) {
-    if (!window.middlewaresEnabled) {
-      return true
-    }
-    if (e.event === 'block') {
-      return false
-    }
-    return { ...e, event: 'postMessage event changed' }
-  },
+  onError: (e) => getStrategy().onError?.(e),
 
-  onDispatch(e) {
-    if (!window.middlewaresEnabled) {
-      return true
-    }
-    if (e.action === 'block') {
-      return false
-    }
-    return { ...e, action: 'changed' }
-  },
+  onMessage: (e) => getStrategy().onMessage?.(e) ?? true,
 
-  onError(e) {
-    if (!window.middlewaresEnabled) {
-      return
-    }
-    window.console.log(e.type, e.message)
-  },
+  onDispatch: (e) => getStrategy().onDispatch?.(e) ?? true,
 } as App['middlewares']

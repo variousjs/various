@@ -1,40 +1,23 @@
 import React, { Component } from 'react'
 import {
   VariousFC, VariousProps, PublicAction, OnMessage, I18n,
-  DefineActions, DefineMessages, createPostMessage, DefineAppActions,
+  createPostMessage, VariousContract,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
-interface GlobalStoreProps { b: number }
-type GlobalMessages = DefineMessages<{
-  greet: { payload: number },
-  next: { payload: string },
-}>
-type SelfActions = DefineActions<{
-  update: { payload: number, result: void },
-}>
-type GlobalActions = {
-  // app: DefineAppActions<{
-  //     update: { payload: number, result: void },
-  // }>,
-  app: DefineAppActions,
-  ca: DefineActions<{
-    update: { payload: number, result: void },
-    next?: { payload: string, result: number },
-  }>,
-  cb: DefineActions<{
-    update: { payload: string, result: string },
-  }>,
-}
 
-const typedPostMessage = createPostMessage<GlobalMessages>('typed')
+/*
+  This program is augmented by ./various.d.ts: every builtin type defaults to
+  the ambient contract, so components pass only their own props plus (for FC
+  statics inference) the target key of their own action slice.
+*/
+
+// createPostMessage picks up the ambient messages contract
+const typedPostMessage = createPostMessage('typed')
 
 export const A: VariousFC<
   SelfProps,
-  GlobalStoreProps,
-  GlobalActions['ca'],
-  GlobalMessages,
-  GlobalActions
+  'ca'
 > = (props) => {
   const {
     $store, a, $postMessage, $dispatch,
@@ -62,9 +45,18 @@ export const A: VariousFC<
     window.console.log(res)
   })
 
+  // custom app action merged via DefineAppActions<T>
+  $dispatch({ target: 'app', action: 'ping', payload: 'x' }).then((res) => {
+    type _r = Expect<Equal<typeof res, number>>
+    window.console.log(res)
+  })
+  // @ts-expect-error payload for custom app action 'ping' must be string
+  $dispatch({ target: 'app', action: 'ping', payload: 1 })
+
   return null
 }
 
+// statics are inferred from the contract slice picked by the 'ca' key
 A.$onMessage = ({ event, payload, trigger }) => {
   type _e = Expect<Equal<typeof event, 'greet' | 'next'>>
   type _p = Expect<Equal<typeof payload, number | string>>
@@ -79,19 +71,19 @@ A.update = ({ payload, trigger }) => {
   window.console.log(payload, trigger)
 }
 
-export class B extends Component<VariousProps<
-  SelfProps,
-  GlobalStoreProps,
-  GlobalMessages,
-  GlobalActions
->> {
-  static update: PublicAction<SelfActions['update']> = ({ payload, trigger }) => {
+// @ts-expect-error self target must be a key of the contract actions
+export const AX: VariousFC<SelfProps, 'cx'> = () => null
+
+export class B extends Component<VariousProps<SelfProps>> {
+  // class statics stay explicit: the slice is extracted from the ambient
+  // contract (also proves the augmentation merges through the package entry)
+  static update: PublicAction<VariousContract['actions']['ca']['update']> = ({ payload, trigger }) => {
     type _p = Expect<Equal<typeof payload, number>>
     type _t = Expect<Equal<typeof trigger, string>>
     window.console.log(payload, trigger)
   }
 
-  static $onMessage: OnMessage<GlobalMessages> = ({ event, payload, trigger }) => {
+  static $onMessage: OnMessage = ({ event, payload, trigger }) => {
     type _e = Expect<Equal<typeof event, 'greet' | 'next'>>
     type _p = Expect<Equal<typeof payload, number | string>>
     type _t = Expect<Equal<typeof trigger, string>>
@@ -120,85 +112,6 @@ export class B extends Component<VariousProps<
       type _r = Expect<Equal<typeof res, number>>
       window.console.log(res)
     })
-
-    return null
-  }
-}
-
-/*
-  --------------------------------------
-  default types
-  --------------------------------------
-  Untyped API accepts anything, so there is nothing to probe negatively:
-  the assertions below pin the loose types (any / string) instead.
-*/
-
-const unTypedPostMessage = createPostMessage('unTyped')
-
-export const C = ((props) => {
-  const {
-    $store, a, $postMessage, $dispatch,
-  } = props
-  const { b } = $store
-
-  type _a = Expect<Equal<typeof a, any>>
-  type _b = Expect<Equal<typeof b, any>>
-  type _pe = Expect<Equal<Parameters<typeof $postMessage>[0]['event'], string>>
-  type _dt = Expect<Equal<Parameters<typeof $dispatch>[0]['target'], string>>
-  type _da = Expect<Equal<Parameters<typeof $dispatch>[0]['action'], string>>
-
-  $postMessage({ event: 'greet', payload: b })
-  unTypedPostMessage({ event: 'next', payload: a })
-
-  $dispatch({ target: 'dispatch', action: 'update', payload: 1 }).then((res) => {
-    type _r = Expect<Equal<typeof res, any>>
-    window.console.log(res)
-  })
-
-  return null
-}) as VariousFC
-
-C.$onMessage = ({ event, payload, trigger }) => {
-  type _e = Expect<Equal<typeof event, string>>
-  type _p = Expect<Equal<typeof payload, any>>
-  type _t = Expect<Equal<typeof trigger, string>>
-  window.console.log(event, payload, trigger)
-}
-C.$i18n = () => ({ resources: {} })
-
-C.update = ({ payload, trigger }) => {
-  type _p = Expect<Equal<typeof payload, any>>
-  type _t = Expect<Equal<typeof trigger, string>>
-  window.console.log(payload, trigger)
-}
-
-export const C1: VariousFC<{}, {}, {}> = () => <div>1</div>
-
-export class D extends Component<VariousProps> {
-  static update: PublicAction = ({ payload, trigger }) => {
-    type _p = Expect<Equal<typeof payload, any>>
-    type _t = Expect<Equal<typeof trigger, string>>
-    window.console.log(payload, trigger)
-  }
-
-  static $onMessage: OnMessage = ({ event, payload, trigger }) => {
-    type _e = Expect<Equal<typeof event, string>>
-    type _p = Expect<Equal<typeof payload, any>>
-    type _t = Expect<Equal<typeof trigger, string>>
-    window.console.log(event, payload, trigger)
-  }
-
-  static $i18n: I18n = () => ({ resources: {} })
-
-  render() {
-    const { $store, a, $postMessage } = this.props
-    const { b } = $store
-
-    type _a = Expect<Equal<typeof a, any>>
-    type _b = Expect<Equal<typeof b, any>>
-
-    $postMessage({ event: 'greet', payload: b })
-    $postMessage({ event: 'next', payload: a })
 
     return null
   }

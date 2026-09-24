@@ -29,7 +29,7 @@ const C = forwardRef<
       )
     })
 
-const staticMethods: ComponentStatics<{ log: { payload: string, result: void } }> = {
+const staticMethods: ComponentStatics<'self', never, { self: { log: { payload: string, result: void } } }> = {
   $i18n: () => ({
     resources: { zh, en },
   }),

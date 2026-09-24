@@ -1,5 +1,5 @@
 {
   "extends": "../../tsconfig.consumer-check.json",
-  "include": [".", "../global.d.ts", "../../src/globals.d.ts"],
+  "include": [".", "../global.d.ts", "../type-check/assert.d.ts", "../../src/globals.d.ts"],
   "exclude": ["../../dist", "../../public"]
 }

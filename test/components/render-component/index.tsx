@@ -9,7 +9,9 @@ import { renderComponent, VariousFC } from '@variousjs/various'
 import { HashRouter, useLocation } from 'react-router-dom'
 import { Store } from '../../types'
 
-export default () => {
+export default ((props) => {
+  const { $dispatch, $locale } = props
+
   const ref = useRef<any>(null)
   const unMountedRef = useRef<(() => Promise<void>)[]>([])
   const [showRefBtn, setShowRefBtn] = useState(false)
@@ -135,9 +137,31 @@ export default () => {
           url & vue
         </button>
       </div>
+      <h3>Error</h3>
+      <div className="value">
+        <div id="error-dom" />
+        <button
+          onClick={async () => {
+            const un = await renderComponent({
+              module: 'render.ErrorComponent',
+              target: document.querySelector('#error-dom'),
+            })
+            unMountedRef.current.push(un)
+          }}
+        >
+          render error
+        </button>
+        <button
+          onClick={() => {
+            $dispatch({ target: 'app', action: 'setLocale', payload: $locale === 'zh' ? 'en' : 'zh' })
+          }}
+        >
+          change locale
+        </button>
+      </div>
     </>
   )
-}
+}) as VariousFC
 
 export const A = () => 'A'
 
@@ -183,4 +207,8 @@ export const GlobalProps = ((props) => {
       </button>
     </>
   )
-}) as VariousFC<{}, Store>
+}) as VariousFC<{}, never, Store>
+
+export const ErrorComponent = () => {
+  throw new Error('render error')
+}

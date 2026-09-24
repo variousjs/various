@@ -14,6 +14,7 @@ describe('i18n', () => {
     cy.contains('h3', 'Error').next().contains('p', 'no-key').should('exist')
     cy.contains('h3', 'Error').next().contains('p', 'no-locale').should('exist')
     cy.contains('h3', 'Error').next().contains('p', '[SCRIPT_ERROR]:get i18n config error').should('exist')
+    cy.contains('h3', 'Error').next().contains('p', 'store name: humpback').should('exist')
     cy.contains('h3', 'Error').next().contains('button', '刷新').should('exist')
 
     // change locale

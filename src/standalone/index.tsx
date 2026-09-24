@@ -12,7 +12,7 @@ import type {
   ObjectRecord,
 } from '../public/types'
 import createComponentCore from '../core/create-component'
-import ErrorBoundary from '../core/error-boundary'
+import { createErrorBoundary } from '../core/error-boundary'
 import connector from '../core/connector'
 import { defineModules } from './helper'
 import { setModule } from '../core/helper'
@@ -104,6 +104,8 @@ export const createComponent: StandaloneCreateComponent = (args) => {
       }
     })
   }
+
+  const ErrorBoundary = createErrorBoundary()
 
   const component: FC = (props: ObjectRecord) => (
     <ErrorBoundary url={args.url} module={args.module}>

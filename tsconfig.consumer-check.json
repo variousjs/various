@@ -10,5 +10,5 @@
     }
   },
   "include": ["test", "src/globals.d.ts"],
-  "exclude": ["dist", "public"]
+  "exclude": ["dist", "public", "test/type-check", "test/type-check-default"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@variousjs/various",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "type": "module",
   "description": "React-based ESM micro-frontend framework",
   "files": [
@@ -56,7 +56,7 @@
     "build:standalone:esm": "TARGET=standalone-esm vite build --mode development",
     "build:components": "TARGET=components vite build",
     "build:types": "tsc -p tsconfig.types.json",
-    "check:types": "vue-tsc -p tsconfig.consumer-check.json",
+    "check:types": "vue-tsc -p tsconfig.consumer-check.json && vue-tsc -p test/type-check/tsconfig.json && vue-tsc -p test/type-check-default/tsconfig.json",
     "build": "npm run build:core && npm run build:core:dev && npm run build:loader && npm run build:loader:dev && npm run build:standalone && npm run build:standalone:esm && npm run build:components && npm run build:types",
     "prebuild": "npm run lint && rm -rf dist && rm -rf public/dist && mkdir -p public/dist",
     "postbuild": "npm run create-empty && npm run check:types",
