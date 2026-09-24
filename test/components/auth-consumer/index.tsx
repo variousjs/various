@@ -16,9 +16,7 @@ createStore({})
 
 const dispatch = createDispatch('auth-consumer')
 
-// concrete SelfActions keeps StaticMethods from expanding into a
-// Record index signature, so the arrow type stays assignable
-const C: VariousFC<NS, {}, {}> = (props) => {
+const C = ((props) => {
   const {
     name,
     token,
@@ -49,7 +47,7 @@ const C: VariousFC<NS, {}, {}> = (props) => {
       </div>
     </>
   )
-}
+}) as VariousFC<NS>
 
 // push channel: re-render on service broadcasts
 C.$onMessage = ({ event, payload }) => {

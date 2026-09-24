@@ -18,7 +18,7 @@ createStore({})
 
 const E = createComponent({ module: 'dispatch.B' })
 
-const A: VariousFC<{}, Store, { update: { payload: number, result: void } }> = (props) => {
+const A = ((props) => {
   const { $dispatch, $store } = props
   const { trigger, payload } = useStore('trigger', 'payload')
 
@@ -48,7 +48,7 @@ const A: VariousFC<{}, Store, { update: { payload: number, result: void } }> = (
       <E />
     </>
   )
-}
+}) as VariousFC<{}, never, Store>
 
 A.update = ({ payload, trigger }) => {
   emit({ payload, trigger })

@@ -73,7 +73,7 @@ module.exports = {
     {
       // type-level assertions (Expect/Equal) are intentionally unused aliases,
       // and the assertion helpers are ambient globals from assert.d.ts
-      files: ['test/type-check/**'],
+      files: ['test/type-check/**', 'test/type-check-default/**'],
       rules: {
         'no-undef': 'off',
         '@typescript-eslint/no-unused-vars': 'off',

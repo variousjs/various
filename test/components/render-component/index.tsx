@@ -207,7 +207,7 @@ export const GlobalProps = ((props) => {
       </button>
     </>
   )
-}) as VariousFC<{}, Store>
+}) as VariousFC<{}, never, Store>
 
 export const ErrorComponent = () => {
   throw new Error('render error')

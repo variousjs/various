@@ -1,38 +1,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import {
-  VariousComponentProps, PublicAction, DefineMessages, DefineActions, OnMessage, I18n, ComponentStatics,
-  DefineAppActions,
+  VariousComponentProps, ComponentStatics,
 } from '@variousjs/various'
 
-interface GlobalStoreProps { b: number }
-type GlobalMessages = DefineMessages<{
-  greet: { payload: number },
-  next: { payload: string },
-}>
-type SelfActions = DefineActions<{
-  update: { payload: number, result: void },
-}>
-type GlobalActions = {
-  app: DefineAppActions<{
-    set: { payload: string, result: void },
-  }>,
-  ca: DefineActions<{
-    next: { payload: string, result: number },
-  }>,
-  cb: DefineActions<{
-    update: { payload: string, result: string },
-  }>,
-}
-
 // No negative probes in this file: $postMessage/$dispatch are the same
-// $postMessage<M>/$dispatch<M> constructors already probed in index.tsx
-// (wired via PropType<ComponentBuiltinProps>); if the Messages wiring
-// regressed here, $dispatch would turn untyped and the `res` assertion
-// in dispatch() below would fail.
+// $postMessage<M>/$dispatch<M> constructors already probed in index.tsx.
+// All contract info comes from ./various.d.ts via ambient defaults, so the
+// vue prop and the statics only carry component-specific arguments.
 const V = defineComponent({
   props: {
-    various: Object as VariousComponentProps<GlobalStoreProps, GlobalMessages, GlobalActions>,
+    various: Object as VariousComponentProps,
   },
 
   setup(props) {
@@ -55,7 +33,7 @@ const V = defineComponent({
   }
 })
 
-const staticProps: ComponentStatics<SelfActions, GlobalMessages> = {
+const staticProps: ComponentStatics<'ca'> = {
   update: ({ payload, trigger }) => {
     type _p = Expect<Equal<typeof payload, number | undefined>>
     type _t = Expect<Equal<typeof trigger, string>>
@@ -71,46 +49,4 @@ const staticProps: ComponentStatics<SelfActions, GlobalMessages> = {
 }
 
 export default Object.assign(V, staticProps)
-
-/*
-  --------------------------------------
-  default types
-  --------------------------------------
-*/
-
-export const M = defineComponent({
-  props: {
-    various: Object as VariousComponentProps,
-  },
-
-  setup(props) {
-    const { b } = props.various?.$store || {}
-    type _b = Expect<Equal<typeof b, any>>
-
-    return {
-      msg() {
-        props.various?.$postMessage({ event: 'next', payload: b })
-      },
-      async dispatch() {
-        const res = await props.various?.$dispatch({ target: 'ca', action: 'next', payload: 'a' })
-        type _r = Expect<Equal<typeof res, any>>
-        window.console.log(res)
-      }
-    }
-  }
-})
-
-M.update = (({ payload, trigger }) => {
-  type _p = Expect<Equal<typeof payload, any>>
-  type _t = Expect<Equal<typeof trigger, string>>
-  window.console.log(payload, trigger)
-}) as PublicAction
-
-M.$onMessage = (({ event, payload, trigger }) => {
-  type _e = Expect<Equal<typeof event, string>>
-  type _p = Expect<Equal<typeof payload, any>>
-  type _t = Expect<Equal<typeof trigger, string>>
-  window.console.log(event, payload, trigger)
-}) as OnMessage
-M.$i18n = (() => ({ resources: {} })) as I18n
 </script>

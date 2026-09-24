@@ -14,6 +14,31 @@ export type ModuleDef = string
 
 export type ObjectRecord<T = any> = Record<string, T>
 
+/**
+ * Ambient contract resolved by module augmentation, so that component code
+ * stays minimal while each consumer program owns its own view of the world.
+ *
+ * Consumers augment it once per program (usually a `various.d.ts`):
+ *
+ *   declare module '@variousjs/various' {
+ *     interface VariousContract {
+ *       store: { b: number },
+ *       messages: DefineMessages<{ greet: { payload: number } }>,
+ *       actions: { app: DefineAppActions, ca: DefineActions<{ ... }> },
+ *     }
+ *   }
+ *
+ * Every member is optional: augmenting only some of them keeps the others
+ * falling back to the loose default types. Multiple augmentations merge, but
+ * re-declaring the same member with a different type is a compile error.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface VariousContract {}
+
+type StoreOf<C> = C extends { store: infer S } ? S : ObjectRecord
+type MessagesOf<C> = C extends { messages: infer M } ? M : never
+type ActionsOf<C> = C extends { actions: infer A } ? A : never
+
 export type VariousComponentType = 'react' | 'vue3'
 
 export type ErrorType =
@@ -81,10 +106,14 @@ export type StaticMethods<T extends PublicActionDef = never> =
       : never
     }
 
-export type ComponentStatics<S extends PublicActionDef = never, T extends MessagesDef = never> = {
+export type ComponentStatics<
+  SelfTarget extends keyof ActionsOf<VariousContract> & string = never,
+  Messages extends MessagesDef = MessagesOf<VariousContract>,
+  Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>
+> = {
   $i18n?: I18n,
-  $onMessage?: OnMessage<T>,
-} & StaticMethods<S>
+  $onMessage?: OnMessage<Messages>,
+} & StaticMethods<Actions[SelfTarget]>
 
 export type ComponentPublicActionMap = {
   [name: string]: PublicActionDef,
@@ -142,9 +171,9 @@ export type Intl = ((
 }
 
 interface ComponentBuiltinProps<
-  Store extends object = ObjectRecord,
-  Messages extends MessagesDef = never,
-  Actions extends ComponentPublicActionMap = never
+  Store extends object = StoreOf<VariousContract>,
+  Messages extends MessagesDef = MessagesOf<VariousContract>,
+  Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>
 > {
   $store: Readonly<Store>,
   $dispatch: $dispatch<Actions>,
@@ -166,22 +195,22 @@ export type GlobalI18n = {
   getResources?: () => I18nConfig | Promise<I18nConfig>
 }
 
-export type OnMessage<T extends MessagesDef = never> = (message: Message<T>) => void
+export type OnMessage<T extends MessagesDef = MessagesOf<VariousContract>> = (message: Message<T>) => void
 
 export type VariousProps<
   Props extends object = ObjectRecord,
-  Store extends object = ObjectRecord,
-  Messages extends MessagesDef = never,
-  Actions extends ComponentPublicActionMap = never
+  Store extends object = StoreOf<VariousContract>,
+  Messages extends MessagesDef = MessagesOf<VariousContract>,
+  Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>
 > = ComponentBuiltinProps<Store, Messages, Actions> & Props
 
 export type VariousFC<
   Props extends object = ObjectRecord,
-  Store extends object = ObjectRecord,
-  SelfActions extends PublicActionDef = never,
-  Messages extends MessagesDef = never,
-  Actions extends ComponentPublicActionMap = never
-> = FC<VariousProps<Props, Store, Messages, Actions>> & ComponentStatics<SelfActions, Messages>
+  SelfTarget extends keyof ActionsOf<VariousContract> & string = never,
+  Store extends object = StoreOf<VariousContract>,
+  Messages extends MessagesDef = MessagesOf<VariousContract>,
+  Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>
+> = FC<VariousProps<Props, Store, Messages, Actions>> & ComponentStatics<SelfTarget, Messages, Actions>
 
 export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
   $reload: () => void,
@@ -277,9 +306,9 @@ export interface Config {
 }
 
 export type VariousComponentProps<
-  Store extends object = ObjectRecord,
-  Messages extends MessagesDef = never,
-  Actions extends ComponentPublicActionMap = never,
+  Store extends object = StoreOf<VariousContract>,
+  Messages extends MessagesDef = MessagesOf<VariousContract>,
+  Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>,
 > = PropType<ComponentBuiltinProps<Store, Messages, Actions>>
 
 // ---- function signature aliases (used by implementations to stay in sync) ----
@@ -302,17 +331,17 @@ export type OnComponentMounted = (
   callback: () => void,
 ) => (() => void) | void
 
-export type CreateDispatch = <M extends ComponentPublicActionMap = never>(
+export type CreateDispatch = <M extends ComponentPublicActionMap = ActionsOf<VariousContract>>(
   module: ModuleDef,
 ) => $dispatch<M>
 
-export type CreatePostMessage = <Messages extends MessagesDef = never>(
+export type CreatePostMessage = <Messages extends MessagesDef = MessagesOf<VariousContract>>(
   module: ModuleDef,
 ) => $postMessage<Messages>
 
 export type CreateLogger = (module: ModuleDef) => $logger
 
-export type GetStore = <Store extends object = ObjectRecord>() => Store
+export type GetStore = <Store extends object = StoreOf<VariousContract>>() => Store
 
 export type CreateModule = <T = unknown>(params: {
   url?: string,

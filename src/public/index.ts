@@ -27,6 +27,7 @@ export {
 export type {
   ModuleDef,
   ObjectRecord,
+  VariousContract,
   VariousComponentType,
   ErrorType,
   ComponentDefaultProps,
