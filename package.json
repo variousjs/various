@@ -1,6 +1,6 @@
 {
   "name": "@variousjs/various",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "type": "module",
   "description": "React-based ESM micro-frontend framework",
   "files": [
