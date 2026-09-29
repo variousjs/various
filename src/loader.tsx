@@ -9,9 +9,13 @@ const DEFAULT_PACKAGES = {
 const ROOT = '#root'
 const REACT_REQUIREMENT_VERSION = '18|19'
 
-// Libraries that should be in the import map for component bare specifier resolution
+// Libraries required by the loader itself: preloaded before the core,
+// injected into the module registry, and excluded from defineDependencies.
+// Optional libraries (vue, react-router-dom, ...) are treated as regular
+// dependencies: registered via defineDependencies and loaded on first use,
+// or preloaded by listing them in earlyParallelDependencies.
 const BASE_LIBRARIES = new Set([
-  'react', 'react-dom', 'react-dom/client', 'react-router-dom', 'vue',
+  'react', 'react-dom', 'react-dom/client',
 ])
 
 const { currentScript } = document
