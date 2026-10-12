@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  VariousFC, VariousProps, PublicAction, OnMessage, I18n,
+  VariousFC, VariousPureFC, VariousProps, PublicAction, OnMessage, I18n,
   createPostMessage,
 } from '@variousjs/various'
 
@@ -60,10 +60,13 @@ export const C1 = ((props) => {
   return null
 }) as VariousFC<SelfProps>
 
-export const C2 = ((props) => {
+export const C2: VariousFC<SelfProps, never, { b: number }> = ((props) => {
   type _b = Expect<Equal<typeof props.$store.b, number>>
   return null
 }) as VariousFC<SelfProps, never, { b: number }>
+
+export const C3: VariousPureFC = () => null
+export const C4: VariousPureFC<SelfProps> = () => null
 
 C2.update = ({ payload, trigger }) => {
   type _p = Expect<Equal<typeof payload, any>>

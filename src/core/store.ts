@@ -1,5 +1,5 @@
 import Nycticorax from 'nycticorax'
-import type { ObjectRecord } from '../public/types'
+import type { GetStore, ObjectRecord } from '../public/types'
 import { Store } from '../types'
 import {
   MESSAGE_KEY,
@@ -42,3 +42,8 @@ export function getUserStore<S extends object = ObjectRecord>() {
 
   return store as S
 }
+
+// cast: GetUserStore generic is satisfied at runtime (store keys are strings);
+// S is instantiated at call sites and cannot be checked against the constraint
+// of the ambient-contract default in the public type
+export const getUserStorePublic: GetStore = getUserStore as GetStore

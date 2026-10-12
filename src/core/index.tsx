@@ -17,7 +17,7 @@ import { Store } from '../types'
 
 export { default as Nycticorax } from 'nycticorax'
 
-export { getUserStore as getStore } from './store'
+export { getUserStorePublic as getStore } from './store'
 export { default as createDispatch } from './dispatch'
 export { createPostMessage } from './message'
 export { default as createLogger } from './logger'

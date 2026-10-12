@@ -113,7 +113,15 @@ export type ComponentStatics<
 > = {
   $i18n?: I18n,
   $onMessage?: OnMessage<Messages>,
-} & StaticMethods<Actions[SelfTarget]>
+} & ([SelfTarget] extends [never]
+  // no contract augmentation in the program: keep the loose index signature
+  // so statics stay attachable without a slice
+  ? [Actions] extends [never]
+    ? Record<string, (params: { payload: any, trigger: ModuleDef }) => any>
+    // augmented contract without a self target: the component declares no
+    // static methods, so a bare function component is directly assignable
+    : {}
+  : StaticMethods<Actions[SelfTarget]>)
 
 export type ComponentPublicActionMap = {
   [name: string]: PublicActionDef,
@@ -211,6 +219,23 @@ export type VariousFC<
   Messages extends MessagesDef = MessagesOf<VariousContract>,
   Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>
 > = FC<VariousProps<Props, Store, Messages, Actions>> & ComponentStatics<SelfTarget, Messages, Actions>
+
+/**
+ * Function component without static methods, for components that only
+ * dispatch/subscribe and never expose public actions. Unlike VariousFC there
+ * is no index-signature fallback, so a bare arrow function is directly
+ * assignable with no `as` cast, with or without a contract augmentation.
+ * Attach statics with `Object.assign` if ever needed.
+ */
+export type VariousPureFC<
+  Props extends object = ObjectRecord,
+  Store extends object = StoreOf<VariousContract>,
+  Messages extends MessagesDef = MessagesOf<VariousContract>,
+  Actions extends ComponentPublicActionMap = ActionsOf<VariousContract>
+> = FC<VariousProps<Props, Store, Messages, Actions>> & {
+  $i18n?: I18n,
+  $onMessage?: OnMessage<Messages>,
+}
 
 export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
   $reload: () => void,

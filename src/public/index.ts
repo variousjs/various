@@ -45,6 +45,7 @@ export type {
   OnMessage,
   VariousProps,
   VariousFC,
+  VariousPureFC,
   ErrorFallbackProps,
   ErrorFallbackNode,
   FallbackProps,
@@ -57,4 +58,5 @@ export type {
   App,
   Config,
   VariousComponentProps,
+  GetStore,
 } from './types'

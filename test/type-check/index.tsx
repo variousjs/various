@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   VariousFC, VariousProps, PublicAction, OnMessage, I18n,
-  createPostMessage, VariousContract,
+  createPostMessage, createDispatch, getStore, VariousContract,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
@@ -14,6 +14,10 @@ interface SelfProps { a: string }
 
 // createPostMessage picks up the ambient messages contract
 const typedPostMessage = createPostMessage('typed')
+
+// getStore picks up the ambient store contract (d.ts references VariousContract)
+const store = getStore()
+type _gs = Expect<Equal<typeof store, { b: number }>>
 
 export const A: VariousFC<
   SelfProps,
@@ -73,6 +77,9 @@ A.update = ({ payload, trigger }) => {
 
 // @ts-expect-error self target must be a key of the contract actions
 export const AX: VariousFC<SelfProps, 'cx'> = () => null
+
+export const AX1: VariousFC = () => null
+export const AX2: VariousFC<SelfProps> = () => null
 
 export class B extends Component<VariousProps<SelfProps>> {
   // class statics stay explicit: the slice is extracted from the ambient
