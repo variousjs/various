@@ -148,8 +148,8 @@ function vueComponent<P extends object>(config: {
 
         await checkVueComponent(componentNode, module)
 
-        updateMountedComponent(module)
-
+        // register actions before publishing the mounted flag, so
+        // onComponentMounted observers can dispatch immediately
         unSubscribeMessageRef.current = parseComponentActions({
           componentNode,
           module,
@@ -158,6 +158,8 @@ function vueComponent<P extends object>(config: {
             updateVueComponentRef.current?.()
           },
         })
+
+        updateMountedComponent(module)
 
         ComponentNodeRef.current = componentNode
 

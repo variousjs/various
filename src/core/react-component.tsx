@@ -85,13 +85,15 @@ function reactComponent<P extends object>(config: {
 
         componentNode.displayName = module
 
-        updateMountedComponent(module)
-
+        // register actions before publishing the mounted flag, so
+        // onComponentMounted observers can dispatch immediately
         this.unSubscribeMessage = parseComponentActions({
           componentNode,
           module,
           i18nUpdate: () => this.forceUpdate(),
         })
+
+        updateMountedComponent(module)
 
         this.ComponentNode = componentNode
         this.setState({ componentReady: true })

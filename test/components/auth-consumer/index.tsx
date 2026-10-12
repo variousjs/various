@@ -59,22 +59,16 @@ C.$onMessage = ({ event, payload }) => {
   }
 }
 
-// pull-then-push handshake: wait for the service module to mount, then pull
-// the initial snapshot. actions are registered right after the mounted flag
-// is set, so retry briefly on the "component is not ready" race
-function pull(attempt = 0) {
+// pull-then-push handshake: once the service module is mounted its actions
+// are guaranteed to be registered, so a single pull gets the initial snapshot
+function pull() {
   dispatch({ target: 'auth-service', action: 'getUser' })
     .then((user: NS) => emit({
       name: user.name,
       token: user.token,
     }))
-    .catch(() => {
-      if (attempt < 5) {
-        setTimeout(() => pull(attempt + 1), 50)
-      }
-    })
 }
 
-onComponentMounted('auth-service', () => pull())
+onComponentMounted('auth-service', pull)
 
 export default connect('name', 'token')(C)
