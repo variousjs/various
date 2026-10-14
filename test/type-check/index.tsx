@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
-  VariousFC, VariousProps, PublicAction, OnMessage, I18n,
-  createPostMessage, createDispatch, getStore, VariousContract,
+  VariousFC, VariousPureFC, VariousProps, PublicAction, OnMessage, I18n,
+  DefineMessages, createPostMessage, createDispatch, getStore, VariousContract,
 } from '@variousjs/various'
 
 interface SelfProps { a: string }
@@ -80,6 +80,21 @@ export const AX: VariousFC<SelfProps, 'cx'> = () => null
 
 export const AX1: VariousFC = () => null
 export const AX2: VariousFC<SelfProps> = () => null
+
+// custom Messages with every other argument at its contract default: the
+// skipped Store position is filled with `VariousContract['store']`
+type ReadyMessages = DefineMessages<{ ready: { payload: boolean } }>
+
+export const AX3: VariousPureFC<
+  SelfProps,
+  VariousContract['store'],
+  ReadyMessages
+> = () => null
+
+AX3.$onMessage = ({ event }) => {
+  type _e = Expect<Equal<typeof event, 'ready'>>
+  window.console.log(event)
+}
 
 export class B extends Component<VariousProps<SelfProps>> {
   // class statics stay explicit: the slice is extracted from the ambient

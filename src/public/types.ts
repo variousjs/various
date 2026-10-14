@@ -237,7 +237,7 @@ export type VariousPureFC<
   $onMessage?: OnMessage<Messages>,
 }
 
-export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
+export interface ErrorFallbackProps<Store extends object = StoreOf<VariousContract>> {
   $reload: () => void,
   $error: VariousError,
   $store: Readonly<Store>,
@@ -245,16 +245,16 @@ export interface ErrorFallbackProps<Store extends object = ObjectRecord> {
   $locale: string,
 }
 export type ErrorFallbackNode<
-  Store extends object = ObjectRecord
+  Store extends object = StoreOf<VariousContract>
 > = ComponentType<ErrorFallbackProps<Store>>
 
-export interface FallbackProps<Store extends object = ObjectRecord> {
+export interface FallbackProps<Store extends object = StoreOf<VariousContract>> {
   $store: Readonly<Store>,
   $self: { url: string, module: ModuleDef },
   $locale: string,
 }
 export type FallbackNode<
-  Store extends object = ObjectRecord
+  Store extends object = StoreOf<VariousContract>
 > = ComponentType<FallbackProps<Store>>
 
 type Dispatch<T extends object = ObjectRecord> = (
@@ -301,7 +301,7 @@ export type LoadEvent = (e: LoadEventArgs) => void
 export type ErrorEvent = (e: VariousError) => void
 export type LogEvent = (e: LogArgs) => boolean
 
-export interface App<Store extends object = ObjectRecord> {
+export interface App<Store extends object = StoreOf<VariousContract>> {
   store?: Store,
   ErrorFallback?: ErrorFallbackNode<Store>,
   Fallback?: FallbackNode<Store>,
@@ -376,7 +376,7 @@ export type CreateModule = <T = unknown>(params: {
 export type CreateComponent = <
   Props extends object = ObjectRecord,
   Ref = unknown,
-  Store extends object = ObjectRecord
+  Store extends object = StoreOf<VariousContract>
 >(
   config: {
     url?: string,
